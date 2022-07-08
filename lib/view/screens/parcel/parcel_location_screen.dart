@@ -167,7 +167,8 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen> with Ticker
   Widget _bottomButton() {
     return GetBuilder<ParcelController>(
       builder: (parcelController) {
-        return CustomButton(
+        return
+          CustomButton(
           margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
           buttonText: parcelController.isSender ? 'continue'.tr : 'save_and_continue'.tr,
           onPressed: () {

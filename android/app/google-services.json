@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "1000163153346",
-    "project_id": "ammart-8885e",
-    "storage_bucket": "ammart-8885e.appspot.com"
+    "project_number": "112720047458",
+    "project_id": "jamboy",
+    "storage_bucket": "jamboy.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1000163153346:android:7d49ab307cc6e18406b25b",
+        "mobilesdk_app_id": "1:112720047458:android:60413654650884bbf2d03b",
         "android_client_info": {
-          "package_name": "com.sixamtech.sixam_mart"
+          "package_name": "com.jamboy.customer.androidapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1000163153346-48ckm2uf7h70hmgn74kg1gq02sval158.apps.googleusercontent.com",
+          "client_id": "112720047458-6g0i3hkuibfbob9kp1ego2qptd5v5unf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCic6Mw3RRPFcimXhwGidwhCN0tXY7HFFc"
+          "current_key": "AIzaSyA4MCm4CF6tFKf5sikNakUv66147SMTDno"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1000163153346-48ckm2uf7h70hmgn74kg1gq02sval158.apps.googleusercontent.com",
+              "client_id": "112720047458-6g0i3hkuibfbob9kp1ego2qptd5v5unf.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "112720047458-0c7o0gir4hfcdfed8ve1ltlef9lcupgu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jamboy.customer.iosapp"
+              }
             }
           ]
         }

@@ -6,7 +6,9 @@ class AppConstants {
   static const String APP_NAME = '6amMart';
   static const double APP_VERSION = 1.4;
 
-  static const String BASE_URL = 'https://6ammart.6am.one/dev';
+ // static const String BASE_URL = 'https://6ammart.6am.one/dev';
+  static const String BASE_URL = 'https://jamboy-admin.khash.ng/admin';
+  //static const String BASE_URL = 'http://192.168.1.156:5000';
   static const String CATEGORY_URI = '/api/v1/categories';
   static const String BANNER_URI = '/api/v1/banners';
   static const String STORE_ITEM_URI = '/api/v1/items/latest';

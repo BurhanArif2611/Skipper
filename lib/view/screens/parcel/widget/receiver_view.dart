@@ -37,7 +37,7 @@ class _ReceiverViewState extends State<ReceiverView> {
   @override
   void initState() {
     super.initState();
-
+    {print('Reciver detail card design >>>>>>>>>');}
     Get.find<ParcelController>().setPickupAddress(Get.find<LocationController>().getUserAddress(), false);
     Get.find<ParcelController>().setIsPickedUp(false, false);
     if(Get.find<AuthController>().isLoggedIn() && Get.find<LocationController>().addressList == null) {
