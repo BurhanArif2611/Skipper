@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/home/widget/banner_view.dart';
 import 'package:sixam_mart/view/screens/home/widget/popular_store_view.dart';
+import 'package:sixam_mart/view/screens/home/widget/store_branch.dart';
 
 class ModuleView extends StatelessWidget {
   final SplashController splashController;
@@ -97,7 +98,7 @@ class ModuleView extends StatelessWidget {
           _addressList.add(Get.find<LocationController>().getUserAddress());
         }
         return (!Get.find<AuthController>().isLoggedIn() || locationController.addressList != null) ? SizedBox(
-          height: 70,
+          height: 80,
           child: ListView.builder(
             physics: BouncingScrollPhysics(),
             itemCount: _addressList.length,
@@ -126,6 +127,7 @@ class ModuleView extends StatelessWidget {
       }),
 
       PopularStoreView(isPopular: false, isFeatured: true),
+      //StoreBranch(isPopular: false, isFeatured: true),
 
       SizedBox(height: 30),
 

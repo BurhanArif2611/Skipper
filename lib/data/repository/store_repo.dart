@@ -28,6 +28,7 @@ class StoreRepo {
   }
 
   Future<Response> getStoreItemList(int storeID, int offset, int categoryID, String type) async {
+
     return await apiClient.getData(
       '${AppConstants.STORE_ITEM_URI}?store_id=$storeID&category_id=$categoryID&offset=$offset&limit=10&type=$type',
     );

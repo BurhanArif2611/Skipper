@@ -43,6 +43,7 @@ class HomeScreen extends StatefulWidget {
       Get.find<StoreController>().getLatestStoreList(reload, 'all', false);
       Get.find<ItemController>().getReviewedItemList(reload, 'all', false);
       Get.find<StoreController>().getStoreList(1, reload);
+
       if(Get.find<AuthController>().isLoggedIn()) {
         Get.find<UserController>().getUserInfo();
         Get.find<NotificationController>().getNotificationList(reload);
@@ -52,6 +53,7 @@ class HomeScreen extends StatefulWidget {
     if(Get.find<SplashController>().module == null && Get.find<SplashController>().configModel.module == null) {
       Get.find<BannerController>().getFeaturedBanner();
       Get.find<StoreController>().getFeaturedStoreList();
+      Get.find<BannerController>().getBranchList(reload);
       if(Get.find<AuthController>().isLoggedIn()) {
         Get.find<LocationController>().getAddressList();
       }
@@ -105,17 +107,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 await Get.find<StoreController>().getLatestStoreList(true, 'all', false);
                 await Get.find<ItemController>().getReviewedItemList(true, 'all', false);
                 await Get.find<StoreController>().getStoreList(1, true);
+
                 if(Get.find<AuthController>().isLoggedIn()) {
                   await Get.find<UserController>().getUserInfo();
                   await Get.find<NotificationController>().getNotificationList(true);
                 }
               }else {
+                print("else is working>>>");
                 await Get.find<BannerController>().getFeaturedBanner();
                 await Get.find<SplashController>().getModules();
+
                 if(Get.find<AuthController>().isLoggedIn()) {
                   await Get.find<LocationController>().getAddressList();
                 }
                 await Get.find<StoreController>().getFeaturedStoreList();
+                await Get.find<BannerController>().getBranchList(true);
               }
             },
             child: ResponsiveHelper.isDesktop(context) ? WebHomeScreen(
@@ -228,15 +234,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 SliverToBoxAdapter(
                   child: Center(child: SizedBox(
                     width: Dimensions.WEB_MAX_WIDTH,
-                    child: !_showMobileModule ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    child: !_showMobileModule ?
+                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-                      BannerView(isFeatured: false),
+                     /* BannerView(isFeatured: false),
                       CategoryView(),
                       PopularStoreView(isPopular: true, isFeatured: false),
                       ItemCampaignView(),
                       PopularItemView(isPopular: true),
                       PopularStoreView(isPopular: false, isFeatured: false),
-                      PopularItemView(isPopular: false),
+                      PopularItemView(isPopular: false),*/
 
                       Padding(
                         padding: EdgeInsets.fromLTRB(10, 15, 0, 5),
@@ -267,7 +274,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       }),
 
-                    ]) : ModuleView(splashController: splashController),
+                    ]) :
+
+                    ModuleView(splashController: splashController),
                   )),
                 ),
               ],

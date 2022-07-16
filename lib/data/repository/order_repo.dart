@@ -52,6 +52,7 @@ class OrderRepo {
     return await apiClient.getData('${AppConstants.DISTANCE_MATRIX_URI}'
         '?origin_lat=${originLatLng.latitude}&origin_lng=${originLatLng.longitude}'
         '&destination_lat=${destinationLatLng.latitude}&destination_lng=${destinationLatLng.longitude}');
+
   }
 
 }

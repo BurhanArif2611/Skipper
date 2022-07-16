@@ -35,7 +35,7 @@ class PopularItemView1 extends StatelessWidget {
           ),
 
           SizedBox(
-            height: 90,
+            height: 110,
             child: _itemList != null ? ListView.builder(
               controller: ScrollController(),
               physics: BouncingScrollPhysics(),

@@ -1,8 +1,15 @@
+
+import 'dart:convert';
+
 import 'package:sixam_mart/data/api/api_checker.dart';
 import 'package:sixam_mart/data/model/response/banner_model.dart';
+import 'package:sixam_mart/data/model/response/branch.dart';
+import 'package:sixam_mart/data/model/response/branch_model.dart';
 import 'package:sixam_mart/data/repository/banner_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sixam_mart/data/model/response/store_model.dart';
+
 
 class BannerController extends GetxController implements GetxService {
   final BannerRepo bannerRepo;
@@ -11,9 +18,10 @@ class BannerController extends GetxController implements GetxService {
   List<String> _bannerImageList;
   List<String> _featuredBannerList;
   List<dynamic> _bannerDataList;
+  List<Branch> _branchStoreList;
   List<dynamic> _featuredBannerDataList;
   int _currentIndex = 0;
-
+  List<Branch> get branchStoreList => _branchStoreList;
   List<String> get bannerImageList => _bannerImageList;
   List<String> get featuredBannerList => _featuredBannerList;
   List<dynamic> get bannerDataList => _bannerDataList;
@@ -64,6 +72,26 @@ class BannerController extends GetxController implements GetxService {
             _bannerDataList.add(banner.store);
           }
         });
+      } else {
+        ApiChecker.checkApi(response);
+      }
+      update();
+    }
+  }
+
+  Future<void> getBranchList(bool reload) async {
+    if(_branchStoreList == null || reload) {
+      Response response = await bannerRepo.getBranchList();
+      if (response.statusCode == 200) {
+        _branchStoreList=[];
+        response.body.forEach((store)  {
+
+          Branch branch=Branch.fromJson(store);
+          print("getBranchList>>123>>"+branch.name);
+          _branchStoreList.add(branch);
+        });
+        print("getBranchList>>123>>"+_branchStoreList.length.toString());
+      //  response.body.forEach((store) => print("getBranchList>123123>>"+store.toString()));
       } else {
         ApiChecker.checkApi(response);
       }

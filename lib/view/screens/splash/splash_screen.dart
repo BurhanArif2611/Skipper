@@ -72,12 +72,16 @@ class _SplashScreenState extends State<SplashScreen> {
           }else if(GetPlatform.isIOS) {
             _minimumVersion = Get.find<SplashController>().configModel.appMinimumVersionIos;
           }
+
+         // Get.offNamed(RouteHelper.getStoreRoute(0,  'store'));
           if(AppConstants.APP_VERSION < _minimumVersion || Get.find<SplashController>().configModel.maintenanceMode) {
             Get.offNamed(RouteHelper.getUpdateRoute(AppConstants.APP_VERSION < _minimumVersion));
-          }else {
+          }
+          else {
             if(widget.orderID != null) {
               Get.offNamed(RouteHelper.getOrderDetailsRoute(int.parse(widget.orderID)));
-            }else {
+            }
+            else {
               if (Get.find<AuthController>().isLoggedIn()) {
                 Get.find<AuthController>().updateToken();
                 await Get.find<WishListController>().getWishList();

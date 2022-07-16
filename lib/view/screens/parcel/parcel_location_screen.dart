@@ -204,7 +204,6 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen> with Ticker
                 );
 
                 parcelController.setDestinationAddress(_destination);
-
                 print('pickup : ${Get.find<ParcelController>().pickupAddress.toJson()}');
                 print('destination : ${Get.find<ParcelController>().destinationAddress.toJson()}');
 

@@ -22,9 +22,11 @@ import 'package:sixam_mart/view/screens/store/widget/store_description_view.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../util/app_constants.dart';
+
 class StoreScreen extends StatefulWidget {
   final Store store;
-  final bool fromModule;
+   bool fromModule;
   StoreScreen({@required this.store, @required this.fromModule});
 
   @override
@@ -39,6 +41,7 @@ class _StoreScreenState extends State<StoreScreen> {
   void initState() {
     super.initState();
 
+    Get.find<SplashController>().getModules();
     Get.find<StoreController>().getStoreDetails(Store(id: widget.store.id), widget.fromModule);
     if(Get.find<CategoryController>().categoryList == null) {
       Get.find<CategoryController>().getCategoryList(true);

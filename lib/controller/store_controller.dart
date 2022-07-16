@@ -1,8 +1,12 @@
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sixam_mart/controller/category_controller.dart';
 import 'package:sixam_mart/controller/coupon_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/order_controller.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
+import 'package:sixam_mart/data/model/response/branch.dart';
 import 'package:sixam_mart/data/model/response/category_model.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
@@ -15,10 +19,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:sixam_mart/view/screens/home/home_screen.dart';
 
+import '../util/app_constants.dart';
+
 class StoreController extends GetxController implements GetxService {
   final StoreRepo storeRepo;
   StoreController({@required this.storeRepo});
-
+   SharedPreferences sharedPreferences;
   StoreModel _storeModel;
   List<Store> _popularStoreList;
   List<Store> _latestStoreList;
@@ -39,6 +45,7 @@ class StoreController extends GetxController implements GetxService {
   List<Store> get popularStoreList => _popularStoreList;
   List<Store> get latestStoreList => _latestStoreList;
   List<Store> get featuredStoreList => _featuredStoreList;
+
   Store get store => _store;
   ItemModel get storeItemModel => _storeItemModel;
   ItemModel get storeSearchItemModel => _storeSearchItemModel;
@@ -127,6 +134,8 @@ class StoreController extends GetxController implements GetxService {
     update();
   }
 
+
+
   void setCategoryList() {
     if(Get.find<CategoryController>().categoryList != null && _store != null) {
       _categoryList = [];
@@ -150,6 +159,7 @@ class StoreController extends GetxController implements GetxService {
   }
 
   Future<Store> getStoreDetails(Store store, bool fromModule) async {
+   // await sharedPreferences.setString(AppConstants.MODULE_ID, '1');
     _categoryIndex = 0;
     if(store.name != null) {
       _store = store;
@@ -184,6 +194,7 @@ class StoreController extends GetxController implements GetxService {
   }
 
   Future<void> getStoreItemList(int storeID, int offset, String type, bool notify) async {
+   // await sharedPreferences.setString(AppConstants.MODULE_ID, '1');
     if(offset == 1 || _storeItemModel == null) {
       _type = type;
       _storeItemModel = null;

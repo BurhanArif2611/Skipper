@@ -50,7 +50,7 @@ class _ParcelViewState extends State<ParcelView> {
   final FocusNode _nameNode = FocusNode();
   final FocusNode _phoneNode = FocusNode();
   var parcelController_main;
-  List<ParcelController> anotherList = List<ParcelController>();
+  List<AddressModel> anotherList = List<AddressModel>();
 
   @override
   void dispose() {
@@ -64,7 +64,7 @@ class _ParcelViewState extends State<ParcelView> {
     return SizedBox(
       width: Dimensions.WEB_MAX_WIDTH,
       child: GetBuilder<ParcelController>(builder: (parcelController) {
-        // parcelController_main=parcelController;
+         //parcelController_main=parcelController;
         return SingleChildScrollView(
           controller: ScrollController(),
           child: Center(
@@ -96,7 +96,9 @@ class _ParcelViewState extends State<ParcelView> {
                         flex: 4,
                         child: CustomButton(
                           buttonText: 'set_from_map'.tr,
-                          onPressed: () => Get.toNamed(
+                          onPressed: () =>{
+                            print("address>ddfdf>>>>"),
+                            Get.toNamed(
                               RouteHelper.getPickMapRoute('parcel', false),
                               arguments: PickMapScreen(
                                 fromSignUp: false,
@@ -113,6 +115,7 @@ class _ParcelViewState extends State<ParcelView> {
                                   }
                                 },
                               )),
+                          }
                         ),
                       ),
                       SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
@@ -493,16 +496,24 @@ class _ParcelViewState extends State<ParcelView> {
   }
 
   void showCustomDialog(BuildContext context) {
-    showGeneralDialog(
+     TextEditingController nameController=TextEditingController();
+     TextEditingController phoneController=TextEditingController();
+     TextEditingController streetController=TextEditingController();
+     TextEditingController houseController=TextEditingController();
+     TextEditingController floorController=TextEditingController();
+     String Selected_address="";
+     AddressModel addressModel_=null;
+     showGeneralDialog(
       context: context,
       barrierLabel: "Barrier",
       barrierDismissible: true,
       barrierColor: Colors.black.withOpacity(0.5),
       transitionDuration: Duration(milliseconds: 700),
       pageBuilder: (_, __, ___) {
+
         return Center(
           child: Container(
-            height: 580,
+            height: 600,
             child: Card(
               child: Padding(
                 padding: EdgeInsets.all(16.0),
@@ -510,7 +521,7 @@ class _ParcelViewState extends State<ParcelView> {
                   child: Column(children: [
                     SearchLocationWidget(
                       mapController: null,
-                      pickedAddress: '',
+                      pickedAddress: Selected_address,
                       isEnabled: true,
                       isPickedUp: true,
                       hint: 'destination'.tr,
@@ -521,7 +532,8 @@ class _ParcelViewState extends State<ParcelView> {
                         flex: 4,
                         child: CustomButton(
                           buttonText: 'set_from_map'.tr,
-                          onPressed: () => Get.toNamed(
+                          onPressed: () => {
+                            Get.toNamed(
                               RouteHelper.getPickMapRoute('parcel', false),
                               arguments: PickMapScreen(
                                 fromSignUp: false,
@@ -529,10 +541,12 @@ class _ParcelViewState extends State<ParcelView> {
                                 canRoute: false,
                                 route: '',
                                 onPicked: (AddressModel address) {
-                                  parcelController_main
-                                      .setDestinationAddress(address);
-                                },
+                                  addressModel_=address;
+                                  Selected_address=addressModel_.additionalAddress !=null? addressModel_.additionalAddress.toString():addressModel_.address !=null?addressModel_.address.toString():"";
+                                  print("Selected_address>>>"+Selected_address);
+                                  },
                               )),
+                          }
                         ),
                       ),
                       SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
@@ -581,7 +595,7 @@ class _ParcelViewState extends State<ParcelView> {
                         child: MyTextField(
                           hintText: 'receiver_name'.tr,
                           inputType: TextInputType.name,
-                          controller: widget.nameController,
+                          controller: nameController,
                           focusNode: _nameNode,
                           nextFocus: _phoneNode,
                           capitalization: TextCapitalization.words,
@@ -594,7 +608,7 @@ class _ParcelViewState extends State<ParcelView> {
                           inputType: TextInputType.phone,
                           focusNode: _phoneNode,
                           nextFocus: _streetNode,
-                          controller: widget.phoneController,
+                          controller: phoneController,
                         ),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
@@ -610,7 +624,7 @@ class _ParcelViewState extends State<ParcelView> {
                           inputType: TextInputType.streetAddress,
                           focusNode: _streetNode,
                           nextFocus: _houseNode,
-                          controller: widget.streetController,
+                          controller: streetController,
                         ),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
@@ -622,7 +636,7 @@ class _ParcelViewState extends State<ParcelView> {
                               inputType: TextInputType.text,
                               focusNode: _houseNode,
                               nextFocus: _floorNode,
-                              controller: widget.houseController,
+                              controller: houseController,
                             ),
                           ),
                         ),
@@ -634,7 +648,7 @@ class _ParcelViewState extends State<ParcelView> {
                               inputType: TextInputType.text,
                               focusNode: _floorNode,
                               inputAction: TextInputAction.done,
-                              controller: widget.floorController,
+                              controller: floorController,
                             ),
                           ),
                         ),
@@ -645,8 +659,25 @@ class _ParcelViewState extends State<ParcelView> {
                       // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                       buttonText: 'save'.tr,
                       onPressed: () {
-                        setState(() => anotherList.add(parcelController_main));
-                        print(anotherList.length);
+
+                        AddressModel _destination = AddressModel(
+                          address: addressModel_.address.toString(),
+                          additionalAddress: addressModel_.additionalAddress.toString(),
+                          addressType: addressModel_.addressType.toString(),
+                          contactPersonName: nameController.text.trim(),
+                          contactPersonNumber: phoneController.text.trim(),
+                          latitude: addressModel_.latitude.toString(),
+                          longitude: addressModel_.longitude.toString(),
+                          method: addressModel_.method.toString(),
+                          zoneId: 0,
+                          id: 0,
+                          streetNumber: streetController.text.trim(),
+                          house: houseController.text.trim(),
+                          floor: floorController.text.trim(),
+                        );
+                        // anotherList=[];
+                        setState(() => anotherList.add(_destination));
+                        print("check list size >>>"+anotherList.length.toString());
                         Navigator.pop(context, false);
                       },
                     ),
@@ -657,6 +688,7 @@ class _ParcelViewState extends State<ParcelView> {
             ),
           ),
         );
+
       },
       transitionBuilder: (_, anim, __, child) {
         Tween<Offset> tween;
@@ -699,14 +731,13 @@ class _ParcelViewState extends State<ParcelView> {
               child: Column(children: [
                 Column(children: [
                   Center(
-                      child: Text('anotherList[position].pickupAddress.address',
+                      child: Text("${'receiver_information'.tr} ${' ('}${position+1}${')'}",
                           style: robotoMedium)),
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                   TextFieldShadow(
                     child: MyTextField(
-                      hintText: 'receiver_name'.tr,
+                      hintText: anotherList[position].contactPersonName.toString(),
                       inputType: TextInputType.name,
-                      controller: widget.nameController,
                       focusNode: _nameNode,
                       nextFocus: _phoneNode,
                       capitalization: TextCapitalization.words,
@@ -715,7 +746,7 @@ class _ParcelViewState extends State<ParcelView> {
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                   TextFieldShadow(
                     child: MyTextField(
-                      hintText: 'receiver_phone_number'.tr,
+                      hintText: anotherList[position].contactPersonNumber.toString(),
                       inputType: TextInputType.phone,
                       focusNode: _phoneNode,
                       nextFocus: _streetNode,
@@ -731,11 +762,11 @@ class _ParcelViewState extends State<ParcelView> {
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                   TextFieldShadow(
                     child: MyTextField(
-                      hintText: "${'street_number'.tr} (${'optional'.tr})",
+                      hintText: anotherList[position].streetNumber.toString(),
                       inputType: TextInputType.streetAddress,
                       focusNode: _streetNode,
                       nextFocus: _houseNode,
-                      controller: widget.streetController,
+
                     ),
                   ),
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
@@ -743,7 +774,7 @@ class _ParcelViewState extends State<ParcelView> {
                     Expanded(
                       child: TextFieldShadow(
                         child: MyTextField(
-                          hintText: "${'house'.tr} (${'optional'.tr})",
+                          hintText: anotherList[position].house.toString(),
                           inputType: TextInputType.text,
                           focusNode: _houseNode,
                           nextFocus: _floorNode,
@@ -755,7 +786,7 @@ class _ParcelViewState extends State<ParcelView> {
                     Expanded(
                       child: TextFieldShadow(
                         child: MyTextField(
-                          hintText: "${'floor'.tr} (${'optional'.tr})",
+                          hintText: anotherList[position].floor.toString(),
                           inputType: TextInputType.text,
                           focusNode: _floorNode,
                           inputAction: TextInputAction.done,

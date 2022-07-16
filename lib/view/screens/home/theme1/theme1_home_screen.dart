@@ -142,11 +142,11 @@ class Theme1HomeScreen extends StatelessWidget {
               CategoryView1(),
               ItemCampaignView1(),
               BestReviewedItemView(),
-              PopularStoreView1(isPopular: true, isFeatured: false),
-              PopularItemView1(isPopular: true),
-              PopularStoreView1(isPopular: false, isFeatured: false),
+             // PopularStoreView1(isPopular: true, isFeatured: false),
+             // PopularItemView1(isPopular: true),
+            //  PopularStoreView1(isPopular: false, isFeatured: false),
 
-              Padding(
+             /* Padding(
                 padding: EdgeInsets.fromLTRB(10, 15, 0, 5),
                 child: Row(children: [
                   Expanded(child: Text(
@@ -156,9 +156,9 @@ class Theme1HomeScreen extends StatelessWidget {
                   )),
                   FilterView(),
                 ]),
-              ),
+              ),*/
 
-              GetBuilder<StoreController>(builder: (storeController) {
+             /* GetBuilder<StoreController>(builder: (storeController) {
                 return PaginatedListView(
                   scrollController: scrollController,
                   totalSize: storeController.storeModel != null ? storeController.storeModel.totalSize : null,
@@ -173,7 +173,7 @@ class Theme1HomeScreen extends StatelessWidget {
                     ),
                   ),
                 );
-              }),
+              }),*/
 
             ]) : ModuleView(splashController: splashController),
           )),

@@ -156,7 +156,7 @@ class OrderController extends GetxController implements GetxService {
   Future<void> placeOrder(PlaceOrderBody placeOrderBody, Function(bool isSuccess, String message, String orderID) callback) async {
     _isLoading = true;
     update();
-    print(placeOrderBody.toJson());
+    print("placeOrder<><>"+placeOrderBody.toJson().toString());
     Response response = await orderRepo.placeOrder(placeOrderBody, _orderAttachment);
     _isLoading = false;
     if (response.statusCode == 200) {

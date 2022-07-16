@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class PlaceOrderBody {
   List<Cart> _cart;
+  List<AddressModel> _receiver_addresses;
   double _couponDiscountAmount;
   double _orderAmount;
   String _orderType;
@@ -55,7 +56,7 @@ class PlaceOrderBody {
         @required String streetNumber,
         @required String house,
         @required String floor,
-
+        @required List<AddressModel> receiver_addresses
       }) {
     this._cart = cart;
     this._couponDiscountAmount = couponDiscountAmount;
@@ -81,6 +82,7 @@ class PlaceOrderBody {
     this._streetNumber = streetNumber;
     this._house = house;
     this._floor = floor;
+    this._receiver_addresses = receiver_addresses;
   }
 
   List<Cart> get cart => _cart;
@@ -106,6 +108,8 @@ class PlaceOrderBody {
   String get streetNumber => _streetNumber;
   String get house => _house;
   String get floor => _floor;
+  List<AddressModel> get receiver_addresses => _receiver_addresses;
+
 
   PlaceOrderBody.fromJson(Map<String, dynamic> json) {
     if (json['cart'] != null) {
@@ -137,6 +141,14 @@ class PlaceOrderBody {
     _streetNumber = json['road'];
     _house = json['apartment'];
     _floor = json['floor'];
+
+    if (json['receiver_addresses'] != null) {
+      _receiver_addresses = [];
+      json['receiver_addresses'].forEach((v) {
+        _receiver_addresses.add(new AddressModel.fromJson(v));
+      });
+    }
+
   }
 
   Map<String, String> toJson() {
@@ -183,6 +195,10 @@ class PlaceOrderBody {
     data['road'] = this._streetNumber;
     data['house'] = this._house;
     data['floor'] = this._floor;
+    if (this._receiver_addresses != null) {
+      data['receiver_addresses'] = jsonEncode(this._receiver_addresses.map((v) => v.toJson()).toList());
+    }
+
     return data;
   }
 }

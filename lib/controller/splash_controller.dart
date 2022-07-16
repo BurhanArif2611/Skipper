@@ -131,6 +131,8 @@ class SplashController extends GetxController implements GetxService {
       }else {
         await Get.find<SplashController>().setModule(_moduleList[index]);
         HomeScreen.loadData(true);
+
+
       }
     }
   }

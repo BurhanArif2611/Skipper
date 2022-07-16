@@ -96,6 +96,7 @@ class SplashRepo {
     if(sharedPreferences.containsKey(AppConstants.MODULE_ID)) {
       try {
         _module = ModuleModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.MODULE_ID)));
+
       }catch(e) {}
     }
     return _module;

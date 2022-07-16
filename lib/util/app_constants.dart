@@ -57,6 +57,7 @@ class AppConstants {
   static const String LAST_LOCATION_URI = '/api/v1/delivery-man/last-location?order_id=';
   static const String DELIVER_MAN_REVIEW_URI = '/api/v1/delivery-man/reviews/submit';
   static const String STORE_URI = '/api/v1/stores/get-stores';
+  static const String BRANCG_URI = '/api/v1/stores';
   static const String POPULAR_STORE_URI = '/api/v1/stores/popular';
   static const String LATEST_STORE_URI = '/api/v1/stores/latest';
   static const String STORE_DETAILS_URI = '/api/v1/stores/details/';
@@ -100,6 +101,8 @@ class AppConstants {
   static const String ZONE_ID = 'zoneId';
   static const String MODULE_ID = 'moduleId';
   static const String LOCALIZATION_KEY = 'X-localization';
+  static const String ModuleId = 'ctgv3ma3S_K0W_yyWFIr2l:APA91bEz84C6w8Iilkv5Fp_Rqs0Fj2TNXa6UPIBfgBQXFi8dYveh1Bv0UPjsd-KwUZNbGZw2SKbChFlPK4SjXZ-UU_vpKQfrlj0XkDqCebX2kGx_xVU2YIFv2jCe83GonKwcKSsIaPWd';
+  static const int StoreId = 7;
 
   static List<ChooseUsModel> whyChooseUsList = [
     ChooseUsModel(icon: Images.landing_trusted, title: 'trusted_by_customers_and_store_owners'),

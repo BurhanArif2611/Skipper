@@ -173,6 +173,7 @@ class RouteHelper {
     return '$editAddress?data=$_data';
   }
   static String getStoreReviewRoute(int storeID) => '$storeReview?id=$storeID';
+
   static String getAllStoreRoute(String page) => '$allStores?page=$page';
   static String getItemImagesRoute(Item item) {
     String _data = base64Url.encode(utf8.encode(jsonEncode(item.toJson())));
@@ -299,6 +300,7 @@ class RouteHelper {
     ))),
     GetPage(name: rateReview, page: () => getRoute(Get.arguments != null ? Get.arguments : NotFound())),
     GetPage(name: storeReview, page: () => getRoute(ReviewScreen(storeID: Get.parameters['id']))),
+
     GetPage(name: allStores, page: () => getRoute(AllStoreScreen(
       isPopular: Get.parameters['page'] == 'popular', isFeatured: Get.parameters['page'] == 'featured',
     ))),

@@ -1,8 +1,10 @@
 import 'package:sixam_mart/controller/auth_controller.dart';
+import 'package:sixam_mart/controller/banner_controller.dart';
 import 'package:sixam_mart/controller/store_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/controller/theme_controller.dart';
 import 'package:sixam_mart/controller/wishlist_controller.dart';
+import 'package:sixam_mart/data/model/response/branch.dart';
 import 'package:sixam_mart/data/model/response/module_model.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
@@ -20,35 +22,35 @@ import 'package:flutter/material.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:get/get.dart';
 
-class PopularStoreView1 extends StatelessWidget {
+class StoreBranch extends StatelessWidget {
   final bool isPopular;
   final bool isFeatured;
-  PopularStoreView1({@required this.isPopular, @required this.isFeatured});
+  StoreBranch({@required this.isPopular, @required this.isFeatured});
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<StoreController>(builder: (storeController) {
-      List<Store> _storeList = isFeatured ? storeController.featuredStoreList : isPopular ? storeController.popularStoreList
-          : storeController.latestStoreList;
+    return GetBuilder<BannerController>(builder: (branchStoreList) {
+      List<Branch> _storeList = branchStoreList.branchStoreList;
 
       return (_storeList != null && _storeList.length == 0) ? SizedBox() : Column(
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(10, isPopular ? 15 : 15, 10, 10),
+            padding: EdgeInsets.fromLTRB(10, isPopular ? 2 : 15, 10, 10),
             child: TitleWidget(
-              title: isFeatured ? 'featured_stores'.tr : isPopular ? Get.find<SplashController>().configModel.moduleConfig.module.showRestaurantText
+              title: isFeatured ? 'store_branches'.tr : isPopular ? Get.find<SplashController>().configModel.moduleConfig.module.showRestaurantText
                   ? 'popular_restaurants'.tr : 'popular_stores'.tr : '${'new_on'.tr} ${AppConstants.APP_NAME}',
-              onTap: () => {Get.toNamed(RouteHelper.getAllStoreRoute(isFeatured ? 'featured' : isPopular ? 'popular' : 'latest')),
-              }
+              onTap: () =>
+                 // Get.toNamed(RouteHelper.getAllStoreRoute(isFeatured ? 'featured' : isPopular ? 'popular' : 'latest')),
+                  Get.toNamed(RouteHelper.getAllStoreRoute('featured')),
             ),
           ),
 
           SizedBox(
-            height: 150,
+            // height: 250,
             child: _storeList != null ? ListView.builder(
               controller: ScrollController(),
               physics: BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
+              scrollDirection: Axis.vertical,
               padding: EdgeInsets.only(left: Dimensions.PADDING_SIZE_SMALL),
               itemCount: _storeList.length > 10 ? 10 : _storeList.length,
               itemBuilder: (context, index){
@@ -64,14 +66,14 @@ class PopularStoreView1 extends StatelessWidget {
                           }
                         }
                       }
-                      Get.toNamed(
+                     /* Get.toNamed(
                         RouteHelper.getStoreRoute(_storeList[index].id, isFeatured ? 'module' : 'store'),
                         arguments: StoreScreen(store: _storeList[index], fromModule: isFeatured),
-                      );
+                      );*/
                     },
                     child: Container(
                       height: 150,
-                      width: 200,
+                      // width: 200,
                       decoration: BoxDecoration(
                         color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
@@ -88,27 +90,27 @@ class PopularStoreView1 extends StatelessWidget {
                             child: CustomImage(
                               image: '${Get.find<SplashController>().configModel.baseUrls.storeCoverPhotoUrl}'
                                   '/${_storeList[index].coverPhoto}',
-                              height: 90, width: 200, fit: BoxFit.cover,
+                              height: 90, width: double.infinity, fit: BoxFit.fill,
                             ),
                           ),
-                          DiscountTag(
-                            discount: storeController.getDiscount(_storeList[index]),
+                          /*DiscountTag(
+                            discount: branchStoreList.getDiscount(_storeList[index]),
                             discountType: storeController.getDiscountType(_storeList[index]),
                             freeDelivery: _storeList[index].freeDelivery,
                           ),
-                          storeController.isOpenNow(_storeList[index]) ? SizedBox() : NotAvailableWidget(isStore: true),
+                          branchStoreList.isOpenNow(_storeList[index]) ? SizedBox() : NotAvailableWidget(isStore: true),*/
                           Positioned(
                             top: Dimensions.PADDING_SIZE_EXTRA_SMALL, right: Dimensions.PADDING_SIZE_EXTRA_SMALL,
                             child: GetBuilder<WishListController>(builder: (wishController) {
                               bool _isWished = wishController.wishStoreIdList.contains(_storeList[index].id);
                               return InkWell(
                                 onTap: () {
-                                  if(Get.find<AuthController>().isLoggedIn()) {
+                                 /* if(Get.find<AuthController>().isLoggedIn()) {
                                     _isWished ? wishController.removeFromWishList(_storeList[index].id, true)
                                         : wishController.addToWishList(null, _storeList[index], true);
                                   }else {
                                     showCustomSnackBar('you_are_not_logged_in'.tr);
-                                  }
+                                  }*/
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -141,11 +143,11 @@ class PopularStoreView1 extends StatelessWidget {
                                 maxLines: 1, overflow: TextOverflow.ellipsis,
                               ),
 
-                              RatingBar(
+                              /*RatingBar(
                                 rating: _storeList[index].avgRating,
                                 ratingCount: _storeList[index].ratingCount,
                                 size: 12,
-                              ),
+                              ),*/
                             ]),
                           ),
                         ),
@@ -155,7 +157,7 @@ class PopularStoreView1 extends StatelessWidget {
                   ),
                 );
               },
-            ) : PopularStoreShimmer(storeController: storeController),
+            ) : PopularStoreShimmer(storeController: branchStoreList),
           ),
         ],
       );
@@ -164,7 +166,7 @@ class PopularStoreView1 extends StatelessWidget {
 }
 
 class PopularStoreShimmer extends StatelessWidget {
-  final StoreController storeController;
+  final BannerController storeController;
   PopularStoreShimmer({@required this.storeController});
 
   @override
@@ -178,7 +180,7 @@ class PopularStoreShimmer extends StatelessWidget {
       itemBuilder: (context, index){
         return Container(
           height: 150,
-          width: 200,
+          /*width: 200,*/
           margin: EdgeInsets.only(right: Dimensions.PADDING_SIZE_SMALL, bottom: 5),
           decoration: BoxDecoration(
               color: Colors.white,
@@ -190,7 +192,7 @@ class PopularStoreShimmer extends StatelessWidget {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
               Container(
-                height: 90, width: 200,
+                height: 90, /*width: 200,*/
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.vertical(top: Radius.circular(Dimensions.RADIUS_SMALL)),
                     color: Colors.grey[300]

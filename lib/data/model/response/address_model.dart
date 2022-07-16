@@ -32,7 +32,7 @@ class AddressModel {
       });
 
   AddressModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['id'] != null ? json['id']  : 0;
     addressType = json['address_type'];
     contactPersonNumber = json['contact_person_number'];
     address = json['address'];

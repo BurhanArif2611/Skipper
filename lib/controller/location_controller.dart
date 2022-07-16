@@ -182,6 +182,7 @@ class LocationController extends GetxController implements GetxService {
   }
 
   Future<void> getAddressList() async {
+    print("getAddressList>>");
     Response response = await locationRepo.getAllAddress();
     if (response.statusCode == 200) {
       _addressList = [];
