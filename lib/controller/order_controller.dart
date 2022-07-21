@@ -20,6 +20,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../data/model/response/address_model.dart';
+
 class OrderController extends GetxController implements GetxService {
   final OrderRepo orderRepo;
   OrderController({@required this.orderRepo});
@@ -38,6 +40,7 @@ class OrderController extends GetxController implements GetxService {
   int _selectedDateSlot = 0;
   int _selectedTimeSlot = 0;
   double _distance;
+  double _localDistance=0;
   int _addressIndex = -1;
   XFile _orderAttachment;
   Uint8List _rawAttachment;
@@ -158,6 +161,7 @@ class OrderController extends GetxController implements GetxService {
     update();
     print("placeOrder<><>"+placeOrderBody.toJson().toString());
     Response response = await orderRepo.placeOrder(placeOrderBody, _orderAttachment);
+    print("placeOrder<><>"+response.toString());
     _isLoading = false;
     if (response.statusCode == 200) {
       String message = response.body['message'];
@@ -322,18 +326,32 @@ class OrderController extends GetxController implements GetxService {
     return _isSuccess;
   }
 
-  Future<double> getDistanceInKM(LatLng originLatLng, LatLng destinationLatLng) async {
+  Future<double> getDistanceInKM(LatLng originLatLng, LatLng destinationLatLng,String multiDroplocation) async {
     _distance = -1;
-    Response response = await orderRepo.getDistanceInMeter(originLatLng, destinationLatLng);
+    print("getDistanceInKM>>"+multiDroplocation);
+    Response response = await orderRepo.getDistanceInMeter(originLatLng, destinationLatLng,multiDroplocation);
     try {
+      print("getDistanceInKM>>"+response.body.toString());
       if (response.statusCode == 200 && response.body['status'] == 'OK') {
-        _distance = DistanceModel.fromJson(response.body).rows[0].elements[0].distance.value / 1000;
+      //  _distance = DistanceModel.fromJson(response.body).rows[0].elements[0].distance.value / 1000;
+        int size=0;
+        response.body['rows'].forEach((campaign) {
+          size++;
+        });
+        int localPosition=0;
+        for (var i = 0; i < size; i++) {
+          localPosition=i;
+          _localDistance = DistanceModel.fromJson(response.body).rows[i].elements[localPosition].distance.value / 1000;
+          _distance=_localDistance+_distance;
+        }
+        print("getDistanceInKM>>"+_distance.toString());
       } else {
         _distance = Geolocator.distanceBetween(
           originLatLng.latitude, originLatLng.longitude, destinationLatLng.latitude, destinationLatLng.longitude,
         ) / 1000;
       }
     } catch (e) {
+      print("error"+e.toString());
       _distance = Geolocator.distanceBetween(
         originLatLng.latitude, originLatLng.longitude, destinationLatLng.latitude, destinationLatLng.longitude,
       ) / 1000;

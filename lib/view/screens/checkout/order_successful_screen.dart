@@ -44,7 +44,7 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
       body: SingleChildScrollView(
         child: FooterView(child: SizedBox(width: Dimensions.WEB_MAX_WIDTH, child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
 
-          Image.asset(widget.success ? Images.checked : Images.warning, width: 100, height: 100),
+          Image.asset(widget.success ? Images.checked : Images.warning,color: Theme.of(context).primaryColor, width: 100, height: 100),
           SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
 
           Text(

@@ -8,6 +8,8 @@ import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/response/address_model.dart';
+
 class OrderRepo {
   final ApiClient apiClient;
   final SharedPreferences sharedPreferences;
@@ -48,10 +50,17 @@ class OrderRepo {
     return await apiClient.postData(AppConstants.COD_SWITCH_URL, {'_method': 'put', 'order_id': orderID});
   }
 
-  Future<Response> getDistanceInMeter(LatLng originLatLng, LatLng destinationLatLng) async {
+  Future<Response> getDistanceInMeter(LatLng originLatLng, LatLng destinationLatLng,String multiDroplocation) async {
+    print("getDistanceInMeter>>"+('${AppConstants.DISTANCE_MATRIX_URI}'
+        '?origin_lat=${originLatLng.latitude}&origin_lng=${originLatLng.longitude}'
+        '&destination_lat=${destinationLatLng.latitude}&destination_lng=${destinationLatLng.longitude}'
+        '&destinations=${multiDroplocation}'
+    ));
     return await apiClient.getData('${AppConstants.DISTANCE_MATRIX_URI}'
         '?origin_lat=${originLatLng.latitude}&origin_lng=${originLatLng.longitude}'
-        '&destination_lat=${destinationLatLng.latitude}&destination_lng=${destinationLatLng.longitude}');
+        '&destination_lat=${destinationLatLng.latitude}&destination_lng=${destinationLatLng.longitude}'
+        '&destinations=${multiDroplocation}'
+    );
 
   }
 

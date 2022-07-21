@@ -47,6 +47,8 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen> with Ticker
     Get.find<ParcelController>().setPickupAddress(Get.find<LocationController>().getUserAddress(), false);
     Get.find<ParcelController>().setIsPickedUp(true, false);
     Get.find<ParcelController>().setIsSender(true, false);
+    Get.find<ParcelController>().clearMultiDropDestinationAddress();
+
     if(Get.find<AuthController>().isLoggedIn() && Get.find<LocationController>().addressList == null) {
       Get.find<LocationController>().getAddressList();
     }
@@ -168,6 +170,7 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen> with Ticker
     return GetBuilder<ParcelController>(
       builder: (parcelController) {
         return
+          ( parcelController.isSender?
           CustomButton(
           margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
           buttonText: parcelController.isSender ? 'continue'.tr : 'save_and_continue'.tr,
@@ -177,7 +180,7 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen> with Ticker
             }
             else{
 
-              if(parcelController.destinationAddress == null) {
+             /* if(parcelController.destinationAddress == null) {
                   showCustomSnackBar('select_destination_address'.tr);
               }
               else if(_receiverNameController.text.isEmpty){
@@ -186,18 +189,18 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen> with Ticker
               else if(_receiverPhoneController.text.isEmpty){
                 showCustomSnackBar('enter_receiver_phone_number'.tr);
               }
-              else {
+              else {*/
                 AddressModel _destination = AddressModel(
-                  address: parcelController.destinationAddress.address,
-                  additionalAddress: parcelController.destinationAddress.additionalAddress,
-                  addressType: parcelController.destinationAddress.addressType,
+                  address: parcelController.destinationAddress!=null?parcelController.destinationAddress.address:"",
+                  additionalAddress:parcelController.destinationAddress!=null? parcelController.destinationAddress.additionalAddress:"",
+                  addressType: parcelController.destinationAddress!=null?parcelController.destinationAddress.addressType:"",
                   contactPersonName: _receiverNameController.text.trim(),
                   contactPersonNumber: _receiverPhoneController.text.trim(),
-                  latitude: parcelController.destinationAddress.latitude,
-                  longitude: parcelController.destinationAddress.longitude,
-                  method: parcelController.destinationAddress.method,
-                  zoneId: parcelController.destinationAddress.zoneId,
-                  id: parcelController.destinationAddress.id,
+                  latitude:parcelController.destinationAddress!=null? parcelController.destinationAddress.latitude:"0",
+                  longitude:parcelController.destinationAddress!=null? parcelController.destinationAddress.longitude:"0",
+                  method:parcelController.destinationAddress!=null? parcelController.destinationAddress.method:"",
+                  zoneId: parcelController.destinationAddress!=null?parcelController.destinationAddress.zoneId:0,
+                  id:parcelController.destinationAddress!=null? parcelController.destinationAddress.id:0,
                   streetNumber: _receiverStreetNumberController.text.trim(),
                   house: _receiverHouseController.text.trim(),
                   floor: _receiverFloorController.text.trim(),
@@ -212,10 +215,58 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen> with Ticker
                   Get.find<ParcelController>().pickupAddress,
                   Get.find<ParcelController>().destinationAddress,
                 ));
-              }
+              //}
            }
           },
-        );
+        ):parcelController.anotherList.length>0? CustomButton(
+            margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+            buttonText: parcelController.isSender ? 'continue'.tr : 'save_and_continue'.tr,
+            onPressed: () {
+              if( _tabController.index == 0 ) {
+                _validateSender();
+              }
+              else{
+
+                /* if(parcelController.destinationAddress == null) {
+                  showCustomSnackBar('select_destination_address'.tr);
+              }
+              else if(_receiverNameController.text.isEmpty){
+                showCustomSnackBar('enter_receiver_name'.tr);
+              }
+              else if(_receiverPhoneController.text.isEmpty){
+                showCustomSnackBar('enter_receiver_phone_number'.tr);
+              }
+              else {*/
+                AddressModel _destination = AddressModel(
+                  address: parcelController.destinationAddress!=null?parcelController.destinationAddress.address:"",
+                  additionalAddress:parcelController.destinationAddress!=null? parcelController.destinationAddress.additionalAddress:"",
+                  addressType: parcelController.destinationAddress!=null?parcelController.destinationAddress.addressType:"",
+                  contactPersonName: _receiverNameController.text.trim(),
+                  contactPersonNumber: _receiverPhoneController.text.trim(),
+                  latitude:parcelController.destinationAddress!=null? parcelController.destinationAddress.latitude:"",
+                  longitude:parcelController.destinationAddress!=null? parcelController.destinationAddress.longitude:"",
+                  method:parcelController.destinationAddress!=null? parcelController.destinationAddress.method:"",
+                  zoneId: parcelController.destinationAddress!=null?parcelController.destinationAddress.zoneId:0,
+                  id:parcelController.destinationAddress!=null? parcelController.destinationAddress.id:0,
+                  streetNumber: _receiverStreetNumberController.text.trim(),
+                  house: _receiverHouseController.text.trim(),
+                  floor: _receiverFloorController.text.trim(),
+                );
+
+                parcelController.setDestinationAddress(_destination);
+                print('pickup : ${Get.find<ParcelController>().pickupAddress.toJson()}');
+                print('destination : ${Get.find<ParcelController>().destinationAddress.toJson()}');
+
+                Get.toNamed(RouteHelper.getParcelRequestRoute(
+                  widget.category,
+                  Get.find<ParcelController>().pickupAddress,
+                  Get.find<ParcelController>().destinationAddress,
+                ));
+                //}
+              }
+            },
+          ):
+          Text("Please Add Receiver Information"));
       }
     );
   }

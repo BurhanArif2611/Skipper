@@ -236,7 +236,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
             floor: widget.pickedUpAddress.floor ?? '',
             discountAmount: 0, taxAmount: 0,
             parcelCategoryId: widget.parcelCategory.id.toString(), chargePayer: parcelController.payerTypes[parcelController.payerIndex],
-              receiver_addresses:[widget.destinationAddress],
+            receiver_addresses:parcelController.anotherList,
 
 
           ), orderCallback);

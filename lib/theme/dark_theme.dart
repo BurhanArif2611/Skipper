@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 ThemeData dark({Color color = const Color(0xFF68B2C9)}) => ThemeData(
-  fontFamily: 'Poppins',
+  fontFamily: 'Mulish',
   primaryColor: color,
   secondaryHeaderColor: Color(0xFF89D6ED),
   disabledColor: Color(0xffa2a7ad),

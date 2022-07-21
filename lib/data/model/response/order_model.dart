@@ -34,7 +34,41 @@ class PaginatedOrderModel {
   }
 
 }
+class Receiver_details {
+  int id;
+  int order_id;
+  String status;
+  AddressModel receiver_details;
 
+  Receiver_details(
+      {this.id,
+        this.order_id,
+        this.status,
+        this.receiver_details,
+      });
+
+  Receiver_details.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    order_id = json['order_id'];
+    status = json['status'];
+    receiver_details = json['receiver_details'] != null ? new AddressModel.fromJson(json['receiver_details']) : null;
+
+
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['order_id'] = this.order_id;
+    data['status'] = this.status;
+
+    if (this.receiver_details != null) {
+      data['receiver_details'] = this.receiver_details.toJson();
+    }
+
+    return data;
+  }
+}
 class OrderModel {
   int id;
   int userId;
@@ -75,6 +109,7 @@ class OrderModel {
   AddressModel deliveryAddress;
   AddressModel receiverDetails;
   ParcelCategoryModel parcelCategory;
+  List<Receiver_details> dropoff_locations;
 
   OrderModel(
       {this.id,
@@ -116,24 +151,25 @@ class OrderModel {
         this.parcelCategory,
         this.store,
         this.orderAttachment,
+        this.dropoff_locations,
       });
 
   OrderModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
-    orderAmount = json['order_amount'].toDouble();
-    couponDiscountAmount = json['coupon_discount_amount'].toDouble();
+    orderAmount = json['order_amount'] !=null? json['order_amount'].toDouble():0;
+    couponDiscountAmount = json['coupon_discount_amount'] !=null ? json['coupon_discount_amount'].toDouble():0;
     couponDiscountTitle = json['coupon_discount_title'];
     paymentStatus = json['payment_status'];
     orderStatus = json['order_status'];
-    totalTaxAmount = json['total_tax_amount'].toDouble();
+    totalTaxAmount = json['total_tax_amount'] !=null?json['total_tax_amount'].toDouble():0;
     paymentMethod = json['payment_method'];
     couponCode = json['coupon_code'];
     orderNote = json['order_note'];
-    orderType = json['order_type'];
+    orderType = json['order_type'] !=null ? json['order_type']:"";
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    deliveryCharge = json['delivery_charge'].toDouble();
+    deliveryCharge = json['delivery_charge']!=null?json['delivery_charge'].toDouble():0;
     scheduleAt = json['schedule_at'];
     otp = json['otp'];
     pending = json['pending'];
@@ -147,7 +183,7 @@ class OrderModel {
     refundRequested = json['refund_requested'];
     refunded = json['refunded'];
     scheduled = json['scheduled'];
-    storeDiscountAmount = json['store_discount_amount'].toDouble();
+    storeDiscountAmount = json['store_discount_amount'] !=null?json['store_discount_amount'].toDouble():0;
     failed = json['failed'];
     detailsCount = json['details_count'];
     orderAttachment = json['order_attachment'];
@@ -158,6 +194,13 @@ class OrderModel {
     deliveryAddress = json['delivery_address'] != null ? new AddressModel.fromJson(json['delivery_address']) : null;
     receiverDetails = json['receiver_details'] != null ? new AddressModel.fromJson(json['receiver_details']) : null;
     parcelCategory = json['parcel_category'] != null ? new ParcelCategoryModel.fromJson(json['parcel_category']) : null;
+
+    if (json['dropoff_locations'] != null) {
+      dropoff_locations = [];
+      json['dropoff_locations'].forEach((v) {
+        dropoff_locations.add(new Receiver_details.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -210,6 +253,11 @@ class OrderModel {
     }
     if (this.parcelCategory != null) {
       data['parcel_category'] = this.parcelCategory.toJson();
+    }
+
+
+    if (this.dropoff_locations != null) {
+      data['dropoff_locations'] = this.dropoff_locations.map((v) => v.toJson()).toList();
     }
     return data;
   }

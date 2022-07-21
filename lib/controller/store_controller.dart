@@ -175,7 +175,7 @@ class StoreController extends GetxController implements GetxService {
             double.parse(Get.find<LocationController>().getUserAddress().latitude),
             double.parse(Get.find<LocationController>().getUserAddress().longitude),
           ),
-          LatLng(double.parse(_store.latitude), double.parse(_store.longitude)),
+          LatLng(double.parse(_store.latitude), double.parse(_store.longitude)),""
         );
         if(fromModule) {
           HomeScreen.loadData(true);

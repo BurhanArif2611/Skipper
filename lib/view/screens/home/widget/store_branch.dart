@@ -47,7 +47,8 @@ class StoreBranch extends StatelessWidget {
 
           SizedBox(
             // height: 250,
-            child: _storeList != null ? ListView.builder(
+            child: _storeList != null && _storeList.length>0 ?
+            ListView.builder(
               controller: ScrollController(),
               physics: BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
@@ -157,7 +158,8 @@ class StoreBranch extends StatelessWidget {
                   ),
                 );
               },
-            ) : PopularStoreShimmer(storeController: branchStoreList),
+            ) :
+            PopularStoreShimmer(storeController: branchStoreList),
           ),
         ],
       );

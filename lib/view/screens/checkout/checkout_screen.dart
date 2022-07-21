@@ -246,7 +246,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     double.parse(index == -1 ? locationController.getUserAddress().latitude : locationController.addressList[index].latitude),
                                     double.parse(index == -1 ? locationController.getUserAddress().longitude : locationController.addressList[index].longitude),
                                   ),
-                                  LatLng(double.parse(storeController.store.latitude), double.parse(storeController.store.longitude)),
+                                  LatLng(double.parse(storeController.store.latitude), double.parse(storeController.store.longitude)),""
                                 );
                               }
                               orderController.setAddressIndex(index);

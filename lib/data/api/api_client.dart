@@ -167,7 +167,8 @@ class ApiClient extends GetxService {
       _response = Response(statusCode: 0, statusText: noInternetMessage);
     }
     if(Foundation.kDebugMode) {
-      print('====> API Response: [${_response.statusCode}] $uri\n${_response.body}');
+      print('====> API Response123: [${_response.statusCode}] $uri\n${(_response.body.toString())}');
+     // print('====> API Response123: [${_response.statusCode}] $uri\n${json.decode(_response.body.toString())}');
     }
     return _response;
   }
