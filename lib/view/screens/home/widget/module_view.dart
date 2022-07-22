@@ -126,8 +126,8 @@ class ModuleView extends StatelessWidget {
         ) : AddressShimmer(isEnabled: Get.find<AuthController>().isLoggedIn() && locationController.addressList == null);
       }),
 
-      PopularStoreView(isPopular: false, isFeatured: true),
-      //StoreBranch(isPopular: false, isFeatured: true),
+     // PopularStoreView(isPopular: false, isFeatured: true),
+      StoreBranch(isPopular: false, isFeatured: true),
 
       SizedBox(height: 30),
 

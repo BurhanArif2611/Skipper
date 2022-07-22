@@ -18,10 +18,10 @@ class BannerController extends GetxController implements GetxService {
   List<String> _bannerImageList;
   List<String> _featuredBannerList;
   List<dynamic> _bannerDataList;
-  List<Branch> _branchStoreList;
+  List<Store> _branchStoreList;
   List<dynamic> _featuredBannerDataList;
   int _currentIndex = 0;
-  List<Branch> get branchStoreList => _branchStoreList;
+  List<Store> get branchStoreList => _branchStoreList;
   List<String> get bannerImageList => _bannerImageList;
   List<String> get featuredBannerList => _featuredBannerList;
   List<dynamic> get bannerDataList => _bannerDataList;
@@ -86,8 +86,7 @@ class BannerController extends GetxController implements GetxService {
         _branchStoreList=[];
         response.body.forEach((store)  {
 
-          Branch branch=Branch.fromJson(store);
-          print("getBranchList>>123>>"+branch.name);
+          Store branch=Store.fromJson(store);
           _branchStoreList.add(branch);
         });
         print("getBranchList>>123>>"+_branchStoreList.length.toString());

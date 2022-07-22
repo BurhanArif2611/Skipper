@@ -30,8 +30,8 @@ class StoreBranch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<BannerController>(builder: (branchStoreList) {
-      List<Branch> _storeList = branchStoreList.branchStoreList;
-
+      List<Store> _storeList = branchStoreList.branchStoreList;
+    print("_storeList.length>>"+_storeList.length.toString());
       return (_storeList != null && _storeList.length == 0) ? SizedBox() : Column(
         children: [
           Padding(
@@ -46,16 +46,18 @@ class StoreBranch extends StatelessWidget {
           ),
 
           SizedBox(
-            // height: 250,
-            child: _storeList != null && _storeList.length>0 ?
+             height: 450,
+            child:  _storeList.length>0 ?
             ListView.builder(
-              controller: ScrollController(),
-              physics: BouncingScrollPhysics(),
+              //controller: ScrollController(),
+             // physics: BouncingScrollPhysics(),
+              physics: AlwaysScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
               padding: EdgeInsets.only(left: Dimensions.PADDING_SIZE_SMALL),
               itemCount: _storeList.length > 10 ? 10 : _storeList.length,
               itemBuilder: (context, index){
-                return Padding(
+                return
+                  Padding(
                   padding: EdgeInsets.only(right: Dimensions.PADDING_SIZE_SMALL, bottom: 5),
                   child: InkWell(
                     onTap: () {
@@ -67,10 +69,10 @@ class StoreBranch extends StatelessWidget {
                           }
                         }
                       }
-                     /* Get.toNamed(
+                      Get.toNamed(
                         RouteHelper.getStoreRoute(_storeList[index].id, isFeatured ? 'module' : 'store'),
                         arguments: StoreScreen(store: _storeList[index], fromModule: isFeatured),
-                      );*/
+                      );
                     },
                     child: Container(
                       height: 150,

@@ -29,6 +29,7 @@ import 'package:sixam_mart/view/screens/home/widget/category_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/home/widget/module_view.dart';
+import 'package:sixam_mart/view/screens/home/widget/store_branch.dart';
 import 'package:sixam_mart/view/screens/parcel/parcel_category_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -277,6 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ]) :
 
                     ModuleView(splashController: splashController),
+
                   )),
                 ),
               ],
