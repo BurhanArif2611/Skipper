@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
 import 'package:sixam_mart/controller/coupon_controller.dart';
@@ -35,6 +36,7 @@ import 'package:sixam_mart/view/screens/checkout/widget/payment_button.dart';
 import 'package:sixam_mart/view/screens/checkout/widget/slot_widget.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sixam_mart/view/screens/checkout/widget/tips_widget.dart';
 import 'package:sixam_mart/view/screens/home/home_screen.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
@@ -54,6 +56,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   final TextEditingController _streetNumberController = TextEditingController();
   final TextEditingController _houseController = TextEditingController();
   final TextEditingController _floorController = TextEditingController();
+  TextEditingController _tipController = TextEditingController();
   final FocusNode _streetNode = FocusNode();
   final FocusNode _houseNode = FocusNode();
   final FocusNode _floorNode = FocusNode();
@@ -63,6 +66,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   bool _isDigitalPaymentActive;
   bool _isLoggedIn;
   List<CartModel> _cartList;
+  bool _isWalletActive;
 
   @override
   void initState() {
@@ -80,6 +84,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       _cartList = [];
       widget.fromCart ? _cartList.addAll(Get.find<CartController>().cartList) : _cartList.addAll(widget.cartList);
       Get.find<StoreController>().initCheckoutData(_cartList[0].item.storeId);
+      _isWalletActive = Get.find<SplashController>().configModel.customerWalletStatus == 1;
+      Get.find<OrderController>().updateTips(-1, notify: false);
+
     }
   }
 
@@ -101,29 +108,29 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       appBar: CustomAppBar(title: 'checkout'.tr),
       endDrawer: MenuDrawer(),
       body: _isLoggedIn ? GetBuilder<LocationController>(builder: (locationController) {
-        List<DropdownMenuItem<int>> _addressList = [];
-        _addressList.add(DropdownMenuItem<int>(value: -1, child: SizedBox(
-          width: context.width > Dimensions.WEB_MAX_WIDTH ? Dimensions.WEB_MAX_WIDTH-50 : context.width-50,
-          child: AddressWidget(
-            address: Get.find<LocationController>().getUserAddress(),
-            fromAddress: false, fromCheckout: true,
-          ),
-        )));
-        if(locationController.addressList != null) {
-          for(int index=0; index<locationController.addressList.length; index++) {
-            if(Get.find<LocationController>().getUserAddress().zoneIds.contains(locationController.addressList[index].zoneId)) {
-              _addressList.add(DropdownMenuItem<int>(value: index, child: SizedBox(
-                width: context.width > Dimensions.WEB_MAX_WIDTH ? Dimensions.WEB_MAX_WIDTH-50 : context.width-50,
-                child: AddressWidget(
-                  address: locationController.addressList[index],
-                  fromAddress: false, fromCheckout: true,
-                ),
-              )));
+        return GetBuilder<StoreController>(builder: (storeController) {
+          List<DropdownMenuItem<int>> _addressList = [];
+          _addressList.add(DropdownMenuItem<int>(value: -1, child: SizedBox(
+            width: context.width > Dimensions.WEB_MAX_WIDTH ? Dimensions.WEB_MAX_WIDTH-50 : context.width-50,
+            child: AddressWidget(
+              address: Get.find<LocationController>().getUserAddress(),
+              fromAddress: false, fromCheckout: true,
+            ),
+          )));
+          if(locationController.addressList != null && storeController.store != null) {
+            for(int index=0; index<locationController.addressList.length; index++) {
+              if(locationController.addressList[index].zoneIds.contains(storeController.store.zoneId)) {
+                _addressList.add(DropdownMenuItem<int>(value: index, child: SizedBox(
+                  width: context.width > Dimensions.WEB_MAX_WIDTH ? Dimensions.WEB_MAX_WIDTH-50 : context.width-50,
+                  child: AddressWidget(
+                    address: locationController.addressList[index],
+                    fromAddress: false, fromCheckout: true,
+                  ),
+                )));
+              }
             }
           }
-        }
 
-        return GetBuilder<StoreController>(builder: (storeController) {
           bool _todayClosed = false;
           bool _tomorrowClosed = false;
           if(storeController.store != null) {
@@ -197,7 +204,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               }
 
               _tax = PriceConverter.calculation(_orderAmount, _taxPercent, 'percent', 1);
-              double _total = _subTotal + _deliveryCharge - _discount - _couponDiscount + _tax;
+              double _total = _subTotal + _deliveryCharge - _discount - _couponDiscount + _tax + orderController.tips;
 
               return (orderController.distance != null && locationController.addressList != null) ? Column(
                 children: [
@@ -224,8 +231,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             Text('deliver_to'.tr, style: robotoMedium),
                             TextButton.icon(
                               onPressed: () async {
-                                var _address = await Get.toNamed(RouteHelper.getAddAddressRoute(true));
+                                var _address = await Get.toNamed(RouteHelper.getAddAddressRoute(true, storeController.store.zoneId));
                                 if(_address != null) {
+                                  if(storeController.store.selfDeliverySystem == 0) {
+                                    orderController.getDistanceInKM(
+                                      LatLng(double.parse(_address.latitude), double.parse(_address.longitude)),
+                                      LatLng(double.parse(storeController.store.latitude), double.parse(storeController.store.longitude)),"[]"
+                                    );
+                                  }
                                   _streetNumberController.text = _address.streetNumber ?? '';
                                   _houseController.text = _address.house ?? '';
                                   _floorController.text = _address.floor ?? '';
@@ -238,7 +251,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           DropdownButton(
                             value: orderController.addressIndex,
                             items: _addressList,
-                            itemHeight: ResponsiveHelper.isMobile(context) ? 70 : 85, elevation: 0, iconSize: 30, underline: SizedBox(),
+                            itemHeight: ResponsiveHelper.isMobile(context) ? 70 : 85, elevation: 0, iconSize: _addressList.length>1?30:0, underline: SizedBox(),
                             onChanged: (int index) {
                               if(storeController.store.selfDeliverySystem == 0) {
                                 orderController.getDistanceInKM(
@@ -246,7 +259,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     double.parse(index == -1 ? locationController.getUserAddress().latitude : locationController.addressList[index].latitude),
                                     double.parse(index == -1 ? locationController.getUserAddress().longitude : locationController.addressList[index].longitude),
                                   ),
-                                  LatLng(double.parse(storeController.store.latitude), double.parse(storeController.store.longitude)),""
+                                  LatLng(double.parse(storeController.store.latitude), double.parse(storeController.store.longitude)),"[]"
                                 );
                               }
                               orderController.setAddressIndex(index);
@@ -425,6 +438,72 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                         SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
 
+                        (orderController.orderType != 'take_away' && Get.find<SplashController>().configModel.dmTipsStatus == 1) ?
+                        Container(
+                          color: Theme.of(context).cardColor,
+                          padding: EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_LARGE, horizontal: Dimensions.PADDING_SIZE_SMALL),
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+
+                            Text('delivery_man_tips'.tr, style: robotoMedium),
+                            SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+
+                            Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).cardColor,
+                                borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
+                                border: Border.all(color: Theme.of(context).primaryColor),
+                              ),
+                              child: TextField(
+                                controller: _tipController,
+                                onChanged: (String value) {
+                                  if(value.isNotEmpty){
+                                    orderController.addTips(double.parse(value));
+                                  }else{
+                                    orderController.addTips(0.0);
+                                  }
+                                },
+                                maxLength: 10,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
+                                decoration: InputDecoration(
+                                  hintText: 'enter_amount'.tr,
+                                  counterText: '',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+
+                            SizedBox(
+                              height: 55,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                physics: BouncingScrollPhysics(),
+                                itemCount: AppConstants.tips.length,
+                                itemBuilder: (context, index) {
+                                  return TipsWidget(
+                                    title: AppConstants.tips[index].toString(),
+                                    isSelected: orderController.selectedTips == index,
+                                    onTap: () {
+                                      orderController.updateTips(index);
+                                      orderController.addTips(AppConstants.tips[index].toDouble());
+                                      _tipController.text = orderController.tips.toString();
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ]),
+                        ) : SizedBox.shrink(),
+                        SizedBox(height: (orderController.orderType != 'take_away'
+                            && Get.find<SplashController>().configModel.dmTipsStatus == 1) ? Dimensions.PADDING_SIZE_EXTRA_SMALL : 0),
+
+
                         Text('choose_payment_method'.tr, style: robotoMedium),
                         SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                         _isCashOnDeliveryActive ? PaymentButton(
@@ -438,9 +517,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           icon: Images.digital_payment,
                           title: 'digital_payment'.tr,
                           subtitle: 'faster_and_safe_way'.tr,
-                          isSelected: _isCashOnDeliveryActive ? orderController.paymentMethodIndex == 1 : orderController.paymentMethodIndex == 0,
-                          onTap: () => orderController.setPaymentMethod(_isCashOnDeliveryActive ? 1 : 0),
+                          isSelected: orderController.paymentMethodIndex == 1,
+                          onTap: () => orderController.setPaymentMethod(1),
                         ) : SizedBox(),
+                        _isWalletActive ? PaymentButton(
+                          icon: Images.wallet,
+                          title: 'wallet_payment'.tr,
+                          subtitle: 'pay_from_your_existing_balance'.tr,
+                          isSelected: orderController.paymentMethodIndex == 2,
+                          onTap: () => orderController.setPaymentMethod(2),
+                        ) : SizedBox(),
+
                         SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
 
                         CustomTextField(
@@ -502,6 +589,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           Text('(+) ${PriceConverter.convertPrice(_tax)}', style: robotoRegular),
                         ]),
                         SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+
+                        (Get.find<SplashController>().configModel.dmTipsStatus == 1) ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('delivery_man_tips'.tr, style: robotoRegular),
+                            Text('(+) ${PriceConverter.convertPrice(orderController.tips)}', style: robotoRegular),
+                          ],
+                        ) : SizedBox.shrink(),
+                        SizedBox(height: Get.find<SplashController>().configModel.dmTipsStatus == 1 ? Dimensions.PADDING_SIZE_SMALL : 0.0),
+
                         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                           Text('delivery_fee'.tr, style: robotoRegular),
                           _deliveryCharge == -1 ? Text(
@@ -558,25 +655,25 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       }
       Get.find<OrderController>().stopLoader();
       HomeScreen.loadData(true);
-      if(_isCashOnDeliveryActive && Get.find<OrderController>().paymentMethodIndex == 0) {
-        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID, 'success', false));
+      if(_isCashOnDeliveryActive && Get.find<OrderController>().paymentMethodIndex == 1) {
+        if(GetPlatform.isWeb) {
+          Get.back();
+          String hostname = html.window.location.hostname;
+          String protocol = html.window.location.protocol;
+          String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?order_id=$orderID&&customer_id=${Get.find<UserController>()
+              .userInfoModel.id}&&callback=$protocol//$hostname${RouteHelper.orderSuccess}?id=$orderID&status=';
+          html.window.open(selectedUrl,"_self");
+        } else{
+          Get.offNamed(RouteHelper.getPaymentRoute(
+            orderID, Get.find<UserController>().userInfoModel.id, Get.find<OrderController>().orderType,
+          ));
+        }
       }else {
-       if(GetPlatform.isWeb) {
-         Get.back();
-         String hostname = html.window.location.hostname;
-         String protocol = html.window.location.protocol;
-         String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?order_id=$orderID&&customer_id=${Get.find<UserController>()
-             .userInfoModel.id}&&callback=$protocol//$hostname${RouteHelper.orderSuccess}?id=$orderID'
-             '&type=${Get.find<OrderController>().orderType}&status=';
-         html.window.open(selectedUrl,"_self");
-       } else{
-         Get.offNamed(RouteHelper.getPaymentRoute(
-           orderID, Get.find<UserController>().userInfoModel.id, Get.find<OrderController>().orderType,
-         ));
-       }
+        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
       }
       Get.find<OrderController>().clearPrevData();
       Get.find<CouponController>().removeCouponData(false);
+      Get.find<OrderController>().updateTips(-1, notify: false);
     }else {
       showCustomSnackBar(message);
     }
@@ -613,7 +710,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             }
           }
         }
-        if(!_isCashOnDeliveryActive && !_isDigitalPaymentActive) {
+        if(!_isCashOnDeliveryActive && !_isDigitalPaymentActive && !_isWalletActive) {
           showCustomSnackBar('no_payment_method_is_enabled'.tr);
         }else if(orderAmount < storeController.store.minimumOrder) {
           showCustomSnackBar('${'minimum_order_amount_is'.tr} ${storeController.store.minimumOrder}');
@@ -655,8 +752,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             scheduleAt: !storeController.store.scheduleOrder ? null : (orderController.selectedDateSlot == 0
                 && orderController.selectedTimeSlot == 0) ? null : DateConverter.dateToDateAndTime(_scheduleEndDate),
             orderAmount: total, orderNote: _noteController.text, orderType: orderController.orderType,
-            paymentMethod: _isCashOnDeliveryActive ? orderController.paymentMethodIndex == 0 ? 'cash_on_delivery'
-                : 'digital_payment' : 'digital_payment',
+            paymentMethod: orderController.paymentMethodIndex == 0 ? 'cash_on_delivery'
+                : orderController.paymentMethodIndex == 1 ? 'digital_payment' : 'wallet',
             couponCode: (Get.find<CouponController>().discount > 0 || (Get.find<CouponController>().coupon != null
                 && Get.find<CouponController>().freeDelivery)) ? Get.find<CouponController>().coupon.code : null,
             storeId: _cartList[0].item.storeId,
@@ -665,7 +762,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 '${Get.find<UserController>().userInfoModel.lName}',
             contactPersonNumber: _address.contactPersonNumber ?? Get.find<UserController>().userInfoModel.phone,
             streetNumber: _streetNumberController.text.trim() ?? '', house: _houseController.text.trim(), floor: _floorController.text.trim(),
-            discountAmount: discount, taxAmount: tax, receiverDetails: null, parcelCategoryId: null, chargePayer: null,
+            discountAmount: discount, taxAmount: tax, receiverDetails: null, parcelCategoryId: null,
+            chargePayer: null, dmTips: _tipController.text.trim(),
           ), _callback);
         }
       }) : Center(child: CircularProgressIndicator()),

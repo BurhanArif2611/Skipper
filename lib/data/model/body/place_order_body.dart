@@ -30,6 +30,7 @@ class PlaceOrderBody {
   String _streetNumber;
   String _house;
   String _floor;
+  String _dmTips;
 
   PlaceOrderBody(
       {@required List<Cart> cart,
@@ -56,7 +57,8 @@ class PlaceOrderBody {
         @required String streetNumber,
         @required String house,
         @required String floor,
-        @required List<AddressModel> receiver_addresses
+        @required List<AddressModel> receiver_addresses,
+        @required String dmTips,
       }) {
     this._cart = cart;
     this._couponDiscountAmount = couponDiscountAmount;
@@ -83,6 +85,7 @@ class PlaceOrderBody {
     this._house = house;
     this._floor = floor;
     this._receiver_addresses = receiver_addresses;
+    this._dmTips = dmTips;
   }
 
   List<Cart> get cart => _cart;
@@ -109,6 +112,7 @@ class PlaceOrderBody {
   String get house => _house;
   String get floor => _floor;
   List<AddressModel> get receiver_addresses => _receiver_addresses;
+  String get dmTips => _dmTips;
 
 
   PlaceOrderBody.fromJson(Map<String, dynamic> json) {
@@ -141,6 +145,7 @@ class PlaceOrderBody {
     _streetNumber = json['road'];
     _house = json['apartment'];
     _floor = json['floor'];
+    _dmTips = json['dm_tips'];
 
     if (json['receiver_addresses'] != null) {
       _receiver_addresses = [];
@@ -198,7 +203,7 @@ class PlaceOrderBody {
     if (this._receiver_addresses != null) {
       data['receiver_addresses'] = jsonEncode(this._receiver_addresses.map((v) => v.toJson()).toList());
     }
-
+    data['dm_tips'] = this._dmTips;
     return data;
   }
 }

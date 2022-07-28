@@ -49,6 +49,8 @@ class Store {
   double avgRating;
   double tax;
   int ratingCount;
+  int featured;
+  int zoneId;
   int selfDeliverySystem;
   bool posSystem;
   double deliveryCharge;
@@ -81,6 +83,8 @@ class Store {
         this.scheduleOrder,
         this.avgRating,
         this.tax,
+        this.featured,
+        this.zoneId,
         this.ratingCount,
         this.selfDeliverySystem,
         this.posSystem,
@@ -113,7 +117,7 @@ class Store {
     delivery = json['delivery'];
     takeAway = json['take_away'];
     scheduleOrder = json['schedule_order'];
-    avgRating = json['avg_rating']!= null ? json['avg_rating'].toDouble():0;
+    avgRating = json['avg_rating']!=null?json['avg_rating'].toDouble():0.0;
     tax = json['tax'] != null ? json['tax'].toDouble() : null;
     ratingCount = json['rating_count '];
     selfDeliverySystem = json['self_delivery_system'];
@@ -121,6 +125,8 @@ class Store {
     deliveryCharge = json['delivery_charge'].toDouble();
     open = json['open'];
     active = json['active'];
+    featured = json['featured'];
+    zoneId = json['zone_id'];
     deliveryTime = json['delivery_time'];
     veg = json['veg'];
     nonVeg = json['non_veg'];
@@ -162,6 +168,8 @@ class Store {
     data['open'] = this.open;
     data['active'] = this.active;
     data['veg'] = this.veg;
+    data['featured'] = this.featured;
+    data['zone_id'] = this.zoneId;
     data['non_veg'] = this.nonVeg;
     data['module_id'] = this.moduleId;
     data['order_place_to_schedule_interval'] = this.orderPlaceToScheduleInterval;

@@ -18,6 +18,7 @@ import 'package:sixam_mart/controller/search_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/controller/theme_controller.dart';
 import 'package:sixam_mart/controller/user_controller.dart';
+import 'package:sixam_mart/controller/wallet_controller.dart';
 import 'package:sixam_mart/controller/wishlist_controller.dart';
 import 'package:sixam_mart/data/repository/auth_repo.dart';
 import 'package:sixam_mart/data/repository/banner_repo.dart';
@@ -37,6 +38,7 @@ import 'package:sixam_mart/data/repository/search_repo.dart';
 import 'package:sixam_mart/data/repository/splash_repo.dart';
 import 'package:sixam_mart/data/api/api_client.dart';
 import 'package:sixam_mart/data/repository/user_repo.dart';
+import 'package:sixam_mart/data/repository/wallet_repo.dart';
 import 'package:sixam_mart/data/repository/wishlist_repo.dart';
 import 'package:sixam_mart/util/app_constants.dart';
 import 'package:sixam_mart/data/model/response/language_model.dart';
@@ -69,6 +71,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => NotificationRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => CampaignRepo(apiClient: Get.find()));
   Get.lazyPut(() => ParcelRepo(apiClient: Get.find()));
+  Get.lazyPut(() => WalletRepo(apiClient: Get.find()));
 
   // Controller
   Get.lazyPut(() => ThemeController(sharedPreferences: Get.find()));
@@ -90,6 +93,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => NotificationController(notificationRepo: Get.find()));
   Get.lazyPut(() => CampaignController(campaignRepo: Get.find()));
   Get.lazyPut(() => ParcelController(parcelRepo: Get.find()));
+  Get.lazyPut(() => WalletController(walletRepo: Get.find()));
 
   // Retrieving localized data
   Map<String, Map<String, String>> _languages = Map();

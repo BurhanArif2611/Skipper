@@ -182,12 +182,11 @@ class LocationController extends GetxController implements GetxService {
   }
 
   Future<void> getAddressList() async {
-    print("getAddressList>>");
     Response response = await locationRepo.getAllAddress();
     if (response.statusCode == 200) {
       _addressList = [];
       _allAddressList = [];
-      response.body.forEach((address) {
+      response.body['addresses'].forEach((address) {
         _addressList.add(AddressModel.fromJson(address));
         _allAddressList.add(AddressModel.fromJson(address));
       });
@@ -213,14 +212,14 @@ class LocationController extends GetxController implements GetxService {
     }
   }
 
-  Future<ResponseModel> addAddress(AddressModel addressModel, bool fromCheckout) async {
+  Future<ResponseModel> addAddress(AddressModel addressModel, bool fromCheckout, int storeZoneId) async {
     _isLoading = true;
     update();
     Response response = await locationRepo.addAddress(addressModel);
     _isLoading = false;
     ResponseModel responseModel;
     if (response.statusCode == 200) {
-      if(fromCheckout && !getUserAddress().zoneIds.contains(response.body['zone_id'].toString())) {
+      if(fromCheckout && !response.body['zone_ids'].contains(storeZoneId)) {
         responseModel = ResponseModel(false, Get.find<SplashController>().configModel.moduleConfig.module.showRestaurantText
             ? 'your_selected_location_is_from_different_zone'.tr : 'your_selected_location_is_from_different_zone_store'.tr);
       }else {

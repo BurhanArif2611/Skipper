@@ -2,6 +2,7 @@ import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/controller/theme_controller.dart';
 import 'package:sixam_mart/controller/user_controller.dart';
+import 'package:sixam_mart/helper/price_converter.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/util/app_constants.dart';
@@ -38,6 +39,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool _showWalletCard = Get.find<SplashController>().configModel.customerWalletStatus == 1
+        || Get.find<SplashController>().configModel.loyaltyPointStatus == 1;
+
     return Scaffold(
       appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : null,
       endDrawer: MenuDrawer(),
@@ -74,6 +78,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
                   ProfileCard(title: 'total_order'.tr, data: userController.userInfoModel.orderCount.toString()),
                 ]) : SizedBox(),
+
+                SizedBox(height: _showWalletCard ? Dimensions.PADDING_SIZE_SMALL : 0),
+                _showWalletCard ? Row(children: [
+                  Get.find<SplashController>().configModel.customerWalletStatus == 1 ? ProfileCard(
+                    title: 'wallet_amount'.tr,
+                    data: PriceConverter.convertPrice(userController.userInfoModel.walletBalance),
+                  ) : SizedBox.shrink(),
+                  SizedBox(width: Get.find<SplashController>().configModel.customerWalletStatus == 1
+                      && Get.find<SplashController>().configModel.loyaltyPointStatus == 1 ? Dimensions.PADDING_SIZE_SMALL : 0.0),
+                  Get.find<SplashController>().configModel.loyaltyPointStatus == 1 ? ProfileCard(
+                    title: 'loyalty_points'.tr,
+                    data: userController.userInfoModel.loyaltyPoint != null ? userController.userInfoModel.loyaltyPoint.toString() : '0',
+                  ) : SizedBox.shrink(),
+                ]) : SizedBox(),
+
                 SizedBox(height: _isLoggedIn ? 30 : 0),
 
                 ProfileButton(icon: Icons.dark_mode, title: 'dark_mode'.tr, isButtonActive: Get.isDarkMode, onTap: () {

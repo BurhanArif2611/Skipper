@@ -71,4 +71,11 @@ class Images {
   static const String pinterest = 'assets/image/pinterest.png';
   static const String orders = 'assets/image/orders.png';
   static const String sender = 'assets/image/sender.png';
+  static const String wallet = 'assets/image/wallet.png';
+  static const String loyal = 'assets/image/loyal.png';
+  static const String refer_image = 'assets/image/refer_a_friend.png';
+  static const String earn_money = 'assets/image/earn_money.png';
+  static const String refer_code = 'assets/image/refer_code.png';
+  static const String gift_box1 = 'assets/image/gift_box1.gif';
+  static const String gift_box = 'assets/image/giftbox.gif';
 }

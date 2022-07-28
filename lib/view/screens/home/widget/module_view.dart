@@ -128,6 +128,9 @@ class ModuleView extends StatelessWidget {
 
      // PopularStoreView(isPopular: false, isFeatured: true),
       StoreBranch(isPopular: false, isFeatured: true),
+   /* (Get.find<BannerController>().branchStoreList.length>0 ?
+      StoreBranch(isPopular: false, isFeatured: true):
+    Text("data")),*/
 
       SizedBox(height: 30),
 

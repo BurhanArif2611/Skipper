@@ -38,12 +38,14 @@ class Receiver_details {
   int id;
   int order_id;
   String status;
+  String otp;
   AddressModel receiver_details;
 
   Receiver_details(
       {this.id,
         this.order_id,
         this.status,
+        this.otp,
         this.receiver_details,
       });
 
@@ -51,6 +53,7 @@ class Receiver_details {
     id = json['id'];
     order_id = json['order_id'];
     status = json['status'];
+    otp = json['otp'];
     receiver_details = json['receiver_details'] != null ? new AddressModel.fromJson(json['receiver_details']) : null;
 
 
@@ -61,6 +64,7 @@ class Receiver_details {
     data['id'] = this.id;
     data['order_id'] = this.order_id;
     data['status'] = this.status;
+    data['otp'] = this.otp;
 
     if (this.receiver_details != null) {
       data['receiver_details'] = this.receiver_details.toJson();
@@ -110,7 +114,7 @@ class OrderModel {
   AddressModel receiverDetails;
   ParcelCategoryModel parcelCategory;
   List<Receiver_details> dropoff_locations;
-
+  double dmTips;
   OrderModel(
       {this.id,
         this.userId,
@@ -152,6 +156,7 @@ class OrderModel {
         this.store,
         this.orderAttachment,
         this.dropoff_locations,
+        this.dmTips,
       });
 
   OrderModel.fromJson(Map<String, dynamic> json) {
@@ -194,7 +199,7 @@ class OrderModel {
     deliveryAddress = json['delivery_address'] != null ? new AddressModel.fromJson(json['delivery_address']) : null;
     receiverDetails = json['receiver_details'] != null ? new AddressModel.fromJson(json['receiver_details']) : null;
     parcelCategory = json['parcel_category'] != null ? new ParcelCategoryModel.fromJson(json['parcel_category']) : null;
-
+    dmTips = json['dm_tips']!=null?json['dm_tips'].toDouble():0.0;
     if (json['dropoff_locations'] != null) {
       dropoff_locations = [];
       json['dropoff_locations'].forEach((v) {
@@ -259,6 +264,7 @@ class OrderModel {
     if (this.dropoff_locations != null) {
       data['dropoff_locations'] = this.dropoff_locations.map((v) => v.toJson()).toList();
     }
+    data['dm_tips'] = this.dmTips;
     return data;
   }
 }

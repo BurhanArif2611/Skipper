@@ -47,6 +47,7 @@ import 'package:sixam_mart/view/screens/parcel/parcel_location_screen.dart';
 import 'package:sixam_mart/view/screens/parcel/parcel_request_screen.dart';
 import 'package:sixam_mart/view/screens/profile/profile_screen.dart';
 import 'package:sixam_mart/view/screens/profile/update_profile_screen.dart';
+import 'package:sixam_mart/view/screens/refer_and_earn/refer_and_earn_screen.dart';
 import 'package:sixam_mart/view/screens/store/all_store_screen.dart';
 import 'package:sixam_mart/view/screens/store/campaign_screen.dart';
 import 'package:sixam_mart/view/screens/store/store_item_search_screen.dart';
@@ -58,6 +59,7 @@ import 'package:sixam_mart/view/screens/support/support_screen.dart';
 import 'package:sixam_mart/view/screens/update/update_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sixam_mart/view/screens/wallet/wallet_screen.dart';
 
 class RouteHelper {
   static const String initial = '/';
@@ -107,6 +109,8 @@ class RouteHelper {
   static const String searchStoreItem = '/search-store-item';
   static const String order = '/order';
   static const String itemDetails = '/item-details';
+  static const String wallet = '/wallet';
+  static const String referAndEarn = '/refer-and-earn';
 
   static String getInitialRoute() => '$initial';
   static String getSplashRoute(int orderID) => '$splash?id=$orderID';
@@ -144,8 +148,8 @@ class RouteHelper {
     return '$map?address=$_data&page=$page';
   }
   static String getAddressRoute() => '$address';
-  static String getOrderSuccessRoute(String orderID, String status, bool parcel) {
-    return '$orderSuccess?id=$orderID&type=${parcel ? 'parcel' : 'delivery'}&status=$status';
+  static String getOrderSuccessRoute(String orderID) {
+    return '$orderSuccess?id=$orderID';
   }
   static String getPaymentRoute(String id, int user, String type) => '$payment?id=$id&user=$user&type=$type';
   static String getCheckoutRoute(String page) => '$checkout?page=$page';
@@ -167,13 +171,12 @@ class RouteHelper {
   static String getReviewRoute() => '$rateReview';
   static String getUpdateRoute(bool isUpdate) => '$update?update=${isUpdate.toString()}';
   static String getCartRoute() => '$cart';
-  static String getAddAddressRoute(bool fromCheckout) => '$addAddress?page=${fromCheckout ? 'checkout' : 'address'}';
+  static String getAddAddressRoute(bool fromCheckout, int zoneId) => '$addAddress?page=${fromCheckout ? 'checkout' : 'address'}&zone_id=$zoneId';
   static String getEditAddressRoute(AddressModel address) {
     String _data = base64Url.encode(utf8.encode(jsonEncode(address.toJson())));
     return '$editAddress?data=$_data';
   }
   static String getStoreReviewRoute(int storeID) => '$storeReview?id=$storeID';
-
   static String getAllStoreRoute(String page) => '$allStores?page=$page';
   static String getItemImagesRoute(Item item) {
     String _data = base64Url.encode(utf8.encode(jsonEncode(item.toJson())));
@@ -193,6 +196,8 @@ class RouteHelper {
   static String getSearchStoreItemRoute(int storeID) => '$searchStoreItem?id=$storeID';
   static String getOrderRoute() => '$order';
   static String getItemDetailsRoute(int itemID, bool isRestaurant) => '$itemDetails?id=$itemID&page=${isRestaurant ? 'restaurant' : 'item'}';
+  static String getWalletRoute(bool fromWallet) => '$wallet?page=${fromWallet ? 'wallet' : 'loyalty_points'}';
+  static String getReferAndEarnRoute() => '$referAndEarn';
 
   static List<GetPage> routes = [
     GetPage(name: initial, page: () => getRoute(DashboardScreen(pageIndex: 0))),
@@ -259,10 +264,7 @@ class RouteHelper {
       return getRoute(MapScreen(fromStore: Get.parameters['page'] == 'store', address: _data));
     }),
     GetPage(name: address, page: () => getRoute(AddressScreen())),
-    GetPage(name: orderSuccess, page: () => getRoute(OrderSuccessfulScreen(
-      orderID: Get.parameters['id'], success: Get.parameters['status'].contains('success'),
-      parcel: Get.parameters['type'] == 'parcel',
-    ))),
+    GetPage(name: orderSuccess, page: () => getRoute(OrderSuccessfulScreen(orderID: Get.parameters['id']))),
     GetPage(name: payment, page: () => getRoute(PaymentScreen(orderModel: OrderModel(
         id: int.parse(Get.parameters['id']), orderType: Get.parameters['type'], userId: int.parse(Get.parameters['user'],
     ))))),
@@ -293,14 +295,15 @@ class RouteHelper {
     GetPage(name: support, page: () => getRoute(SupportScreen())),
     GetPage(name: update, page: () => UpdateScreen(isUpdate: Get.parameters['update'] == 'true')),
     GetPage(name: cart, page: () => getRoute(CartScreen(fromNav: false))),
-    GetPage(name: addAddress, page: () => getRoute(AddAddressScreen(fromCheckout: Get.parameters['page'] == 'checkout'))),
+    GetPage(name: addAddress, page: () => getRoute(AddAddressScreen(
+      fromCheckout: Get.parameters['page'] == 'checkout', zoneId: int.parse(Get.parameters['zone_id']),
+    ))),
     GetPage(name: editAddress, page: () => getRoute(AddAddressScreen(
       fromCheckout: false,
       address: AddressModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['data'].replaceAll(' ', '+'))))),
     ))),
     GetPage(name: rateReview, page: () => getRoute(Get.arguments != null ? Get.arguments : NotFound())),
     GetPage(name: storeReview, page: () => getRoute(ReviewScreen(storeID: Get.parameters['id']))),
-
     GetPage(name: allStores, page: () => getRoute(AllStoreScreen(
       isPopular: Get.parameters['page'] == 'popular', isFeatured: Get.parameters['page'] == 'featured',
     ))),
@@ -319,6 +322,8 @@ class RouteHelper {
     GetPage(name: searchStoreItem, page: () => getRoute(StoreItemSearchScreen(storeID: Get.parameters['id']))),
     GetPage(name: order, page: () => getRoute(OrderScreen())),
     GetPage(name: itemDetails, page: () => getRoute(Get.arguments != null ? Get.arguments : ItemDetailsScreen(item: Item(id: int.parse(Get.parameters['id'])), inStorePage: Get.parameters['page'] == 'restaurant'))),
+    GetPage(name: wallet, page: () => getRoute(WalletScreen(fromWallet: Get.parameters['page'] == 'wallet'))),
+    GetPage(name: referAndEarn, page: () => getRoute(ReferAndEarnScreen())),
   ];
 
   static getRoute(Widget navigateTo) {

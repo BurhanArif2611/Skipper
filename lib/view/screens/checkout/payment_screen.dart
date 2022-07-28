@@ -185,9 +185,9 @@ class MyInAppBrowser extends InAppBrowser {
         close();
       }
       if (_isSuccess) {
-        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID, 'success', orderType == 'parcel'));
+        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
       } else if (_isFailed || _isCancel) {
-        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID, 'fail', orderType == 'parcel'));
+        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
       }
     }
   }

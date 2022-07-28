@@ -17,7 +17,9 @@ class CustomTextField extends StatefulWidget {
   final int maxLines;
   final TextCapitalization capitalization;
   final String prefixIcon;
+  final double prefixSize;
   final bool divider;
+  final TextAlign textAlign;
 
   CustomTextField(
       {this.hintText = 'Write something...',
@@ -33,7 +35,9 @@ class CustomTextField extends StatefulWidget {
       this.prefixIcon,
       this.capitalization = TextCapitalization.none,
       this.isPassword = false,
-      this.divider = false}
+      this.prefixSize = Dimensions.PADDING_SIZE_SMALL,
+      this.divider = false,
+      this.textAlign = TextAlign.start}
   );
 
   @override
@@ -51,6 +55,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           maxLines: widget.maxLines,
           controller: widget.controller,
           focusNode: widget.focusNode,
+          textAlign: widget.textAlign,
           style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge),
           textInputAction: widget.inputAction,
           keyboardType: widget.inputType,
@@ -71,7 +76,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             hintStyle: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).hintColor),
             filled: true,
             prefixIcon: widget.prefixIcon != null ? Padding(
-              padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL),
+              padding: EdgeInsets.symmetric(horizontal: widget.prefixSize),
               child: Image.asset(widget.prefixIcon, height: 20, width: 20),
             ) : null,
             suffixIcon: widget.isPassword ? IconButton(

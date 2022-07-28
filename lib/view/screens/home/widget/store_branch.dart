@@ -31,7 +31,7 @@ class StoreBranch extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<BannerController>(builder: (branchStoreList) {
       List<Store> _storeList = branchStoreList.branchStoreList;
-    print("_storeList.length>>"+_storeList.length.toString());
+
       return (_storeList != null && _storeList.length == 0) ? SizedBox() : Column(
         children: [
           Padding(
@@ -39,9 +39,10 @@ class StoreBranch extends StatelessWidget {
             child: TitleWidget(
               title: isFeatured ? 'store_branches'.tr : isPopular ? Get.find<SplashController>().configModel.moduleConfig.module.showRestaurantText
                   ? 'popular_restaurants'.tr : 'popular_stores'.tr : '${'new_on'.tr} ${AppConstants.APP_NAME}',
-              onTap: () =>
+              onTap: () =>{
                  // Get.toNamed(RouteHelper.getAllStoreRoute(isFeatured ? 'featured' : isPopular ? 'popular' : 'latest')),
-                  Get.toNamed(RouteHelper.getAllStoreRoute('featured')),
+
+                  Get.toNamed(RouteHelper.getAllStoreRoute('featured')),}
             ),
           ),
 
@@ -64,15 +65,18 @@ class StoreBranch extends StatelessWidget {
                       if(isFeatured && Get.find<SplashController>().moduleList != null) {
                         for(ModuleModel module in Get.find<SplashController>().moduleList) {
                           if(module.id == _storeList[index].moduleId) {
-                            Get.find<SplashController>().setModule(module);
+                           // Get.find<SplashController>().setModule(module);
+                            Get.find<SplashController>().setModuleWithCallStoreAPI(module,_storeList[index].id);
+
                             break;
                           }
                         }
                       }
-                      Get.toNamed(
+                     /* Get.toNamed(
                         RouteHelper.getStoreRoute(_storeList[index].id, isFeatured ? 'module' : 'store'),
                         arguments: StoreScreen(store: _storeList[index], fromModule: isFeatured),
-                      );
+                      );*/
+
                     },
                     child: Container(
                       height: 150,

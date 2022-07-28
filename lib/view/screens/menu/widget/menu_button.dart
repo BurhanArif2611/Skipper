@@ -43,7 +43,7 @@ class MenuButton extends StatelessWidget {
           }
         }else if(menu.route.startsWith('http')) {
           if(await canLaunchUrlString(menu.route)) {
-            launchUrlString(menu.route);
+            launchUrlString(menu.route, mode: LaunchMode.externalApplication);
           }
         }else {
           Get.offNamed(menu.route);

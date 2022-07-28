@@ -61,7 +61,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           _setPage(0);
           return false;
         } else {
-          if(!ResponsiveHelper.isDesktop(context) && Get.find<SplashController>().module != null) {
+          if(!ResponsiveHelper.isDesktop(context) && Get.find<SplashController>().module != null && Get.find<SplashController>().configModel.module == null) {
             Get.find<SplashController>().setModule(null);
             return false;
           }else {

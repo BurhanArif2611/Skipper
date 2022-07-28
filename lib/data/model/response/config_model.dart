@@ -43,6 +43,14 @@ class ConfigModel {
   List<SocialMedia> socialMedia;
   String footerText;
   LandingPageLinks landingPageLinks;
+  int loyaltyPointExchangeRate;
+  double loyaltyPointItemPurchasePoint;
+  int loyaltyPointStatus;
+  int minimumPointToTransfer;
+  int customerWalletStatus;
+  int dmTipsStatus;
+  int refEarningStatus;
+  double refEarningExchangeRate;
 
   ConfigModel(
       {this.businessName,
@@ -87,6 +95,14 @@ class ConfigModel {
         this.socialMedia,
         this.footerText,
         this.landingPageLinks,
+        this.loyaltyPointExchangeRate,
+        this.loyaltyPointItemPurchasePoint,
+        this.loyaltyPointStatus,
+        this.minimumPointToTransfer,
+        this.customerWalletStatus,
+        this.dmTipsStatus,
+        this.refEarningStatus,
+        this.refEarningExchangeRate,
       });
 
   ConfigModel.fromJson(Map<String, dynamic> json) {
@@ -152,6 +168,14 @@ class ConfigModel {
     }
     footerText = json['footer_text'];
     landingPageLinks = json['landing_page_links'] != null ? LandingPageLinks.fromJson(json['landing_page_links']) : null;
+    loyaltyPointExchangeRate = json['loyalty_point_exchange_rate'];
+    loyaltyPointItemPurchasePoint = json['loyalty_point_item_purchase_point']!=null? json['loyalty_point_item_purchase_point'].toDouble():0.0;
+    loyaltyPointStatus = json['loyalty_point_status'] ;
+    minimumPointToTransfer = json['minimum_point_to_transfer'];
+    customerWalletStatus = json['customer_wallet_status'];
+    dmTipsStatus = json['dm_tips_status'];
+    refEarningStatus = json['ref_earning_status'];
+    refEarningExchangeRate = json['ref_earning_exchange_rate']!=null? json['ref_earning_exchange_rate'].toDouble():0.0;
   }
 
   Map<String, dynamic> toJson() {
@@ -214,6 +238,14 @@ class ConfigModel {
     if (this.landingPageLinks != null) {
       data['landing_page_links'] = this.landingPageLinks.toJson();
     }
+    data['loyalty_point_exchange_rate'] = this.loyaltyPointExchangeRate;
+    data['loyalty_point_item_purchase_point'] = this.loyaltyPointItemPurchasePoint;
+    data['loyalty_point_status'] = this.loyaltyPointStatus;
+    data['minimum_point_to_transfer'] = this.minimumPointToTransfer;
+    data['customer_wallet_status'] = this.customerWalletStatus;
+    data['dm_tips_status'] = this.dmTipsStatus;
+    data['ref_earning_status'] = this.refEarningStatus;
+    data['ref_earning_exchange_rate'] = this.refEarningExchangeRate;
     return data;
   }
 }

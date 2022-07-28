@@ -34,12 +34,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final FocusNode _phoneFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
   final FocusNode _confirmPasswordFocus = FocusNode();
+  final FocusNode _referCodeFocus = FocusNode();
+
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _referCodeController = TextEditingController();
   String _countryDialCode;
 
   @override
@@ -161,12 +164,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           hintText: 'confirm_password'.tr,
                           controller: _confirmPasswordController,
                           focusNode: _confirmPasswordFocus,
-                          inputAction: TextInputAction.done,
+                          nextFocus: Get.find<SplashController>().configModel.refEarningStatus == 1 ? _referCodeFocus : null,
+                          inputAction: Get.find<SplashController>().configModel.refEarningStatus == 1 ? TextInputAction.next : TextInputAction.done,
                           inputType: TextInputType.visiblePassword,
                           prefixIcon: Images.lock,
                           isPassword: true,
                           onSubmit: (text) => (GetPlatform.isWeb && authController.acceptTerms) ? _register(authController, _countryDialCode) : null,
                         ),
+
+                        (Get.find<SplashController>().configModel.refEarningStatus == 1 ) ? CustomTextField(
+                          hintText: 'refer_code'.tr,
+                          controller: _referCodeController,
+                          focusNode: _referCodeFocus,
+                          inputAction: TextInputAction.done,
+                          inputType: TextInputType.text,
+                          capitalization: TextCapitalization.words,
+                          prefixIcon: Images.refer_code,
+                          divider: false,
+                          prefixSize: 14,
+                        ) : SizedBox(),
 
                       ]),
                     ),
@@ -209,6 +225,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     String _number = _phoneController.text.trim();
     String _password = _passwordController.text.trim();
     String _confirmPassword = _confirmPasswordController.text.trim();
+    String _referCode = _referCodeController.text.trim();
 
     String _numberWithCountryCode = countryCode+_number;
     bool _isValid = GetPlatform.isWeb ? true : false;
@@ -238,8 +255,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
       showCustomSnackBar('password_should_be'.tr);
     }else if (_password != _confirmPassword) {
       showCustomSnackBar('confirm_password_does_not_matched'.tr);
+    }else if (_referCode.isNotEmpty && _referCode.length != 10) {
+      showCustomSnackBar('invalid_refer_code'.tr);
     }else {
-      SignUpBody signUpBody = SignUpBody(fName: _firstName, lName: _lastName, email: _email, phone: _numberWithCountryCode, password: _password);
+      SignUpBody signUpBody = SignUpBody(
+        fName: _firstName, lName: _lastName, email: _email, phone: _numberWithCountryCode,
+        password: _password, refCode: _referCode,
+      );
       authController.registration(signUpBody).then((status) async {
         if (status.isSuccess) {
           if(Get.find<SplashController>().configModel.customerVerification) {

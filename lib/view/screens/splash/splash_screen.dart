@@ -14,6 +14,12 @@ import 'package:sixam_mart/view/base/no_internet_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/banner_controller.dart';
+import '../../../controller/category_controller.dart';
+import '../../../controller/store_controller.dart';
+import '../../../data/model/response/module_model.dart';
+import '../../../data/model/response/store_model.dart';
+
 class SplashScreen extends StatefulWidget {
   final String orderID;
   SplashScreen({@required this.orderID});
@@ -29,6 +35,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    Get.find<SplashController>().getModules();
+    Get.find<BannerController>().getBranchList(false);
 
     bool _firstTime = true;
     _onConnectivityChanged = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
@@ -86,7 +94,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 Get.find<AuthController>().updateToken();
                 await Get.find<WishListController>().getWishList();
                 if (Get.find<LocationController>().getUserAddress() != null) {
-                  Get.offNamed(RouteHelper.getInitialRoute());
+                 // Get.offNamed(RouteHelper.getInitialRoute());
+                  GetBranchList();
                 } else {
                   Get.offNamed(RouteHelper.getAccessLocationRoute('splash'));
                 }
@@ -107,7 +116,26 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     });
   }
-
+  void GetBranchList() {
+    if (Get.find<BannerController>().branchStoreList.length > 0) {
+      Get.offNamed(RouteHelper.getInitialRoute());
+    } else {
+      Get.find<StoreController>().getStoreDetails(Store(id: 9),true);
+      Get.find<StoreController>().getStoreItemList(9, 1, 'all', false);
+      /*if(Get.find<CategoryController>().categoryList == null) {*/
+      Get.find<CategoryController>().getCategoryList(true);
+      if (Get.find<SplashController>().moduleList != null) {
+        for (ModuleModel module in Get.find<SplashController>().moduleList) {
+          // if(module.id == _storeList[index].moduleId)
+          if (module.id == 1) {
+            Get.find<SplashController>().setModule(module);
+            Get.offNamed(RouteHelper.getInitialRoute());
+            break;
+          }
+        }
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     Get.find<SplashController>().initSharedData();

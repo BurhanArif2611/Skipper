@@ -44,6 +44,8 @@ class OrderController extends GetxController implements GetxService {
   int _addressIndex = -1;
   XFile _orderAttachment;
   Uint8List _rawAttachment;
+  double _tips = 0.0;
+  int _selectedTips = -1;
 
   PaginatedOrderModel get runningOrderModel => _runningOrderModel;
   PaginatedOrderModel get historyOrderModel => _historyOrderModel;
@@ -62,7 +64,8 @@ class OrderController extends GetxController implements GetxService {
   int get addressIndex => _addressIndex;
   XFile get orderAttachment => _orderAttachment;
   Uint8List get rawAttachment => _rawAttachment;
-
+  double get tips => _tips;
+  int get selectedTips => _selectedTips;
   Future<void> getRunningOrders(int offset) async {
     if(offset == 1) {
       _runningOrderModel = null;
@@ -129,6 +132,10 @@ class OrderController extends GetxController implements GetxService {
     _paymentMethodIndex = index;
     update();
   }
+  void addTips(double tips){
+    _tips = tips;
+    update();
+  }
 
   Future<ResponseModel> trackOrder(String orderID, OrderModel orderModel, bool fromTracking) async {
     _trackModel = null;
@@ -183,7 +190,10 @@ class OrderController extends GetxController implements GetxService {
 
   void clearPrevData() {
     _addressIndex = -1;
-    _paymentMethodIndex = 0;
+    _paymentMethodIndex = Get.find<SplashController>().configModel.cashOnDelivery ? 0
+        : Get.find<SplashController>().configModel.digitalPayment ? 1
+        : Get.find<SplashController>().configModel.customerWalletStatus == 1 ? 2 : 0;
+
     _selectedDateSlot = 0;
     _selectedTimeSlot = 0;
     _distance = null;
@@ -367,6 +377,12 @@ class OrderController extends GetxController implements GetxService {
       _rawAttachment = await _orderAttachment.readAsBytes();
     }
     update();
+  }
+  void updateTips(int index, {bool notify = true}) {
+    _selectedTips = index;
+    if(notify) {
+      update();
+    }
   }
 
 }

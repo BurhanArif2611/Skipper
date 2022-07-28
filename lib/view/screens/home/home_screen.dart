@@ -18,6 +18,7 @@ import 'package:sixam_mart/view/base/item_view.dart';
 import 'package:sixam_mart/view/base/menu_drawer.dart';
 import 'package:sixam_mart/view/base/paginated_list_view.dart';
 import 'package:sixam_mart/view/base/web_menu_bar.dart';
+import 'package:sixam_mart/view/screens/home/theme1/new_home_screen.dart';
 import 'package:sixam_mart/view/screens/home/theme1/theme1_home_screen.dart';
 import 'package:sixam_mart/view/screens/home/web_home_screen.dart';
 import 'package:sixam_mart/view/screens/home/widget/filter_view.dart';
@@ -37,13 +38,13 @@ class HomeScreen extends StatefulWidget {
   static Future<void> loadData(bool reload) async {
     if(Get.find<SplashController>().module != null && !Get.find<SplashController>().configModel.moduleConfig.module.isParcel) {
       Get.find<BannerController>().getBannerList(reload);
-      Get.find<CategoryController>().getCategoryList(reload);
+      /*Get.find<CategoryController>().getCategoryList(reload);
       Get.find<StoreController>().getPopularStoreList(reload, 'all', false);
       Get.find<CampaignController>().getItemCampaignList(reload);
       Get.find<ItemController>().getPopularItemList(reload, 'all', false);
       Get.find<StoreController>().getLatestStoreList(reload, 'all', false);
       Get.find<ItemController>().getReviewedItemList(reload, 'all', false);
-      Get.find<StoreController>().getStoreList(1, reload);
+      Get.find<StoreController>().getStoreList(1, reload);*/
 
       if(Get.find<AuthController>().isLoggedIn()) {
         Get.find<UserController>().getUserInfo();
@@ -52,8 +53,8 @@ class HomeScreen extends StatefulWidget {
     }
     Get.find<SplashController>().getModules();
     if(Get.find<SplashController>().module == null && Get.find<SplashController>().configModel.module == null) {
-      Get.find<BannerController>().getFeaturedBanner();
-      Get.find<StoreController>().getFeaturedStoreList();
+      /*Get.find<BannerController>().getFeaturedBanner();
+      Get.find<StoreController>().getFeaturedStoreList();*/
       Get.find<BannerController>().getBranchList(reload);
       if(Get.find<AuthController>().isLoggedIn()) {
         Get.find<LocationController>().getAddressList();
@@ -100,14 +101,14 @@ class _HomeScreenState extends State<HomeScreen> {
           child: RefreshIndicator(
             onRefresh: () async {
               if(Get.find<SplashController>().module != null) {
-                await Get.find<BannerController>().getBannerList(true);
+              /*  await Get.find<BannerController>().getBannerList(true);
                 await Get.find<CategoryController>().getCategoryList(true);
                 await Get.find<StoreController>().getPopularStoreList(true, 'all', false);
                 await Get.find<CampaignController>().getItemCampaignList(true);
                 await Get.find<ItemController>().getPopularItemList(true, 'all', false);
                 await Get.find<StoreController>().getLatestStoreList(true, 'all', false);
                 await Get.find<ItemController>().getReviewedItemList(true, 'all', false);
-                await Get.find<StoreController>().getStoreList(1, true);
+                await Get.find<StoreController>().getStoreList(1, true);*/
 
                 if(Get.find<AuthController>().isLoggedIn()) {
                   await Get.find<UserController>().getUserInfo();
@@ -115,21 +116,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               }else {
                 print("else is working>>>");
-                await Get.find<BannerController>().getFeaturedBanner();
+               // await Get.find<BannerController>().getFeaturedBanner();
                 await Get.find<SplashController>().getModules();
 
                 if(Get.find<AuthController>().isLoggedIn()) {
                   await Get.find<LocationController>().getAddressList();
                 }
-                await Get.find<StoreController>().getFeaturedStoreList();
+              //  await Get.find<StoreController>().getFeaturedStoreList();
                 await Get.find<BannerController>().getBranchList(true);
               }
             },
             child: ResponsiveHelper.isDesktop(context) ? WebHomeScreen(
               scrollController: _scrollController,
-            ) : (Get.find<SplashController>().module != null && Get.find<SplashController>().module.themeId == 2) ? Theme1HomeScreen(
+            ) :
+            //(Get.find<SplashController>().module != null && Get.find<SplashController>().module.themeId == 2) ?
+            (Get.find<SplashController>().module != null ) ?
+            /* Theme1HomeScreen(
               scrollController: _scrollController, splashController: splashController, showMobileModule: _showMobileModule,
-            ) : CustomScrollView(
+            )*/
+            NewHomeScreen(
+              scrollController: _scrollController, splashController: splashController, showMobileModule: _showMobileModule,
+            )
+                :
+            CustomScrollView(
               controller: _scrollController,
               physics: AlwaysScrollableScrollPhysics(),
               slivers: [

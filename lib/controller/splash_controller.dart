@@ -1,6 +1,7 @@
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/banner_controller.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
+import 'package:sixam_mart/controller/category_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/store_controller.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
@@ -15,6 +16,8 @@ import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/view/base/confirmation_dialog.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:sixam_mart/view/screens/home/home_screen.dart';
+
+import '../data/model/response/store_model.dart';
 
 class SplashController extends GetxController implements GetxService {
   final SplashRepo splashRepo;
@@ -97,7 +100,21 @@ class SplashController extends GetxController implements GetxService {
       update();
     }
   }
-
+  Future<void> setModuleWithCallStoreAPI(ModuleModel module,int id, {bool notify = true}) async {
+    _module = module;
+    splashRepo.setModule(module);
+    Get.find<StoreController>().getStoreDetails(Store(id: id),true);
+    Get.find<StoreController>().getStoreItemList(id, 1, 'all', false);
+    /*if(Get.find<CategoryController>().categoryList == null) {*/
+    Get.find<CategoryController>().getCategoryList(true);
+    /*}*/
+    if(module != null) {
+      _configModel.moduleConfig.module = Module.fromJson(_data['module_config'][module.moduleType]);
+    }
+    if(notify) {
+      update();
+    }
+  }
   Module getModule(String moduleType) => Module.fromJson(_data['module_config'][moduleType]);
 
   Future<void> getModules() async {

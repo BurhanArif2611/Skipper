@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/order_controller.dart';
@@ -27,6 +28,8 @@ import 'package:sixam_mart/view/screens/parcel/widget/card_widget.dart';
 import 'package:sixam_mart/view/screens/parcel/widget/details_widget.dart';
 import 'package:universal_html/html.dart' as html;
 
+import '../checkout/widget/tips_widget.dart';
+
 class ParcelRequestScreen extends StatefulWidget {
   final ParcelCategoryModel parcelCategory;
   final AddressModel pickedUpAddress;
@@ -38,6 +41,7 @@ class ParcelRequestScreen extends StatefulWidget {
 }
 
 class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
+  TextEditingController _tipController = TextEditingController();
   bool _isLoggedIn = Get.find<AuthController>().isLoggedIn();
 
   @override
@@ -51,6 +55,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
       if (Get.find<UserController>().userInfoModel == null) {
         Get.find<UserController>().getUserInfo();
       }
+      Get.find<OrderController>().updateTips(-1, notify: false);
     }
   }
 
@@ -105,7 +110,28 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
               CardWidget(child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                 DetailsWidget(title: 'sender_details'.tr, address: widget.pickedUpAddress),
                 SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                if(parcelController.anotherList.length==0)
                 DetailsWidget(title: 'receiver_details'.tr, address: widget.destinationAddress),
+                if(parcelController.anotherList.length>0)
+                  Text('receiver_details'.tr,
+                      style: robotoMedium),
+                if(parcelController.anotherList.length>0)
+                  SizedBox(
+                      height: Dimensions
+                          .PADDING_SIZE_EXTRA_SMALL),
+                if(parcelController.anotherList.length>0)
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics:
+                      NeverScrollableScrollPhysics(),
+                      itemCount: parcelController.anotherList.length,
+                      padding: EdgeInsets.zero,
+                      itemBuilder: (context, index) {
+                        return DetailsWidget(
+                            title: '',
+                            address:
+                            parcelController.anotherList[index]);
+                      }),
               ])),
               SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
 
@@ -134,6 +160,74 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                 ]))
               ])),
               SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+
+              (Get.find<SplashController>().configModel.dmTipsStatus == 1) ?
+              GetBuilder<OrderController>(builder: (orderController) {
+                return Container(
+                  color: Theme.of(context).cardColor,
+                  padding: EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_LARGE, horizontal: Dimensions.PADDING_SIZE_SMALL),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+
+                    Text('delivery_man_tips'.tr, style: robotoMedium),
+                    SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
+                        border: Border.all(color: Theme.of(context).primaryColor),
+                      ),
+                      child: TextField(
+                        controller: _tipController,
+                        onChanged: (String value) {
+                          if(value.isNotEmpty){
+                            orderController.addTips(double.parse(value));
+                          }else{
+                            orderController.addTips(0.0);
+                          }
+                        },
+                        maxLength: 10,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
+                        decoration: InputDecoration(
+                          hintText: 'enter_amount'.tr,
+                          counterText: '',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+
+                    SizedBox(
+                      height: 55,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        itemCount: AppConstants.tips.length,
+                        itemBuilder: (context, index) {
+                          return TipsWidget(
+                            title: AppConstants.tips[index].toString(),
+                            isSelected: orderController.selectedTips == index,
+                            onTap: () {
+                              orderController.updateTips(index);
+                              orderController.addTips(AppConstants.tips[index].toDouble());
+                              _tipController.text = orderController.tips.toString();
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ]),
+                );
+              }
+              ) : SizedBox.shrink(),
+              SizedBox(height: (Get.find<SplashController>().configModel.dmTipsStatus == 1) ? Dimensions.PADDING_SIZE_EXTRA_SMALL : 0),
+
 
               Text('charge_pay_by'.tr, style: robotoMedium),
               SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -197,7 +291,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
     Get.find<ParcelController>().startLoader(false);
     if(isSuccess) {
       if(Get.find<ParcelController>().paymentIndex == 0) {
-        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID, 'success', true));
+        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
       }else {
         if(GetPlatform.isWeb) {
           Get.back();
@@ -236,6 +330,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
             floor: widget.pickedUpAddress.floor ?? '',
             discountAmount: 0, taxAmount: 0,
             parcelCategoryId: widget.parcelCategory.id.toString(), chargePayer: parcelController.payerTypes[parcelController.payerIndex],
+            dmTips: _tipController.text.trim(),
             receiver_addresses:parcelController.anotherList,
 
 

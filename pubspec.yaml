@@ -44,7 +44,8 @@ dependencies:
 #  flutter_facebook_auth: ^3.5.7
   photo_view: ^0.14.0
   image_compression_flutter: ^1.0.2
-
+  dotted_border: ^2.0.0+1
+  share_plus: ^4.0.10
 dev_dependencies:
   flutter_test:
     sdk: flutter

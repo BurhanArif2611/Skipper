@@ -97,6 +97,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           double _couponDiscount = 0;
           double _tax = 0;
           double _addOns = 0;
+          double _dmTips = 0;
           OrderModel _order = orderController.trackModel;
           bool _parcel = false;
           if (orderController.orderDetails != null) {
@@ -105,6 +106,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             _couponDiscount = _order.couponDiscountAmount;
             _discount = _order.storeDiscountAmount;
             _tax = _order.totalTaxAmount;
+            _dmTips = _order.dmTips;
             for (OrderDetailsModel orderDetails
                 in orderController.orderDetails) {
               for (AddOn addOn in orderDetails.addOns) {
@@ -115,12 +117,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             }
           }
           double _subTotal = _itemsPrice + _addOns;
-          double _total = _itemsPrice +
-              _addOns -
-              _discount +
-              _tax +
-              _deliveryCharge -
-              _couponDiscount;
+          double _total = _itemsPrice + _addOns - _discount + _tax + _deliveryCharge - _couponDiscount + _dmTips;
 
           return orderController.orderDetails != null
               ? Column(children: [
@@ -616,6 +613,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                             SizedBox(
                                                                 height: Dimensions
                                                                     .PADDING_SIZE_EXTRA_SMALL),
+
+                                                            Text("OTP: "+_order
+                                                                .dropoff_locations[
+                                                            index]
+                                                                .otp.toString(), style: robotoMedium.copyWith(
+                                                                color: Theme.of(context).primaryColor)),
                                                           ]),
                                                     ),
                                                   );
@@ -1021,6 +1024,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                         style: robotoRegular),
                                                   ]),
                                               SizedBox(height: 10),
+                                            (_dmTips > 0) ? Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text('delivery_man_tips'.tr, style: robotoRegular),
+                                                Text('(+) ${PriceConverter.convertPrice(_dmTips)}', style: robotoRegular),
+                                              ],
+                                            ) : SizedBox(),
+                                            SizedBox(height: _dmTips > 0 ? 10 : 0),
                                               Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment

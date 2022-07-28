@@ -34,6 +34,16 @@ class _MenuScreenState extends State<MenuScreen> {
       MenuModel(icon: Images.about_us, title: 'about_us'.tr, route: RouteHelper.getHtmlRoute('about-us')),
       MenuModel(icon: Images.terms, title: 'terms_conditions'.tr, route: RouteHelper.getHtmlRoute('terms-and-condition')),
     ];
+
+    if(Get.find<SplashController>().configModel.refEarningStatus == 1 ){
+      _menuList.add(MenuModel(icon: Images.refer_code, title: 'refer_and_earn'.tr, route: RouteHelper.getReferAndEarnRoute()));
+    }
+    if(Get.find<SplashController>().configModel.customerWalletStatus == 1 ){
+      _menuList.add(MenuModel(icon: Images.wallet, title: 'wallet'.tr, route: RouteHelper.getWalletRoute(true)));
+    }
+    if(Get.find<SplashController>().configModel.loyaltyPointStatus == 1 ){
+      _menuList.add(MenuModel(icon: Images.loyal, title: 'loyalty_points'.tr, route: RouteHelper.getWalletRoute(false)));
+    }
     if(Get.find<SplashController>().configModel.toggleDmRegistration && !ResponsiveHelper.isDesktop(context)) {
       _menuList.add(MenuModel(
         icon: Images.delivery_man_join, title: 'join_as_a_delivery_man'.tr,

@@ -4,13 +4,15 @@ import 'package:sixam_mart/util/images.dart';
 
 class AppConstants {
   static const String APP_NAME = '6amMart';
-  static const double APP_VERSION = 1.4;
+  static const double APP_VERSION = 1.5;
 
- // static const String BASE_URL = 'https://6ammart.6am.one/dev';
-  static const String BASE_URL = 'https://jamboy-admin.khash.ng/admin';
- // static const String BASE_URL = 'http://192.168.1.156:7500';
+ // static const String BASE_URL = 'https://6ammart-admin.6amtech.com';
+  // static const String BASE_URL = 'https://jamboy-admin.khash.ng/admin';
+  static const String BASE_URL = 'http://192.168.1.156:7500';
   static const String CATEGORY_URI = '/api/v1/categories';
   static const String BANNER_URI = '/api/v1/banners';
+  static const String BRANCG_URI = '/api/v1/stores';
+
   static const String STORE_ITEM_URI = '/api/v1/items/latest';
   static const String POPULAR_ITEM_URI = '/api/v1/items/popular';
   static const String REVIEWED_ITEM_URI = '/api/v1/items/most-reviewed';
@@ -57,7 +59,6 @@ class AppConstants {
   static const String LAST_LOCATION_URI = '/api/v1/delivery-man/last-location?order_id=';
   static const String DELIVER_MAN_REVIEW_URI = '/api/v1/delivery-man/reviews/submit';
   static const String STORE_URI = '/api/v1/stores/get-stores';
-  static const String BRANCG_URI = '/api/v1/stores';
   static const String POPULAR_STORE_URI = '/api/v1/stores/popular';
   static const String LATEST_STORE_URI = '/api/v1/stores/latest';
   static const String STORE_DETAILS_URI = '/api/v1/stores/details/';
@@ -81,7 +82,10 @@ class AppConstants {
   static const String TERMS_AND_CONDITIONS_URI = '/terms-and-conditions';
   static const String SUBSCRIPTION_URI = '/api/v1/newsletter/subscribe';
   static const String CUSTOMER_REMOVE = '/api/v1/customer/remove-account';
-
+  static const String WALLET_TRANSACTION_URL = '/api/v1/customer/wallet/transactions';
+  static const String LOYALTY_TRANSACTION_URL = '/api/v1/customer/loyalty-point/transactions';
+  static const String LOYALTY_POINT_TRANSFER_URL = '/api/v1/customer/loyalty-point/point-transfer';
+  static const int StoreID = 7;
   // Shared Key
   static const String THEME = '6ammart_theme';
   static const String TOKEN = '6ammart_token';
@@ -101,8 +105,10 @@ class AppConstants {
   static const String ZONE_ID = 'zoneId';
   static const String MODULE_ID = 'moduleId';
   static const String LOCALIZATION_KEY = 'X-localization';
-  static const String ModuleId = 'ctgv3ma3S_K0W_yyWFIr2l:APA91bEz84C6w8Iilkv5Fp_Rqs0Fj2TNXa6UPIBfgBQXFi8dYveh1Bv0UPjsd-KwUZNbGZw2SKbChFlPK4SjXZ-UU_vpKQfrlj0XkDqCebX2kGx_xVU2YIFv2jCe83GonKwcKSsIaPWd';
-  static const int StoreId = 7;
+
+
+  // Delivery Tips
+  static List<int> tips = [0, 5, 10, 15, 20, 30, 50];
 
   static List<ChooseUsModel> whyChooseUsList = [
     ChooseUsModel(icon: Images.landing_trusted, title: 'trusted_by_customers_and_store_owners'),

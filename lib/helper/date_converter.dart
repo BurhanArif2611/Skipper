@@ -16,6 +16,10 @@ class DateConverter {
     return DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
   }
 
+  static String dateToDateAndTimeAm(DateTime dateTime) {
+    return DateFormat('yyyy-MM-dd ${_timeFormatter()}').format(dateTime);
+  }
+
   static String dateTimeStringToDateTime(String dateTime) {
     return DateFormat('dd MMM yyyy  ${_timeFormatter()}').format(DateFormat('yyyy-MM-dd HH:mm:ss').parse(dateTime));
   }
