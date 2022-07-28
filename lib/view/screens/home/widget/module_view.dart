@@ -25,9 +25,9 @@ class ModuleView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-      GetBuilder<BannerController>(builder: (bannerController) {
+      /*GetBuilder<BannerController>(builder: (bannerController) {
         return BannerView(isFeatured: true);
-      }),
+      }),*/
 
       splashController.moduleList != null ? splashController.moduleList.length > 0 ? GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

@@ -101,7 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
           child: RefreshIndicator(
             onRefresh: () async {
               if(Get.find<SplashController>().module != null) {
-              /*  await Get.find<BannerController>().getBannerList(true);
+                await Get.find<BannerController>().getBannerList(true);
+              /*
                 await Get.find<CategoryController>().getCategoryList(true);
                 await Get.find<StoreController>().getPopularStoreList(true, 'all', false);
                 await Get.find<CampaignController>().getItemCampaignList(true);
