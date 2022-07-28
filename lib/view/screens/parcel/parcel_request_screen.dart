@@ -288,7 +288,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
   }
 
   void orderCallback(bool isSuccess, String message, String orderID) {
-    Get.find<ParcelController>().startLoader(false);
+    Get.find<ParcelController>().startLoader(true);
     if(isSuccess) {
       if(Get.find<ParcelController>().paymentIndex == 0) {
         Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
@@ -310,7 +310,8 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
   }
 
   Widget _bottomButton(ParcelController parcelController, double charge) {
-    return /*!parcelController.isLoading ?*/ CustomButton(
+    return !parcelController.isLoading ?
+    CustomButton(
       buttonText: 'confirm_parcel_request'.tr,
       margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
       onPressed: () {
@@ -337,7 +338,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
           ), orderCallback);
         }
       },
-    ); /*: Center(child: CircularProgressIndicator());*/
+    ) : Center(child: CircularProgressIndicator());
   }
 
 }

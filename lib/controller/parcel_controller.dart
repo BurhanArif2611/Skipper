@@ -183,6 +183,7 @@ class ParcelController extends GetxController implements GetxService {
          LatLng(0.0,0.0)
          , multidrop_array);
    }
+    _isLoading=false;
     update();
   }
 
