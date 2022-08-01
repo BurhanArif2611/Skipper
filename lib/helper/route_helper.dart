@@ -25,6 +25,7 @@ import 'package:sixam_mart/view/screens/checkout/order_successful_screen.dart';
 import 'package:sixam_mart/view/screens/checkout/payment_screen.dart';
 import 'package:sixam_mart/view/screens/coupon/coupon_screen.dart';
 import 'package:sixam_mart/view/screens/dashboard/dashboard_screen.dart';
+import 'package:sixam_mart/view/screens/errand/errand_main_screen.dart';
 import 'package:sixam_mart/view/screens/item/item_campaign_screen.dart';
 import 'package:sixam_mart/view/screens/item/item_details_screen.dart';
 import 'package:sixam_mart/view/screens/item/popular_item_screen.dart';
@@ -105,6 +106,7 @@ class RouteHelper {
   static const String itemImages = '/item-images';
   static const String parcelCategory = '/parcel-category';
   static const String parcelLocation = '/parcel-location';
+  static const String errandmainscreen = '/errand_main_screen';
   static const String parcelRequest = '/parcel-request';
   static const String searchStoreItem = '/search-store-item';
   static const String order = '/order';
@@ -186,6 +188,9 @@ class RouteHelper {
   static String getParcelLocationRoute(ParcelCategoryModel category) {
     String _data = base64Url.encode(utf8.encode(jsonEncode(category.toJson())));
     return '$parcelLocation?data=$_data';
+  }
+  static String getErrandLocationRoute() {
+    return '$errandmainscreen';
   }
   static String getParcelRequestRoute(ParcelCategoryModel category, AddressModel pickupAddress, AddressModel destinationAddress) {
     String _category = base64Url.encode(utf8.encode(jsonEncode(category.toJson())));
@@ -314,6 +319,9 @@ class RouteHelper {
     GetPage(name: parcelLocation, page: () => getRoute(ParcelLocationScreen(
       category: ParcelCategoryModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['data'].replaceAll(' ', '+'))))),
     ))),
+    GetPage(name: errandmainscreen, page: () => getRoute(ErrandMainScreen())),
+
+
     GetPage(name: parcelRequest, page: () => getRoute(ParcelRequestScreen(
       parcelCategory: ParcelCategoryModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['category'].replaceAll(' ', '+'))))),
       pickedUpAddress: AddressModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['picked'].replaceAll(' ', '+'))))),

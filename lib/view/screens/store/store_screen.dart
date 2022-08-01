@@ -70,7 +70,8 @@ class _StoreScreenState extends State<StoreScreen> {
           }
           storeController.setCategoryList();
 
-          return (storeController.store != null && storeController.store.name != null && categoryController.categoryList != null) ? CustomScrollView(
+          return (storeController.store != null && storeController.store.name != null && categoryController.categoryList != null) ?
+          CustomScrollView(
             physics: AlwaysScrollableScrollPhysics(),
             controller: scrollController,
             slivers: [
@@ -100,7 +101,8 @@ class _StoreScreenState extends State<StoreScreen> {
                     ]),
                   ))),
                 ),
-              ) : SliverAppBar(
+              ) :
+              SliverAppBar(
                 expandedHeight: 230, toolbarHeight: 50,
                 pinned: true, floating: false,
                 backgroundColor: Theme.of(context).primaryColor,
