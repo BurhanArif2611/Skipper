@@ -20,6 +20,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../data/model/body/errand_order_body.dart';
 import '../data/model/response/address_model.dart';
 
 class OrderController extends GetxController implements GetxService {
@@ -166,9 +167,29 @@ class OrderController extends GetxController implements GetxService {
   Future<void> placeOrder(PlaceOrderBody placeOrderBody, Function(bool isSuccess, String message, String orderID) callback) async {
     _isLoading = true;
     update();
-    print("placeOrder<><>"+placeOrderBody.toJson().toString());
+  /*  print("placeOrder<><>"+placeOrderBody.toJson().toString());*/
     Response response = await orderRepo.placeOrder(placeOrderBody, _orderAttachment);
-    print("placeOrder<><>"+response.toString());
+   /* print("placeOrder<><>"+response.toString());*/
+    _isLoading = false;
+    if (response.statusCode == 200) {
+      String message = response.body['message'];
+      String orderID = response.body['order_id'].toString();
+      callback(true, message, orderID);
+      _orderAttachment = null;
+      _rawAttachment = null;
+      print('-------- Order placed successfully $orderID ----------');
+    } else {
+      callback(false, response.statusText, '-1');
+    }
+    update();
+  }
+
+  Future<void> errandPlaceOrder(ErrandOrderBody placeOrderBody, Function(bool isSuccess, String message, String orderID) callback) async {
+    _isLoading = true;
+    update();
+    print("placeOrder<><>"+placeOrderBody.toJson().toString());
+    Response response = await orderRepo.errandPlaceOrder(placeOrderBody, _orderAttachment);
+   /* print("placeOrder<><>"+response.toString());*/
     _isLoading = false;
     if (response.statusCode == 200) {
       String message = response.body['message'];
@@ -338,7 +359,7 @@ class OrderController extends GetxController implements GetxService {
 
   Future<double> getDistanceInKM(LatLng originLatLng, LatLng destinationLatLng,String multiDroplocation) async {
     _distance = -1;
-    print("getDistanceInKM>>"+multiDroplocation);
+
     Response response = await orderRepo.getDistanceInMeter(originLatLng, destinationLatLng,multiDroplocation);
     try {
       print("getDistanceInKM>>"+response.body.toString());

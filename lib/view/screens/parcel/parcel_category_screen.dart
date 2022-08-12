@@ -191,8 +191,7 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                       parcelController.parcelCategoryList ==
                                           null),
                           InkWell(
-                            child:
-                            Container(
+                            child: Container(
                               padding:
                                   EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                               decoration: BoxDecoration(
@@ -216,7 +215,7 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                     child: CustomImage(
                                       image:
                                           '${Get.find<SplashController>().configModel.baseUrls.parcelCategoryImageUrl}'
-                                          '/${parcelController.parcelCategoryList[0].image}',
+                                          '/2022-07-29-62e3b7d74b8a9.png',
                                       height: 30,
                                       width: 30,
                                     ),
@@ -230,20 +229,11 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                      Text("ERRAND", style: robotoMedium),
+                                      Text("Create Errand", style: robotoMedium),
                                       SizedBox(
                                           height: Dimensions
                                               .PADDING_SIZE_EXTRA_SMALL),
-                                      Text(
-                                        parcelController
-                                            .parcelCategoryList[0].description,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: robotoRegular.copyWith(
-                                            color:
-                                                Theme.of(context).disabledColor,
-                                            fontSize: Dimensions.fontSizeSmall),
-                                      ),
+
                                     ])),
                                 SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
                                 Icon(Icons.keyboard_arrow_right),
@@ -251,8 +241,7 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                             ),
                             onTap: () {
                               print("tapped on container");
-                              Get.toNamed(RouteHelper
-                                  .getErrandLocationRoute());
+                              Get.toNamed(RouteHelper.getErrandLocationRoute());
                             },
                           ),
                         ]))),

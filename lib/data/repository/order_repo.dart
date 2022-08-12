@@ -1,5 +1,6 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart/data/api/api_client.dart';
+import 'package:sixam_mart/data/model/body/errand_order_body.dart';
 import 'package:sixam_mart/data/model/body/place_order_body.dart';
 import 'package:sixam_mart/util/app_constants.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,12 @@ class OrderRepo {
   }
 
   Future<Response> placeOrder(PlaceOrderBody orderBody, XFile orderAttachment) async {
+    return await apiClient.postMultipartData(
+      AppConstants.PLACE_ORDER_URI, orderBody.toJson(),
+      [MultipartBody('order_attachment', orderAttachment)],
+    );
+  }
+  Future<Response> errandPlaceOrder(ErrandOrderBody orderBody, XFile orderAttachment) async {
     return await apiClient.postMultipartData(
       AppConstants.PLACE_ORDER_URI, orderBody.toJson(),
       [MultipartBody('order_attachment', orderAttachment)],

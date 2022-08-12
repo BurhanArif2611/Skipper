@@ -63,6 +63,7 @@ class OrderView extends StatelessWidget {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       bool _isParcel = paginatedOrderModel.orders[index].orderType == 'parcel';
+                      bool _isErrand = paginatedOrderModel.orders[index].orderType == 'errand';
 
                       return InkWell(
                         onTap: () {
@@ -110,6 +111,15 @@ class OrderView extends StatelessWidget {
                                     color: Theme.of(context).primaryColor,
                                   ),
                                   child: Text('parcel'.tr, style: robotoMedium.copyWith(
+                                    fontSize: Dimensions.fontSizeExtraSmall, color: Colors.white,
+                                  )),
+                                )) : _isErrand ?Positioned(left: 0, top: 10, child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.horizontal(right: Radius.circular(Dimensions.RADIUS_SMALL)),
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                  child: Text('Errand', style: robotoMedium.copyWith(
                                     fontSize: Dimensions.fontSizeExtraSmall, color: Colors.white,
                                   )),
                                 )) : SizedBox(),

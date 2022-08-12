@@ -5,10 +5,10 @@ import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:sixam_mart/data/model/response/task_model.dart';
 
-class PlaceOrderBody {
+class ErrandOrderBody {
   List<Cart> _cart;
   List<AddressModel> _receiver_addresses;
- // List<TaskModel> _task_title;
+  List<TaskModel> _task_title;
   double _couponDiscountAmount;
   double _orderAmount;
   String _orderType;
@@ -33,10 +33,10 @@ class PlaceOrderBody {
   String _house;
   String _floor;
   String _dmTips;
- // String _task_uploaded_by;
+  String _task_uploaded_by;
 
 
-  PlaceOrderBody(
+  ErrandOrderBody(
       {@required List<Cart> cart,
         @required double couponDiscountAmount,
         @required String couponCode,
@@ -63,8 +63,8 @@ class PlaceOrderBody {
         @required String floor,
         @required List<AddressModel> receiver_addresses,
         @required String dmTips,
-        // @required String task_uploaded_by,
-        // @required List<TaskModel> task_title,
+        @required String task_uploaded_by,
+        @required List<TaskModel> task_title,
 
       }) {
     this._cart = cart;
@@ -93,8 +93,8 @@ class PlaceOrderBody {
     this._floor = floor;
     this._receiver_addresses = receiver_addresses;
     this._dmTips = dmTips;
-    // this._task_uploaded_by = task_uploaded_by;
-    // this._task_title = task_title;
+    this._task_uploaded_by = task_uploaded_by;
+    this._task_title = task_title;
 
   }
 
@@ -122,13 +122,13 @@ class PlaceOrderBody {
   String get house => _house;
   String get floor => _floor;
   List<AddressModel> get receiver_addresses => _receiver_addresses;
-  //List<TaskModel> get task_title => _task_title;
+  List<TaskModel> get task_title => _task_title;
   String get dmTips => _dmTips;
-  //String get task_uploaded_by => _task_uploaded_by;
+  String get task_uploaded_by => _task_uploaded_by;
 
 
 
-  PlaceOrderBody.fromJson(Map<String, dynamic> json) {
+  ErrandOrderBody.fromJson(Map<String, dynamic> json) {
     if (json['cart'] != null) {
       _cart = [];
       json['cart'].forEach((v) {
@@ -159,7 +159,7 @@ class PlaceOrderBody {
     _house = json['apartment'];
     _floor = json['floor'];
     _dmTips = json['dm_tips'];
-   // _task_uploaded_by = json['task_uploaded_by'];
+    _task_uploaded_by = json['task_uploaded_by'];
 
 
 
@@ -171,12 +171,12 @@ class PlaceOrderBody {
 
     }
 
-    // if (json['task_title'] != null) {
-    //   _task_title = [];
-    //   json['task_title'].forEach((v) {
-    //     _task_title.add(new TaskModel.fromJson(v));
-    //   });
-    // }
+    if (json['task_title'] != null) {
+      _task_title = [];
+      json['task_title'].forEach((v) {
+        _task_title.add(new TaskModel.fromJson(v));
+      });
+    }
 
   }
 
@@ -227,11 +227,16 @@ class PlaceOrderBody {
     if (this._receiver_addresses != null) {
       data['receiver_addresses'] = jsonEncode(this._receiver_addresses.map((v) => v.toJson()).toList());
     }
-    // if (this._task_title != null) {
-    //   data['task_title'] = jsonEncode(this._task_title.map((v) => v.toJson()).toList());
-    // }
+
+    for(int i=0;i<_task_title.length;i++){
+      data['task_title['+i.toString()+']'] = _task_title[i].task_title;
+      data['task_description['+i.toString()+']'] = _task_title[i].task_description;
+    }
+
+
     data['dm_tips'] = this._dmTips;
-   // data['task_uploaded_by'] = this._task_uploaded_by;
+    data['task_uploaded_by'] = this._task_uploaded_by;
+    data['validity'] = "12";
 
     return data;
   }
@@ -251,13 +256,13 @@ class Cart {
   Cart(
       int itemId,
       int itemCampaignId,
-        String price,
-        String variant,
-        List<Variation> variation,
-        int quantity,
-        List<int> addOnIds,
-        List<AddOns> addOns,
-        List<int> addOnQtys) {
+      String price,
+      String variant,
+      List<Variation> variation,
+      int quantity,
+      List<int> addOnIds,
+      List<AddOns> addOns,
+      List<int> addOnQtys) {
     this._itemId = itemId;
     this._itemCampaignId = itemCampaignId;
     this._price = price;

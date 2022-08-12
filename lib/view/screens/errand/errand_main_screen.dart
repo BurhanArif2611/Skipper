@@ -4,6 +4,7 @@ import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/parcel_controller.dart';
 import 'package:sixam_mart/controller/user_controller.dart';
+import 'package:sixam_mart/data/model/body/errand_order_body.dart';
 import 'package:sixam_mart/data/model/response/address_model.dart';
 import 'package:sixam_mart/data/model/response/parcel_category_model.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
@@ -18,7 +19,12 @@ import 'package:sixam_mart/view/base/menu_drawer.dart';
 import 'package:sixam_mart/view/screens/errand/widget/location_view.dart';
 import 'package:sixam_mart/view/screens/parcel/widget/parcel_view.dart';
 
+import '../../../controller/order_controller.dart';
+import '../../../data/model/body/place_order_body.dart';
+import '../../../util/app_constants.dart';
 import '../../base/my_text_field.dart';
+import 'package:universal_html/html.dart' as html;
+
 
 class ErrandMainScreen extends StatefulWidget {
   final ParcelCategoryModel category;
@@ -179,76 +185,7 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
 
   Widget _bottomButton() {
     return GetBuilder<ParcelController>(builder: (parcelController) {
-      return (parcelController.isSender
-          ? CustomButton(
-              margin: ResponsiveHelper.isDesktop(context)
-                  ? null
-                  : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-              buttonText: 'Submit',
-              onPressed: () {
-                if (_tabController.index == 0) {
-                  _validateSender();
-                } else {
-                  /* if(parcelController.destinationAddress == null) {
-                  showCustomSnackBar('select_destination_address'.tr);
-              }
-              else if(_receiverNameController.text.isEmpty){
-                showCustomSnackBar('enter_receiver_name'.tr);
-              }
-              else if(_receiverPhoneController.text.isEmpty){
-                showCustomSnackBar('enter_receiver_phone_number'.tr);
-              }
-              else {*/
-                  AddressModel _destination = AddressModel(
-                    address: parcelController.destinationAddress != null
-                        ? parcelController.destinationAddress.address
-                        : "",
-                    additionalAddress: parcelController.destinationAddress !=
-                            null
-                        ? parcelController.destinationAddress.additionalAddress
-                        : "",
-                    addressType: parcelController.destinationAddress != null
-                        ? parcelController.destinationAddress.addressType
-                        : "",
-                    contactPersonName: _receiverNameController.text.trim(),
-                    contactPersonNumber: _receiverPhoneController.text.trim(),
-                    latitude: parcelController.destinationAddress != null
-                        ? parcelController.destinationAddress.latitude
-                        : "0",
-                    longitude: parcelController.destinationAddress != null
-                        ? parcelController.destinationAddress.longitude
-                        : "0",
-                    method: parcelController.destinationAddress != null
-                        ? parcelController.destinationAddress.method
-                        : "",
-                    zoneId: parcelController.destinationAddress != null
-                        ? parcelController.destinationAddress.zoneId
-                        : 0,
-                    id: parcelController.destinationAddress != null
-                        ? parcelController.destinationAddress.id
-                        : 0,
-                    streetNumber: _receiverStreetNumberController.text.trim(),
-                    house: _receiverHouseController.text.trim(),
-                    floor: _receiverFloorController.text.trim(),
-                  );
-
-                  parcelController.setDestinationAddress(_destination);
-                  print(
-                      'pickup : ${Get.find<ParcelController>().pickupAddress.toJson()}');
-                  print(
-                      'destination : ${Get.find<ParcelController>().destinationAddress.toJson()}');
-
-                  Get.toNamed(RouteHelper.getParcelRequestRoute(
-                    widget.category,
-                    Get.find<ParcelController>().pickupAddress,
-                    Get.find<ParcelController>().destinationAddress,
-                  ));
-                  //}
-                }
-              },
-            )
-          : parcelController.anotherList.length > 0
-              ? CustomButton(
+      return (CustomButton(
                   margin: ResponsiveHelper.isDesktop(context)
                       ? null
                       : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
@@ -311,19 +248,62 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
                       print(
                           'destination : ${Get.find<ParcelController>().destinationAddress.toJson()}');
 
-                      Get.toNamed(RouteHelper.getParcelRequestRoute(
-                        widget.category,
-                        Get.find<ParcelController>().pickupAddress,
-                        Get.find<ParcelController>().destinationAddress,
-                      ));
+                      // Get.toNamed(RouteHelper.getParcelRequestRoute(
+                      //   widget.category,
+                      //   Get.find<ParcelController>().pickupAddress,
+                      //   Get.find<ParcelController>().destinationAddress,
+                      // ));
+
+                      Get.find<ParcelController>().startLoader(true);
+print("ff,gm,fmgmfgm");
+                      Get.find<OrderController>().errandPlaceOrder(ErrandOrderBody(
+                        cart: [], couponDiscountAmount: null, distance: parcelController.distance, scheduleAt: null,
+                        orderAmount: 0, orderNote: '', orderType: 'errand', receiverDetails: _destination,
+                        paymentMethod: parcelController.paymentIndex == 0 ? 'cash_on_delivery' : 'digital_payment', couponCode: null,
+                        storeId: null, address: Get.find<ParcelController>().pickupAddress.address, latitude: Get.find<ParcelController>().pickupAddress.latitude,
+                        longitude: Get.find<ParcelController>().pickupAddress.longitude, addressType: Get.find<ParcelController>().pickupAddress.addressType,
+                        contactPersonName: Get.find<ParcelController>().pickupAddress.contactPersonName ?? '',
+                        contactPersonNumber: Get.find<ParcelController>().pickupAddress.contactPersonNumber ?? '',
+                        streetNumber: Get.find<ParcelController>().pickupAddress.streetNumber ?? '', house: Get.find<ParcelController>().pickupAddress.house ?? '',
+                        floor: Get.find<ParcelController>().pickupAddress.floor ?? '',
+                        discountAmount: 0, taxAmount: 0,
+                        parcelCategoryId: Get.find<ParcelController>().pickupAddress.id.toString(), chargePayer: parcelController.payerTypes[parcelController.payerIndex],
+                        dmTips: "0",
+                        receiver_addresses:parcelController.anotherList,
+                        task_title:parcelController.anothertaskList,
+                         task_uploaded_by:'customer',
+
+
+
+                      ), orderCallback);
                       //}
                     }
                   },
                 )
-              : Text("Please Add Receiver Information"));
+             );
     });
   }
-
+  void orderCallback(bool isSuccess, String message, String orderID) {
+    Get.find<ParcelController>().startLoader(true);
+    if(isSuccess) {
+      if(Get.find<ParcelController>().paymentIndex == 0) {
+        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
+      }else {
+        if(GetPlatform.isWeb) {
+          Get.back();
+          String hostname = html.window.location.hostname;
+          String protocol = html.window.location.protocol;
+          String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?order_id=$orderID&&customer_id=${Get.find<UserController>()
+              .userInfoModel.id}&&callback=$protocol//$hostname${RouteHelper.orderSuccess}?id=$orderID&type=parcel&status=';
+          html.window.open(selectedUrl,"_self");
+        } else{
+          Get.offNamed(RouteHelper.getPaymentRoute(orderID, Get.find<UserController>().userInfoModel.id, 'parcel'));
+        }
+      }
+    }else {
+      showCustomSnackBar(message);
+    }
+  }
   void _validateSender() {
     if (Get.find<ParcelController>().pickupAddress == null) {
       showCustomSnackBar('select_pickup_address'.tr);

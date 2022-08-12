@@ -122,7 +122,7 @@ class Store {
     ratingCount = json['rating_count '];
     selfDeliverySystem = json['self_delivery_system'];
     posSystem = json['pos_system'];
-    deliveryCharge = json['delivery_charge'].toDouble();
+    deliveryCharge = json['delivery_charge']!=null?json['delivery_charge'].toDouble():0;
     open = json['open'];
     active = json['active'];
     featured = json['featured'];

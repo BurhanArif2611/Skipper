@@ -1,9 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/parcel_controller.dart';
 import 'package:sixam_mart/data/model/response/address_model.dart';
+import 'package:sixam_mart/data/model/response/task_model.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
@@ -19,7 +22,12 @@ import 'package:sixam_mart/view/screens/parcel/widget/address_dialog.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../controller/location_controller.dart';
+import '../../../../controller/splash_controller.dart';
+import '../../../../controller/user_controller.dart';
 import '../../../../util/images.dart';
+import '../../../base/custom_image.dart';
+import '../../../base/image_picker_widget.dart';
+import '../../../base/squre_image_picker_widget.dart';
 
 class LocationView extends StatefulWidget {
   final bool isSender;
@@ -56,7 +64,7 @@ class _LocationView extends State<LocationView> {
   final TextEditingController _notsController = TextEditingController();
   var parcelController_main;
   AddressModel addressModel_ = null;
-  List<AddressModel> anotherList = List<AddressModel>();
+  List<TaskModel> anotherList = List<TaskModel>();
 
   @override
   void dispose() {
@@ -84,269 +92,264 @@ class _LocationView extends State<LocationView> {
                   padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                   child: Column(children: [
                     SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                    if (parcelController.isSender)
-                      SearchLocationWidget(
-                        mapController: null,
-                        pickedAddress: parcelController.isSender
-                            ? parcelController.pickupAddress.address
-                            : parcelController.destinationAddress != null
-                                ? parcelController.destinationAddress.address
-                                : '',
-                        isEnabled: widget.isSender
-                            ? parcelController.isPickedUp
-                            : !parcelController.isPickedUp,
-                        isPickedUp: parcelController.isSender,
-                        hint: parcelController.isSender
-                            ? 'pick_up'.tr
-                            : 'destination'.tr,
-                      ),
+                    SearchLocationWidget(
+                      mapController: null,
+                      pickedAddress: parcelController.isSender
+                          ? parcelController.pickupAddress.address
+                          : parcelController.destinationAddress != null
+                              ? parcelController.destinationAddress.address
+                              : '',
+                      isEnabled: widget.isSender
+                          ? parcelController.isPickedUp
+                          : !parcelController.isPickedUp,
+                      isPickedUp: parcelController.isSender,
+                      hint: parcelController.isSender
+                          ? 'pick_up'.tr
+                          : 'destination'.tr,
+                    ),
                     SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                    if (parcelController.isSender)
-                      Row(children: [
-                        Expanded(
-                          flex: 4,
-                          child: CustomButton(
-                              buttonText: 'set_from_map'.tr,
-                              onPressed: () => {
-                                    print("address>ddfdf>>>>"),
-                                    Get.toNamed(
-                                        RouteHelper.getPickMapRoute(
-                                            'parcel', false),
-                                        arguments: PickMapScreen(
-                                          fromSignUp: false,
-                                          fromAddAddress: false,
-                                          canRoute: false,
-                                          route: '',
-                                          onPicked: (AddressModel address) {
-                                            if (parcelController.isPickedUp) {
-                                              parcelController.setPickupAddress(
-                                                  address, true);
-                                            } else {
-                                              parcelController
-                                                  .setDestinationAddress(
-                                                      address);
-                                            }
-                                          },
-                                        )),
-                                  }),
-                        ),
-                        SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-                        Expanded(
-                            flex: 6,
-                            child: InkWell(
-                              onTap: () {
-                                if (Get.find<AuthController>().isLoggedIn()) {
-                                  Get.dialog(AddressDialog(
-                                      onTap: (AddressModel address) {
-                                    widget.streetController.text =
-                                        address.streetNumber ?? '';
-                                    widget.houseController.text =
-                                        address.house ?? '';
-                                    widget.floorController.text =
-                                        address.floor ?? '';
-                                  }));
-                                } else {
-                                  showCustomSnackBar(
-                                      'you_are_not_logged_in'.tr);
-                                }
-                              },
-                              child: Container(
-                                height: ResponsiveHelper.isDesktop(context)
-                                    ? 44
-                                    : 50,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                        Dimensions.RADIUS_SMALL),
-                                    border: Border.all(
-                                        color: Theme.of(context).primaryColor,
-                                        width: 1)),
-                                child: Center(
-                                    child: Text('set_from_saved_address'.tr,
-                                        style: robotoBold.copyWith(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            fontSize:
-                                                Dimensions.fontSizeLarge))),
-                              ),
-                            )),
-                      ]),
+                    Row(children: [
+                      Expanded(
+                        flex: 4,
+                        child: CustomButton(
+                            buttonText: 'set_from_map'.tr,
+                            onPressed: () => {
+                                  print("address>ddfdf>>>>"),
+                                  Get.toNamed(
+                                      RouteHelper.getPickMapRoute(
+                                          'parcel', false),
+                                      arguments: PickMapScreen(
+                                        fromSignUp: false,
+                                        fromAddAddress: false,
+                                        canRoute: false,
+                                        route: '',
+                                        onPicked: (AddressModel address) {
+                                          if (parcelController.isPickedUp) {
+                                            parcelController.setPickupAddress(
+                                                address, true);
+                                          } else {
+                                            parcelController
+                                                .setDestinationAddress(address);
+                                          }
+                                        },
+                                      )),
+                                }),
+                      ),
+                      SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+                      Expanded(
+                          flex: 6,
+                          child: InkWell(
+                            onTap: () {
+                              if (Get.find<AuthController>().isLoggedIn()) {
+                                Get.dialog(AddressDialog(
+                                    onTap: (AddressModel address) {
+                                  widget.streetController.text =
+                                      address.streetNumber ?? '';
+                                  widget.houseController.text =
+                                      address.house ?? '';
+                                  widget.floorController.text =
+                                      address.floor ?? '';
+                                }));
+                              } else {
+                                showCustomSnackBar('you_are_not_logged_in'.tr);
+                              }
+                            },
+                            child: Container(
+                              height:
+                                  ResponsiveHelper.isDesktop(context) ? 44 : 50,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                      Dimensions.RADIUS_SMALL),
+                                  border: Border.all(
+                                      color: Theme.of(context).primaryColor,
+                                      width: 1)),
+                              child: Center(
+                                  child: Text('set_from_saved_address'.tr,
+                                      style: robotoBold.copyWith(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: Dimensions.fontSizeLarge))),
+                            ),
+                          )),
+                    ]),
                     SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                    if (parcelController.isSender)
-                      Column(children: [
-                        Center(
-                            child: Text(
-                                parcelController.isSender
-                                    ? 'Receiver Information'
-                                    : 'receiver_information'.tr,
-                                style: robotoMedium)),
-                        SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                        TextFieldShadow(
-                          child: MyTextField(
-                            hintText: parcelController.isSender
-                                ? 'sender_name'.tr
-                                : 'receiver_name'.tr,
-                            inputType: TextInputType.name,
-                            controller: widget.nameController,
-                            focusNode: _nameNode,
-                            nextFocus: _phoneNode,
-                            capitalization: TextCapitalization.words,
-                          ),
+                    Column(children: [
+                      Center(
+                          child: Text(
+                              parcelController.isSender
+                                  ? 'Receiver Information'
+                                  : 'receiver_information'.tr,
+                              style: robotoMedium)),
+                      SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                      TextFieldShadow(
+                        child: MyTextField(
+                          hintText: parcelController.isSender
+                              ? 'sender_name'.tr
+                              : 'receiver_name'.tr,
+                          inputType: TextInputType.name,
+                          controller: widget.nameController,
+                          focusNode: _nameNode,
+                          nextFocus: _phoneNode,
+                          capitalization: TextCapitalization.words,
                         ),
-                        SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                        TextFieldShadow(
-                          child: MyTextField(
-                            hintText: parcelController.isSender
-                                ? 'sender_phone_number'.tr
-                                : 'receiver_phone_number'.tr,
-                            inputType: TextInputType.phone,
-                            focusNode: _phoneNode,
-                            nextFocus: _streetNode,
-                            controller: widget.phoneController,
-                          ),
+                      ),
+                      SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                      TextFieldShadow(
+                        child: MyTextField(
+                          hintText: parcelController.isSender
+                              ? 'sender_phone_number'.tr
+                              : 'receiver_phone_number'.tr,
+                          inputType: TextInputType.phone,
+                          focusNode: _phoneNode,
+                          nextFocus: _streetNode,
+                          controller: widget.phoneController,
                         ),
-                        SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                      ]),
-                    if (parcelController.isSender)
-                      Column(children: [
-                        /* Center(
+                      ),
+                      SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                    ]),
+                    Column(children: [
+                      /* Center(
                                 child:
                                 Text(
                                     parcelController.isSender
                                         ? 'pickup_information'.tr
                                         : 'destination_information'.tr,
                                     style: robotoMedium)),*/
-                        SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                        TextFieldShadow(
-                          child: MyTextField(
-                            hintText:
-                                "${'street_number'.tr} (${'optional'.tr})",
-                            inputType: TextInputType.streetAddress,
-                            focusNode: _streetNode,
-                            nextFocus: _houseNode,
-                            controller: widget.streetController,
-                          ),
+                      SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                      TextFieldShadow(
+                        child: MyTextField(
+                          hintText: "${'street_number'.tr} (${'optional'.tr})",
+                          inputType: TextInputType.streetAddress,
+                          focusNode: _streetNode,
+                          nextFocus: _houseNode,
+                          controller: widget.streetController,
                         ),
-                        SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                        Row(children: [
-                          Expanded(
-                            child: TextFieldShadow(
-                              child: MyTextField(
-                                hintText: "${'house'.tr} (${'optional'.tr})",
-                                inputType: TextInputType.text,
-                                focusNode: _houseNode,
-                                nextFocus: _floorNode,
-                                controller: widget.houseController,
-                              ),
+                      ),
+                      SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                      Row(children: [
+                        Expanded(
+                          child: TextFieldShadow(
+                            child: MyTextField(
+                              hintText: "${'house'.tr} (${'optional'.tr})",
+                              inputType: TextInputType.text,
+                              focusNode: _houseNode,
+                              nextFocus: _floorNode,
+                              controller: widget.houseController,
                             ),
                           ),
-                          SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-                          Expanded(
-                            child: TextFieldShadow(
-                              child: MyTextField(
-                                hintText: "${'floor'.tr} (${'optional'.tr})",
-                                inputType: TextInputType.text,
-                                focusNode: _floorNode,
-                                inputAction: TextInputAction.done,
-                                controller: widget.floorController,
-                              ),
+                        ),
+                        SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+                        Expanded(
+                          child: TextFieldShadow(
+                            child: MyTextField(
+                              hintText: "${'floor'.tr} (${'optional'.tr})",
+                              inputType: TextInputType.text,
+                              focusNode: _floorNode,
+                              inputAction: TextInputAction.done,
+                              controller: widget.floorController,
                             ),
                           ),
-                        ]),
-                        SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                        TextFieldShadow(
-                          child: MyTextField(
-                            hintText: 'Notes',
-                            //controller: _notsController,
-                            inputType: TextInputType.name,
-                            capitalization: TextCapitalization.words,
-                          ),
-                        ),
-                        SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                        TextFieldShadow(
-                          child: Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Column(children: [
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text('Task 1',
-                                        style: robotoMedium.copyWith(
-                                            fontSize:
-                                                Dimensions.fontSizeLarge))),
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        'Take the picture of the home front',
-                                        style: robotoMedium.copyWith(
-                                            color:
-                                                Theme.of(context).disabledColor,
-                                            fontSize:
-                                                Dimensions.fontSizeLarge))),
-                                SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                              Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: DottedBorder(
-                                  color: Colors.black,
-                                  strokeWidth: 1,
-                                  child: Padding(
-                                      padding: EdgeInsets.all(10.0),
-                                      child: Icon(
-                                        Icons.add,
-                                        size: 20,
-                                      )),
-                                )),
-                                SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Comment',
-                                    style: robotoRegular.copyWith(
-                                        fontSize: Dimensions.fontSizeSmall,
-                                        color: Theme.of(context).disabledColor),
-                                  ),
-                                ),
-                                SizedBox(
-                                    height:
-                                        Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                MyTextField(
-                                  hintText: 'Type here...',
-                                  inputType: TextInputType.name,
-                                  maxLines: 5,
-                                  capitalization: TextCapitalization.words,
-                                ),
-                              ])),
                         ),
                       ]),
-                    if (!parcelController.isSender)
-                      if (anotherList.length > 0)
-                        Container(child: updateListView()),
-                    if (parcelController.isSender)
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child:
-                        Container(
-                            height: 60.0,
-                            width: 150.0,
-                            child: Align(
-                              alignment: Alignment.bottomRight,
-                              child: CustomButton(
-                                fontSize: Dimensions.fontSizeSmall,
-                                margin: ResponsiveHelper.isDesktop(context)
-                                    ? null
-                                    : EdgeInsets.all(
-                                        Dimensions.PADDING_SIZE_SMALL),
-                                buttonText: 'Add a More Task',
-                                onPressed: () {
-                                  showCustomDialog(context);
-                                },
+                      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                      TextFieldShadow(
+                        child: MyTextField(
+                          hintText: 'Notes',
+                          //controller: _notsController,
+                          inputType: TextInputType.name,
+                          capitalization: TextCapitalization.words,
+                        ),
+                      ),
+                      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                      TextFieldShadow(
+                        child: Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Column(children: [
+                              Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text('Task 1',
+                                      style: robotoMedium.copyWith(
+                                          fontSize: Dimensions.fontSizeLarge))),
+                              Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                      'Take the picture of the home front',
+                                      style: robotoMedium.copyWith(
+                                          color:
+                                              Theme.of(context).disabledColor,
+                                          fontSize: Dimensions.fontSizeLarge))),
+                              SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                    height: 60,
+                                    width: 60,
+                                    child: DottedBorder(
+                                        color: Colors.black,
+                                        strokeWidth: 1,
+                                        child: /*Get.find<UserController>().rawFile.toString()!=""?*/
+                                        SqureImagePickerWidget(
+                                            image:
+                                            '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${Get.find<ParcelController>().pickedFile}',
+                                            onTap: () =>
+                                                Get.find<ParcelController>().pickImage(),
+                                            rawFile: Get.find<ParcelController>().rawFile
+                                        ) /*:
+                                  Icon(
+                                    Icons.add,
+                                    size: 20,
+
+                                  )*/
+
+                                    )),
                               ),
-                              /* FloatingActionButton(
+                              SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Comment',
+                                  style: robotoRegular.copyWith(
+                                      fontSize: Dimensions.fontSizeSmall,
+                                      color: Theme.of(context).disabledColor),
+                                ),
+                              ),
+                              SizedBox(
+                                  height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                              MyTextField(
+                                hintText: 'Type here...',
+                                inputType: TextInputType.name,
+                                maxLines: 5,
+                                capitalization: TextCapitalization.words,
+                              ),
+                            ])),
+                      ),
+                    ]),
+                    if (anotherList.length > 0)
+                      Container(child: updateListView()),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Container(
+                          height: 60.0,
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: CustomButton(
+                              fontSize: Dimensions.fontSizeSmall,
+                              margin: ResponsiveHelper.isDesktop(context)
+                                  ? null
+                                  : EdgeInsets.all(
+                                      Dimensions.PADDING_SIZE_SMALL),
+                              buttonText: 'Add a More Task',
+                              onPressed: () {
+                                showCustomDialog(context);
+                              },
+                            ),
+                            /* FloatingActionButton(
                               child: Icon(Icons.add,
                                   color: Theme.of(context).primaryColor),
                               mini: true,
                               backgroundColor: Theme.of(context).cardColor,
                               onPressed: () => showCustomDialog(context))*/
-                            )),
-                      ),
+                          )),
+                    ),
                     ResponsiveHelper.isDesktop(context)
                         ? widget.bottomButton
                         : SizedBox(),
@@ -359,13 +362,10 @@ class _LocationView extends State<LocationView> {
   }
 
   void showCustomDialog(BuildContext context) {
-    TextEditingController nameController = TextEditingController();
-    TextEditingController phoneController = TextEditingController();
-    TextEditingController streetController = TextEditingController();
-    TextEditingController houseController = TextEditingController();
-    TextEditingController floorController = TextEditingController();
-    String Selected_address = "";
-    /* AddressModel addressModel_ = null;*/
+    TextEditingController titleController = TextEditingController();
+    TextEditingController commentController = TextEditingController();
+    Uint8List media;
+
     showGeneralDialog(
       context: context,
       barrierLabel: "Barrier",
@@ -375,101 +375,118 @@ class _LocationView extends State<LocationView> {
       pageBuilder: (_, __, ___) {
         /*GetBuilder<LocationController>(builder: (locationController)
         {*/
+        print("dlkdlkf" + Get.find<UserController>().rawFile.toString());
         return Center(
           child: Container(
-            height: 400,
+            height: 520,
             child: Card(
               child: Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Column(children: [
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text('Task 1',
-                                style: robotoMedium.copyWith(
-                                    fontSize:
-                                    Dimensions.fontSizeLarge))),
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                                'Take the picture of the home front',
-                                style: robotoMedium.copyWith(
-                                    color:
-                                    Theme.of(context).disabledColor,
-                                    fontSize:
-                                    Dimensions.fontSizeLarge))),
-                        SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                        Align(
-                            alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.all(10.0),
+                    child: Column(children: [
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('Task 1',
+                              style: robotoMedium.copyWith(
+                                  fontSize: Dimensions.fontSizeLarge))),
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('Take the picture of the home front',
+                              style: robotoMedium.copyWith(
+                                  color: Theme.of(context).disabledColor,
+                                  fontSize: Dimensions.fontSizeLarge))),
+                      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                            height: 60,
+                            width: 60,
                             child: DottedBorder(
-                              color: Colors.black,
-                              strokeWidth: 1,
-                              child: Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Icon(
+                                color: Colors.black,
+                                strokeWidth: 1,
+                                child: /*Get.find<UserController>().rawFile.toString()!=""?*/
+                                    SqureImagePickerWidget(
+                                  image:
+                                      '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${Get.find<ParcelController>().pickedFile}',
+                                  onTap: () =>
+                                      Get.find<ParcelController>().pickImage(),
+                                        rawFile: Get.find<ParcelController>().rawFile
+
+                                ) /*:
+                                  Icon(
                                     Icons.add,
                                     size: 20,
-                                  )),
-                            )),
-                        SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Comment',
-                            style: robotoRegular.copyWith(
-                                fontSize: Dimensions.fontSizeSmall,
-                                color: Theme.of(context).disabledColor),
-                          ),
+
+                                  )*/
+
+                                )),
+                      ),
+                      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Ttile',
+                          style: robotoRegular.copyWith(
+                              fontSize: Dimensions.fontSizeSmall,
+                              color: Theme.of(context).disabledColor),
                         ),
-                        SizedBox(
-                            height:
-                            Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                        MyTextField(
-                          hintText: 'Type here...',
-                          inputType: TextInputType.name,
-                          maxLines: 5,
-                          capitalization: TextCapitalization.words,
+                      ),
+                      SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                      MyTextField(
+                        hintText: 'Enter Title',
+                        inputType: TextInputType.name,
+                        controller: titleController,
+                        capitalization: TextCapitalization.words,
+                      ),
+                      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Comment',
+                          style: robotoRegular.copyWith(
+                              fontSize: Dimensions.fontSizeSmall,
+                              color: Theme.of(context).disabledColor),
                         ),
-                        CustomButton(
-                          // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                          buttonText: 'save'.tr,
-                          onPressed: () {
-                            /*if (addressModel_ == null) {
+                      ),
+                      SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                      MyTextField(
+                        hintText: 'Type here...',
+                        inputType: TextInputType.name,
+                        maxLines: 5,
+                        controller: commentController,
+                        capitalization: TextCapitalization.words,
+                      ),
+                      CustomButton(
+                        // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                        buttonText: 'save'.tr,
+                        onPressed: () {
+                          /*if (addressModel_ == null) {
                           showCustomSnackBar('select_destination_address'.tr);
                         }else*/
-                            if (nameController.text.isEmpty) {
-                              showCustomSnackBar('enter_receiver_name'.tr);
-                            } else if (phoneController.text.isEmpty) {
-                              showCustomSnackBar('enter_receiver_phone_number'.tr);
-                            } else {
-                              AddressModel _destination = AddressModel(
-                                address: addressModel_.address.toString(),
-                                additionalAddress:
-                                addressModel_.additionalAddress.toString(),
-                                addressType: addressModel_.addressType.toString(),
-                                contactPersonName: nameController.text.trim(),
-                                contactPersonNumber: phoneController.text.trim(),
-                                latitude: addressModel_.latitude.toString(),
-                                longitude: addressModel_.longitude.toString(),
-                                method: addressModel_.method.toString(),
-                                zoneId: 0,
-                                id: 0,
-                                streetNumber: streetController.text.trim(),
-                                house: houseController.text.trim(),
-                                floor: floorController.text.trim(),
-                              );
-                              // anotherList=[];
-                              parcelController_main
-                                  .setMultiDropDestinationAddress(_destination);
-                              setState(() => anotherList.add(_destination));
 
-                              Navigator.pop(context, false);
-                            }
-                          },
-                        ),
-                      ])),
+                          if (titleController.text.isEmpty) {
+                            showCustomSnackBar('Enter task title');
+                          } else if (commentController.text.isEmpty) {
+                            showCustomSnackBar('Enter task comment');
+                          } else {
+                            TaskModel _destination = TaskModel(
+                              task_title: titleController.text.toString(),
+                              task_description:
+                                  commentController.text.toString(),
+                              task_media: Get.find<ParcelController>().pickedFile,
+                              rawFile: Get.find<ParcelController>().rawFile,
+                            );
+                            // anotherList=[];
+                            parcelController_main.setMultiTask(_destination);
+                            parcelController_main.pickedFile_null();
+                            setState(() => anotherList.add(_destination));
 
+                            Navigator.pop(context, false);
+                          }
+                        },
+                      ),
+                    ])),
               ),
               color: Colors.white,
             ),
@@ -510,222 +527,77 @@ class _LocationView extends State<LocationView> {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, position) {
+        print("<><>"+Get.find<SplashController>().configModel.baseUrls.customerImageUrl.toString());
+
         return Card(
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Container(
-              child: Column(children: [
-                Column(children: [
-                  Center(
-                      child: Text(
-                          "${'receiver_information'.tr} ${' ('}${position + 1}${')'}",
-                          style: robotoMedium)),
-                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                  /* TextFieldShadow(*/
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Column(children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 10, bottom: 0, right: 0, top: 10),
-                          //apply padding to all four sides
-                          child: Column(children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text('Drop Location',
-                                  textAlign: TextAlign.start,
-                                  style: robotoMedium.copyWith(
-                                      color: Colors.black,
-                                      fontSize: Dimensions.fontSizeDefault)),
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                  anotherList[position].address.toString(),
-                                  textAlign: TextAlign.start,
-                                  style: robotoMedium.copyWith(
-                                      color: Colors.grey,
-                                      fontSize: Dimensions.fontSizeDefault)),
-                            )
-                          ]),
-                        )
-                      ])),
-                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                  /* TextFieldShadow(*/
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Column(children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 10, bottom: 0, right: 0, top: 10),
-                          //apply padding to all four sides
-                          child: Column(children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text('receiver_name'.tr,
-                                  textAlign: TextAlign.start,
-                                  style: robotoMedium.copyWith(
-                                      color: Colors.black,
-                                      fontSize: Dimensions.fontSizeDefault)),
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                  anotherList[position]
-                                      .contactPersonName
-                                      .toString(),
-                                  textAlign: TextAlign.start,
-                                  style: robotoMedium.copyWith(
-                                      color: Colors.grey,
-                                      fontSize: Dimensions.fontSizeDefault)),
-                            )
-                          ]),
-                        )
-                      ])),
-                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Column(children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 10, bottom: 0, right: 0, top: 10),
-                          //apply padding to all four sides
-                          child: Column(children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text('receiver_phone_number'.tr,
-                                  textAlign: TextAlign.start,
-                                  style: robotoMedium.copyWith(
-                                      color: Colors.black,
-                                      fontSize: Dimensions.fontSizeDefault)),
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                  anotherList[position]
-                                      .contactPersonNumber
-                                      .toString(),
-                                  textAlign: TextAlign.start,
-                                  style: robotoMedium.copyWith(
-                                      color: Colors.grey,
-                                      fontSize: Dimensions.fontSizeDefault)),
-                            )
-                          ]),
-                        )
-                      ])),
-                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                ]),
-                Column(children: [
-                  Center(
-                      child: Text('destination_information'.tr,
-                          style: robotoMedium)),
-                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Column(children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 10, bottom: 0, right: 0, top: 10),
-                          //apply padding to all four sides
-                          child: Column(children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                  "${'street_number'.tr} (${'optional'.tr})",
-                                  textAlign: TextAlign.start,
-                                  style: robotoMedium.copyWith(
-                                      color: Colors.black,
-                                      fontSize: Dimensions.fontSizeDefault)),
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                  anotherList[position].streetNumber.toString(),
-                                  textAlign: TextAlign.start,
-                                  style: robotoMedium.copyWith(
-                                      color: Colors.grey,
-                                      fontSize: Dimensions.fontSizeDefault)),
-                            )
-                          ]),
-                        )
-                      ])),
-                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                  Row(children: [
-                    Expanded(
-                      child: TextFieldShadow(
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Column(children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    left: 10, bottom: 0, right: 0, top: 10),
-                                //apply padding to all four sides
-                                child: Column(children: [
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        "${'house'.tr} (${'optional'.tr})",
-                                        textAlign: TextAlign.start,
-                                        style: robotoMedium.copyWith(
-                                            color: Colors.black,
-                                            fontSize:
-                                                Dimensions.fontSizeDefault)),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        anotherList[position].house.toString(),
-                                        textAlign: TextAlign.start,
-                                        style: robotoMedium.copyWith(
-                                            color: Colors.grey,
-                                            fontSize:
-                                                Dimensions.fontSizeDefault)),
-                                  )
-                                ]),
-                              )
-                            ])),
+
+                  child: Column(children: [
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("${'Task'} ${' ('}${position + 2}${')'}",
+                              style: robotoMedium.copyWith(
+                                  fontSize: Dimensions.fontSizeLarge))),
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('Take the picture of the home front',
+                              style: robotoMedium.copyWith(
+                                  color: Theme.of(context).disabledColor,
+                                  fontSize: Dimensions.fontSizeLarge))),
+                      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: DottedBorder(
+                            color: Colors.black,
+                            strokeWidth: 1,
+                            child:
+                            Image.memory(
+                              anotherList[position].rawFile, width: 50, height: 50, fit: BoxFit.fill,
+                            ))
+                          ),
+                      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Ttile',
+                          style: robotoRegular.copyWith(
+                              fontSize: Dimensions.fontSizeSmall,
+                              color: Theme.of(context).disabledColor),
+                        ),
                       ),
-                    ),
-                    SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-                    Expanded(
-                      child: TextFieldShadow(
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Column(children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    left: 10, bottom: 0, right: 0, top: 10),
-                                //apply padding to all four sides
-                                child: Column(children: [
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        "${'floor'.tr} (${'optional'.tr})",
-                                        textAlign: TextAlign.start,
-                                        style: robotoMedium.copyWith(
-                                            color: Colors.black,
-                                            fontSize:
-                                                Dimensions.fontSizeDefault)),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        anotherList[position].floor.toString(),
-                                        textAlign: TextAlign.start,
-                                        style: robotoMedium.copyWith(
-                                            color: Colors.grey,
-                                            fontSize:
-                                                Dimensions.fontSizeDefault)),
-                                  )
-                                ]),
-                              )
-                            ])),
+                      SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(anotherList[position].task_title.toString(),
+                            textAlign: TextAlign.start,
+                            style: robotoMedium.copyWith(
+                                color: Colors.grey,
+                                fontSize: Dimensions.fontSizeDefault)),
                       ),
-                    ),
-                  ]),
-                  SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                ]),
-              ]),
+                      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Comment',
+                          style: robotoRegular.copyWith(
+                              fontSize: Dimensions.fontSizeSmall,
+                              color: Theme.of(context).disabledColor),
+                        ),
+                      ),
+                      SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                            anotherList[position].task_description.toString(),
+                            textAlign: TextAlign.start,
+                            style: robotoMedium.copyWith(
+                                color: Colors.grey,
+                                fontSize: Dimensions.fontSizeDefault)),
+                      )
+                    ])
+
             ),
           ),
           color: Colors.white,

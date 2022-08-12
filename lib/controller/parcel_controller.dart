@@ -1,15 +1,22 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_compression_flutter/image_compression_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/order_controller.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
 import 'package:sixam_mart/data/model/response/address_model.dart';
 import 'package:sixam_mart/data/model/response/parcel_category_model.dart';
 import 'package:sixam_mart/data/model/response/place_details_model.dart';
+import 'package:sixam_mart/data/model/response/task_model.dart';
 import 'package:sixam_mart/data/model/response/zone_response_model.dart';
 import 'package:sixam_mart/data/repository/parcel_repo.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
+
+import '../helper/network_info.dart';
 
 class ParcelController extends GetxController implements GetxService {
   final ParcelRepo parcelRepo;
@@ -18,6 +25,7 @@ class ParcelController extends GetxController implements GetxService {
 
   List<ParcelCategoryModel> _parcelCategoryList;
   List<AddressModel> _anotherList = [];
+  List<TaskModel> _anothertaskList = [];
   AddressModel _pickupAddress;
   AddressModel _destinationAddress;
   bool _isPickedUp = true;
@@ -31,6 +39,7 @@ class ParcelController extends GetxController implements GetxService {
   List<ParcelCategoryModel> get parcelCategoryList => _parcelCategoryList;
 
   List<AddressModel> get anotherList => _anotherList;
+  List<TaskModel> get anothertaskList => _anothertaskList;
 
   AddressModel get pickupAddress => _pickupAddress;
 
@@ -49,11 +58,16 @@ class ParcelController extends GetxController implements GetxService {
   List<String> get payerTypes => _payerTypes;
 
   int get paymentIndex => _paymentIndex;
-
+  XFile _pickedFile;
+  Uint8List _rawFile;
+  XFile get pickedFile => _pickedFile;
+  Uint8List get rawFile => _rawFile;
   Future<void> getParcelCategoryList() async {
     Response response = await parcelRepo.getParcelCategory();
+
     if (response.statusCode == 200) {
       _parcelCategoryList = [];
+
       response.body.forEach((parcel) =>
           _parcelCategoryList.add(ParcelCategoryModel.fromJson(parcel)));
     } else {
@@ -61,7 +75,15 @@ class ParcelController extends GetxController implements GetxService {
     }
     update();
   }
+  void pickImage() async {
+    _pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if(_pickedFile != null) {
+      _pickedFile = await NetworkInfo.compressImage(_pickedFile);
+      _rawFile = await _pickedFile.readAsBytes();
+    }
 
+    update();
+  }
   void setPickupAddress(AddressModel addressModel, bool notify) {
     _pickupAddress = addressModel;
     if (notify) {
@@ -80,9 +102,16 @@ class ParcelController extends GetxController implements GetxService {
     print("setMultiDropDestinationAddress>>" + _anotherList.length.toString());
     update();
   }
+  void setMultiTask(TaskModel addressModel) {
+    print("setMultiDropDestinationAddress>>++++");
+    _anothertaskList.add(addressModel);
+    print("setMultiDropDestinationAddress>>" + _anothertaskList.length.toString());
+    update();
+  }
   void clearMultiDropDestinationAddress(){
     _anotherList.clear();
   }
+
 
   void setLocationFromPlace(
       String placeID, String address, bool isPickedUp) async {
@@ -207,5 +236,10 @@ class ParcelController extends GetxController implements GetxService {
   void startLoader(bool isEnable) {
     _isLoading = isEnable;
     update();
+  }
+
+  void pickedFile_null() {
+    _pickedFile = null;
+    _rawFile = null;
   }
 }

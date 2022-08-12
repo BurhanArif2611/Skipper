@@ -59,7 +59,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           _emailController.text = userController.userInfoModel.email ?? '';
         }
 
-        return _isLoggedIn ? userController.userInfoModel != null ? ProfileBgWidget(
+        return _isLoggedIn ? userController.userInfoModel != null ?
+        ProfileBgWidget(
           backButton: true,
           circularImage: ImagePickerWidget(
             image: '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${userController.userInfoModel.image}',

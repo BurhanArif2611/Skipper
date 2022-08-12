@@ -50,6 +50,7 @@ class ApiClient extends GetxService {
       AppConstants.LOCALIZATION_KEY: languageCode ?? AppConstants.languages[0].languageCode,
       'Authorization': 'Bearer $token'
     };
+    _header.addAll({AppConstants.Store_ID: AppConstants.StoreID.toString()});
     if(moduleID != null) {
       _header.addAll({AppConstants.MODULE_ID: moduleID.toString()});
     }else {
