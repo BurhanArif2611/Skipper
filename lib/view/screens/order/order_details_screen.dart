@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:photo_view/photo_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sixam_mart/controller/order_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/model/response/order_details_model.dart';
@@ -27,6 +28,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
+import '../../../util/app_constants.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   final OrderModel orderModel;
@@ -100,8 +103,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           double _dmTips = 0;
           OrderModel _order = orderController.trackModel;
           bool _parcel = false;
+          bool _errand = false;
           if (orderController.orderDetails != null) {
             _parcel = _order.orderType == 'parcel';
+            _errand = _order.orderType == 'errand';
             _deliveryCharge = _order.deliveryCharge;
             _couponDiscount = _order.couponDiscountAmount;
             _discount = _order.storeDiscountAmount;
@@ -117,7 +122,13 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             }
           }
           double _subTotal = _itemsPrice + _addOns;
-          double _total = _itemsPrice + _addOns - _discount + _tax + _deliveryCharge - _couponDiscount + _dmTips;
+          double _total = _itemsPrice +
+              _addOns -
+              _discount +
+              _tax +
+              _deliveryCharge -
+              _couponDiscount +
+              _dmTips;
 
           return orderController.orderDetails != null
               ? Column(children: [
@@ -300,8 +311,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                   title: 'receiver_details'.tr,
                                                   address:
                         l                              _order.deliveryAddress),*/
-                                                 Text('receiver_details'.tr, style: robotoMedium),
-                                                /*Card(
+                                              Text('receiver_details'.tr,
+                                                  style: robotoMedium),
+                                              /*Card(
                                                     child: Padding(
                                                         padding: EdgeInsets.all(
                                                             Dimensions
@@ -440,7 +452,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                     .dropoff_locations.length,
                                                 padding: EdgeInsets.zero,
                                                 itemBuilder: (context, index) {
-                                                  int drop_count = index+1;
+                                                  int drop_count = index + 1;
                                                   return Card(
                                                     child: Padding(
                                                       padding: EdgeInsets.all(
@@ -452,26 +464,65 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                                   .start,
                                                           children: [
                                                             Row(children: [
-                                                              Text("Drop Point: "+drop_count.toString(), style: robotoMedium),                                                              SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                                              Text("", style: robotoMedium),
-                                                              SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                                              Expanded(child: SizedBox()),
-                                                              if(_order.dropoff_locations[index].status == "delivered"?true:false)
+                                                              Text(
+                                                                  "Drop Point: " +
+                                                                      drop_count
+                                                                          .toString(),
+                                                                  style:
+                                                                      robotoMedium),
+                                                              SizedBox(
+                                                                  height: Dimensions
+                                                                      .PADDING_SIZE_EXTRA_SMALL),
+                                                              Text("",
+                                                                  style:
+                                                                      robotoMedium),
+                                                              SizedBox(
+                                                                  width: Dimensions
+                                                                      .PADDING_SIZE_EXTRA_SMALL),
+                                                              Expanded(
+                                                                  child:
+                                                                      SizedBox()),
+                                                              if (_order
+                                                                          .dropoff_locations[
+                                                                              index]
+                                                                          .status ==
+                                                                      "delivered"
+                                                                  ? true
+                                                                  : false)
                                                                 Container(
                                                                     height: 7,
                                                                     width: 7,
                                                                     decoration: BoxDecoration(
-                                                                        shape: BoxShape.circle, color: Colors.green)),
-                                                              if(_order.dropoff_locations[index].status == "delivered"?true:false)
-                                                                SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                                              if(_order.dropoff_locations[index].status == "delivered"?true:false)
+                                                                        shape: BoxShape
+                                                                            .circle,
+                                                                        color: Colors
+                                                                            .green)),
+                                                              if (_order
+                                                                          .dropoff_locations[
+                                                                              index]
+                                                                          .status ==
+                                                                      "delivered"
+                                                                  ? true
+                                                                  : false)
+                                                                SizedBox(
+                                                                    width: Dimensions
+                                                                        .PADDING_SIZE_EXTRA_SMALL),
+                                                              if (_order.dropoff_locations[index]
+                                                                          .status ==
+                                                                      "delivered"
+                                                                  ? true
+                                                                  : false)
                                                                 Text(
                                                                   "Delivered",
-                                                                  style: robotoRegular.copyWith(color: Theme.of(context).primaryColor,
-                                                                      fontSize: Dimensions.fontSizeSmall),
+                                                                  style: robotoRegular.copyWith(
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .primaryColor,
+                                                                      fontSize:
+                                                                          Dimensions
+                                                                              .fontSizeSmall),
                                                                 ),
                                                             ]),
-
                                                             SizedBox(
                                                                 height: Dimensions
                                                                     .PADDING_SIZE_EXTRA_SMALL),
@@ -613,12 +664,17 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                             SizedBox(
                                                                 height: Dimensions
                                                                     .PADDING_SIZE_EXTRA_SMALL),
-
-                                                            Text("OTP: "+_order
-                                                                .dropoff_locations[
-                                                            index]
-                                                                .otp.toString(), style: robotoMedium.copyWith(
-                                                                color: Theme.of(context).primaryColor)),
+                                                            Text(
+                                                                "OTP: " +
+                                                                    _order
+                                                                        .dropoff_locations[
+                                                                            index]
+                                                                        .otp
+                                                                        .toString(),
+                                                                style: robotoMedium.copyWith(
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .primaryColor)),
                                                           ]),
                                                     ),
                                                   );
@@ -901,189 +957,337 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   // Total
                                   _parcel
                                       ? SizedBox()
-                                      : Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                              Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text('item_price'.tr,
-                                                        style: robotoRegular),
-                                                    Text(
-                                                        PriceConverter
-                                                            .convertPrice(
-                                                                _itemsPrice),
-                                                        style: robotoRegular),
-                                                  ]),
-                                              SizedBox(height: 10),
-                                              Get.find<SplashController>()
-                                                      .getModule(
-                                                          _order.moduleType)
-                                                      .addOn
-                                                  ? Row(
+                                      : _errand
+                                          ? SizedBox()
+                                          : Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                  Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        Text('addons'.tr,
+                                                        Text('item_price'.tr,
                                                             style:
                                                                 robotoRegular),
-                                                        Text(
-                                                            '(+) ${PriceConverter.convertPrice(_addOns)}',
-                                                            style:
-                                                                robotoRegular),
-                                                      ],
-                                                    )
-                                                  : SizedBox(),
-                                              Get.find<SplashController>()
-                                                      .getModule(
-                                                          _order.moduleType)
-                                                      .addOn
-                                                  ? Divider(
-                                                      thickness: 1,
-                                                      color: Theme.of(context)
-                                                          .hintColor
-                                                          .withOpacity(0.5),
-                                                    )
-                                                  : SizedBox(),
-                                              Get.find<SplashController>()
-                                                      .getModule(
-                                                          _order.moduleType)
-                                                      .addOn
-                                                  ? Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text('subtotal'.tr,
-                                                            style:
-                                                                robotoMedium),
                                                         Text(
                                                             PriceConverter
                                                                 .convertPrice(
-                                                                    _subTotal),
+                                                                    _itemsPrice),
                                                             style:
-                                                                robotoMedium),
-                                                      ],
-                                                    )
-                                                  : SizedBox(),
-                                              SizedBox(
-                                                  height: Get.find<
-                                                              SplashController>()
+                                                                robotoRegular),
+                                                      ]),
+                                                  SizedBox(height: 10),
+                                                  Get.find<SplashController>()
                                                           .getModule(
                                                               _order.moduleType)
                                                           .addOn
-                                                      ? 10
-                                                      : 0),
-                                              Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text('discount'.tr,
-                                                        style: robotoRegular),
-                                                    Text(
-                                                        '(-) ${PriceConverter.convertPrice(_discount)}',
-                                                        style: robotoRegular),
-                                                  ]),
-                                              SizedBox(height: 10),
-                                              _couponDiscount > 0
-                                                  ? Row(
+                                                      ? Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text('addons'.tr,
+                                                                style:
+                                                                    robotoRegular),
+                                                            Text(
+                                                                '(+) ${PriceConverter.convertPrice(_addOns)}',
+                                                                style:
+                                                                    robotoRegular),
+                                                          ],
+                                                        )
+                                                      : SizedBox(),
+                                                  Get.find<SplashController>()
+                                                          .getModule(
+                                                              _order.moduleType)
+                                                          .addOn
+                                                      ? Divider(
+                                                          thickness: 1,
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .hintColor
+                                                              .withOpacity(0.5),
+                                                        )
+                                                      : SizedBox(),
+                                                  Get.find<SplashController>()
+                                                          .getModule(
+                                                              _order.moduleType)
+                                                          .addOn
+                                                      ? Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text('subtotal'.tr,
+                                                                style:
+                                                                    robotoMedium),
+                                                            Text(
+                                                                PriceConverter
+                                                                    .convertPrice(
+                                                                        _subTotal),
+                                                                style:
+                                                                    robotoMedium),
+                                                          ],
+                                                        )
+                                                      : SizedBox(),
+                                                  SizedBox(
+                                                      height: Get.find<
+                                                                  SplashController>()
+                                                              .getModule(_order
+                                                                  .moduleType)
+                                                              .addOn
+                                                          ? 10
+                                                          : 0),
+                                                  Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
+                                                        Text('discount'.tr,
+                                                            style:
+                                                                robotoRegular),
+                                                        Text(
+                                                            '(-) ${PriceConverter.convertPrice(_discount)}',
+                                                            style:
+                                                                robotoRegular),
+                                                      ]),
+                                                  SizedBox(height: 10),
+                                                  _couponDiscount > 0
+                                                      ? Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                              Text(
+                                                                  'coupon_discount'
+                                                                      .tr,
+                                                                  style:
+                                                                      robotoRegular),
+                                                              Text(
+                                                                '(-) ${PriceConverter.convertPrice(_couponDiscount)}',
+                                                                style:
+                                                                    robotoRegular,
+                                                              ),
+                                                            ])
+                                                      : SizedBox(),
+                                                  SizedBox(
+                                                      height:
+                                                          _couponDiscount > 0
+                                                              ? 10
+                                                              : 0),
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text('vat_tax'.tr,
+                                                            style:
+                                                                robotoRegular),
+                                                        Text(
+                                                            '(+) ${PriceConverter.convertPrice(_tax)}',
+                                                            style:
+                                                                robotoRegular),
+                                                      ]),
+                                                  SizedBox(height: 10),
+                                                  (_dmTips > 0)
+                                                      ? Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                                'delivery_man_tips'
+                                                                    .tr,
+                                                                style:
+                                                                    robotoRegular),
+                                                            Text(
+                                                                '(+) ${PriceConverter.convertPrice(_dmTips)}',
+                                                                style:
+                                                                    robotoRegular),
+                                                          ],
+                                                        )
+                                                      : SizedBox(),
+                                                  SizedBox(
+                                                      height:
+                                                          _dmTips > 0 ? 10 : 0),
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text('delivery_fee'.tr,
+                                                            style:
+                                                                robotoRegular),
+                                                        _deliveryCharge > 0
+                                                            ? Text(
+                                                                '(+) ${PriceConverter.convertPrice(_deliveryCharge)}',
+                                                                style:
+                                                                    robotoRegular,
+                                                              )
+                                                            : Text('free'.tr,
+                                                                style: robotoRegular.copyWith(
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .primaryColor)),
+                                                      ]),
+                                                ]),
+                                  if (!_errand)
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical:
+                                              Dimensions.PADDING_SIZE_SMALL),
+                                      child: Divider(
+                                          thickness: 1,
+                                          color: Theme.of(context)
+                                              .hintColor
+                                              .withOpacity(0.5)),
+                                    ),
+                                  if (!_errand)
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('total_amount'.tr,
+                                              style: robotoMedium.copyWith(
+                                                fontSize:
+                                                    Dimensions.fontSizeLarge,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                              )),
+                                          Text(
+                                            PriceConverter.convertPrice(_total),
+                                            style: robotoMedium.copyWith(
+                                                fontSize:
+                                                    Dimensions.fontSizeLarge,
+                                                color: Theme.of(context)
+                                                    .primaryColor),
+                                          ),
+                                        ]),
+                                  if (_errand &&
+                                      orderController.orderDetailsModel
+                                              .errand_bids.length >
+                                          0)
+                                    Text('Errand Bids', style: robotoRegular),
+
+                                  if (_errand &&
+                                      orderController.orderDetailsModel
+                                              .errand_bids.length >
+                                          0)
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: orderController
+                                          .orderDetailsModel.errand_bids.length,
+                                      padding: EdgeInsets.zero,
+                                      itemBuilder: (context, index) {
+                                        double amount = double.parse(
+                                            orderController
+                                                .orderDetailsModel
+                                                .errand_bids[index]
+                                                .counter_amount);
+                                        return Card(
+                                          child: Padding(
+                                              padding: EdgeInsets.all(16.0),
+                                              child: Container(
+                                                  width: double.maxFinite,
+                                                  height: orderController
+                                                  .orderDetailsModel
+                                                  .errand_bids[
+                                              index]
+                                                  .status=='pending'?120:80,
+                                                  child: Column(children: [
+                                                    Row(
+                                                        // mainAxisAlignment:
+                                                        // MainAxisAlignment
+                                                        //     .spaceBetween,
+                                                        children: [
                                                           Text(
-                                                              'coupon_discount'
-                                                                  .tr,
+                                                              'Counter Amount : ',
                                                               style:
-                                                                  robotoRegular),
-                                                          Text(
-                                                            '(-) ${PriceConverter.convertPrice(_couponDiscount)}',
-                                                            style:
-                                                                robotoRegular,
-                                                          ),
-                                                        ])
-                                                  : SizedBox(),
-                                              SizedBox(
-                                                  height: _couponDiscount > 0
-                                                      ? 10
-                                                      : 0),
-                                              Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text('vat_tax'.tr,
-                                                        style: robotoRegular),
-                                                    Text(
-                                                        '(+) ${PriceConverter.convertPrice(_tax)}',
-                                                        style: robotoRegular),
-                                                  ]),
-                                              SizedBox(height: 10),
-                                            (_dmTips > 0) ? Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text('delivery_man_tips'.tr, style: robotoRegular),
-                                                Text('(+) ${PriceConverter.convertPrice(_dmTips)}', style: robotoRegular),
-                                              ],
-                                            ) : SizedBox(),
-                                            SizedBox(height: _dmTips > 0 ? 10 : 0),
-                                              Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text('delivery_fee'.tr,
-                                                        style: robotoRegular),
-                                                    _deliveryCharge > 0
-                                                        ? Text(
-                                                            '(+) ${PriceConverter.convertPrice(_deliveryCharge)}',
-                                                            style:
-                                                                robotoRegular,
-                                                          )
-                                                        : Text('free'.tr,
-                                                            style: robotoRegular.copyWith(
+                                                                  robotoMedium
+                                                                      .copyWith(
+                                                                fontSize: Dimensions
+                                                                    .fontSizeLarge,
                                                                 color: Theme.of(
                                                                         context)
-                                                                    .primaryColor)),
-                                                  ]),
-                                            ]),
+                                                                    .disabledColor,
+                                                              )),
+                                                          Text(
+                                                            PriceConverter
+                                                                .convertPrice(
+                                                                    amount),
+                                                            style: robotoMedium.copyWith(
+                                                                fontSize: Dimensions
+                                                                    .fontSizeLarge,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor),
+                                                          ),
+                                                        ]),
+                                                    SizedBox(
+                                                        height: Dimensions
+                                                            .PADDING_SIZE_SMALL),
+                                                    Row(
+                                                        // mainAxisAlignment:
+                                                        // MainAxisAlignment
+                                                        //     .spaceBetween,
+                                                        children: [
+                                                          Text('Status : ',
+                                                              style:
+                                                                  robotoMedium
+                                                                      .copyWith(
+                                                                fontSize: Dimensions
+                                                                    .fontSizeLarge,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .disabledColor,
+                                                              )),
+                                                          Text(
+                                                            orderController
+                                                                .orderDetailsModel
+                                                                .errand_bids[
+                                                                    index]
+                                                                .status,
+                                                            style: robotoMedium
+                                                                .copyWith(
+                                                                    fontSize:
+                                                                        Dimensions
+                                                                            .fontSizeLarge,
+                                                                    color: Colors
+                                                                        .green),
+                                                          ),
+                                                        ]),
 
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical:
-                                            Dimensions.PADDING_SIZE_SMALL),
-                                    child: Divider(
-                                        thickness: 1,
-                                        color: Theme.of(context)
-                                            .hintColor
-                                            .withOpacity(0.5)),
-                                  ),
-
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('total_amount'.tr,
-                                            style: robotoMedium.copyWith(
-                                              fontSize:
-                                                  Dimensions.fontSizeLarge,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                            )),
-                                        Text(
-                                          PriceConverter.convertPrice(_total),
-                                          style: robotoMedium.copyWith(
-                                              fontSize:
-                                                  Dimensions.fontSizeLarge,
-                                              color: Theme.of(context)
-                                                  .primaryColor),
-                                        ),
-                                      ]),
+                                                    SizedBox(
+                                                        height: Dimensions
+                                                            .PADDING_SIZE_SMALL),
+                                                   if(orderController
+                                                       .orderDetailsModel
+                                                       .errand_bids[
+                                                   index]
+                                                       .status=='pending')
+                                                    CustomButton(
+                                                        height: 40,
+                                                        buttonText: 'Accept',
+                                                        onPressed: () => {
+                                                              Get.find<OrderController>().acceptErrandCounter(
+                                                                  orderController
+                                                                      .orderDetailsModel
+                                                                      .errand_bids[
+                                                                          index]
+                                                                      .order_id,
+                                                                  orderController
+                                                                      .orderDetailsModel
+                                                                      .errand_bids[
+                                                                          index]
+                                                                      .id),
+                                                            }),
+                                                  ]))),
+                                          color: Colors.white,
+                                        );
+                                      },
+                                    ),
 
                                   SizedBox(
                                       height:

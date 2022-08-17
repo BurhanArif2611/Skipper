@@ -21,6 +21,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../data/model/body/errand_order_body.dart';
+import '../data/model/body/set_errand_order_body.dart';
 import '../data/model/response/address_model.dart';
 
 class OrderController extends GetxController implements GetxService {
@@ -30,9 +31,12 @@ class OrderController extends GetxController implements GetxService {
   PaginatedOrderModel _runningOrderModel;
   PaginatedOrderModel _historyOrderModel;
   List<OrderDetailsModel> _orderDetails;
+  List<OrderModel> _orderModelDetails;
+ // List<Errand_bids> _errand_bids;
   int _paymentMethodIndex = 0;
   OrderModel _trackModel;
   ResponseModel _responseModel;
+  OrderDetailsModel _orderDetailsModel;
   bool _isLoading = false;
   bool _showCancelled = false;
   String _orderType = 'delivery';
@@ -50,7 +54,9 @@ class OrderController extends GetxController implements GetxService {
 
   PaginatedOrderModel get runningOrderModel => _runningOrderModel;
   PaginatedOrderModel get historyOrderModel => _historyOrderModel;
+  OrderDetailsModel get orderDetailsModel => _orderDetailsModel;
   List<OrderDetailsModel> get orderDetails => _orderDetails;
+ // List<Errand_bids> get errand_bids => _errand_bids;
   int get paymentMethodIndex => _paymentMethodIndex;
   OrderModel get trackModel => _trackModel;
   ResponseModel get responseModel => _responseModel;
@@ -117,7 +123,11 @@ class OrderController extends GetxController implements GetxService {
       _isLoading = false;
       if (response.statusCode == 200) {
         _orderDetails = [];
-        response.body.forEach((orderDetail) => _orderDetails.add(OrderDetailsModel.fromJson(orderDetail)));
+        _orderModelDetails = [];
+        _orderDetailsModel=OrderDetailsModel.fromJson(response.body);
+        //response.body.forEach((orderDetail) => _orderDetails.add(OrderDetailsModel.fromJson(orderDetail)));
+
+
       } else {
         ApiChecker.checkApi(response);
       }
@@ -404,6 +414,35 @@ class OrderController extends GetxController implements GetxService {
     if(notify) {
       update();
     }
+  }
+  Future<bool> acceptErrandCounter(int order_id, int id,
+      {bool back = false}) async {
+    _isLoading = true;
+    update();
+    SetErrandOrderBody _updateStatusBody = SetErrandOrderBody(
+      orderId: order_id,
+      bid_id: id,
+
+    );
+    Response response = await orderRepo.setErrandCounter(_updateStatusBody);
+    Get.back();
+    bool _isSuccess;
+
+    if (response.statusCode == 200) {
+      if (back) {
+        Get.back();
+      }
+
+      //_currentOrderList[index].orderStatus = status;
+      showCustomSnackBar(response.body['message'], isError: false);
+      _isSuccess = true;
+    } else {
+      ApiChecker.checkApi(response);
+      _isSuccess = false;
+    }
+    _isLoading = false;
+    update();
+    return _isSuccess;
   }
 
 }

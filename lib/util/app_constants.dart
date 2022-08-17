@@ -13,7 +13,7 @@ class AppConstants {
   static const String CATEGORY_URI = '/api/v1/categories';
   static const String BANNER_URI = '/api/v1/banners';
   static const String BRANCG_URI = '/api/v1/stores';
-
+  static const String Accept_ERRAND_COUNTER_URI = '/api/v1/customer/errands/orders/accept/';
   static const String STORE_ITEM_URI = '/api/v1/items/latest';
   static const String POPULAR_ITEM_URI = '/api/v1/items/popular';
   static const String REVIEWED_ITEM_URI = '/api/v1/items/most-reviewed';

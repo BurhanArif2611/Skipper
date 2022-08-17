@@ -114,6 +114,7 @@ class OrderModel {
   AddressModel receiverDetails;
   ParcelCategoryModel parcelCategory;
   List<Receiver_details> dropoff_locations;
+  List<Errand_bids> errand_bids;
   double dmTips;
   OrderModel(
       {this.id,
@@ -156,6 +157,7 @@ class OrderModel {
         this.store,
         this.orderAttachment,
         this.dropoff_locations,
+        this.errand_bids,
         this.dmTips,
       });
 
@@ -204,6 +206,12 @@ class OrderModel {
       dropoff_locations = [];
       json['dropoff_locations'].forEach((v) {
         dropoff_locations.add(new Receiver_details.fromJson(v));
+      });
+    }
+    if (json['errand_bids'] != null) {
+      errand_bids = [];
+      json['errand_bids'].forEach((v) {
+        errand_bids.add(new Errand_bids.fromJson(v));
       });
     }
   }
@@ -263,6 +271,9 @@ class OrderModel {
 
     if (this.dropoff_locations != null) {
       data['dropoff_locations'] = this.dropoff_locations.map((v) => v.toJson()).toList();
+    }
+    if (this.errand_bids != null) {
+      data['errand_bids'] = this.errand_bids.map((v) => v.toJson()).toList();
     }
     data['dm_tips'] = this.dmTips;
     return data;
@@ -338,3 +349,71 @@ class DeliveryMan {
     return data;
   }
 }
+class Errand_bids {
+  int id;
+  int order_id;
+  int delivery_man_id;
+  String amount;
+  String counter_amount;
+  String created_at;
+  String updated_at;
+  String status;
+  int is_counter_offer;
+  int is_counter_accepted;
+  String validity;
+
+
+
+  Errand_bids(
+      {this.id,
+        this.order_id,
+        this.delivery_man_id,
+        this.amount,
+        this.counter_amount,
+        this.created_at,
+        this.updated_at,
+        this.status,
+        this.is_counter_offer,
+        this.is_counter_accepted,
+        this.validity,
+
+      });
+
+  Errand_bids.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    order_id = json['order_id'];
+    delivery_man_id = json['delivery_man_id'];
+    amount = json['amount'];
+    counter_amount = json['counter_amount'];
+    created_at = json['created_at'];
+    updated_at = json['updated_at'];
+    status = json['status'];
+    is_counter_offer = json['is_counter_offer'];
+    is_counter_accepted = json['is_counter_accepted'];
+    validity = json['validity'];
+
+
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['order_id'] = this.order_id;
+    data['delivery_man_id'] = this.delivery_man_id;
+    data['amount'] = this.amount;
+    data['counter_amount'] = this.counter_amount;
+    data['created_at'] = this.created_at;
+    data['updated_at'] = this.updated_at;
+    data['status'] = this.status;
+    data['is_counter_offer'] = this.is_counter_offer;
+    data['is_counter_accepted'] = this.is_counter_accepted;
+    data['validity'] = this.validity;
+
+
+
+    return data;
+  }
+
+
+}
+
