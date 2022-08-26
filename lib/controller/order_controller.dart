@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:sixam_mart/controller/parcel_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
 import 'package:sixam_mart/data/model/body/place_order_body.dart';
@@ -124,9 +125,12 @@ class OrderController extends GetxController implements GetxService {
       if (response.statusCode == 200) {
         _orderDetails = [];
         _orderModelDetails = [];
-        _orderDetailsModel=OrderDetailsModel.fromJson(response.body);
-        //response.body.forEach((orderDetail) => _orderDetails.add(OrderDetailsModel.fromJson(orderDetail)));
-
+        try {
+          _orderDetailsModel = OrderDetailsModel.fromJson(response.body);
+        }catch(e){}
+        try {
+          response.body.forEach((orderDetail) => _orderDetails.add(OrderDetailsModel.fromJson(orderDetail)));
+        }catch(e){}
 
       } else {
         ApiChecker.checkApi(response);
@@ -196,19 +200,23 @@ class OrderController extends GetxController implements GetxService {
 
   Future<void> errandPlaceOrder(ErrandOrderBody placeOrderBody, Function(bool isSuccess, String message, String orderID) callback) async {
     _isLoading = true;
-    update();
     print("placeOrder<><>"+placeOrderBody.toJson().toString());
-    Response response = await orderRepo.errandPlaceOrder(placeOrderBody, _orderAttachment);
+    update();
+    Response response = await orderRepo.errandPlaceOrder(placeOrderBody);
    /* print("placeOrder<><>"+response.toString());*/
-    _isLoading = false;
+
     if (response.statusCode == 200) {
+      _isLoading = false;
       String message = response.body['message'];
       String orderID = response.body['order_id'].toString();
       callback(true, message, orderID);
       _orderAttachment = null;
       _rawAttachment = null;
+      try{
+        Get.find<ParcelController>().clearMultiTask();}catch(e){}
       print('-------- Order placed successfully $orderID ----------');
     } else {
+      _isLoading = false;
       callback(false, response.statusText, '-1');
     }
     update();

@@ -115,6 +115,7 @@ class OrderModel {
   ParcelCategoryModel parcelCategory;
   List<Receiver_details> dropoff_locations;
   List<Errand_bids> errand_bids;
+  List<Errand_Task> errand_tasks;
   double dmTips;
   OrderModel(
       {this.id,
@@ -158,6 +159,7 @@ class OrderModel {
         this.orderAttachment,
         this.dropoff_locations,
         this.errand_bids,
+        this.errand_tasks,
         this.dmTips,
       });
 
@@ -213,6 +215,11 @@ class OrderModel {
       json['errand_bids'].forEach((v) {
         errand_bids.add(new Errand_bids.fromJson(v));
       });
+    }if (json['errand_tasks'] != null) {
+      errand_tasks = [];
+      json['errand_tasks'].forEach((v) {
+        errand_tasks.add(new Errand_Task.fromJson(v));
+      });
     }
   }
 
@@ -261,6 +268,7 @@ class OrderModel {
     if (this.deliveryAddress != null) {
       data['delivery_address'] = this.deliveryAddress.toJson();
     }
+
     if (this.receiverDetails != null) {
       data['receiver_details'] = this.receiverDetails.toJson();
     }
@@ -274,6 +282,9 @@ class OrderModel {
     }
     if (this.errand_bids != null) {
       data['errand_bids'] = this.errand_bids.map((v) => v.toJson()).toList();
+    }
+    if (this.errand_tasks != null) {
+      data['errand_tasks'] = this.errand_tasks.map((v) => v.toJson()).toList();
     }
     data['dm_tips'] = this.dmTips;
     return data;
@@ -361,6 +372,7 @@ class Errand_bids {
   int is_counter_offer;
   int is_counter_accepted;
   String validity;
+  Delivery_man delivery_man;
 
 
 
@@ -376,6 +388,7 @@ class Errand_bids {
         this.is_counter_offer,
         this.is_counter_accepted,
         this.validity,
+        this.delivery_man,
 
       });
 
@@ -391,6 +404,8 @@ class Errand_bids {
     is_counter_offer = json['is_counter_offer'];
     is_counter_accepted = json['is_counter_accepted'];
     validity = json['validity'];
+    delivery_man = json['delivery_man'] != null ? new Delivery_man.fromJson(json['delivery_man']) : null;
+
 
 
   }
@@ -409,11 +424,137 @@ class Errand_bids {
     data['is_counter_accepted'] = this.is_counter_accepted;
     data['validity'] = this.validity;
 
-
+    if (this.delivery_man != null) {
+      data['delivery_man'] = this.delivery_man.toJson();
+    }
 
     return data;
   }
 
 
 }
+class Delivery_man {
+  int id;
+  String f_name;
+  String l_name;
+  String phone;
+  String email;
+  String identity_image;
+  String updated_at;
 
+  Delivery_man(
+      {this.id,
+        this.f_name,
+        this.l_name,
+        this.phone,
+        this.email,
+        this.updated_at,
+        this.identity_image,
+      });
+
+  Delivery_man.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    f_name = json['f_name'];
+    l_name = json['l_name'];
+    phone = json['phone'];
+    email = json['email'];
+    updated_at = json['updated_at'];
+    identity_image = json['identity_image'];
+
+
+
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['f_name'] = this.f_name;
+    data['l_name'] = this.l_name;
+    data['phone'] = this.phone;
+    data['email'] = this.email;
+    data['updated_at'] = this.updated_at;
+    data['identity_image'] = this.identity_image;
+    return data;
+  }
+
+
+}
+
+class Errand_Task {
+  int id;
+  int order_id;
+  String title;
+  String description;
+  String status;
+  String created_at;
+  String updated_at;
+  List<Errand_Task_Media> errand_task_media;
+
+  Errand_Task({
+    this.id,
+    this.order_id,
+    this.title,
+    this.description,
+    this.status,
+    this.created_at,
+    this.updated_at,
+    this.errand_task_media,
+  });
+
+  Errand_Task.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    order_id = json['order_id'];
+    title = json['title'];
+    description = json['description'];
+    created_at = json['created_at'];
+    updated_at = json['updated_at'];
+    status = json['status'];
+    if (json['errand_task_media'] != null) {
+      errand_task_media = [];
+      json['errand_task_media'].forEach((v) {
+        errand_task_media.add(new Errand_Task_Media.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['order_id'] = this.order_id;
+    data['description'] = this.description;
+    data['title'] = this.title;
+    data['created_at'] = this.created_at;
+    data['updated_at'] = this.updated_at;
+    data['status'] = this.status;
+    if (this.errand_task_media != null) {
+      data['errand_task_media'] = this.errand_task_media.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Errand_Task_Media {
+  int id;
+  int task_id;
+  String image;
+
+  Errand_Task_Media({
+    this.id,
+    this.task_id,
+    this.image,
+  });
+
+  Errand_Task_Media.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    task_id = json['task_id'];
+    image = json['image'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['image'] = this.image;
+    data['task_id'] = this.task_id;
+    return data;
+  }
+}

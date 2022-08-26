@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dotted_border/dotted_border.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sixam_mart/controller/order_controller.dart';
@@ -129,6 +130,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               _deliveryCharge -
               _couponDiscount +
               _dmTips;
+
 
           return orderController.orderDetails != null
               ? Column(children: [
@@ -830,7 +832,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                         .tr,
                                                   )
                                                 : _order.store != null
-                                                    ? Row(children: [
+                                                    ?
+                                            Row(children: [
                                                         ClipOval(
                                                             child: CustomImage(
                                                           image: _parcel
@@ -1164,43 +1167,135 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                     .primaryColor),
                                           ),
                                         ]),
-                                  if (_errand &&
-                                      orderController.orderDetailsModel
-                                              .errand_bids.length >
+                                  if (_errand && _order
+                                      .errand_bids !=null  &&
+                                      _order.errand_bids.length >
                                           0)
                                     Text('Errand Bids', style: robotoRegular),
 
-                                  if (_errand &&
-                                      orderController.orderDetailsModel
-                                              .errand_bids.length >
+                                  if (_errand && _order.errand_bids !=null &&
+                                      _order.errand_bids.length >
                                           0)
                                     ListView.builder(
                                       shrinkWrap: true,
                                       physics: NeverScrollableScrollPhysics(),
-                                      itemCount: orderController
-                                          .orderDetailsModel.errand_bids.length,
+                                      itemCount: _order.errand_bids.length,
                                       padding: EdgeInsets.zero,
                                       itemBuilder: (context, index) {
                                         double amount = double.parse(
-                                            orderController
-                                                .orderDetailsModel
+                                            _order
                                                 .errand_bids[index]
                                                 .counter_amount);
+
                                         return Card(
                                           child: Padding(
                                               padding: EdgeInsets.all(16.0),
                                               child: Container(
                                                   width: double.maxFinite,
-                                                  height: orderController
-                                                  .orderDetailsModel
+                                                  height: _order
                                                   .errand_bids[
                                               index]
-                                                  .status=='pending'?120:80,
+                                                  .status=='pending'?160:125,
                                                   child: Column(children: [
+                                                    Row(children: [
+                                                      ClipOval(
+                                                          child: CustomImage(
+                                                            image:_order.errand_bids[index].delivery_man!=null && _order.errand_bids[index].delivery_man.identity_image !=null?
+                                                                 '${Get.find<SplashController>().configModel.baseUrls.parcelCategoryImageUrl}/${_order.errand_bids[index].delivery_man.identity_image}':Images.about_us
+                                                               ,
+                                                            height: 35,
+                                                            width: 35,
+                                                            fit: BoxFit.cover,
+                                                          )),
+                                                      SizedBox(
+                                                          width: Dimensions
+                                                              .PADDING_SIZE_SMALL),
+                                                      Expanded(
+                                                          child: Column(
+                                                              crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                              children: [
+                                                                Text(
+                                                                   _order
+                                                                      .errand_bids[index]
+                                                                      .delivery_man.f_name+' '+_order
+                                                                       .errand_bids[index]
+                                                                       .delivery_man.l_name
+                                                                      ,
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                                  style: robotoRegular
+                                                                      .copyWith(
+                                                                      fontSize:
+                                                                      Dimensions.fontSizeSmall),
+                                                                ),
+                                                                Text(
+                                                                  _order
+                                                                      .errand_bids[index]
+                                                                      .delivery_man.updated_at,
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                                  style: robotoRegular.copyWith(
+                                                                      fontSize:
+                                                                      Dimensions
+                                                                          .fontSizeSmall,
+                                                                      color: Theme.of(
+                                                                          context)
+                                                                          .disabledColor),
+                                                                ),
+                                                              ])),
+                                                      (!_parcel &&
+                                                          _order.orderType ==
+                                                              'take_away' &&
+                                                          (_order
+                                                              .orderStatus ==
+                                                              'pending' ||
+                                                              _order.orderStatus ==
+                                                                  'accepted' ||
+                                                              _order.orderStatus ==
+                                                                  'confirmed' ||
+                                                              _order.orderStatus ==
+                                                                  'processing' ||
+                                                              _order.orderStatus ==
+                                                                  'handover' ||
+                                                              _order.orderStatus ==
+                                                                  'picked_up'))
+                                                          ? TextButton.icon(
+                                                        onPressed:
+                                                            () async {
+                                                          if (!_parcel) {
+                                                            String url =
+                                                                'https://www.google.com/maps/dir/?api=1&destination=${_order.store.latitude}'
+                                                                ',${_order.store.longitude}&mode=d';
+                                                            if (await canLaunchUrlString(
+                                                                url)) {
+                                                              await launchUrlString(
+                                                                  url);
+                                                            } else {
+                                                              showCustomSnackBar(
+                                                                  'unable_to_launch_google_map'
+                                                                      .tr);
+                                                            }
+                                                          }
+                                                        },
+                                                        icon: Icon(Icons
+                                                            .directions),
+                                                        label: Text(
+                                                            'direction'
+                                                                .tr),
+                                                      )
+                                                          : SizedBox(),
+                                                    ]),
+
+                                                    SizedBox(
+                                                        height: Dimensions
+                                                            .PADDING_SIZE_SMALL),
                                                     Row(
-                                                        // mainAxisAlignment:
-                                                        // MainAxisAlignment
-                                                        //     .spaceBetween,
                                                         children: [
                                                           Text(
                                                               'Counter Amount : ',
@@ -1244,8 +1339,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                                     .disabledColor,
                                                               )),
                                                           Text(
-                                                            orderController
-                                                                .orderDetailsModel
+                                                            _order
                                                                 .errand_bids[
                                                                     index]
                                                                 .status,
@@ -1262,8 +1356,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                     SizedBox(
                                                         height: Dimensions
                                                             .PADDING_SIZE_SMALL),
-                                                   if(orderController
-                                                       .orderDetailsModel
+                                                   if(_order
                                                        .errand_bids[
                                                    index]
                                                        .status=='pending')
@@ -1272,13 +1365,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                         buttonText: 'Accept',
                                                         onPressed: () => {
                                                               Get.find<OrderController>().acceptErrandCounter(
-                                                                  orderController
-                                                                      .orderDetailsModel
+                                                                  _order
                                                                       .errand_bids[
                                                                           index]
                                                                       .order_id,
-                                                                  orderController
-                                                                      .orderDetailsModel
+                                                                  _order
                                                                       .errand_bids[
                                                                           index]
                                                                       .id),
@@ -1292,8 +1383,143 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   SizedBox(
                                       height:
                                           ResponsiveHelper.isDesktop(context)
+                                              ? Dimensions.PADDING_SIZE_EXTRA_LARGE
+                                              : 0),
+                                  if (_errand &&  _order.errand_tasks !=null &&
+                                      _order.errand_tasks.length >
+                                          0)
+                                    Text('Errand Tasks', style: robotoRegular),
+                                  SizedBox(
+                                      height:
+                                          ResponsiveHelper.isDesktop(context)
                                               ? Dimensions.PADDING_SIZE_LARGE
                                               : 0),
+                                  if (_errand &&  _order.errand_tasks !=null&&
+                                      _order.errand_tasks.length >
+                                          0)
+                                    ListView.builder(
+                                      padding: const EdgeInsets.only(top: 5),
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemBuilder: (context, position) {
+
+                                        return Card(
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                              color: (_order.errand_tasks[position].status != 'pending'
+                                                  ? Colors.green
+                                                  : Colors.transparent), //<-- SEE HERE
+                                            ),
+                                            borderRadius: BorderRadius.circular(5.0),
+                                          ),
+                                          child: Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Container(
+                                                child: Column(children: [
+                                                Row(children: [
+                                                  Align(
+                                                      alignment: Alignment.centerLeft,
+                                                      child: Text(
+                                                          "${'Task'} ${'('}${position + 1}${')'}",
+                                                          style: robotoMedium.copyWith(
+                                                              fontSize:
+                                                              Dimensions.fontSizeDefault))),
+                                                  Expanded(child: SizedBox()),
+                                                  Align(
+                                                      alignment: Alignment.centerLeft,
+                                                      child: Text(
+                                                          _order.errand_tasks[position].status,
+                                                          style: robotoMedium.copyWith(
+                                                              color:_order.errand_tasks[position].status=='pending'? Theme.of(context)
+                                                                  .disabledColor : Colors.green,
+                                                              fontSize:
+                                                              Dimensions.fontSizeLarge))),
+                                            ]),
+                                                  SizedBox(
+                                                      height: Dimensions.PADDING_SIZE_LARGE),
+                                                   Align(
+                                      alignment: Alignment.centerLeft,
+                                      child:
+                                      DottedBorder(
+                                          color: Colors.black,
+                                          strokeWidth: 1,
+                                          child:(_order.errand_tasks[position].errand_task_media.length>0?
+                                          CustomImage(
+                                            image:
+                                            '${Get.find<SplashController>().configModel.baseUrls.errandTaskImageUrl}'
+                                                '/'+_order.errand_tasks[position].errand_task_media[0].image,
+                                            height: 30,
+                                            width: 30,
+                                          ):Image.asset(Images.placeholder, height: 50, width: 50, fit: BoxFit.fill))
+                                      )),
+                                                  SizedBox(
+                                                      height: Dimensions.PADDING_SIZE_LARGE),
+                                                  Align(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Text(
+                                                      'Ttile',
+                                                      style: robotoRegular.copyWith(
+                                                          fontSize: Dimensions.fontSizeSmall,
+                                                          color:
+                                                          Theme.of(context).disabledColor),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                      height:
+                                                      Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                                                  Align(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Text(
+                                                        _order.errand_tasks[position].title
+                                                            .toString(),
+                                                        textAlign: TextAlign.start,
+                                                        style: robotoMedium.copyWith(
+                                                            color: Colors.grey,
+                                                            fontSize:
+                                                            Dimensions.fontSizeDefault)),
+                                                  ),
+                                                  SizedBox(
+                                                      height: Dimensions.PADDING_SIZE_LARGE),
+                                                  Align(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Text(
+                                                      'Comment',
+                                                      style: robotoRegular.copyWith(
+                                                          fontSize: Dimensions.fontSizeSmall,
+                                                          color:
+                                                          Theme.of(context).disabledColor),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                      height:
+                                                      Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                                                  Align(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Text(
+                                                        _order
+                                                            .errand_tasks[position].description
+                                                            .toString(),
+                                                        textAlign: TextAlign.start,
+                                                        style: robotoMedium.copyWith(
+                                                            color: Colors.grey,
+                                                            fontSize:
+                                                            Dimensions.fontSizeDefault)),
+                                                  )
+                                                ])),
+                                          ),
+                                          color: Colors.white,
+                                        );
+                                      },
+                                      itemCount: _order.errand_tasks.length,
+                                    ),
+
+
+                                  SizedBox(
+                                      height:
+                                          ResponsiveHelper.isDesktop(context)
+                                              ? Dimensions.PADDING_SIZE_LARGE
+                                              : 0),
+
                                   ResponsiveHelper.isDesktop(context)
                                       ? _bottomView(
                                           orderController, _order, _parcel)
@@ -1426,7 +1652,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
       (order.orderStatus == 'delivered' &&
               (parcel
                   ? order.deliveryMan != null
-                  : orderController.orderDetails[0].itemCampaignId == null))
+                  : orderController.orderDetails !=null && orderController.orderDetails.length>0 && orderController.orderDetails[0].itemCampaignId == null))
           ? Center(
               child: Container(
                 width: Dimensions.WEB_MAX_WIDTH,

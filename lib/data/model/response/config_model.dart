@@ -267,6 +267,7 @@ class BaseUrls {
   String orderAttachmentUrl;
   String parcelCategoryImageUrl;
   String landingPageImageUrl;
+  String errandTaskImageUrl;
 
   BaseUrls(
       {this.itemImageUrl,
@@ -285,6 +286,7 @@ class BaseUrls {
         this.orderAttachmentUrl,
         this.parcelCategoryImageUrl,
         this.landingPageImageUrl,
+        this.errandTaskImageUrl,
       });
 
   BaseUrls.fromJson(Map<String, dynamic> json) {
@@ -304,6 +306,7 @@ class BaseUrls {
     orderAttachmentUrl = json['order_attachment_url'];
     parcelCategoryImageUrl = json['parcel_category_image_url'];
     landingPageImageUrl = json['landing_page_image_url'];
+    errandTaskImageUrl = json['errand_task_image_url'];
   }
 
   Map<String, dynamic> toJson() {
@@ -324,6 +327,7 @@ class BaseUrls {
     data['order_attachment_url'] = this.orderAttachmentUrl;
     data['parcel_category_image_url'] = this.parcelCategoryImageUrl;
     data['landing_page_image_url'] = this.landingPageImageUrl;
+    data['errand_task_image_url'] = this.errandTaskImageUrl;
     return data;
   }
 }

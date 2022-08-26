@@ -15,6 +15,8 @@ import 'package:sixam_mart/view/base/custom_image.dart';
 import 'package:sixam_mart/view/base/footer_view.dart';
 import 'package:sixam_mart/view/screens/home/web/module_widget.dart';
 
+import '../../../data/model/response/config_model.dart';
+
 class ParcelCategoryScreen extends StatefulWidget {
   @override
   State<ParcelCategoryScreen> createState() => _ParcelCategoryScreenState();

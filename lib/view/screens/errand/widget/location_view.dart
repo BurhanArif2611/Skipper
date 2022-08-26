@@ -65,6 +65,8 @@ class _LocationView extends State<LocationView> {
   var parcelController_main;
   AddressModel addressModel_ = null;
   List<TaskModel> anotherList = List<TaskModel>();
+  TextEditingController main_titleController = TextEditingController();
+  TextEditingController main_commentController = TextEditingController();
 
   @override
   void dispose() {
@@ -263,64 +265,96 @@ class _LocationView extends State<LocationView> {
                       TextFieldShadow(
                         child: Padding(
                             padding: EdgeInsets.all(10.0),
-                            child: Column(children: [
-                              Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text('Task 1',
-                                      style: robotoMedium.copyWith(
-                                          fontSize: Dimensions.fontSizeLarge))),
-                              Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                      'Take the picture of the home front',
-                                      style: robotoMedium.copyWith(
-                                          color:
-                                              Theme.of(context).disabledColor,
-                                          fontSize: Dimensions.fontSizeLarge))),
-                              SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(
-                                    height: 60,
-                                    width: 60,
-                                    child: DottedBorder(
-                                        color: Colors.black,
-                                        strokeWidth: 1,
-                                        child: /*Get.find<UserController>().rawFile.toString()!=""?*/
-                                        SqureImagePickerWidget(
-                                            image:
-                                            '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${Get.find<ParcelController>().pickedFile}',
-                                            onTap: () =>
-                                                Get.find<ParcelController>().pickImage(),
-                                            rawFile: Get.find<ParcelController>().rawFile
-                                        ) /*:
+                            child: (anotherList.length == 0
+                                ? Column(children: [
+                                    Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text('Task 1',
+                                            style: robotoMedium.copyWith(
+                                                fontSize:
+                                                    Dimensions.fontSizeLarge))),
+                                    Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                            'Take the picture of the home front',
+                                            style: robotoMedium.copyWith(
+                                                color: Theme.of(context)
+                                                    .disabledColor,
+                                                fontSize:
+                                                    Dimensions.fontSizeLarge))),
+                                    SizedBox(
+                                        height: Dimensions.PADDING_SIZE_LARGE),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Container(
+                                          height: 60,
+                                          width: 60,
+                                          child: DottedBorder(
+                                              color: Colors.black,
+                                              strokeWidth: 1,
+                                              child: /*Get.find<UserController>().rawFile.toString()!=""?*/
+                                                  SqureImagePickerWidget(
+                                                      image:
+                                                          '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${Get.find<ParcelController>().pickedFile}',
+                                                      onTap: () => Get.find<
+                                                              ParcelController>()
+                                                          .pickImage(),
+                                                      rawFile: Get.find<
+                                                              ParcelController>()
+                                                          .rawFile) /*:
                                   Icon(
                                     Icons.add,
                                     size: 20,
 
                                   )*/
 
-                                    )),
-                              ),
-                              SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Comment',
-                                  style: robotoRegular.copyWith(
-                                      fontSize: Dimensions.fontSizeSmall,
-                                      color: Theme.of(context).disabledColor),
-                                ),
-                              ),
-                              SizedBox(
-                                  height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                              MyTextField(
-                                hintText: 'Type here...',
-                                inputType: TextInputType.name,
-                                maxLines: 5,
-                                capitalization: TextCapitalization.words,
-                              ),
-                            ])),
+                                              )),
+                                    ),
+                                    SizedBox(
+                                        height: Dimensions.PADDING_SIZE_LARGE),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'Ttile',
+                                        style: robotoRegular.copyWith(
+                                            fontSize: Dimensions.fontSizeSmall,
+                                            color: Theme.of(context)
+                                                .disabledColor),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                        height: Dimensions
+                                            .PADDING_SIZE_EXTRA_SMALL),
+                                    MyTextField(
+                                      hintText: 'Enter Title',
+                                      inputType: TextInputType.name,
+                                      controller: main_titleController,
+                                      capitalization: TextCapitalization.words,
+                                    ),
+                                    SizedBox(
+                                        height: Dimensions.PADDING_SIZE_LARGE),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'Comment',
+                                        style: robotoRegular.copyWith(
+                                            fontSize: Dimensions.fontSizeSmall,
+                                            color: Theme.of(context)
+                                                .disabledColor),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                        height: Dimensions
+                                            .PADDING_SIZE_EXTRA_SMALL),
+                                    MyTextField(
+                                      hintText: 'Type here...',
+                                      inputType: TextInputType.name,
+                                      maxLines: 5,
+                                      controller: main_commentController,
+                                      capitalization: TextCapitalization.words,
+                                    ),
+                                  ])
+                                : null)),
                       ),
                     ]),
                     if (anotherList.length > 0)
@@ -337,9 +371,39 @@ class _LocationView extends State<LocationView> {
                                   ? null
                                   : EdgeInsets.all(
                                       Dimensions.PADDING_SIZE_SMALL),
-                              buttonText: 'Add a More Task',
+                              buttonText: anotherList.length == 0?'Add Task':'Add a More Task',
                               onPressed: () {
-                                showCustomDialog(context);
+
+                                if (anotherList.length == 0) {
+                                  if (main_titleController.text.isEmpty) {
+                                    showCustomSnackBar('Enter task title');
+                                  } else if (main_commentController
+                                      .text.isEmpty) {
+                                    showCustomSnackBar('Enter task comment');
+                                  } else {
+                                    TaskModel _destination = TaskModel(
+                                      task_title:
+                                          main_titleController.text.toString(),
+                                      task_description: main_commentController
+                                          .text
+                                          .toString(),
+                                      task_media: Get.find<ParcelController>()
+                                          .pickedFile,
+                                      rawFile:
+                                          Get.find<ParcelController>().rawFile,
+                                    );
+                                    // anotherList=[];
+                                    parcelController_main
+                                        .setMultiTask(_destination);
+                                    parcelController_main.pickedFile_null();
+                                    setState(
+                                        () => anotherList.add(_destination));
+
+                                   // showCustomDialog(context);
+                                  }
+                                } else {
+                                  showCustomDialog(context);
+                                }
                               },
                             ),
                             /* FloatingActionButton(
@@ -375,7 +439,6 @@ class _LocationView extends State<LocationView> {
       pageBuilder: (_, __, ___) {
         /*GetBuilder<LocationController>(builder: (locationController)
         {*/
-        print("dlkdlkf" + Get.find<UserController>().rawFile.toString());
         return Center(
           child: Container(
             height: 520,
@@ -407,13 +470,13 @@ class _LocationView extends State<LocationView> {
                                 strokeWidth: 1,
                                 child: /*Get.find<UserController>().rawFile.toString()!=""?*/
                                     SqureImagePickerWidget(
-                                  image:
-                                      '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${Get.find<ParcelController>().pickedFile}',
-                                  onTap: () =>
-                                      Get.find<ParcelController>().pickImage(),
-                                        rawFile: Get.find<ParcelController>().rawFile
-
-                                ) /*:
+                                        image:
+                                            '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${Get.find<ParcelController>().pickedFile}',
+                                        onTap: () =>
+                                            Get.find<ParcelController>()
+                                                .pickImage(),
+                                        rawFile: Get.find<ParcelController>()
+                                            .rawFile) /*:
                                   Icon(
                                     Icons.add,
                                     size: 20,
@@ -474,7 +537,8 @@ class _LocationView extends State<LocationView> {
                               task_title: titleController.text.toString(),
                               task_description:
                                   commentController.text.toString(),
-                              task_media: Get.find<ParcelController>().pickedFile,
+                              task_media:
+                                  Get.find<ParcelController>().pickedFile,
                               rawFile: Get.find<ParcelController>().rawFile,
                             );
                             // anotherList=[];
@@ -527,78 +591,82 @@ class _LocationView extends State<LocationView> {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, position) {
-        print("<><>"+Get.find<SplashController>().configModel.baseUrls.customerImageUrl.toString());
+        print("<><>" +
+            Get.find<SplashController>()
+                .configModel
+                .baseUrls
+                .customerImageUrl
+                .toString());
 
         return Card(
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Container(
-
-                  child: Column(children: [
-                      Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text("${'Task'} ${' ('}${position + 2}${')'}",
-                              style: robotoMedium.copyWith(
-                                  fontSize: Dimensions.fontSizeLarge))),
-                      Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('Take the picture of the home front',
-                              style: robotoMedium.copyWith(
-                                  color: Theme.of(context).disabledColor,
-                                  fontSize: Dimensions.fontSizeLarge))),
-                      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                      Align(
-                          alignment: Alignment.centerLeft,
-                          child: DottedBorder(
-                            color: Colors.black,
-                            strokeWidth: 1,
-                            child:
-                            Image.memory(
-                              anotherList[position].rawFile, width: 50, height: 50, fit: BoxFit.fill,
-                            ))
-                          ),
-                      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Ttile',
-                          style: robotoRegular.copyWith(
-                              fontSize: Dimensions.fontSizeSmall,
-                              color: Theme.of(context).disabledColor),
-                        ),
-                      ),
-                      SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(anotherList[position].task_title.toString(),
-                            textAlign: TextAlign.start,
-                            style: robotoMedium.copyWith(
-                                color: Colors.grey,
-                                fontSize: Dimensions.fontSizeDefault)),
-                      ),
-                      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Comment',
-                          style: robotoRegular.copyWith(
-                              fontSize: Dimensions.fontSizeSmall,
-                              color: Theme.of(context).disabledColor),
-                        ),
-                      ),
-                      SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                            anotherList[position].task_description.toString(),
-                            textAlign: TextAlign.start,
-                            style: robotoMedium.copyWith(
-                                color: Colors.grey,
-                                fontSize: Dimensions.fontSizeDefault)),
-                      )
-                    ])
-
-            ),
+                child: Column(children: [
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("${'Task'} ${' ('}${position + 1}${')'}",
+                      style: robotoMedium.copyWith(
+                          fontSize: Dimensions.fontSizeLarge))),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Take the picture of the home front',
+                      style: robotoMedium.copyWith(
+                          color: Theme.of(context).disabledColor,
+                          fontSize: Dimensions.fontSizeLarge))),
+              SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: DottedBorder(
+                      color: Colors.black,
+                      strokeWidth: 1,
+                      child:
+                      (anotherList[position].rawFile !=null?
+                      Image.memory(anotherList[position].rawFile,
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.fill,
+                      ):Image.asset(Images.placeholder, height: 50, width: 50, fit: BoxFit.fill))
+                      )),
+              SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Ttile',
+                  style: robotoRegular.copyWith(
+                      fontSize: Dimensions.fontSizeSmall,
+                      color: Theme.of(context).disabledColor),
+                ),
+              ),
+              SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(anotherList[position].task_title.toString(),
+                    textAlign: TextAlign.start,
+                    style: robotoMedium.copyWith(
+                        color: Colors.grey,
+                        fontSize: Dimensions.fontSizeDefault)),
+              ),
+              SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Comment',
+                  style: robotoRegular.copyWith(
+                      fontSize: Dimensions.fontSizeSmall,
+                      color: Theme.of(context).disabledColor),
+                ),
+              ),
+              SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(anotherList[position].task_description.toString(),
+                    textAlign: TextAlign.start,
+                    style: robotoMedium.copyWith(
+                        color: Colors.grey,
+                        fontSize: Dimensions.fontSizeDefault)),
+              )
+            ])),
           ),
           color: Colors.white,
         );

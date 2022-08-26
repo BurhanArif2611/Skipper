@@ -9,7 +9,7 @@ class AppConstants {
  // static const String BASE_URL = 'https://6ammart-admin.6amtech.com';
   // static const String BASE_URL = 'https://jamboy-admin.khash.ng/admin';
    static const String BASE_URL = 'http://54.194.163.45:5000';
-  //static const String BASE_URL = 'http://192.168.1.156:7500';
+  //static const String BASE_URL = 'http://192.168.1.156:7600';
   static const String CATEGORY_URI = '/api/v1/categories';
   static const String BANNER_URI = '/api/v1/banners';
   static const String BRANCG_URI = '/api/v1/stores';
@@ -86,7 +86,7 @@ class AppConstants {
   static const String WALLET_TRANSACTION_URL = '/api/v1/customer/wallet/transactions';
   static const String LOYALTY_TRANSACTION_URL = '/api/v1/customer/loyalty-point/transactions';
   static const String LOYALTY_POINT_TRANSFER_URL = '/api/v1/customer/loyalty-point/point-transfer';
-  static const int StoreID = 19;
+  static const int StoreID = 24;
   static const String Store_ID = "store-id";
   // Shared Key
   static const String THEME = '6ammart_theme';

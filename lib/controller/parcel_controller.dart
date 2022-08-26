@@ -80,6 +80,7 @@ class ParcelController extends GetxController implements GetxService {
     if(_pickedFile != null) {
       _pickedFile = await NetworkInfo.compressImage(_pickedFile);
       _rawFile = await _pickedFile.readAsBytes();
+      print("pickImage"+_pickedFile.path);
     }
 
     update();
@@ -106,6 +107,10 @@ class ParcelController extends GetxController implements GetxService {
     print("setMultiDropDestinationAddress>>++++");
     _anothertaskList.add(addressModel);
     print("setMultiDropDestinationAddress>>" + _anothertaskList.length.toString());
+    update();
+  }
+  void clearMultiTask() {
+    _anothertaskList.clear();
     update();
   }
   void clearMultiDropDestinationAddress(){

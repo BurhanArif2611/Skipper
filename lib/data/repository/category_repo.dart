@@ -11,6 +11,7 @@ class CategoryRepo {
   Future<Response> getCategoryList(bool allCategory) async {
     return await apiClient.getData(AppConstants.CATEGORY_URI, headers: allCategory ? {
       'Content-Type': 'application/json; charset=UTF-8',
+      AppConstants.Store_ID: AppConstants.StoreID.toString(),
       AppConstants.LOCALIZATION_KEY: Get.find<LocalizationController>().locale.languageCode
           ?? AppConstants.languages[0].languageCode
     } : null);

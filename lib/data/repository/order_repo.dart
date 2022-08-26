@@ -1,4 +1,5 @@
 import 'package:image_picker/image_picker.dart';
+import 'package:sixam_mart/controller/parcel_controller.dart';
 import 'package:sixam_mart/data/api/api_client.dart';
 import 'package:sixam_mart/data/model/body/errand_order_body.dart';
 import 'package:sixam_mart/data/model/body/place_order_body.dart';
@@ -15,14 +16,17 @@ import '../model/response/address_model.dart';
 class OrderRepo {
   final ApiClient apiClient;
   final SharedPreferences sharedPreferences;
+
   OrderRepo({@required this.apiClient, @required this.sharedPreferences});
 
   Future<Response> getRunningOrderList(int offset) async {
-    return await apiClient.getData('${AppConstants.RUNNING_ORDER_LIST_URI}?offset=$offset&limit=10');
+    return await apiClient.getData(
+        '${AppConstants.RUNNING_ORDER_LIST_URI}?offset=$offset&limit=10');
   }
 
   Future<Response> getHistoryOrderList(int offset) async {
-    return await apiClient.getData('${AppConstants.HISTORY_ORDER_LIST_URI}?offset=$offset&limit=10');
+    return await apiClient.getData(
+        '${AppConstants.HISTORY_ORDER_LIST_URI}?offset=$offset&limit=10');
   }
 
   Future<Response> getOrderDetails(String orderID) async {
@@ -30,24 +34,42 @@ class OrderRepo {
   }
 
   Future<Response> cancelOrder(String orderID) async {
-    return await apiClient.postData(AppConstants.ORDER_CANCEL_URI, {'_method': 'put', 'order_id': orderID});
+    return await apiClient.postData(
+        AppConstants.ORDER_CANCEL_URI, {'_method': 'put', 'order_id': orderID});
   }
 
   Future<Response> trackOrder(String orderID) async {
     return await apiClient.getData('${AppConstants.TRACK_URI}$orderID');
   }
 
-  Future<Response> placeOrder(PlaceOrderBody orderBody, XFile orderAttachment) async {
+  Future<Response> placeOrder(
+      PlaceOrderBody orderBody, XFile orderAttachment) async {
     return await apiClient.postMultipartData(
-      AppConstants.PLACE_ORDER_URI, orderBody.toJson(),
+      AppConstants.PLACE_ORDER_URI,
+      orderBody.toJson(),
       [MultipartBody('order_attachment', orderAttachment)],
     );
   }
-  Future<Response> errandPlaceOrder(ErrandOrderBody orderBody, XFile orderAttachment) async {
+
+  Future<Response> errandPlaceOrder(ErrandOrderBody orderBody) async {
+    List<MultipartBody> multipartBody = [];
+    if (Get.find<ParcelController>().anothertaskList.length > 0) {
+      for (int i = 0;
+          i < Get.find<ParcelController>().anothertaskList.length;
+          i++) {
+        if (Get.find<ParcelController>().anothertaskList[i].task_media !=
+            null) {
+          multipartBody.add(MultipartBody('task_media_file_$i[0]',
+              Get.find<ParcelController>().anothertaskList[i].task_media));
+        }
+      }
+    }
+
     return await apiClient.postMultipartData(
-      AppConstants.PLACE_ORDER_URI, orderBody.toJson(),
-      [MultipartBody('order_attachment', orderAttachment)],
-    );
+        AppConstants.PLACE_ORDER_URI, orderBody.toJson(), multipartBody
+        /* [MultipartBody('order_attachment', orderAttachment)],*/
+        /* [MultipartBody('task_media_file_1[0]', Get.find<ParcelController>().anothertaskList[0].task_media)],*/
+        );
   }
 
   Future<Response> getDeliveryManData(String orderID) async {
@@ -55,24 +77,25 @@ class OrderRepo {
   }
 
   Future<Response> switchToCOD(String orderID) async {
-    return await apiClient.postData(AppConstants.COD_SWITCH_URL, {'_method': 'put', 'order_id': orderID});
+    return await apiClient.postData(
+        AppConstants.COD_SWITCH_URL, {'_method': 'put', 'order_id': orderID});
   }
 
-  Future<Response> getDistanceInMeter(LatLng originLatLng, LatLng destinationLatLng,String multiDroplocation) async {
-    print("getDistanceInMeter>>"+('${AppConstants.DISTANCE_MATRIX_URI}'
-        '?origin_lat=${originLatLng.latitude}&origin_lng=${originLatLng.longitude}'
-        '&destination_lat=${destinationLatLng.latitude}&destination_lng=${destinationLatLng.longitude}'
-        '&destinations=${multiDroplocation}'
-    ));
+  Future<Response> getDistanceInMeter(LatLng originLatLng,
+      LatLng destinationLatLng, String multiDroplocation) async {
+    print("getDistanceInMeter>>" +
+        ('${AppConstants.DISTANCE_MATRIX_URI}'
+            '?origin_lat=${originLatLng.latitude}&origin_lng=${originLatLng.longitude}'
+            '&destination_lat=${destinationLatLng.latitude}&destination_lng=${destinationLatLng.longitude}'
+            '&destinations=${multiDroplocation}'));
     return await apiClient.getData('${AppConstants.DISTANCE_MATRIX_URI}'
         '?origin_lat=${originLatLng.latitude}&origin_lng=${originLatLng.longitude}'
         '&destination_lat=${destinationLatLng.latitude}&destination_lng=${destinationLatLng.longitude}'
-        '&destinations=${multiDroplocation}'
-    );
-
+        '&destinations=${multiDroplocation}');
   }
+
   Future<Response> setErrandCounter(SetErrandOrderBody updateStatusBody) {
-    return apiClient.putData(AppConstants.Accept_ERRAND_COUNTER_URI, updateStatusBody.toJson());
+    return apiClient.putData(
+        AppConstants.Accept_ERRAND_COUNTER_URI, updateStatusBody.toJson());
   }
-
 }

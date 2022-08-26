@@ -48,7 +48,9 @@ class ApiClient extends GetxService {
       'Content-Type': 'application/json; charset=UTF-8',
       AppConstants.ZONE_ID: zoneIDs != null ? jsonEncode(zoneIDs) : null,
       AppConstants.LOCALIZATION_KEY: languageCode ?? AppConstants.languages[0].languageCode,
-      'Authorization': 'Bearer $token'
+      AppConstants.Store_ID: AppConstants.StoreID.toString(),
+       'Authorization': 'Bearer $token',
+
     };
     _header.addAll({AppConstants.Store_ID: AppConstants.StoreID.toString()});
     if(moduleID != null) {
@@ -95,9 +97,11 @@ class ApiClient extends GetxService {
   Future<Response> postMultipartData(String uri, Map<String, String> body, List<MultipartBody> multipartBody, {Map<String, String> headers}) async {
     try {
       if(Foundation.kDebugMode) {
-        print('====> API Call: $uri\nHeader: $_mainHeaders');
-        print('====> API Body: $body with ${multipartBody.length} picture');
+        print('====> API postMultipartData Call: $uri\nHeader: $_mainHeaders');
+        //print('====> API postMultipartData Body: $body with ${multipartBody.length} picture');
       }
+      _mainHeaders.addAllIf(_mainHeaders,{AppConstants.Store_ID: AppConstants.StoreID.toString()});
+      print('====> API postMultipartData Call: $uri\nHeader: $_mainHeaders');
       Http.MultipartRequest _request = Http.MultipartRequest('POST', Uri.parse(appBaseUrl+uri));
       _request.headers.addAll(headers ?? _mainHeaders);
       for(MultipartBody multipart in multipartBody) {

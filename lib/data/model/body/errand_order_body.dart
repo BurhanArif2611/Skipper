@@ -34,6 +34,7 @@ class ErrandOrderBody {
   String _floor;
   String _dmTips;
   String _task_uploaded_by;
+  String validity;
 
 
   ErrandOrderBody(
@@ -65,6 +66,7 @@ class ErrandOrderBody {
         @required String dmTips,
         @required String task_uploaded_by,
         @required List<TaskModel> task_title,
+        @required String validity,
 
       }) {
     this._cart = cart;
@@ -95,6 +97,7 @@ class ErrandOrderBody {
     this._dmTips = dmTips;
     this._task_uploaded_by = task_uploaded_by;
     this._task_title = task_title;
+    this.validity = validity;
 
   }
 
@@ -125,6 +128,7 @@ class ErrandOrderBody {
   List<TaskModel> get task_title => _task_title;
   String get dmTips => _dmTips;
   String get task_uploaded_by => _task_uploaded_by;
+
 
 
 
@@ -231,12 +235,13 @@ class ErrandOrderBody {
     for(int i=0;i<_task_title.length;i++){
       data['task_title['+i.toString()+']'] = _task_title[i].task_title;
       data['task_description['+i.toString()+']'] = _task_title[i].task_description;
+
     }
 
 
     data['dm_tips'] = this._dmTips;
     data['task_uploaded_by'] = this._task_uploaded_by;
-    data['validity'] = "12";
+    data['validity'] = this.validity;
 
     return data;
   }

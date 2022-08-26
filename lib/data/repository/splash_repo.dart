@@ -109,7 +109,8 @@ class SplashRepo {
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
-        AppConstants.MODULE_ID: ''
+        AppConstants.MODULE_ID: '',
+        AppConstants.Store_ID: AppConstants.StoreID.toString()
       },
     );
   }

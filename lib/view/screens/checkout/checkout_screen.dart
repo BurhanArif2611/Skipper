@@ -685,7 +685,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       width: Dimensions.WEB_MAX_WIDTH,
       alignment: Alignment.center,
       padding: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-      child: !orderController.isLoading ? CustomButton(buttonText: 'confirm_order'.tr, onPressed: () {
+      child: !orderController.isLoading ?
+      CustomButton(buttonText: 'confirm_order'.tr, onPressed: () {
         bool _isAvailable = true;
         DateTime _scheduleStartDate = DateTime.now();
         DateTime _scheduleEndDate = DateTime.now();

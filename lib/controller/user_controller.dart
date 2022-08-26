@@ -86,6 +86,8 @@ class UserController extends GetxController implements GetxService {
     if(_pickedFile != null) {
       _pickedFile = await NetworkInfo.compressImage(_pickedFile);
       _rawFile = await _pickedFile.readAsBytes();
+      print("pickImage"+_pickedFile.path);
+      print("pickImage"+_rawFile.toString());
     }
     update();
   }
