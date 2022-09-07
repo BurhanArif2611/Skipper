@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart/controller/parcel_controller.dart';
 import 'package:sixam_mart/data/api/api_client.dart';
@@ -20,30 +22,79 @@ class OrderRepo {
   OrderRepo({@required this.apiClient, @required this.sharedPreferences});
 
   Future<Response> getRunningOrderList(int offset) async {
+    AddressModel _addressModel;
+    try {
+      _addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.USER_ADDRESS)));
+    } catch (e) {}
+    apiClient.updateHeader(
+      sharedPreferences.getString(AppConstants.TOKEN),_addressModel.zoneIds, sharedPreferences.getString(AppConstants.LANGUAGE_CODE),
+      AppConstants.ModelID,
+    );
     return await apiClient.getData(
         '${AppConstants.RUNNING_ORDER_LIST_URI}?offset=$offset&limit=10');
   }
 
   Future<Response> getHistoryOrderList(int offset) async {
+    AddressModel _addressModel;
+    try {
+      _addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.USER_ADDRESS)));
+    } catch (e) {}
+    apiClient.updateHeader(
+      sharedPreferences.getString(AppConstants.TOKEN),_addressModel.zoneIds, sharedPreferences.getString(AppConstants.LANGUAGE_CODE),
+      AppConstants.ModelID,
+    );
     return await apiClient.getData(
         '${AppConstants.HISTORY_ORDER_LIST_URI}?offset=$offset&limit=10');
   }
 
   Future<Response> getOrderDetails(String orderID) async {
+    AddressModel _addressModel;
+    try {
+      _addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.USER_ADDRESS)));
+    } catch (e) {}
+    apiClient.updateHeader(
+      sharedPreferences.getString(AppConstants.TOKEN),_addressModel.zoneIds, sharedPreferences.getString(AppConstants.LANGUAGE_CODE),
+      AppConstants.ModelID,
+    );
     return await apiClient.getData('${AppConstants.ORDER_DETAILS_URI}$orderID');
   }
 
   Future<Response> cancelOrder(String orderID) async {
+    AddressModel _addressModel;
+    try {
+      _addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.USER_ADDRESS)));
+    } catch (e) {}
+    apiClient.updateHeader(
+      sharedPreferences.getString(AppConstants.TOKEN),_addressModel.zoneIds, sharedPreferences.getString(AppConstants.LANGUAGE_CODE),
+      AppConstants.ModelID,
+    );
     return await apiClient.postData(
         AppConstants.ORDER_CANCEL_URI, {'_method': 'put', 'order_id': orderID});
   }
 
   Future<Response> trackOrder(String orderID) async {
+    AddressModel _addressModel;
+    try {
+      _addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.USER_ADDRESS)));
+    } catch (e) {}
+    apiClient.updateHeader(
+      sharedPreferences.getString(AppConstants.TOKEN),_addressModel.zoneIds, sharedPreferences.getString(AppConstants.LANGUAGE_CODE),
+      AppConstants.ModelID,
+    );
     return await apiClient.getData('${AppConstants.TRACK_URI}$orderID');
   }
 
   Future<Response> placeOrder(
+
       PlaceOrderBody orderBody, XFile orderAttachment) async {
+    AddressModel _addressModel;
+    try {
+      _addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.USER_ADDRESS)));
+    } catch (e) {}
+    apiClient.updateHeader(
+      sharedPreferences.getString(AppConstants.TOKEN),_addressModel.zoneIds, sharedPreferences.getString(AppConstants.LANGUAGE_CODE),
+      AppConstants.ModelID,
+    );
     return await apiClient.postMultipartData(
       AppConstants.PLACE_ORDER_URI,
       orderBody.toJson(),
@@ -52,6 +103,14 @@ class OrderRepo {
   }
 
   Future<Response> errandPlaceOrder(ErrandOrderBody orderBody) async {
+    AddressModel _addressModel;
+    try {
+      _addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.USER_ADDRESS)));
+    } catch (e) {}
+    apiClient.updateHeader(
+      sharedPreferences.getString(AppConstants.TOKEN),_addressModel.zoneIds, sharedPreferences.getString(AppConstants.LANGUAGE_CODE),
+      AppConstants.ModelID,
+    );
     List<MultipartBody> multipartBody = [];
     if (Get.find<ParcelController>().anothertaskList.length > 0) {
       for (int i = 0;
@@ -73,16 +132,40 @@ class OrderRepo {
   }
 
   Future<Response> getDeliveryManData(String orderID) async {
+    AddressModel _addressModel;
+    try {
+      _addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.USER_ADDRESS)));
+    } catch (e) {}
+    apiClient.updateHeader(
+      sharedPreferences.getString(AppConstants.TOKEN),_addressModel.zoneIds, sharedPreferences.getString(AppConstants.LANGUAGE_CODE),
+      AppConstants.ModelID,
+    );
     return await apiClient.getData('${AppConstants.LAST_LOCATION_URI}$orderID');
   }
 
   Future<Response> switchToCOD(String orderID) async {
+    AddressModel _addressModel;
+    try {
+      _addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.USER_ADDRESS)));
+    } catch (e) {}
+    apiClient.updateHeader(
+      sharedPreferences.getString(AppConstants.TOKEN),_addressModel.zoneIds, sharedPreferences.getString(AppConstants.LANGUAGE_CODE),
+      AppConstants.ModelID,
+    );
     return await apiClient.postData(
         AppConstants.COD_SWITCH_URL, {'_method': 'put', 'order_id': orderID});
   }
 
   Future<Response> getDistanceInMeter(LatLng originLatLng,
       LatLng destinationLatLng, String multiDroplocation) async {
+    AddressModel _addressModel;
+    try {
+      _addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.USER_ADDRESS)));
+    } catch (e) {}
+    apiClient.updateHeader(
+      sharedPreferences.getString(AppConstants.TOKEN),_addressModel.zoneIds, sharedPreferences.getString(AppConstants.LANGUAGE_CODE),
+      AppConstants.ModelID,
+    );
     print("getDistanceInMeter>>" +
         ('${AppConstants.DISTANCE_MATRIX_URI}'
             '?origin_lat=${originLatLng.latitude}&origin_lng=${originLatLng.longitude}'
@@ -95,6 +178,14 @@ class OrderRepo {
   }
 
   Future<Response> setErrandCounter(SetErrandOrderBody updateStatusBody) {
+    AddressModel _addressModel;
+    try {
+      _addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.USER_ADDRESS)));
+    } catch (e) {}
+    apiClient.updateHeader(
+      sharedPreferences.getString(AppConstants.TOKEN),_addressModel.zoneIds, sharedPreferences.getString(AppConstants.LANGUAGE_CODE),
+      AppConstants.ModelID,
+    );
     return apiClient.putData(
         AppConstants.Accept_ERRAND_COUNTER_URI, updateStatusBody.toJson());
   }

@@ -13,10 +13,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:http/http.dart' as Http;
 
+import '../../controller/banner_controller.dart';
+
 class ApiClient extends GetxService {
   final String appBaseUrl;
   SharedPreferences sharedPreferences;
-  static final String noInternetMessage = 'connection_to_api_server_failed'.tr;
+  static  String noInternetMessage = 'connection_to_api_server_failed'.tr;
   final int timeoutInSeconds = 60;
 
   String token;
@@ -24,50 +26,88 @@ class ApiClient extends GetxService {
 
   ApiClient({@required this.appBaseUrl, @required this.sharedPreferences}) {
     token = sharedPreferences.getString(AppConstants.TOKEN);
-    if(Foundation.kDebugMode) {
+
+    if (Foundation.kDebugMode) {
       print('Token: $token');
     }
     AddressModel _addressModel;
     try {
-      _addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.USER_ADDRESS)));
-    }catch(e) {}
+      _addressModel = AddressModel.fromJson(
+          jsonDecode(sharedPreferences.getString(AppConstants.USER_ADDRESS)));
+    } catch (e) {}
     int _moduleID;
-    if(GetPlatform.isWeb && sharedPreferences.containsKey(AppConstants.MODULE_ID)) {
+    if (GetPlatform.isWeb &&
+        sharedPreferences.containsKey(AppConstants.MODULE_ID)) {
       try {
-        _moduleID = ModuleModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.MODULE_ID))).id;
-      }catch(e) {}
+          _moduleID = ModuleModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.MODULE_ID))).id;
+      print("_moduleID>123>"+_moduleID.toString());
+      } catch (e) {}
+
+     /* try {
+          _moduleID = ModuleModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.MODULE_ID))).id;
+      } catch (e) {}*/
+
+
     }
     updateHeader(
-      token, _addressModel == null ? null : _addressModel.zoneIds,
-      sharedPreferences.getString(AppConstants.LANGUAGE_CODE), _moduleID,
+      token,
+      _addressModel == null ? null : _addressModel.zoneIds,
+      sharedPreferences.getString(AppConstants.LANGUAGE_CODE),
+      _moduleID,
     );
   }
 
-  void updateHeader(String token, List<int> zoneIDs, String languageCode, int moduleID) {
-    Map<String, String> _header = {
-      'Content-Type': 'application/json; charset=UTF-8',
-      AppConstants.ZONE_ID: zoneIDs != null ? jsonEncode(zoneIDs) : null,
-      AppConstants.LOCALIZATION_KEY: languageCode ?? AppConstants.languages[0].languageCode,
-      AppConstants.Store_ID: AppConstants.StoreID.toString(),
-       'Authorization': 'Bearer $token',
-
-    };
-    _header.addAll({AppConstants.Store_ID: AppConstants.StoreID.toString()});
-    if(moduleID != null) {
-      _header.addAll({AppConstants.MODULE_ID: moduleID.toString()});
-    }else {
-      _header.addAll({AppConstants.MODULE_ID:"1"});
+  void updateHeader(
+      String token, List<int> zoneIDs, String languageCode, int moduleID) {
+    print("moduleID>>"+moduleID.toString());
+    if(moduleID != null){
+      if(moduleID ==1){
+        moduleID=AppConstants.ModelID;
+      }
     }
+      Map<String, String> _header;
+     _header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        AppConstants.MODULE_ID: moduleID != null
+            ? moduleID.toString()
+            : AppConstants.ModelID.toString(),
+        AppConstants.ZONE_ID: zoneIDs != null ? jsonEncode(zoneIDs) : null,
+        AppConstants.LOCALIZATION_KEY:
+            languageCode ?? AppConstants.languages[0].languageCode,
+        AppConstants.Store_ID: AppConstants.StoreID.toString(),
+        'Authorization': 'Bearer $token',
+      };
+    /*} else {
+      _header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        AppConstants.ZONE_ID: zoneIDs != null ? jsonEncode(zoneIDs) : null,
+        AppConstants.LOCALIZATION_KEY:
+            languageCode ?? AppConstants.languages[0].languageCode,
+        AppConstants.Store_ID: AppConstants.StoreID.toString(),
+        'Authorization': 'Bearer $token',
+      };
+    }*/
+    _header.addAll({AppConstants.Store_ID: AppConstants.StoreID.toString()});
+    if (moduleID != null) {
+      _header.addAll({AppConstants.MODULE_ID: moduleID.toString()});
+    }
+   /* else {
+      _header.addAll({
+        AppConstants.MODULE_ID:
+            sharedPreferences.getString(AppConstants.ModelID)
+      });
+    }*/
     _mainHeaders = _header;
   }
 
-  Future<Response> getData(String uri, {Map<String, dynamic> query, Map<String, String> headers}) async {
+  Future<Response> getData(String uri,
+      {Map<String, dynamic> query, Map<String, String> headers}) async {
     try {
-      if(Foundation.kDebugMode) {
+      if (Foundation.kDebugMode) {
         print('====> API Call: $uri\nHeader: $_mainHeaders');
       }
       Http.Response _response = await Http.get(
-        Uri.parse(appBaseUrl+uri),
+        Uri.parse(appBaseUrl + uri),
         headers: headers ?? _mainHeaders,
       ).timeout(Duration(seconds: timeoutInSeconds));
       return handleResponse(_response, uri);
@@ -77,14 +117,15 @@ class ApiClient extends GetxService {
     }
   }
 
-  Future<Response> postData(String uri, dynamic body, {Map<String, String> headers}) async {
+  Future<Response> postData(String uri, dynamic body,
+      {Map<String, String> headers}) async {
     try {
-      if(Foundation.kDebugMode) {
+      if (Foundation.kDebugMode) {
         print('====> API Call: $uri\nHeader: $_mainHeaders');
         print('====> API Body: $body');
       }
       Http.Response _response = await Http.post(
-        Uri.parse(appBaseUrl+uri),
+        Uri.parse(appBaseUrl + uri),
         body: jsonEncode(body),
         headers: headers ?? _mainHeaders,
       ).timeout(Duration(seconds: timeoutInSeconds));
@@ -94,41 +135,49 @@ class ApiClient extends GetxService {
     }
   }
 
-  Future<Response> postMultipartData(String uri, Map<String, String> body, List<MultipartBody> multipartBody, {Map<String, String> headers}) async {
+  Future<Response> postMultipartData(
+      String uri, Map<String, String> body, List<MultipartBody> multipartBody,
+      {Map<String, String> headers}) async {
     try {
-      if(Foundation.kDebugMode) {
+      if (Foundation.kDebugMode) {
         print('====> API postMultipartData Call: $uri\nHeader: $_mainHeaders');
         //print('====> API postMultipartData Body: $body with ${multipartBody.length} picture');
       }
-      _mainHeaders.addAllIf(_mainHeaders,{AppConstants.Store_ID: AppConstants.StoreID.toString()});
+      _mainHeaders.addAllIf(_mainHeaders,
+          {AppConstants.Store_ID: AppConstants.StoreID.toString()});
       print('====> API postMultipartData Call: $uri\nHeader: $_mainHeaders');
-      Http.MultipartRequest _request = Http.MultipartRequest('POST', Uri.parse(appBaseUrl+uri));
+      Http.MultipartRequest _request =
+          Http.MultipartRequest('POST', Uri.parse(appBaseUrl + uri));
       _request.headers.addAll(headers ?? _mainHeaders);
-      for(MultipartBody multipart in multipartBody) {
-        if(multipart.file != null) {
+      for (MultipartBody multipart in multipartBody) {
+        if (multipart.file != null) {
           Uint8List _list = await multipart.file.readAsBytes();
           _request.files.add(Http.MultipartFile(
-            multipart.key, multipart.file.readAsBytes().asStream(), _list.length,
+            multipart.key,
+            multipart.file.readAsBytes().asStream(),
+            _list.length,
             filename: '${DateTime.now().toString()}.png',
           ));
         }
       }
       _request.fields.addAll(body);
-      Http.Response _response = await Http.Response.fromStream(await _request.send());
+      Http.Response _response =
+          await Http.Response.fromStream(await _request.send());
       return handleResponse(_response, uri);
     } catch (e) {
       return Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
 
-  Future<Response> putData(String uri, dynamic body, {Map<String, String> headers}) async {
+  Future<Response> putData(String uri, dynamic body,
+      {Map<String, String> headers}) async {
     try {
-      if(Foundation.kDebugMode) {
+      if (Foundation.kDebugMode) {
         print('====> API Call: $uri\nHeader: $_mainHeaders');
         print('====> API Body: $body');
       }
       Http.Response _response = await Http.put(
-        Uri.parse(appBaseUrl+uri),
+        Uri.parse(appBaseUrl + uri),
         body: jsonEncode(body),
         headers: headers ?? _mainHeaders,
       ).timeout(Duration(seconds: timeoutInSeconds));
@@ -140,11 +189,11 @@ class ApiClient extends GetxService {
 
   Future<Response> deleteData(String uri, {Map<String, String> headers}) async {
     try {
-      if(Foundation.kDebugMode) {
+      if (Foundation.kDebugMode) {
         print('====> API Call: $uri\nHeader: $_mainHeaders');
       }
       Http.Response _response = await Http.delete(
-        Uri.parse(appBaseUrl+uri),
+        Uri.parse(appBaseUrl + uri),
         headers: headers ?? _mainHeaders,
       ).timeout(Duration(seconds: timeoutInSeconds));
       return handleResponse(_response, uri);
@@ -157,25 +206,40 @@ class ApiClient extends GetxService {
     dynamic _body;
     try {
       _body = jsonDecode(response.body);
-    }catch(e) {}
+    } catch (e) {}
     Response _response = Response(
-      body: _body != null ? _body : response.body, bodyString: response.body.toString(),
-      request: Request(headers: response.request.headers, method: response.request.method, url: response.request.url),
-      headers: response.headers, statusCode: response.statusCode, statusText: response.reasonPhrase,
+      body: _body != null ? _body : response.body,
+      bodyString: response.body.toString(),
+      request: Request(
+          headers: response.request.headers,
+          method: response.request.method,
+          url: response.request.url),
+      headers: response.headers,
+      statusCode: response.statusCode,
+      statusText: response.reasonPhrase,
     );
-    if(_response.statusCode != 200 && _response.body != null && _response.body is !String) {
-      if(_response.body.toString().startsWith('{errors: [{code:')) {
+    if (_response.statusCode != 200 &&
+        _response.body != null &&
+        _response.body is! String) {
+      if (_response.body.toString().startsWith('{errors: [{code:')) {
         ErrorResponse _errorResponse = ErrorResponse.fromJson(_response.body);
-        _response = Response(statusCode: _response.statusCode, body: _response.body, statusText: _errorResponse.errors[0].message);
-      }else if(_response.body.toString().startsWith('{message')) {
-        _response = Response(statusCode: _response.statusCode, body: _response.body, statusText: _response.body['message']);
+        _response = Response(
+            statusCode: _response.statusCode,
+            body: _response.body,
+            statusText: _errorResponse.errors[0].message);
+      } else if (_response.body.toString().startsWith('{message')) {
+        _response = Response(
+            statusCode: _response.statusCode,
+            body: _response.body,
+            statusText: _response.body['message']);
       }
-    }else if(_response.statusCode != 200 && _response.body == null) {
+    } else if (_response.statusCode != 200 && _response.body == null) {
       _response = Response(statusCode: 0, statusText: noInternetMessage);
     }
-    if(Foundation.kDebugMode) {
-      print('====> API Response123: [${_response.statusCode}] $uri\n${(_response.body.toString())}');
-     // print('====> API Response123: [${_response.statusCode}] $uri\n${json.decode(_response.body.toString())}');
+    if (Foundation.kDebugMode) {
+      print(
+          '====> API Response123: [${_response.statusCode}] $uri\n${(_response.body.toString())}');
+      // print('====> API Response123: [${_response.statusCode}] $uri\n${json.decode(_response.body.toString())}');
     }
     return _response;
   }

@@ -170,13 +170,13 @@ class StoreController extends GetxController implements GetxService {
       if (response.statusCode == 200) {
         _store = Store.fromJson(response.body);
         Get.find<OrderController>().initializeTimeSlot(_store);
-        Get.find<OrderController>().getDistanceInKM(
+       /* Get.find<OrderController>().getDistanceInKM(
           LatLng(
             double.parse(Get.find<LocationController>().getUserAddress().latitude),
             double.parse(Get.find<LocationController>().getUserAddress().longitude),
           ),
           LatLng(double.parse(_store.latitude), double.parse(_store.longitude)),"[]"
-        );
+        );*/
         if(fromModule) {
           HomeScreen.loadData(true);
         }
@@ -184,7 +184,7 @@ class StoreController extends GetxController implements GetxService {
         ApiChecker.checkApi(response);
       }
       Get.find<OrderController>().setOrderType(
-        _store != null ? _store.delivery ? 'delivery' : 'take_away' : 'delivery', notify: false,
+        _store != null ? _store.delivery!=null && _store.delivery ? 'delivery' : 'take_away' : 'delivery', notify: false,
       );
 
       _isLoading = false;
@@ -272,7 +272,7 @@ class StoreController extends GetxController implements GetxService {
   }
 
   bool isStoreClosed(bool today, bool active, List<Schedules> schedules) {
-    if(!active) {
+    if(active!=null && !active) {
       return true;
     }
     DateTime _date = DateTime.now();
@@ -283,6 +283,7 @@ class StoreController extends GetxController implements GetxService {
     if(_weekday == 7) {
       _weekday = 0;
     }
+    if(schedules !=null)
     for(int index=0; index<schedules.length; index++) {
       if(_weekday == schedules[index].day) {
         return false;
@@ -314,4 +315,8 @@ class StoreController extends GetxController implements GetxService {
 
   String getDiscountType(Store store) => store.discount != null ? store.discount.discountType : 'percent';
 
+  void startLoader(bool isEnable) {
+    _isLoading = isEnable;
+    update();
+  }
 }

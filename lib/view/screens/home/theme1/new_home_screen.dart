@@ -13,6 +13,7 @@ import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/item_view.dart';
 import 'package:sixam_mart/view/base/paginated_list_view.dart';
+import 'package:sixam_mart/view/screens/dashboard/dashboard_screen.dart';
 import 'package:sixam_mart/view/screens/home/home_screen.dart';
 import 'package:sixam_mart/view/screens/home/theme1/banner_view1.dart';
 import 'package:sixam_mart/view/screens/home/theme1/best_reviewed_item_view.dart';
@@ -42,6 +43,7 @@ import 'package:get/get.dart';
 import '../../../../controller/localization_controller.dart';
 import '../../../../data/model/response/category_model.dart';
 import '../../../../data/model/response/item_model.dart';
+import '../../../../data/model/response/module_model.dart';
 import '../../../../data/model/response/store_model.dart';
 import '../../../../helper/date_converter.dart';
 import '../../../../helper/price_converter.dart';
@@ -58,10 +60,35 @@ class NewHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (Get.find<StoreController>().store == null) {
+      Get.find<StoreController>()
+          .getStoreDetails(Store(id: AppConstants.StoreID), true);
+
+      Get.find<StoreController>()
+          .getStoreItemList(AppConstants.StoreID, 1, 'all', false);
+    }
+    else {
+     // Get.find<StoreController>().startLoader(false);
+      try {
+        if(Get.find<SplashController>().module == null) {
+        for (int i = 0;
+            i < Get.find<SplashController>().moduleList.length;
+            i++) {
+          if (Get.find<SplashController>().moduleList[i].id ==
+              Get.find<StoreController>().store.moduleId) {
+            // Get.find<SplashController>().setModule(module);
+            Get.find<SplashController>().setModuleWithCallStoreAPI(
+                Get.find<SplashController>().moduleList[i],
+                Get.find<StoreController>().store.id);
+
+            break;
+          }
+        }}
+      } catch (e) {}
+    }
     final bool _ltr = Get.find<LocalizationController>().isLtr;
     return Scaffold(
       appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : null,
-
       endDrawer: MenuDrawer(),
       backgroundColor: Theme.of(context).cardColor,
       body: GetBuilder<StoreController>(builder: (storeController) {
@@ -136,11 +163,16 @@ class NewHomeScreen extends StatelessWidget {
                                         splashController.configModel.module ==
                                             null)
                                     ? InkWell(
-                                        onTap: () =>{print("kdjkfjkdjfkdjkfjdkfj"),
-                                            splashController.removeModule()
+                                        onTap: () => {
+                                          Get.toNamed(
+                                              RouteHelper.getFavoriteScreen())
+                                          // splashController.removeModule()
                                         },
-                                        child: Image.asset(Images.module_icon,
-                                            height: 22, width: 22),
+                                        child: Icon(Icons.favorite,
+                                            color: Colors.black,
+                                            size:
+                                                25), /*Image.asset(Images.module_icon,
+                                            height: 22, width: 22),*/
                                       )
                                     : SizedBox(),
                                 SizedBox(
@@ -254,7 +286,6 @@ class NewHomeScreen extends StatelessWidget {
                             )),
                             actions: [SizedBox()],
                           ),
-
                     SliverPersistentHeader(
                       pinned: true,
                       delegate: SliverDelegate(
@@ -311,16 +342,15 @@ class NewHomeScreen extends StatelessWidget {
                         ),
                       ))),
                     ),
-
                     SliverPadding(
-                        padding: EdgeInsets.only(top: 10.0),
-                        sliver: SliverAppBar(
-                            expandedHeight: 230,
-                            toolbarHeight: 50,
-                            pinned: true,
-                            floating: false,
-                            backgroundColor: Theme.of(context).primaryColor,
-                            /*  leading: IconButton(
+                      padding: EdgeInsets.only(top: 10.0),
+                      sliver: SliverAppBar(
+                          expandedHeight: 230,
+                          toolbarHeight: 50,
+                          pinned: true,
+                          floating: false,
+                          backgroundColor: Theme.of(context).primaryColor,
+                          /*  leading: IconButton(
                   icon: Container(
                     height: 50, width: 50,
                     decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).primaryColor),
@@ -329,14 +359,14 @@ class NewHomeScreen extends StatelessWidget {
                   ),
                   onPressed: () => Get.back(),
                 ),*/
-                            flexibleSpace: FlexibleSpaceBar(
-                              background: CustomImage(
-                                fit: BoxFit.cover,
-                                image:
-                                '${Get.find<SplashController>().configModel.baseUrls.storeCoverPhotoUrl}/${_store.coverPhoto}',
-                              ),
+                          flexibleSpace: FlexibleSpaceBar(
+                            background: CustomImage(
+                              fit: BoxFit.cover,
+                              image:
+                                  '${Get.find<SplashController>().configModel.baseUrls.storeCoverPhotoUrl}/${_store.coverPhoto}',
                             ),
-                            actions: [SizedBox()]
+                          ),
+                          actions: [SizedBox()]
                           /*  [IconButton(
                   onPressed: () => Get.toNamed(RouteHelper.getCartRoute()),
                   icon: Container(
@@ -346,10 +376,8 @@ class NewHomeScreen extends StatelessWidget {
                     child: CartWidget(color: Theme.of(context).cardColor, size: 15, fromStore: true),
                   ),
                 )],*/
-                        ),
+                          ),
                     ),
-
-
                     SliverToBoxAdapter(
                         child: Center(
                             child: Container(
@@ -435,7 +463,8 @@ class NewHomeScreen extends StatelessWidget {
                       ]),
                     ))),
                     (storeController.categoryList.length > 0)
-                        ? SliverPersistentHeader(
+                        ?
+                    SliverPersistentHeader(
                             pinned: true,
                             delegate: SliverDelegate(
                                 child: Center(
@@ -559,7 +588,10 @@ class NewHomeScreen extends StatelessWidget {
                         // onPaginate: (int offset) => storeController.getStoreItemList(widget.store.id, offset, storeController.type, false),
                         onPaginate: (int offset) =>
                             storeController.getStoreItemList(
-                                (AppConstants.StoreID), offset, storeController.type, false),
+                                (AppConstants.StoreID),
+                                offset,
+                                storeController.type,
+                                false),
                         totalSize: storeController.storeItemModel != null
                             ? storeController.storeItemModel.totalSize
                             : null,

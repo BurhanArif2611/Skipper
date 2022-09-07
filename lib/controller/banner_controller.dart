@@ -1,33 +1,42 @@
 
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
 import 'package:sixam_mart/data/model/response/banner_model.dart';
 import 'package:sixam_mart/data/model/response/branch.dart';
 import 'package:sixam_mart/data/model/response/branch_model.dart';
+import 'package:sixam_mart/data/model/response/store_model.dart';
+import 'package:sixam_mart/data/model/response/store_model.dart';
 import 'package:sixam_mart/data/repository/banner_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sixam_mart/data/model/response/store_model.dart';
+import 'package:sixam_mart/util/app_constants.dart';
+
+
+
 
 
 class BannerController extends GetxController implements GetxService {
   final BannerRepo bannerRepo;
   BannerController({@required this.bannerRepo});
-
+  int Module_id=0;
   List<String> _bannerImageList;
   List<String> _featuredBannerList;
   List<dynamic> _bannerDataList;
-  List<Store> _branchStoreList;
+  //List<Store> _branchStoreList;
+  Store _branchStoreList;
   List<dynamic> _featuredBannerDataList;
   int _currentIndex = 0;
-  List<Store> get branchStoreList => _branchStoreList;
+  //List<Store> get branchStoreList => _branchStoreList;
+  Store get branchStoreList => _branchStoreList;
+  int get _Module_id => Module_id;
   List<String> get bannerImageList => _bannerImageList;
   List<String> get featuredBannerList => _featuredBannerList;
   List<dynamic> get bannerDataList => _bannerDataList;
   List<dynamic> get featuredBannerDataList => _featuredBannerDataList;
   int get currentIndex => _currentIndex;
-
+  SharedPreferences sharedPreferences;
   Future<void> getFeaturedBanner() async {
     Response response = await bannerRepo.getFeaturedBannerList();
     if (response.statusCode == 200) {
@@ -83,13 +92,18 @@ class BannerController extends GetxController implements GetxService {
     if(_branchStoreList == null || reload) {
       Response response = await bannerRepo.getBranchList();
       if (response.statusCode == 200) {
-        _branchStoreList=[];
-        response.body.forEach((store)  {
+      //  _branchStoreList=[];
+        /*response.body.forEach((store)  {
 
           Store branch=Store.fromJson(store);
           _branchStoreList.add(branch);
-        });
-        print("getBranchList>>123>>"+_branchStoreList.length.toString());
+        });*/
+        _branchStoreList = Store.fromJson(response.body);
+        // Module_id=_branchStoreList.moduleId;
+        AppConstants.ModelID=branchStoreList.moduleId;
+        print("getBranchList>>123>>"+_branchStoreList.moduleId.toString());
+
+       // print("getBranchList>>123>>"+_branchStoreList.toString());
       //  response.body.forEach((store) => print("getBranchList>123123>>"+store.toString()));
       } else {
         ApiChecker.checkApi(response);

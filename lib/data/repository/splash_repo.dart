@@ -82,7 +82,7 @@ class SplashRepo {
     }catch(e) {}
     apiClient.updateHeader(
       sharedPreferences.getString(AppConstants.TOKEN), _addressModel == null ? null : _addressModel.zoneIds,
-      sharedPreferences.getString(AppConstants.LANGUAGE_CODE), module != null ? module.id : null,
+      sharedPreferences.getString(AppConstants.LANGUAGE_CODE), module != null ? AppConstants.ModelID : null,
     );
     if(module != null) {
       await sharedPreferences.setString(AppConstants.MODULE_ID, jsonEncode(module.toJson()));

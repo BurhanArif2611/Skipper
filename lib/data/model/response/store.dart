@@ -1,35 +1,3 @@
-class StoreModel {
-  int totalSize;
-  String limit;
-  int offset;
-  List<Store> stores;
-
-  StoreModel({this.totalSize, this.limit, this.offset, this.stores});
-
-  StoreModel.fromJson(Map<String, dynamic> json) {
-    totalSize = json['total_size'];
-    limit = json['limit'].toString();
-    offset = (json['offset'] != null && json['offset'].toString().trim().isNotEmpty) ? int.parse(json['offset'].toString()) : null;
-    if (json['stores'] != null) {
-      stores = [];
-      json['stores'].forEach((v) {
-        stores.add(new Store.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['total_size'] = this.totalSize;
-    data['limit'] = this.limit;
-    data['offset'] = this.offset;
-    if (this.stores != null) {
-      data['stores'] = this.stores.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
 class Store {
   int id;
   String name;
@@ -332,41 +300,40 @@ class Branches {
   Discount discount;
   List<Schedules> schedules;
 
-  Branches(
-      {this.id,
-        this.name,
-        this.phone,
-        this.email,
-        this.logo,
-        this.latitude,
-        this.longitude,
-        this.address,
-        this.minimumOrder,
-        this.currency,
-        this.freeDelivery,
-        this.coverPhoto,
-        this.delivery,
-        this.takeAway,
-        this.scheduleOrder,
-        this.avgRating,
-        this.tax,
-        this.featured,
-        this.zoneId,
-        this.ratingCount,
-        this.selfDeliverySystem,
-        this.posSystem,
-        this.deliveryCharge,
-        this.open,
-        this.active,
-        this.deliveryTime,
-        this.categoryIds,
-        this.veg,
-        this.nonVeg,
-        this.moduleId,
-        this.orderPlaceToScheduleInterval,
-        this.discount,
-        this.schedules,
-        });
+  Branches({this.id,
+    this.name,
+    this.phone,
+    this.email,
+    this.logo,
+    this.latitude,
+    this.longitude,
+    this.address,
+    this.minimumOrder,
+    this.currency,
+    this.freeDelivery,
+    this.coverPhoto,
+    this.delivery,
+    this.takeAway,
+    this.scheduleOrder,
+    this.avgRating,
+    this.tax,
+    this.featured,
+    this.zoneId,
+    this.ratingCount,
+    this.selfDeliverySystem,
+    this.posSystem,
+    this.deliveryCharge,
+    this.open,
+    this.active,
+    this.deliveryTime,
+    this.categoryIds,
+    this.veg,
+    this.nonVeg,
+    this.moduleId,
+    this.orderPlaceToScheduleInterval,
+    this.discount,
+    this.schedules,
+  });
 
   Branches.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -377,19 +344,22 @@ class Branches {
     latitude = json['latitude'];
     longitude = json['longitude'];
     address = json['address'];
-    minimumOrder = json['minimum_order'] == null ? 0 : json['minimum_order'].toDouble();
+    minimumOrder =
+    json['minimum_order'] == null ? 0 : json['minimum_order'].toDouble();
     currency = json['currency'];
     freeDelivery = json['free_delivery'];
     coverPhoto = json['cover_photo'] != null ? json['cover_photo'] : '';
     delivery = json['delivery'];
     takeAway = json['take_away'];
     scheduleOrder = json['schedule_order'];
-    avgRating = json['avg_rating']!=null?json['avg_rating'].toDouble():0.0;
+    avgRating =
+    json['avg_rating'] != null ? json['avg_rating'].toDouble() : 0.0;
     tax = json['tax'] != null ? json['tax'].toDouble() : null;
     ratingCount = json['rating_count '];
     selfDeliverySystem = json['self_delivery_system'];
     posSystem = json['pos_system'];
-    deliveryCharge = json['delivery_charge']!=null?json['delivery_charge'].toDouble():0;
+    deliveryCharge =
+    json['delivery_charge'] != null ? json['delivery_charge'].toDouble() : 0;
     open = json['open'];
     active = json['active'];
     featured = json['featured'];
@@ -399,8 +369,10 @@ class Branches {
     nonVeg = json['non_veg'];
     moduleId = json['module_id'];
     orderPlaceToScheduleInterval = json['order_place_to_schedule_interval'];
-    categoryIds = json['category_ids'] != null ? json['category_ids'].cast<int>() : [];
-    discount = json['discount'] != null ? new Discount.fromJson(json['discount']) : null;
+    categoryIds =
+    json['category_ids'] != null ? json['category_ids'].cast<int>() : [];
+    discount =
+    json['discount'] != null ? new Discount.fromJson(json['discount']) : null;
     if (json['schedules'] != null) {
       schedules = <Schedules>[];
       json['schedules'].forEach((v) {
@@ -439,7 +411,8 @@ class Branches {
     data['zone_id'] = this.zoneId;
     data['non_veg'] = this.nonVeg;
     data['module_id'] = this.moduleId;
-    data['order_place_to_schedule_interval'] = this.orderPlaceToScheduleInterval;
+    data['order_place_to_schedule_interval'] =
+        this.orderPlaceToScheduleInterval;
     data['delivery_time'] = this.deliveryTime;
     data['category_ids'] = this.categoryIds;
     if (this.discount != null) {

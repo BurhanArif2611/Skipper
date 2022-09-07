@@ -130,11 +130,13 @@ class SplashController extends GetxController implements GetxService {
   }
 
   void switchModule(int index, bool fromPhone) async {
+
     if(_module == null || _module.id != _moduleList[index].id) {
       bool _clearData = (Get.find<CartController>().cartList.length > 0
           && Get.find<CartController>().cartList[0].item.moduleId != _moduleList[index].id);
       bool _switch = _module != null && _module.id != _moduleList[index].id;
       if(_clearData || (_switch && !fromPhone)) {
+
         Get.dialog(ConfirmationDialog(
           icon: Images.warning, title: _clearData ? 'are_you_sure_to_reset'.tr : null,
           description: 'if_you_continue_without_another_store'.tr,
@@ -158,6 +160,7 @@ class SplashController extends GetxController implements GetxService {
     _moduleIndex = index;
     update();
   }
+
 
   void removeModule() {
     setModule(null);

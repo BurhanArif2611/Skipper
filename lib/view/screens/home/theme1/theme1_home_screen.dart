@@ -29,6 +29,7 @@ class Theme1HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+print("Theme1HomeScreen>>>>");
     return CustomScrollView(
       controller: scrollController,
       physics: AlwaysScrollableScrollPhysics(),
@@ -42,7 +43,9 @@ class Theme1HomeScreen extends StatelessWidget {
             width: Dimensions.WEB_MAX_WIDTH, height: 50, color: Theme.of(context).backgroundColor,
             child: Row(children: [
               (splashController.module != null && splashController.configModel.module == null) ? InkWell(
-                onTap: () => splashController.removeModule(),
+                onTap: () =>
+                    splashController.removeModule()
+               ,
                 child: Image.asset(Images.module_icon, height: 22, width: 22),
               ) : SizedBox(),
               SizedBox(width: (splashController.module != null && splashController.configModel.module
@@ -175,7 +178,8 @@ class Theme1HomeScreen extends StatelessWidget {
                 );
               }),*/
 
-            ]) : ModuleView(splashController: splashController),
+            ]) :
+            ModuleView(splashController: splashController),
           )),
         ),
       ],

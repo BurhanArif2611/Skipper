@@ -29,10 +29,12 @@ class StoreBranch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<BannerController>(builder: (branchStoreList) {
-      List<Store> _storeList = branchStoreList.branchStoreList;
 
-      return (_storeList != null && _storeList.length == 0) ? SizedBox() : Column(
+    return GetBuilder<BannerController>(builder: (branchStoreList) {
+      //List<Store> _storeList = branchStoreList.branchStoreList;
+      Store _storeList = branchStoreList.branchStoreList;
+       return (_storeList == null && _storeList.branches.length>0) ? SizedBox() :
+      Column(
         children: [
           Padding(
             padding: EdgeInsets.fromLTRB(10, isPopular ? 2 : 15, 10, 10),
@@ -48,14 +50,14 @@ class StoreBranch extends StatelessWidget {
 
           SizedBox(
              height: 450,
-            child:  _storeList.length>0 ?
+            child:  _storeList.branches.length>0 ?
             ListView.builder(
               //controller: ScrollController(),
              // physics: BouncingScrollPhysics(),
               physics: AlwaysScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
               padding: EdgeInsets.only(left: Dimensions.PADDING_SIZE_SMALL),
-              itemCount: _storeList.length > 10 ? 10 : _storeList.length,
+              itemCount: _storeList.branches.length > 10 ? 10 : _storeList.branches.length,
               itemBuilder: (context, index){
                 return
                   Padding(
@@ -64,9 +66,9 @@ class StoreBranch extends StatelessWidget {
                     onTap: () {
                       if(isFeatured && Get.find<SplashController>().moduleList != null) {
                         for(ModuleModel module in Get.find<SplashController>().moduleList) {
-                          if(module.id == _storeList[index].moduleId) {
+                          if(module.id == _storeList.branches[index].moduleId) {
                            // Get.find<SplashController>().setModule(module);
-                            Get.find<SplashController>().setModuleWithCallStoreAPI(module,_storeList[index].id);
+                            Get.find<SplashController>().setModuleWithCallStoreAPI(module,_storeList.branches[index].id);
 
                             break;
                           }
@@ -96,7 +98,7 @@ class StoreBranch extends StatelessWidget {
                             borderRadius: BorderRadius.vertical(top: Radius.circular(Dimensions.RADIUS_SMALL)),
                             child: CustomImage(
                               image: '${Get.find<SplashController>().configModel.baseUrls.storeCoverPhotoUrl}'
-                                  '/${_storeList[index].coverPhoto}',
+                                  '/${_storeList.branches[index].coverPhoto}',
                               height: 90, width: double.infinity, fit: BoxFit.fill,
                             ),
                           ),
@@ -109,7 +111,7 @@ class StoreBranch extends StatelessWidget {
                           Positioned(
                             top: Dimensions.PADDING_SIZE_EXTRA_SMALL, right: Dimensions.PADDING_SIZE_EXTRA_SMALL,
                             child: GetBuilder<WishListController>(builder: (wishController) {
-                              bool _isWished = wishController.wishStoreIdList.contains(_storeList[index].id);
+                              bool _isWished = wishController.wishStoreIdList.contains(_storeList.branches[index].id);
                               return InkWell(
                                 onTap: () {
                                  /* if(Get.find<AuthController>().isLoggedIn()) {
@@ -139,13 +141,13 @@ class StoreBranch extends StatelessWidget {
                             padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
                               Text(
-                                _storeList[index].name ?? '',
+                                _storeList.branches[index].name ?? '',
                                 style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
                                 maxLines: 1, overflow: TextOverflow.ellipsis,
                               ),
 
                               Text(
-                                _storeList[index].address ?? '',
+                                _storeList.branches[index].address ?? '',
                                 style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).disabledColor),
                                 maxLines: 1, overflow: TextOverflow.ellipsis,
                               ),
@@ -182,7 +184,7 @@ class PopularStoreShimmer extends StatelessWidget {
     return ListView.builder(
       shrinkWrap: true,
       physics: BouncingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
+      scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(left: Dimensions.PADDING_SIZE_SMALL),
       itemCount: 10,
       itemBuilder: (context, index){

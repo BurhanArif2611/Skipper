@@ -68,7 +68,7 @@ class OrderDetailsModel {
     quantity = json['quantity'];
     taxAmount = json['tax_amount'] != null
         ? json['tax_amount'] == 0
-            ? json['tax_amount']
+            ? json['tax_amount'].toDouble()
             : json['tax_amount'].toDouble()
         : 0.0;
     variant = json['variant'] != null ? json['variant'] : "";

@@ -567,10 +567,31 @@ class _ParcelViewState extends State<ParcelView> {
             child: Container(
               child: Column(children: [
                 Column(children: [
-                  Center(
-                      child: Text(
-                          "${'receiver_information'.tr} ${' ('}${position + 1}${')'}",
-                          style: robotoMedium)),
+                  Row(children: [
+                    Center(
+                        child: Text(
+                            "${'receiver_information'.tr} ${' ('}${position + 1}${')'}",
+                            style: robotoMedium)),
+
+                    SizedBox(
+                        width: Dimensions
+                            .PADDING_SIZE_EXTRA_SMALL),
+                    Expanded(child: SizedBox()),
+                    InkWell(
+                      child:  Icon(Icons.cancel, size: 25),
+                      onTap: () {
+                        setState(() => {
+                        Get.find<ParcelController>().removeMultiDropDestinationAddress(position),
+                          anotherList.removeAt(position)});
+
+                      },
+                    ),
+                    SizedBox(
+                        width: Dimensions
+                            .PADDING_SIZE_EXTRA_SMALL),
+
+                  ]),
+
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                   /* TextFieldShadow(*/
                   Align(

@@ -51,7 +51,7 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
   TextEditingController _receiverFloorController = TextEditingController();
   String validity = "male";
   TabController _tabController;
-
+bool checkClickEvent=false;
   @override
   void initState() {
     super.initState();
@@ -126,6 +126,11 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
       appBar: CustomAppBar(title: 'ERRAND'),
       endDrawer: MenuDrawer(),
       body: GetBuilder<ParcelController>(builder: (parcelController) {
+        try {
+          if (!checkClickEvent && parcelController.isLoading) {
+            Get.find<ParcelController>().startLoader(false);
+          }
+        } catch (e) {}
         return Container(
           child: CustomScrollView(
             controller: _scrollController,
@@ -183,7 +188,6 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
                             onChanged: (value) {
                               setState(() {
                                 validity = value.toString();
-
                               });
                             },
                           ),
@@ -194,7 +198,6 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
                             onChanged: (value) {
                               setState(() {
                                 validity = value.toString();
-
                               });
                             },
                           ),
@@ -212,9 +215,10 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
                       ),
                     ),
                   ]),
-                  ResponsiveHelper.isDesktop(context)
-                      ? SizedBox()
-                      : _bottomButton(),
+                  if (parcelController.anothertaskList.length > 0)
+                    ResponsiveHelper.isDesktop(context)
+                        ? SizedBox()
+                        : _bottomButton(),
                 ]),
               )
             ],
@@ -226,18 +230,20 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
 
   Widget _bottomButton() {
     return GetBuilder<ParcelController>(builder: (parcelController) {
-      return (!parcelController.isLoading ?
-      CustomButton(
-        margin: ResponsiveHelper.isDesktop(context)
-            ? null
-            : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-        buttonText:
-            parcelController.isSender ? 'continue'.tr : 'save_and_continue'.tr,
-        onPressed: () {
-          if (_tabController.index == 0) {
-            _validateSender();
-          } else {
-            /* if(parcelController.destinationAddress == null) {
+      return (!parcelController.isLoading
+          ? CustomButton(
+              margin: ResponsiveHelper.isDesktop(context)
+                  ? null
+                  : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+              buttonText: parcelController.isSender
+                  ? 'continue'.tr
+                  : 'save_and_continue'.tr,
+              onPressed: () {
+                checkClickEvent=true;
+                if (_tabController.index == 0) {
+                  _validateSender();
+                } else {
+                  /* if(parcelController.destinationAddress == null) {
                   showCustomSnackBar('select_destination_address'.tr);
               }
               else if(_receiverNameController.text.isEmpty){
@@ -247,106 +253,115 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
                 showCustomSnackBar('enter_receiver_phone_number'.tr);
               }
               else {*/
-            AddressModel _destination = AddressModel(
-              address: parcelController.destinationAddress != null
-                  ? parcelController.destinationAddress.address
-                  : "",
-              additionalAddress: parcelController.destinationAddress != null
-                  ? parcelController.destinationAddress.additionalAddress
-                  : "",
-              addressType: parcelController.destinationAddress != null
-                  ? parcelController.destinationAddress.addressType
-                  : "",
-              contactPersonName: _receiverNameController.text.trim(),
-              contactPersonNumber: _receiverPhoneController.text.trim(),
-              latitude: parcelController.destinationAddress != null
-                  ? parcelController.destinationAddress.latitude
-                  : "",
-              longitude: parcelController.destinationAddress != null
-                  ? parcelController.destinationAddress.longitude
-                  : "",
-              method: parcelController.destinationAddress != null
-                  ? parcelController.destinationAddress.method
-                  : "",
-              zoneId: parcelController.destinationAddress != null
-                  ? parcelController.destinationAddress.zoneId
-                  : 0,
-              id: parcelController.destinationAddress != null
-                  ? parcelController.destinationAddress.id
-                  : 0,
-              streetNumber: _receiverStreetNumberController.text.trim(),
-              house: _receiverHouseController.text.trim(),
-              floor: _receiverFloorController.text.trim(),
-            );
+                  AddressModel _destination = AddressModel(
+                    address: parcelController.destinationAddress != null
+                        ? parcelController.destinationAddress.address
+                        : "",
+                    additionalAddress: parcelController.destinationAddress !=
+                            null
+                        ? parcelController.destinationAddress.additionalAddress
+                        : "",
+                    addressType: parcelController.destinationAddress != null
+                        ? parcelController.destinationAddress.addressType
+                        : "",
+                    contactPersonName: _receiverNameController.text.trim(),
+                    contactPersonNumber: _receiverPhoneController.text.trim(),
+                    latitude: parcelController.destinationAddress != null
+                        ? parcelController.destinationAddress.latitude
+                        : "",
+                    longitude: parcelController.destinationAddress != null
+                        ? parcelController.destinationAddress.longitude
+                        : "",
+                    method: parcelController.destinationAddress != null
+                        ? parcelController.destinationAddress.method
+                        : "",
+                    zoneId: parcelController.destinationAddress != null
+                        ? parcelController.destinationAddress.zoneId
+                        : 0,
+                    id: parcelController.destinationAddress != null
+                        ? parcelController.destinationAddress.id
+                        : 0,
+                    streetNumber: _receiverStreetNumberController.text.trim(),
+                    house: _receiverHouseController.text.trim(),
+                    floor: _receiverFloorController.text.trim(),
+                  );
 
-            parcelController.setDestinationAddress(_destination);
-            print(
-                'pickup : ${Get.find<ParcelController>().pickupAddress.toJson()}');
-            print(
-                'destination : ${Get.find<ParcelController>().destinationAddress.toJson()}');
+                  parcelController.setDestinationAddress(_destination);
+                  print(
+                      'pickup : ${Get.find<ParcelController>().pickupAddress.toJson()}');
+                  print(
+                      'destination : ${Get.find<ParcelController>().destinationAddress.toJson()}');
 
-            // Get.toNamed(RouteHelper.getParcelRequestRoute(
-            //   widget.category,
-            //   Get.find<ParcelController>().pickupAddress,
-            //   Get.find<ParcelController>().destinationAddress,
-            // ));
+                  // Get.toNamed(RouteHelper.getParcelRequestRoute(
+                  //   widget.category,
+                  //   Get.find<ParcelController>().pickupAddress,
+                  //   Get.find<ParcelController>().destinationAddress,
+                  // ));
 
-            Get.find<ParcelController>().startLoader(true);
-            print("anothertaskList>>" +
-                parcelController.anothertaskList.length.toString());
-            Get.find<OrderController>().errandPlaceOrder(
-                ErrandOrderBody(
-                  cart: [],
-                  couponDiscountAmount: null,
-                  distance: parcelController.distance,
-                  scheduleAt: null,
-                  orderAmount:
-                      double.parse(_orderPriceController.text.toString()),
-                  orderNote: '',
-                  orderType: 'errand',
-                  receiverDetails: _destination,
-                  paymentMethod: parcelController.paymentIndex == 0
-                      ? 'cash_on_delivery'
-                      : 'digital_payment',
-                  couponCode: null,
-                  storeId: null,
-                  address: Get.find<ParcelController>().pickupAddress.address,
-                  latitude: Get.find<ParcelController>().pickupAddress.latitude,
-                  longitude:
-                      Get.find<ParcelController>().pickupAddress.longitude,
-                  addressType:
-                      Get.find<ParcelController>().pickupAddress.addressType,
-                  contactPersonName: Get.find<ParcelController>()
-                          .pickupAddress
-                          .contactPersonName ??
-                      '',
-                  contactPersonNumber: Get.find<ParcelController>()
-                          .pickupAddress
-                          .contactPersonNumber ??
-                      '',
-                  streetNumber:
-                      Get.find<ParcelController>().pickupAddress.streetNumber ??
-                          '',
-                  house: Get.find<ParcelController>().pickupAddress.house ?? '',
-                  floor: Get.find<ParcelController>().pickupAddress.floor ?? '',
-                  discountAmount: 0,
-                  taxAmount: 0,
-                  parcelCategoryId:
-                      Get.find<ParcelController>().pickupAddress.id.toString(),
-                  chargePayer:
-                      parcelController.payerTypes[parcelController.payerIndex],
-                  dmTips: "0",
-                  receiver_addresses: parcelController.anotherList,
-                  task_title: parcelController.anothertaskList,
-                  task_uploaded_by: 'customer',
-                  validity: validity
-                ),
-                orderCallback);
-            //}
-            /*parcelCategoryId: Get.find<ParcelController>().pickupAddress.id.toString()*/
-          }
-        },
-      )
+                  Get.find<ParcelController>().startLoader(true);
+                  print("anothertaskList>>" +
+                      parcelController.anothertaskList.length.toString());
+                  Get.find<OrderController>().errandPlaceOrder(
+                      ErrandOrderBody(
+                          cart: [],
+                          couponDiscountAmount: null,
+                          distance: parcelController.distance,
+                          scheduleAt: null,
+                          orderAmount: double.parse(
+                              _orderPriceController.text.toString()),
+                          orderNote: '',
+                          orderType: 'errand',
+                          receiverDetails: _destination,
+                          /*paymentMethod: 'pending',*/
+                          couponCode: null,
+                          storeId: null,
+                          address: Get.find<ParcelController>()
+                              .pickupAddress
+                              .address,
+                          latitude: Get.find<ParcelController>()
+                              .pickupAddress
+                              .latitude,
+                          longitude: Get.find<ParcelController>()
+                              .pickupAddress
+                              .longitude,
+                          addressType: Get.find<ParcelController>()
+                              .pickupAddress
+                              .addressType,
+                          contactPersonName: Get.find<ParcelController>()
+                                  .pickupAddress
+                                  .contactPersonName ??
+                              '',
+                          contactPersonNumber: Get.find<ParcelController>()
+                                  .pickupAddress
+                                  .contactPersonNumber ??
+                              '',
+                          streetNumber: Get.find<ParcelController>()
+                                  .pickupAddress
+                                  .streetNumber ??
+                              '',
+                          house: Get.find<ParcelController>().pickupAddress.house ??
+                              '',
+                          floor: Get.find<ParcelController>().pickupAddress.floor ??
+                              '',
+                          discountAmount: 0,
+                          taxAmount: 0,
+                          parcelCategoryId: Get.find<ParcelController>()
+                              .pickupAddress
+                              .id
+                              .toString(),
+                          chargePayer: parcelController
+                              .payerTypes[parcelController.payerIndex],
+                          dmTips: "0",
+                          receiver_addresses: parcelController.anotherList,
+                          task_title: parcelController.anothertaskList,
+                          task_uploaded_by: 'customer',
+                          validity: validity),
+                      orderCallback);
+                  //}
+                  /*parcelCategoryId: Get.find<ParcelController>().pickupAddress.id.toString()*/
+                }
+              },
+            )
           : Center(child: CircularProgressIndicator()));
     });
   }
@@ -354,9 +369,9 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
   void orderCallback(bool isSuccess, String message, String orderID) {
     Get.find<ParcelController>().startLoader(true);
     if (isSuccess) {
-      if (Get.find<ParcelController>().paymentIndex == 0) {
+     /* if (Get.find<ParcelController>().paymentIndex == 0) {*/
         Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
-      } else {
+      /*} else {
         if (GetPlatform.isWeb) {
           Get.back();
           String hostname = html.window.location.hostname;
@@ -368,7 +383,7 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
           Get.offNamed(RouteHelper.getPaymentRoute(
               orderID, Get.find<UserController>().userInfoModel.id, 'parcel'));
         }
-      }
+      }*/
     } else {
       showCustomSnackBar(message);
     }

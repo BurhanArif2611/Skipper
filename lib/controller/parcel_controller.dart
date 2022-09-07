@@ -7,6 +7,7 @@ import 'package:image_compression_flutter/image_compression_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/order_controller.dart';
+import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
 import 'package:sixam_mart/data/model/response/address_model.dart';
 import 'package:sixam_mart/data/model/response/parcel_category_model.dart';
@@ -14,6 +15,7 @@ import 'package:sixam_mart/data/model/response/place_details_model.dart';
 import 'package:sixam_mart/data/model/response/task_model.dart';
 import 'package:sixam_mart/data/model/response/zone_response_model.dart';
 import 'package:sixam_mart/data/repository/parcel_repo.dart';
+import 'package:sixam_mart/util/app_constants.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 
 import '../helper/network_info.dart';
@@ -39,6 +41,7 @@ class ParcelController extends GetxController implements GetxService {
   List<ParcelCategoryModel> get parcelCategoryList => _parcelCategoryList;
 
   List<AddressModel> get anotherList => _anotherList;
+
   List<TaskModel> get anothertaskList => _anothertaskList;
 
   AddressModel get pickupAddress => _pickupAddress;
@@ -54,15 +57,20 @@ class ParcelController extends GetxController implements GetxService {
   double get distance => _distance;
 
   int get payerIndex => _payerIndex;
-
+  int get paymentIndex => _paymentIndex;
   List<String> get payerTypes => _payerTypes;
 
-  int get paymentIndex => _paymentIndex;
+
   XFile _pickedFile;
   Uint8List _rawFile;
+
   XFile get pickedFile => _pickedFile;
+
   Uint8List get rawFile => _rawFile;
+
   Future<void> getParcelCategoryList() async {
+    print("getParcelCategoryList<><>");
+
     Response response = await parcelRepo.getParcelCategory();
 
     if (response.statusCode == 200) {
@@ -75,16 +83,18 @@ class ParcelController extends GetxController implements GetxService {
     }
     update();
   }
+
   void pickImage() async {
     _pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if(_pickedFile != null) {
+    if (_pickedFile != null) {
       _pickedFile = await NetworkInfo.compressImage(_pickedFile);
       _rawFile = await _pickedFile.readAsBytes();
-      print("pickImage"+_pickedFile.path);
+      print("pickImage" + _pickedFile.path);
     }
 
     update();
   }
+
   void setPickupAddress(AddressModel addressModel, bool notify) {
     _pickupAddress = addressModel;
     if (notify) {
@@ -103,20 +113,33 @@ class ParcelController extends GetxController implements GetxService {
     print("setMultiDropDestinationAddress>>" + _anotherList.length.toString());
     update();
   }
+  void removeMultiDropDestinationAddress(int position) {
+    _anotherList.removeAt(position);
+    print("setMultiDropDestinationAddress>>" );
+    update();
+  }
+
   void setMultiTask(TaskModel addressModel) {
     print("setMultiDropDestinationAddress>>++++");
     _anothertaskList.add(addressModel);
-    print("setMultiDropDestinationAddress>>" + _anothertaskList.length.toString());
+    print("setMultiDropDestinationAddress>>" +
+        _anothertaskList.length.toString());
     update();
   }
+  void removeMultiTask(int  position) {
+    print("setMultiDropDestinationAddress>>++++");
+    _anothertaskList.removeAt(position);
+    update();
+  }
+
   void clearMultiTask() {
     _anothertaskList.clear();
     update();
   }
-  void clearMultiDropDestinationAddress(){
+
+  void clearMultiDropDestinationAddress() {
     _anotherList.clear();
   }
-
 
   void setLocationFromPlace(
       String placeID, String address, bool isPickedUp) async {
@@ -182,14 +205,14 @@ class ParcelController extends GetxController implements GetxService {
     String multidrop_array = "";
     if (_anotherList.length > 0) {
       _anotherList.forEach((addressmodel) {
-        if(multidrop_array==""){
-        multidrop_array = multidrop_array +
+        if (multidrop_array == "") {
+          multidrop_array = multidrop_array +
               "[" +
               addressmodel.latitude +
               "," +
               addressmodel.longitude +
-              "]";}
-        else{
+              "]";
+        } else {
           multidrop_array = multidrop_array +
               ",[" +
               addressmodel.latitude +
@@ -197,27 +220,29 @@ class ParcelController extends GetxController implements GetxService {
               addressmodel.longitude +
               "]";
         }
-
       });
     }
-    multidrop_array="["+multidrop_array+"]";
+    multidrop_array = "[" + multidrop_array + "]";
     print("multidrop_array<><>" + multidrop_array);
-    print("multidrop_array<><>" + destinationAddress.latitude+"<><>"+destinationAddress.longitude);
-   if(multidrop_array=="") {
-     _distance = await Get.find<OrderController>().getDistanceInKM(
-         LatLng(double.parse(pickedUpAddress.latitude),
-             double.parse(pickedUpAddress.longitude)),
-         LatLng(double.parse(destinationAddress.latitude),
-             double.parse(destinationAddress.longitude))
-         , multidrop_array);
-   }else {
-     _distance = await Get.find<OrderController>().getDistanceInKM(
-         LatLng(double.parse(pickedUpAddress.latitude),
-             double.parse(pickedUpAddress.longitude)),
-         LatLng(0.0,0.0)
-         , multidrop_array);
-   }
-    _isLoading=false;
+    print("multidrop_array<><>" +
+        destinationAddress.latitude +
+        "<><>" +
+        destinationAddress.longitude);
+    if (multidrop_array == "") {
+      _distance = await Get.find<OrderController>().getDistanceInKM(
+          LatLng(double.parse(pickedUpAddress.latitude),
+              double.parse(pickedUpAddress.longitude)),
+          LatLng(double.parse(destinationAddress.latitude),
+              double.parse(destinationAddress.longitude)),
+          multidrop_array);
+    } else {
+      _distance = await Get.find<OrderController>().getDistanceInKM(
+          LatLng(double.parse(pickedUpAddress.latitude),
+              double.parse(pickedUpAddress.longitude)),
+          LatLng(0.0, 0.0),
+          multidrop_array);
+    }
+    _isLoading = false;
     update();
   }
 

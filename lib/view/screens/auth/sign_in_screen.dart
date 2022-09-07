@@ -25,6 +25,11 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:phone_number/phone_number.dart';
 
+import '../../../controller/banner_controller.dart';
+import '../../../controller/store_controller.dart';
+import '../../../data/model/response/store_model.dart';
+import '../../../util/app_constants.dart';
+
 class SignInScreen extends StatefulWidget {
   final bool exitFromApp;
   SignInScreen({@required this.exitFromApp});
@@ -244,6 +249,12 @@ class _SignInScreenState extends State<SignInScreen> {
         if (status.isSuccess) {
           if (authController.isActiveRememberMe) {
             authController.saveUserNumberAndPassword(_phone, _password, countryDialCode);
+            Get.find<BannerController>().getBranchList(true);
+            Get.find<StoreController>().getStoreDetails(
+                Store(id: AppConstants.StoreID), true);
+
+            Get.find<StoreController>().getStoreItemList(
+                AppConstants.StoreID, 1, 'all', false);
           } else {
             authController.clearUserNumberAndPassword();
           }

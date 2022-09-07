@@ -62,6 +62,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/wallet/wallet_screen.dart';
 
+import '../view/screens/favourite/favourite_screen.dart';
+
 class RouteHelper {
   static const String initial = '/';
   static const String splash = '/splash';
@@ -113,8 +115,10 @@ class RouteHelper {
   static const String itemDetails = '/item-details';
   static const String wallet = '/wallet';
   static const String referAndEarn = '/refer-and-earn';
+  static const String favouritescreen = '/favourite_screen';
 
   static String getInitialRoute() => '$initial';
+  static String getFavoriteScreen() => '$favouritescreen';
   static String getSplashRoute(int orderID) => '$splash?id=$orderID';
   static String getLanguageRoute(String page) => '$language?page=$page';
   static String getOnBoardingRoute() => '$onBoarding';
@@ -206,6 +210,7 @@ class RouteHelper {
 
   static List<GetPage> routes = [
     GetPage(name: initial, page: () => getRoute(DashboardScreen(pageIndex: 0))),
+    GetPage(name: favouritescreen, page: () => getRoute(FavouriteScreen())),
     GetPage(name: splash, page: () => SplashScreen(orderID: Get.parameters['id'] == 'null' ? null : Get.parameters['id'])),
     GetPage(name: language, page: () => ChooseLanguageScreen(fromMenu: Get.parameters['page'] == 'menu')),
     GetPage(name: onBoarding, page: () => OnBoardingScreen()),

@@ -61,7 +61,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => UserRepo(apiClient: Get.find()));
   Get.lazyPut(() => BannerRepo(apiClient: Get.find()));
   Get.lazyPut(() => CategoryRepo(apiClient: Get.find()));
-  Get.lazyPut(() => StoreRepo(apiClient: Get.find()));
+  Get.lazyPut(() => StoreRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => WishListRepo(apiClient: Get.find()));
   Get.lazyPut(() => ItemRepo(apiClient: Get.find()));
   Get.lazyPut(() => CartRepo(sharedPreferences: Get.find()));
@@ -70,7 +70,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => OrderRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => NotificationRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => CampaignRepo(apiClient: Get.find()));
-  Get.lazyPut(() => ParcelRepo(apiClient: Get.find()));
+  Get.lazyPut(() => ParcelRepo(sharedPreferences: Get.find(),apiClient: Get.find()));
   Get.lazyPut(() => WalletRepo(apiClient: Get.find()));
 
   // Controller

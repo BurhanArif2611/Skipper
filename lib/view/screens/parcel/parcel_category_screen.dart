@@ -16,6 +16,7 @@ import 'package:sixam_mart/view/base/footer_view.dart';
 import 'package:sixam_mart/view/screens/home/web/module_widget.dart';
 
 import '../../../data/model/response/config_model.dart';
+import '../../../util/app_constants.dart';
 
 class ParcelCategoryScreen extends StatefulWidget {
   @override
@@ -26,15 +27,27 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
   @override
   void initState() {
     super.initState();
-
+    /*if (Get.find<SplashController>().moduleList != null &&
+        Get.find<SplashController>().moduleList.length > 0) {
+      Get.find<SplashController>().moduleList.forEach(
+              (storeCategory) => {
+            if(storeCategory.moduleType=='parcel'){
+              AppConstants.ModelID = storeCategory.id
+            }
+          });
+    }*/
+    print("getParcelCategoryList<><>"+AppConstants.ModelID.toString());
+    Get.find<ParcelController>().getParcelCategoryList();
     if (Get.find<AuthController>().isLoggedIn() &&
         Get.find<UserController>().userInfoModel == null) {
       Get.find<UserController>().getUserInfo();
+
     }
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: ResponsiveHelper.isDesktop(context)
           ? null
@@ -44,6 +57,8 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
               onBackPressed: () => Get.find<SplashController>().setModule(null),
             ),
       body: GetBuilder<ParcelController>(builder: (parcelController) {
+     //   print("djkfdjkfjdkjf>>"+parcelController.parcelCategoryList.length.toString());
+
         return Stack(clipBehavior: Clip.none, children: [
           SingleChildScrollView(
             padding: ResponsiveHelper.isDesktop(context)

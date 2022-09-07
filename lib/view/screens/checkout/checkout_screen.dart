@@ -140,6 +140,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           }
           return GetBuilder<CouponController>(builder: (couponController) {
             return GetBuilder<OrderController>(builder: (orderController) {
+
+
               double _deliveryCharge = -1;
               double _charge = -1;
               if(storeController.store != null && storeController.store.selfDeliverySystem == 1) {
@@ -206,7 +208,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               _tax = PriceConverter.calculation(_orderAmount, _taxPercent, 'percent', 1);
               double _total = _subTotal + _deliveryCharge - _discount - _couponDiscount + _tax + orderController.tips;
 
-              return (orderController.distance != null && locationController.addressList != null) ? Column(
+              return (/*orderController.distance != null &&*/ locationController.addressList != null) ?
+              Column(
                 children: [
 
                   Expanded(child: Scrollbar(child: SingleChildScrollView(
@@ -218,10 +221,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
                         // Order type
                         Text('delivery_option'.tr, style: robotoMedium),
-                        storeController.store.delivery ? DeliveryOptionButton(
+                        storeController.store!=null && storeController.store.delivery ? DeliveryOptionButton(
                           value: 'delivery', title: 'home_delivery'.tr, charge: _charge, isFree: storeController.store.freeDelivery,
                         ) : SizedBox(),
-                        storeController.store.takeAway ? DeliveryOptionButton(
+                        storeController.store!=null && storeController.store.takeAway ? DeliveryOptionButton(
                           value: 'take_away', title: 'take_away'.tr, charge: _deliveryCharge, isFree: true,
                         ) : SizedBox(),
                         SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
@@ -319,7 +322,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ]) : SizedBox(),
 
                         // Time Slot
-                        storeController.store.scheduleOrder ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        storeController.store!=null && storeController.store.scheduleOrder ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Text('preference_time'.tr, style: robotoMedium),
                           SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                           SizedBox(
@@ -640,7 +643,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
 
                 ],
-              ) : Center(child: CircularProgressIndicator());
+              ) :
+              Center(child: CircularProgressIndicator());
             });
           });
         });

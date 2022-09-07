@@ -315,7 +315,7 @@ class _LocationView extends State<LocationView> {
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        'Ttile',
+                                        'Title',
                                         style: robotoRegular.copyWith(
                                             fontSize: Dimensions.fontSizeSmall,
                                             color: Theme.of(context)
@@ -450,7 +450,7 @@ class _LocationView extends State<LocationView> {
                     child: Column(children: [
                       Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Task 1',
+                          child: Text("${'Task'} ${' ('}${anotherList.length + 1}${')'}",
                               style: robotoMedium.copyWith(
                                   fontSize: Dimensions.fontSizeLarge))),
                       Align(
@@ -603,11 +603,36 @@ class _LocationView extends State<LocationView> {
             padding: EdgeInsets.all(8.0),
             child: Container(
                 child: Column(children: [
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("${'Task'} ${' ('}${position + 1}${')'}",
-                      style: robotoMedium.copyWith(
-                          fontSize: Dimensions.fontSizeLarge))),
+                  Row(children: [
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child:
+                        Text("${'Task'} ${' ('}${position + 1}${')'}",
+                            style: robotoMedium.copyWith(
+                                fontSize: Dimensions.fontSizeLarge))
+                    ),
+
+                    SizedBox(
+                        width: Dimensions
+                            .PADDING_SIZE_EXTRA_SMALL),
+                    Expanded(child: SizedBox()),
+                    InkWell(
+                      child:  Icon(Icons.cancel, size: 25),
+                      onTap: () {
+                        setState(() =>{
+                          Get.find<ParcelController>().removeMultiTask(position),
+                          anotherList.removeAt(position)
+                        }
+                        );
+
+                        },
+                    ),
+                    SizedBox(
+                        width: Dimensions
+                            .PADDING_SIZE_EXTRA_SMALL),
+
+                  ]),
+
               Align(
                   alignment: Alignment.centerLeft,
                   child: Text('Take the picture of the home front',
