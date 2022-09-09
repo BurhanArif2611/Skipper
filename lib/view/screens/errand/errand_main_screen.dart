@@ -312,7 +312,7 @@ bool checkClickEvent=false;
                           orderNote: '',
                           orderType: 'errand',
                           receiverDetails: _destination,
-                          /*paymentMethod: 'pending',*/
+                         /* paymentMethod: 'parcel',*/
                           couponCode: null,
                           storeId: null,
                           address: Get.find<ParcelController>()
@@ -371,6 +371,7 @@ bool checkClickEvent=false;
     if (isSuccess) {
      /* if (Get.find<ParcelController>().paymentIndex == 0) {*/
         Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
+        print("if is working");
       /*} else {
         if (GetPlatform.isWeb) {
           Get.back();
@@ -385,6 +386,7 @@ bool checkClickEvent=false;
         }
       }*/
     } else {
+      print("if is not working");
       showCustomSnackBar(message);
     }
   }

@@ -90,7 +90,7 @@ class AppConstants {
   static const String WALLET_TRANSACTION_URL = '/api/v1/customer/wallet/transactions';
   static const String LOYALTY_TRANSACTION_URL = '/api/v1/customer/loyalty-point/transactions';
   static const String LOYALTY_POINT_TRANSFER_URL = '/api/v1/customer/loyalty-point/point-transfer';
-  static const int StoreID = 28;
+  static const int StoreID = 24;
   static  int ModelID =1;
 
   static const String Store_ID = "store-id";

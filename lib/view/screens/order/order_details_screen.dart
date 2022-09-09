@@ -234,6 +234,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                       Text(_order.orderType.tr,
                                           style: robotoMedium),
                                       Expanded(child: SizedBox()),
+                                      _order.paymentMethod !=null?
                                       Container(
                                         padding: EdgeInsets.symmetric(
                                             horizontal:
@@ -251,7 +252,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                           _order.paymentMethod ==
                                               'cash_on_delivery'
                                               ? 'cash_on_delivery'.tr
-                                              : 'digital_payment'.tr,
+                                              :_order.paymentMethod =='wallet'? 'wallet'.tr:_order.paymentMethod =='digital_payment'? 'digital_payment'.tr:"",
                                           style: robotoRegular.copyWith(
                                               color: Theme
                                                   .of(context)
@@ -259,7 +260,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                               fontSize:
                                               Dimensions.fontSizeExtraSmall),
                                         ),
-                                      ),
+                                      ):Text(""),
                                     ]),
                                     Divider(
                                         height: Dimensions.PADDING_SIZE_LARGE),
@@ -2214,12 +2215,19 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               .id}&&callback=$protocol//$hostname${RouteHelper
               .orderSuccess}?id=$orderID&type=errand&status=';
           html.window.open(selectedUrl, "_self");
-        } else {
-          Get.offNamed(RouteHelper.getPaymentRoute(
-              orderID, Get
-              .find<UserController>()
-              .userInfoModel
-              .id, 'errand'));
+        }
+        else {
+          if(Get
+              .find<
+              OrderController>()
+              .paymentIndex ==
+              1) {
+            Get.offNamed(RouteHelper.getPaymentRoute(
+                orderID, Get
+                .find<UserController>()
+                .userInfoModel
+                .id, 'errand'));
+          }
         }
       }
     } else {

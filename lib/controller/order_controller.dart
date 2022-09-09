@@ -496,7 +496,7 @@ class OrderController extends GetxController implements GetxService {
               1000;
           _distance = _localDistance + _distance;
         }
-        print("getDistanceInKM>>" + _distance.toString());
+        print("getDistanceInKM>if>" + _distance.toString());
       } else {
         _distance = Geolocator.distanceBetween(
               originLatLng.latitude,
@@ -505,6 +505,7 @@ class OrderController extends GetxController implements GetxService {
               destinationLatLng.longitude,
             ) /
             1000;
+        print("getDistanceInKM>else>" + _distance.toString());
       }
     } catch (e) {
       print("error" + e.toString());

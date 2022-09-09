@@ -135,17 +135,17 @@ class PlaceOrderBody {
         _cart.add(new Cart.fromJson(v));
       });
     }
-    _couponDiscountAmount = json['coupon_discount_amount'];
-    _orderAmount = json['order_amount'];
+    _couponDiscountAmount = json['coupon_discount_amount'] !=null?json['coupon_discount_amount']:0;
+    _orderAmount = json['order_amount'] !=null?json['order_amount']:0;
     _orderType = json['order_type'];
     _paymentMethod = json['payment_method'];
     _orderNote = json['order_note'];
     _couponCode = json['coupon_code'];
     _storeId = json['store_id'];
-    _distance = json['distance'];
+    _distance = json['distance'] !=null?json['distance']:0;
     _scheduleAt = json['schedule_at'];
-    _discountAmount = json['discount_amount'].toDouble();
-    _taxAmount = json['tax_amount'].toDouble();
+    _discountAmount = json['discount_amount']!=null ?json['discount_amount']:0;
+    _taxAmount = json['tax_amount']!=null?json['tax_amount']:0;
     _address = json['address'];
     _receiverDetails = json['receiver_details'] != null ? new AddressModel.fromJson(json['receiver_details']) : null;
     _latitude = json['latitude'];

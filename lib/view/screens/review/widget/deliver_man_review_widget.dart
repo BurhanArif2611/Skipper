@@ -114,8 +114,10 @@ class _DeliveryManReviewWidgetState extends State<DeliveryManReviewWidget> {
                             if (value.isSuccess) {
                               showCustomSnackBar(value.message, isError: false);
                               _controller.text = '';
+                              Navigator.pop(context);
                             } else {
                               showCustomSnackBar(value.message);
+
                             }
                           });
                         }

@@ -72,6 +72,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
       endDrawer: MenuDrawer(),
       body: GetBuilder<ParcelController>(builder: (parcelController) {
         double _charge = -1;
+
         if (parcelController.distance != -1 && _isLoggedIn) {
           _charge = parcelController.distance *
               Get.find<SplashController>()
@@ -480,6 +481,8 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
     if (isSuccess) {
       if (Get.find<ParcelController>().paymentIndex == 0) {
         Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
+      }else if (Get.find<ParcelController>().paymentIndex == 2) {
+        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
       } else {
         if (GetPlatform.isWeb) {
           Get.back();
@@ -489,8 +492,17 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
               '${AppConstants.BASE_URL}/payment-mobile?order_id=$orderID&&customer_id=${Get.find<UserController>().userInfoModel.id}&&callback=$protocol//$hostname${RouteHelper.orderSuccess}?id=$orderID&type=parcel&status=';
           html.window.open(selectedUrl, "_self");
         } else {
-          Get.offNamed(RouteHelper.getPaymentRoute(
-              orderID, Get.find<UserController>().userInfoModel.id, 'parcel'));
+          if(Get
+              .find<
+              ParcelController>()
+              .paymentIndex ==
+              1) {
+            Get.offNamed(RouteHelper.getPaymentRoute(
+                orderID, Get
+                .find<UserController>()
+                .userInfoModel
+                .id, 'parcel'));
+          }
         }
       }
     } else {
@@ -499,6 +511,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
   }
 
   Widget _bottomButton(ParcelController parcelController, double charge) {
+    String payment_type="";
     return !parcelController.isLoading
         ? CustomButton(
             buttonText: 'confirm_parcel_request'.tr,
@@ -510,6 +523,18 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                 showCustomSnackBar('delivery_fee_not_set_yet'.tr);
               } else {
                 if(parcelController.anotherList.length>0) {
+
+                  if(parcelController.paymentIndex ==
+                      0){
+                    payment_type = 'cash_on_delivery';
+                  } else
+                  if(parcelController.paymentIndex ==
+                      1){
+                    payment_type = 'digital_payment';
+                  } else
+                  if(parcelController.paymentIndex == 2){
+                    payment_type = 'wallet';
+                  }
                   Get.find<ParcelController>().startLoader(true);
                   Get.find<OrderController>().placeOrder(
                       PlaceOrderBody(
@@ -521,9 +546,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                         orderNote: '',
                         orderType: 'parcel',
                         receiverDetails: widget.destinationAddress,
-                        paymentMethod: parcelController.paymentIndex == 0
-                            ? 'cash_on_delivery'
-                            : 'digital_payment',
+                        paymentMethod: payment_type,
                         couponCode: null,
                         storeId: null,
                         address: widget.pickedUpAddress.address,

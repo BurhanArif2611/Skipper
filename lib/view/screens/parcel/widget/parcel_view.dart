@@ -31,13 +31,13 @@ class ParcelView extends StatefulWidget {
 
   ParcelView(
       {Key key,
-        @required this.isSender,
-        @required this.nameController,
-        @required this.phoneController,
-        @required this.streetController,
-        @required this.houseController,
-        @required this.floorController,
-        @required this.bottomButton})
+      @required this.isSender,
+      @required this.nameController,
+      @required this.phoneController,
+      @required this.streetController,
+      @required this.houseController,
+      @required this.floorController,
+      @required this.bottomButton})
       : super(key: key);
 
   @override
@@ -75,37 +75,36 @@ class _ParcelViewState extends State<ParcelView> {
           controller: ScrollController(),
           child: Center(
               child: FooterView(
-                child: SizedBox(
-                    width: Dimensions.WEB_MAX_WIDTH,
-                    child: Padding(
-                      padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                      child: Column(children: [
-                        SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                        if (parcelController.isSender)
-                          SearchLocationWidget(
-                            mapController: null,
-                            pickedAddress: parcelController.isSender
-                                ? parcelController.pickupAddress.address
-                                : parcelController.destinationAddress != null
+            child: SizedBox(
+                width: Dimensions.WEB_MAX_WIDTH,
+                child: Padding(
+                  padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                  child: Column(children: [
+                    SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                    if (parcelController.isSender)
+                      SearchLocationWidget(
+                        mapController: null,
+                        pickedAddress: parcelController.isSender
+                            ? parcelController.pickupAddress.address
+                            : parcelController.destinationAddress != null
                                 ? parcelController.destinationAddress.address
                                 : '',
-                            isEnabled: widget.isSender
-                                ? parcelController.isPickedUp
-                                : !parcelController.isPickedUp,
-                            isPickedUp: parcelController.isSender,
-                            hint: parcelController.isSender
-                                ? 'pick_up'.tr
-                                : 'destination'.tr,
-                          ),
-                        SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-
-                        if (parcelController.isSender)
-                          Row(children: [
-                            Expanded(
-                              flex: 4,
-                              child: CustomButton(
-                                  buttonText: 'set_from_map'.tr,
-                                  onPressed: () => {
+                        isEnabled: widget.isSender
+                            ? parcelController.isPickedUp
+                            : !parcelController.isPickedUp,
+                        isPickedUp: parcelController.isSender,
+                        hint: parcelController.isSender
+                            ? 'pick_up'.tr
+                            : 'destination'.tr,
+                      ),
+                    SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                    if (parcelController.isSender)
+                      Row(children: [
+                        Expanded(
+                          flex: 4,
+                          child: CustomButton(
+                              buttonText: 'set_from_map'.tr,
+                              onPressed: () => {
                                     print("address>ddfdf>>>>"),
                                     Get.toNamed(
                                         RouteHelper.getPickMapRoute(
@@ -122,176 +121,176 @@ class _ParcelViewState extends State<ParcelView> {
                                             } else {
                                               parcelController
                                                   .setDestinationAddress(
-                                                  address);
+                                                      address);
                                             }
                                           },
                                         )),
                                   }),
-                            ),
-                            SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-                            Expanded(
-                                flex: 6,
-                                child: InkWell(
-                                  onTap: () {
-                                    if (Get.find<AuthController>().isLoggedIn()) {
-                                      Get.dialog(AddressDialog(
-                                          onTap: (AddressModel address) {
-                                            widget.streetController.text =
-                                                address.streetNumber ?? '';
-                                            widget.houseController.text =
-                                                address.house ?? '';
-                                            widget.floorController.text =
-                                                address.floor ?? '';
-                                          }));
-                                    } else {
-                                      showCustomSnackBar(
-                                          'you_are_not_logged_in'.tr);
-                                    }
-                                  },
-                                  child: Container(
-                                    height: ResponsiveHelper.isDesktop(context)
-                                        ? 44
-                                        : 50,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            Dimensions.RADIUS_SMALL),
-                                        border: Border.all(
-                                            color: Theme.of(context).primaryColor,
-                                            width: 1)),
-                                    child: Center(
-                                        child: Text('set_from_saved_address'.tr,
-                                            style: robotoBold.copyWith(
-                                                color:
+                        ),
+                        SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+                        Expanded(
+                            flex: 6,
+                            child: InkWell(
+                              onTap: () {
+                                if (Get.find<AuthController>().isLoggedIn()) {
+                                  Get.dialog(AddressDialog(
+                                      onTap: (AddressModel address) {
+                                    widget.streetController.text =
+                                        address.streetNumber ?? '';
+                                    widget.houseController.text =
+                                        address.house ?? '';
+                                    widget.floorController.text =
+                                        address.floor ?? '';
+                                  }));
+                                } else {
+                                  showCustomSnackBar(
+                                      'you_are_not_logged_in'.tr);
+                                }
+                              },
+                              child: Container(
+                                height: ResponsiveHelper.isDesktop(context)
+                                    ? 44
+                                    : 50,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                        Dimensions.RADIUS_SMALL),
+                                    border: Border.all(
+                                        color: Theme.of(context).primaryColor,
+                                        width: 1)),
+                                child: Center(
+                                    child: Text('set_from_saved_address'.tr,
+                                        style: robotoBold.copyWith(
+                                            color:
                                                 Theme.of(context).primaryColor,
-                                                fontSize:
+                                            fontSize:
                                                 Dimensions.fontSizeLarge))),
-                                  ),
-                                )),
-                          ]),
-                        SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                        if (parcelController.isSender)
-                          Column(children: [
-                            Center(
-                                child: Text(
-                                    parcelController.isSender
-                                        ? 'sender_information'.tr
-                                        : 'receiver_information'.tr,
-                                    style: robotoMedium)),
-                            SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                            TextFieldShadow(
-                              child: MyTextField(
-                                hintText: parcelController.isSender
-                                    ? 'sender_name'.tr
-                                    : 'receiver_name'.tr,
-                                inputType: TextInputType.name,
-                                controller: widget.nameController,
-                                focusNode: _nameNode,
-                                nextFocus: _phoneNode,
-                                capitalization: TextCapitalization.words,
                               ),
-                            ),
-                            SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                            TextFieldShadow(
-                              child: MyTextField(
-                                hintText: parcelController.isSender
-                                    ? 'sender_phone_number'.tr
-                                    : 'receiver_phone_number'.tr,
-                                inputType: TextInputType.phone,
-                                focusNode: _phoneNode,
-                                nextFocus: _streetNode,
-                                controller: widget.phoneController,
-                              ),
-                            ),
-                            SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                          ]),
-                        if (parcelController.isSender)
-                          Column(children: [
-                            Center(
-                                child: Text(
-                                    parcelController.isSender
-                                        ? 'pickup_information'.tr
-                                        : 'destination_information'.tr,
-                                    style: robotoMedium)),
-                            SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                            TextFieldShadow(
-                              child: MyTextField(
-                                hintText:
+                            )),
+                      ]),
+                    SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                    if (parcelController.isSender)
+                      Column(children: [
+                        Center(
+                            child: Text(
+                                parcelController.isSender
+                                    ? 'sender_information'.tr
+                                    : 'receiver_information'.tr,
+                                style: robotoMedium)),
+                        SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                        TextFieldShadow(
+                          child: MyTextField(
+                            hintText: parcelController.isSender
+                                ? 'sender_name'.tr
+                                : 'receiver_name'.tr,
+                            inputType: TextInputType.name,
+                            controller: widget.nameController,
+                            focusNode: _nameNode,
+                            nextFocus: _phoneNode,
+                            capitalization: TextCapitalization.words,
+                          ),
+                        ),
+                        SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                        TextFieldShadow(
+                          child: MyTextField(
+                            hintText: parcelController.isSender
+                                ? 'sender_phone_number'.tr
+                                : 'receiver_phone_number'.tr,
+                            inputType: TextInputType.phone,
+                            focusNode: _phoneNode,
+                            nextFocus: _streetNode,
+                            controller: widget.phoneController,
+                          ),
+                        ),
+                        SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                      ]),
+                    if (parcelController.isSender)
+                      Column(children: [
+                        Center(
+                            child: Text(
+                                parcelController.isSender
+                                    ? 'pickup_information'.tr
+                                    : 'destination_information'.tr,
+                                style: robotoMedium)),
+                        SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                        TextFieldShadow(
+                          child: MyTextField(
+                            hintText:
                                 "${'street_number'.tr} (${'optional'.tr})",
-                                inputType: TextInputType.streetAddress,
-                                focusNode: _streetNode,
-                                nextFocus: _houseNode,
-                                controller: widget.streetController,
+                            inputType: TextInputType.streetAddress,
+                            focusNode: _streetNode,
+                            nextFocus: _houseNode,
+                            controller: widget.streetController,
+                          ),
+                        ),
+                        SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                        Row(children: [
+                          Expanded(
+                            child: TextFieldShadow(
+                              child: MyTextField(
+                                hintText: "${'house'.tr} (${'optional'.tr})",
+                                inputType: TextInputType.text,
+                                focusNode: _houseNode,
+                                nextFocus: _floorNode,
+                                controller: widget.houseController,
                               ),
                             ),
-                            SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                            Row(children: [
-                              Expanded(
-                                child: TextFieldShadow(
-                                  child: MyTextField(
-                                    hintText: "${'house'.tr} (${'optional'.tr})",
-                                    inputType: TextInputType.text,
-                                    focusNode: _houseNode,
-                                    nextFocus: _floorNode,
-                                    controller: widget.houseController,
-                                  ),
-                                ),
+                          ),
+                          SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+                          Expanded(
+                            child: TextFieldShadow(
+                              child: MyTextField(
+                                hintText: "${'floor'.tr} (${'optional'.tr})",
+                                inputType: TextInputType.text,
+                                focusNode: _floorNode,
+                                inputAction: TextInputAction.done,
+                                controller: widget.floorController,
                               ),
-                              SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-                              Expanded(
-                                child: TextFieldShadow(
-                                  child: MyTextField(
-                                    hintText: "${'floor'.tr} (${'optional'.tr})",
-                                    inputType: TextInputType.text,
-                                    focusNode: _floorNode,
-                                    inputAction: TextInputAction.done,
-                                    controller: widget.floorController,
-                                  ),
+                            ),
+                          ),
+                        ]),
+                        SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                      ]),
+                    if (!parcelController.isSender)
+                      if (anotherList.length > 0)
+                        Container(child: updateListView()),
+                    if (!parcelController.isSender)
+                      /*Positioned(
+                          bottom: 0.0,
+                          right: 0.0,
+                          child:*/
+                          Container(
+                              height: 80.0,
+                              child: Align(
+                                alignment: Alignment.bottomRight,
+                                child: CustomButton(
+                                  margin: ResponsiveHelper.isDesktop(context)
+                                      ? null
+                                      : EdgeInsets.all(
+                                          Dimensions.PADDING_SIZE_SMALL),
+                                  buttonText: parcelController.isSender
+                                      ? 'continue'.tr
+                                      : anotherList.length > 0
+                                          ? 'Add a More drop location'
+                                          : 'Add a drop location',
+                                  onPressed: () {
+                                    showCustomDialog(context);
+                                  },
                                 ),
-                              ),
-                            ]),
-                            SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                          ]),
-                        if (!parcelController.isSender)
-                          if (anotherList.length > 0)
-                            Container(
-
-                                child: updateListView()),
-                        if (!parcelController.isSender)
-                          Positioned(
-                            bottom: 0.0,
-                            right: 0.0,
-                            child: Container(
-                                height: 80.0,
-                                child: Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: CustomButton(
-                                    margin: ResponsiveHelper.isDesktop(context)
-                                        ? null
-                                        : EdgeInsets.all(
-                                        Dimensions.PADDING_SIZE_SMALL),
-                                    buttonText: parcelController.isSender
-                                        ? 'continue'.tr
-                                        : anotherList.length > 0
-                                        ? 'Add a More drop location'
-                                        : 'Add a drop location',
-                                    onPressed: () {
-                                      showCustomDialog(context);
-                                    },
-                                  ),
-                                  /* FloatingActionButton(
+                                /* FloatingActionButton(
                               child: Icon(Icons.add,
                                   color: Theme.of(context).primaryColor),
                               mini: true,
                               backgroundColor: Theme.of(context).cardColor,
                               onPressed: () => showCustomDialog(context))*/
-                                )),
-                          ),
-                        ResponsiveHelper.isDesktop(context)
-                            ? widget.bottomButton
-                            : SizedBox(),
-                      ]),
-                    )),
-              )),
+                              )),
+                        //)
+                     //,
+                    ResponsiveHelper.isDesktop(context)
+                        ? widget.bottomButton
+                        : SizedBox(),
+                  ]),
+                )),
+          )),
         );
       }),
     );
@@ -327,8 +326,8 @@ class _ParcelViewState extends State<ParcelView> {
                       // pickedAddress: Selected_address,
                       pickedAddress: addressModel_ != null
                           ? addressModel_.address != null
-                          ? addressModel_.address.toString()
-                          : ""
+                              ? addressModel_.address.toString()
+                              : ""
                           : "",
                       isEnabled: false,
                       isPickedUp: false,
@@ -341,30 +340,30 @@ class _ParcelViewState extends State<ParcelView> {
                         child: CustomButton(
                             buttonText: 'set_from_map'.tr,
                             onPressed: () => {
-                              Get.toNamed(
-                                  RouteHelper.getPickMapRoute(
-                                      'parcel', false),
-                                  arguments: PickMapScreen(
-                                    fromSignUp: false,
-                                    fromAddAddress: false,
-                                    canRoute: false,
-                                    route: '',
-                                    onPicked: (AddressModel address) {
-                                      addressModel_ = address;
-                                      Selected_address = addressModel_
-                                          .additionalAddress !=
-                                          null
-                                          ? addressModel_.additionalAddress
-                                          .toString()
-                                          : addressModel_.address != null
-                                          ? addressModel_.address
-                                          .toString()
-                                          : "";
-                                      print("Selected_address>>>" +
-                                          Selected_address);
-                                    },
-                                  )),
-                            }),
+                                  Get.toNamed(
+                                      RouteHelper.getPickMapRoute(
+                                          'parcel', false),
+                                      arguments: PickMapScreen(
+                                        fromSignUp: false,
+                                        fromAddAddress: false,
+                                        canRoute: false,
+                                        route: '',
+                                        onPicked: (AddressModel address) {
+                                          addressModel_ = address;
+                                          Selected_address = addressModel_
+                                                      .additionalAddress !=
+                                                  null
+                                              ? addressModel_.additionalAddress
+                                                  .toString()
+                                              : addressModel_.address != null
+                                                  ? addressModel_.address
+                                                      .toString()
+                                                  : "";
+                                          print("Selected_address>>>" +
+                                              Selected_address);
+                                        },
+                                      )),
+                                }),
                       ),
                       SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
                       Expanded(
@@ -374,30 +373,30 @@ class _ParcelViewState extends State<ParcelView> {
                               if (Get.find<AuthController>().isLoggedIn()) {
                                 Get.dialog(AddressDialog(
                                     onTap: (AddressModel address) {
-                                      /*widget.streetController.text =
+                                  /*widget.streetController.text =
                                       address.streetNumber ?? '';
                                   widget.houseController.text =
                                       address.house ?? '';
                                   widget.floorController.text =
                                       address.floor ?? '';*/
-                                      addressModel_ = address;
-                                      Selected_address =
+                                  addressModel_ = address;
+                                  Selected_address =
                                       addressModel_.additionalAddress != null
                                           ? addressModel_.additionalAddress
-                                          .toString()
+                                              .toString()
                                           : addressModel_.address != null
-                                          ? addressModel_.address.toString()
-                                          : "";
-                                      print(
-                                          "Selected_address>>>" + Selected_address);
-                                    }));
+                                              ? addressModel_.address.toString()
+                                              : "";
+                                  print(
+                                      "Selected_address>>>" + Selected_address);
+                                }));
                               } else {
                                 showCustomSnackBar('you_are_not_logged_in'.tr);
                               }
                             },
                             child: Container(
                               height:
-                              ResponsiveHelper.isDesktop(context) ? 44 : 50,
+                                  ResponsiveHelper.isDesktop(context) ? 44 : 50,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(
                                       Dimensions.RADIUS_SMALL),
@@ -497,7 +496,7 @@ class _ParcelViewState extends State<ParcelView> {
                           AddressModel _destination = AddressModel(
                             address: addressModel_.address.toString(),
                             additionalAddress:
-                            addressModel_.additionalAddress.toString(),
+                                addressModel_.additionalAddress.toString(),
                             addressType: addressModel_.addressType.toString(),
                             contactPersonName: nameController.text.trim(),
                             contactPersonNumber: phoneController.text.trim(),
@@ -572,26 +571,20 @@ class _ParcelViewState extends State<ParcelView> {
                         child: Text(
                             "${'receiver_information'.tr} ${' ('}${position + 1}${')'}",
                             style: robotoMedium)),
-
-                    SizedBox(
-                        width: Dimensions
-                            .PADDING_SIZE_EXTRA_SMALL),
+                    SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                     Expanded(child: SizedBox()),
                     InkWell(
-                      child:  Icon(Icons.cancel, size: 25),
+                      child: Icon(Icons.cancel, size: 25),
                       onTap: () {
                         setState(() => {
-                        Get.find<ParcelController>().removeMultiDropDestinationAddress(position),
-                          anotherList.removeAt(position)});
-
+                              Get.find<ParcelController>()
+                                  .removeMultiDropDestinationAddress(position),
+                              anotherList.removeAt(position)
+                            });
                       },
                     ),
-                    SizedBox(
-                        width: Dimensions
-                            .PADDING_SIZE_EXTRA_SMALL),
-
+                    SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                   ]),
-
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                   /* TextFieldShadow(*/
                   Align(
@@ -741,7 +734,7 @@ class _ParcelViewState extends State<ParcelView> {
                                         style: robotoMedium.copyWith(
                                             color: Colors.black,
                                             fontSize:
-                                            Dimensions.fontSizeDefault)),
+                                                Dimensions.fontSizeDefault)),
                                   ),
                                   Align(
                                     alignment: Alignment.centerLeft,
@@ -751,7 +744,7 @@ class _ParcelViewState extends State<ParcelView> {
                                         style: robotoMedium.copyWith(
                                             color: Colors.grey,
                                             fontSize:
-                                            Dimensions.fontSizeDefault)),
+                                                Dimensions.fontSizeDefault)),
                                   )
                                 ]),
                               )
@@ -777,7 +770,7 @@ class _ParcelViewState extends State<ParcelView> {
                                         style: robotoMedium.copyWith(
                                             color: Colors.black,
                                             fontSize:
-                                            Dimensions.fontSizeDefault)),
+                                                Dimensions.fontSizeDefault)),
                                   ),
                                   Align(
                                     alignment: Alignment.centerLeft,
@@ -787,7 +780,7 @@ class _ParcelViewState extends State<ParcelView> {
                                         style: robotoMedium.copyWith(
                                             color: Colors.grey,
                                             fontSize:
-                                            Dimensions.fontSizeDefault)),
+                                                Dimensions.fontSizeDefault)),
                                   )
                                 ]),
                               )

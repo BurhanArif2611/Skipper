@@ -44,7 +44,7 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
         bool parcel = false;
         if(orderController.trackModel != null) {
           total = ((orderController.trackModel.orderAmount / 100) * Get.find<SplashController>().configModel.loyaltyPointItemPurchasePoint);
-          success = orderController.trackModel.paymentStatus == 'paid' || orderController.trackModel.paymentMethod == 'cash_on_delivery';
+          success = orderController.trackModel.paymentStatus == 'paid' || orderController.trackModel.paymentMethod == 'cash_on_delivery'|| orderController.trackModel.paymentMethod == 'null'|| orderController.trackModel.paymentMethod == null;
           parcel = orderController.trackModel.paymentMethod == 'parcel';
 
           if (!success) {

@@ -60,7 +60,7 @@ class NewHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (Get.find<StoreController>().store == null) {
+    if (Get.find<StoreController>().store == null &&Get.find<StoreController>().storeItemModel==null) {
       Get.find<StoreController>()
           .getStoreDetails(Store(id: AppConstants.StoreID), true);
 

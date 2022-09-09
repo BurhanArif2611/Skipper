@@ -194,7 +194,9 @@ class ErrandOrderBody {
     }
     data['order_amount'] = this._orderAmount.toString();
     data['order_type'] = this._orderType;
-    data['payment_method'] = this._paymentMethod;
+    if(_orderType!='errand') {
+      data['payment_method'] = this._paymentMethod;
+    }
     if(this._orderNote != null && this._orderNote.isNotEmpty) {
       data['order_note'] = this._orderNote;
     }
