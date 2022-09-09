@@ -173,10 +173,18 @@ class OrderView extends StatelessWidget {
                                       )),
                                     ]),
                                   ),
-                                ) : Text(
+                                ) :_isParcel? Text(
+                                  '${paginatedOrderModel.orders[index].dropoff_locations.length} ${paginatedOrderModel.orders[index].dropoff_locations.length > 1 ? 'drops'.tr : 'drop'.tr}',
+                                  style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall),
+                                ):_isErrand?Text(
+                                  '${paginatedOrderModel.orders[index].errand_tasks.length} ${paginatedOrderModel.orders[index].errand_tasks.length > 1 ? 'tasks'.tr : 'task'.tr}',
+                                  style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall),
+                                ):Text(
                                   '${paginatedOrderModel.orders[index].detailsCount} ${paginatedOrderModel.orders[index].detailsCount > 1 ? 'items'.tr : 'item'.tr}',
                                   style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall),
-                                ),
+                                )
+
+                                ,
                               ]),
 
                             ]),

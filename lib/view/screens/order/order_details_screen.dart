@@ -2127,12 +2127,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       .primaryColor)),
         ),
       ),
-      (order.orderStatus == 'delivered' &&
-          (parcel
+      (order.orderStatus == 'delivered' && order.deliveryMan != null
+          /*(parcel
               ? order.deliveryMan != null
               : orderController.orderDetails != null &&
               orderController.orderDetails.length > 0 &&
-              orderController.orderDetails[0].itemCampaignId == null))
+              orderController.orderDetails[0].itemCampaignId == null)*/)
           ? Center(
         child: Container(
           width: Dimensions.WEB_MAX_WIDTH,

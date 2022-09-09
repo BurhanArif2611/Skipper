@@ -88,6 +88,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       Get.find<OrderController>().updateTips(-1, notify: false);
 
     }
+
   }
 
   @override
@@ -103,7 +104,21 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     Module _module = Get.find<SplashController>().configModel.moduleConfig.module;
-
+    bool showVeg=false;
+    try{
+      int moduleId = Get.find<StoreController>().store != null
+          ? Get.find<StoreController>().store.moduleId
+          : 0;
+      if (Get.find<SplashController>().moduleList != null) {
+        Get.find<SplashController>().moduleList.forEach((storeCategory) => {
+          if (storeCategory.id == moduleId)
+            {
+              if (storeCategory.moduleType == 'food' ||
+                  storeCategory.moduleType == 'Food')
+                {showVeg = true}
+            }
+        });
+      }}catch(e){}
     return Scaffold(
       appBar: CustomAppBar(title: 'checkout'.tr),
       endDrawer: MenuDrawer(),
@@ -224,7 +239,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         storeController.store!=null && storeController.store.delivery ? DeliveryOptionButton(
                           value: 'delivery', title: 'home_delivery'.tr, charge: _charge, isFree: storeController.store.freeDelivery,
                         ) : SizedBox(),
-                        storeController.store!=null && storeController.store.takeAway ? DeliveryOptionButton(
+                        showVeg && storeController.store!=null && storeController.store.takeAway ? DeliveryOptionButton(
                           value: 'take_away', title: 'take_away'.tr, charge: _deliveryCharge, isFree: true,
                         ) : SizedBox(),
                         SizedBox(height: Dimensions.PADDING_SIZE_LARGE),

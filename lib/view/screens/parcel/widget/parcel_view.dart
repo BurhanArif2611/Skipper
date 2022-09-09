@@ -424,6 +424,7 @@ class _ParcelViewState extends State<ParcelView> {
                           controller: nameController,
                           focusNode: _nameNode,
                           nextFocus: _phoneNode,
+                          autoFocus: true,
                           capitalization: TextCapitalization.words,
                         ),
                       ),
