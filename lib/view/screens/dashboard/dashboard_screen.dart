@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
@@ -9,11 +11,13 @@ import 'package:sixam_mart/view/screens/dashboard/widget/bottom_nav_item.dart';
 import 'package:sixam_mart/view/screens/favourite/favourite_screen.dart';
 import 'package:sixam_mart/view/screens/home/home_screen.dart';
 import 'package:sixam_mart/view/screens/menu/menu_screen.dart';
+import 'package:sixam_mart/view/screens/notification/notification_screen.dart';
 import 'package:sixam_mart/view/screens/order/order_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/banner_controller.dart';
+import '../../../controller/store_controller.dart';
 import '../parcel/parcel_category_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -42,7 +46,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     _screens = [
       HomeScreen(),
-      CartScreen(fromNav: true),
+      Get.find<StoreController>().store != null &&
+          Get.find<StoreController>()
+              .store
+              .parcel != 1? CartScreen(fromNav: true):NotificationScreen(),
       /* FavouriteScreen(),*/
       ParcelCategoryScreen(),
       OrderScreen(),
@@ -144,9 +151,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         onTap: () => _setPage(0),
                         countVisible: false),
                     BottomNavItem(
-                        iconData: Icons.shopping_cart,
+                        iconData:  Get.find<StoreController>().store != null &&
+                            Get.find<StoreController>()
+                                .store
+                                .parcel !=
+                                1?Icons.shopping_cart:Icons.notifications,
                         isSelected: _pageIndex == 1,
-                        onTap: () => /*_setPage(1)*/ _setPage(1),
+                        onTap: () => {
+                             _setPage(1)
+                        },
                         countVisible: true),
                     Expanded(child: SizedBox()),
                     BottomNavItem(

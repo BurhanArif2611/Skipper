@@ -497,6 +497,10 @@ class OrderController extends GetxController implements GetxService {
           _distance = _localDistance + _distance;
         }
         print("getDistanceInKM>if>" + _distance.toString());
+        if(_distance<=0){
+          _distance=0;
+        }
+        print("getDistanceInKM>if123>" + _distance.toString());
       } else {
         _distance = Geolocator.distanceBetween(
               originLatLng.latitude,

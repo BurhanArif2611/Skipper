@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
@@ -99,6 +101,11 @@ class _SplashScreenState extends State<SplashScreen> {
               if (Get.find<AuthController>().isLoggedIn()) {
                 Get.find<AuthController>().updateToken();
                 await Get.find<WishListController>().getWishList();
+                try {
+                  await Firebase.initializeApp();
+                  FlutterError.onError =
+                      FirebaseCrashlytics.instance.recordFlutterFatalError;
+                }catch (e){}
                 if (Get.find<LocationController>().getUserAddress() != null) {
                   //Get.offNamed(RouteHelper.getInitialRoute());
                   GetBranchList();
@@ -128,6 +135,7 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     });
   }
+
   void GetBranchList() {
     if (Get.find<BannerController>().branchStoreList!=null && Get.find<BannerController>().branchStoreList.branches.length > 0) {
       Get.offNamed(RouteHelper.getInitialRoute());

@@ -2134,7 +2134,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               orderController.orderDetails.length > 0 &&
               orderController.orderDetails[0].itemCampaignId == null)*/)
           ? Center(
-        child: Container(
+        child:
+          (orderController.orderDetailsModel!=null &&(orderController.orderDetailsModel.order_type=='errand' ||orderController.orderDetailsModel.order_type=='parcel'))|| orderController.orderDetailsModel!=null && orderController.orderDetailsModel.is_dm_reviewed_count==0?
+        Container(
           width: Dimensions.WEB_MAX_WIDTH,
           padding: ResponsiveHelper.isDesktop(context)
               ? null
@@ -2159,7 +2161,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   ));
             },
           ),
-        ),
+        ):SizedBox(),
       )
           : SizedBox(),
       (order.orderStatus == 'failed' &&

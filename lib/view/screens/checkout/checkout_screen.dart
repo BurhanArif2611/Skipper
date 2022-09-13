@@ -249,7 +249,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             Text('deliver_to'.tr, style: robotoMedium),
                             TextButton.icon(
                               onPressed: () async {
+
+
                                 var _address = await Get.toNamed(RouteHelper.getAddAddressRoute(true, storeController.store.zoneId));
+
                                 if(_address != null) {
                                   if(storeController.store.selfDeliverySystem == 0) {
                                     orderController.getDistanceInKM(

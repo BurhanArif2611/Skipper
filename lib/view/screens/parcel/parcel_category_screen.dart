@@ -15,6 +15,7 @@ import 'package:sixam_mart/view/base/custom_image.dart';
 import 'package:sixam_mart/view/base/footer_view.dart';
 import 'package:sixam_mart/view/screens/home/web/module_widget.dart';
 
+import '../../../controller/banner_controller.dart';
 import '../../../data/model/response/config_model.dart';
 import '../../../util/app_constants.dart';
 
@@ -27,7 +28,7 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
   @override
   void initState() {
     super.initState();
-    /*if (Get.find<SplashController>().moduleList != null &&
+   /* if (Get.find<SplashController>().moduleList != null &&
         Get.find<SplashController>().moduleList.length > 0) {
       Get.find<SplashController>().moduleList.forEach(
               (storeCategory) => {
@@ -67,7 +68,8 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
             child: FooterView(
                 child: SizedBox(
                     width: Dimensions.WEB_MAX_WIDTH,
-                    child: Column(
+                    child:
+                    Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Center(
@@ -89,7 +91,7 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                   fontSize: Dimensions.fontSizeLarge)),
                           SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                           parcelController.parcelCategoryList != null
-                              ? parcelController.parcelCategoryList.length > 0
+                              ? parcelController.parcelCategoryList.length > 0 && Get.find<BannerController>().branchStoreList.parcel == 1
                                   ? GridView.builder(
                                       controller: ScrollController(),
                                       gridDelegate:
@@ -207,6 +209,7 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                   isEnabled:
                                       parcelController.parcelCategoryList ==
                                           null),
+                          if(Get.find<BannerController>().branchStoreList.errand==1)
                           InkWell(
                             child: Container(
                               padding:
@@ -239,6 +242,9 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                   ),
                                 ),
                                 SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+                                if(Get.find<BannerController>()
+                                    .branchStoreList
+                                    .errand == 1)
                                 Expanded(
                                     child: Column(
                                         crossAxisAlignment:
@@ -253,6 +259,7 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
 
                                     ])),
                                 SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+
                                 Icon(Icons.keyboard_arrow_right),
                               ]),
                             ),

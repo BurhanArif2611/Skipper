@@ -13,9 +13,12 @@ class OrderDetailsModel {
   int quantity;
   double taxAmount;
   String variant;
+  String order_type;
   String createdAt;
   String updatedAt;
   int itemCampaignId;
+  int is_reviewed_count;
+  int is_dm_reviewed_count;
   double totalAddOnPrice;
   List<Errand_bids> errand_bids;
   List<Errand_Task> errand_tasks;
@@ -39,6 +42,9 @@ class OrderDetailsModel {
     this.totalAddOnPrice,
     this.errand_bids,
     this.errand_tasks,
+    this.is_reviewed_count,
+    this.is_dm_reviewed_count,
+    this.order_type,
   });
 
   OrderDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -66,6 +72,9 @@ class OrderDetailsModel {
         : 0;
     discountType = json['discount_type'] != null ? json['discount_type'] : "";
     quantity = json['quantity'];
+    order_type = json['order_type'];
+    is_reviewed_count = json['is_reviewed_count'];
+    is_dm_reviewed_count = json['is_dm_reviewed_count'];
     taxAmount = json['tax_amount'] != null
         ? json['tax_amount'] == 0
             ? json['tax_amount'].toDouble()
@@ -109,6 +118,7 @@ class OrderDetailsModel {
     }
     data['discount_on_item'] = this.discountOnItem;
     data['discount_type'] = this.discountType;
+    data['order_type'] = this.order_type;
     data['quantity'] = this.quantity;
     data['tax_amount'] = this.taxAmount;
     data['variant'] = this.variant;
@@ -116,6 +126,8 @@ class OrderDetailsModel {
     data['updated_at'] = this.updatedAt;
     data['item_campaign_id'] = this.itemCampaignId;
     data['total_add_on_price'] = this.totalAddOnPrice;
+    data['is_reviewed_count'] = this.is_reviewed_count;
+    data['is_dm_reviewed_count'] = this.is_dm_reviewed_count;
     if (this.errand_bids != null) {
       data['errand_bids'] = this.errand_bids.map((v) => v.toJson()).toList();
     } if (this.errand_tasks != null) {
@@ -236,6 +248,12 @@ class Errand_Task {
     updated_at = json['updated_at'];
     status = json['status'];
     errand_task_media = json['errand_task_media'];
+    if (json['errand_task_media'] != null) {
+      errand_task_media = [];
+      json['errand_task_media'].forEach((v) {
+        errand_task_media.add(new Errand_Task_Media.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -247,8 +265,10 @@ class Errand_Task {
     data['created_at'] = this.created_at;
     data['updated_at'] = this.updated_at;
     data['status'] = this.status;
-    data['errand_task_media'] = this.errand_task_media;
-
+    //data['errand_task_media'] = this.errand_task_media;
+    if (this.errand_task_media != null) {
+      data['errand_bids'] = this.errand_task_media.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

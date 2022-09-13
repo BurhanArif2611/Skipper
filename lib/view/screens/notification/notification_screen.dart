@@ -14,6 +14,9 @@ import 'package:sixam_mart/view/screens/notification/widget/notification_dialog.
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/store_controller.dart';
+import '../../../helper/responsive_helper.dart';
+
 class NotificationScreen extends StatefulWidget {
 
   @override
@@ -42,7 +45,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'notification'.tr),
+      appBar:Get.find<StoreController>().store != null &&
+          Get.find<StoreController>().store.parcel == 1 ?CustomAppBar(title: 'notification'.tr,backButton: ResponsiveHelper.isDesktop(context)):CustomAppBar(title: 'notification'.tr),
       endDrawer: MenuDrawer(),
       body: Get.find<AuthController>().isLoggedIn() ? GetBuilder<NotificationController>(builder: (notificationController) {
         if(notificationController.notificationList != null) {
