@@ -43,7 +43,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Get.find<SplashController>().getModules();
+    if (Get.find<SplashController>().module == null){
+    Get.find<SplashController>().getModules();}
     Get.find<BannerController>().getBranchList(true);
 
     bool _firstTime = true;

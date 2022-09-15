@@ -55,11 +55,15 @@ class HomeScreen extends StatefulWidget {
       Get.find<StoreController>().getStoreList(1, reload);*/
 
       if (Get.find<AuthController>().isLoggedIn()) {
-        Get.find<UserController>().getUserInfo();
-       // Get.find<NotificationController>().getNotificationList(reload); //TODO: comment by burhan unnessary call
+        if (Get.find<UserController>().userInfoModel == null) {
+          Get.find<UserController>().getUserInfo();
+        }
+        // Get.find<NotificationController>().getNotificationList(reload); //TODO: comment by burhan unnessary call
       }
     }
-    Get.find<SplashController>().getModules();
+    if (Get.find<SplashController>().module == null) {
+      Get.find<SplashController>().getModules();
+    }
     if (Get.find<SplashController>().module == null &&
         Get.find<SplashController>().configModel.module == null) {
       /*Get.find<BannerController>().getFeaturedBanner();
@@ -129,14 +133,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 await Get.find<StoreController>().getStoreList(1, true);*/
 
                       if (Get.find<AuthController>().isLoggedIn()) {
-                        await Get.find<UserController>().getUserInfo();
-                       // await Get.find<NotificationController>().getNotificationList(true);  //TODO: comment by burhan unnessary call
+                        if (Get.find<UserController>().userInfoModel == null) {
+                          await Get.find<UserController>().getUserInfo();
+                        }
+                        // await Get.find<NotificationController>().getNotificationList(true);  //TODO: comment by burhan unnessary call
                       }
                     } else {
                       print("else is working>>>");
                       // await Get.find<BannerController>().getFeaturedBanner();
-                      await Get.find<SplashController>().getModules();
-
+                      if (Get.find<SplashController>().module == null) {
+                        await Get.find<SplashController>().getModules();
+                      }
                       if (Get.find<AuthController>().isLoggedIn()) {
                         await Get.find<LocationController>().getAddressList();
                       }

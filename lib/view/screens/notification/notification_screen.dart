@@ -46,7 +46,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:Get.find<StoreController>().store != null &&
-          Get.find<StoreController>().store.parcel == 1 ?CustomAppBar(title: 'notification'.tr,backButton: ResponsiveHelper.isDesktop(context)):CustomAppBar(title: 'notification'.tr),
+          Get.find<StoreController>().store.ecommerce == 1 ?CustomAppBar(title: 'notification'.tr,backButton: ResponsiveHelper.isDesktop(context)):CustomAppBar(title: 'notification'.tr),
       endDrawer: MenuDrawer(),
       body: Get.find<AuthController>().isLoggedIn() ? GetBuilder<NotificationController>(builder: (notificationController) {
         if(notificationController.notificationList != null) {

@@ -63,6 +63,7 @@ class Store {
   int moduleId;
   int parcel;
   int errand;
+  int ecommerce;
   int orderPlaceToScheduleInterval;
   Discount discount;
   List<Schedules> schedules;
@@ -105,6 +106,7 @@ class Store {
         this.branches,
         this.errand,
         this.parcel,
+        this.ecommerce,
       });
 
   Store.fromJson(Map<String, dynamic> json) {
@@ -136,6 +138,7 @@ class Store {
     deliveryTime = json['delivery_time'];
     veg = json['veg'];
     errand = json['errand'];
+    ecommerce = json['ecommerce'];
     parcel = json['parcel'];
     nonVeg = json['non_veg'];
     moduleId = json['module_id'];
@@ -190,6 +193,7 @@ class Store {
     data['delivery_time'] = this.deliveryTime;
     data['parcel'] = this.parcel;
     data['errand'] = this.errand;
+    data['ecommerce'] = this.ecommerce;
     data['category_ids'] = this.categoryIds;
     if (this.discount != null) {
       data['discount'] = this.discount.toJson();

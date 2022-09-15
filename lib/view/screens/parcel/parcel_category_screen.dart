@@ -126,10 +126,8 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                             padding: EdgeInsets.all(
                                                 Dimensions.PADDING_SIZE_SMALL),
                                             decoration: BoxDecoration(
-                                              color:
-                                                  Theme.of(context).cardColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(
+                                              color: Theme.of(context).cardColor,
+                                              borderRadius: BorderRadius.circular(
                                                       Dimensions.RADIUS_SMALL),
                                             ),
                                             child: Row(children: [
@@ -202,13 +200,16 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                         );
                                       },
                                     )
-                                  : Center(
+                                  :
+                          Get.find<BannerController>().branchStoreList.parcel==1?
+                           Center(
                                       child:
-                                          Text('no_parcel_category_found'.tr))
+                                          Text('no_parcel_category_found'.tr)):Text("")
                               : ParcelShimmer(
                                   isEnabled:
                                       parcelController.parcelCategoryList ==
                                           null),
+                          SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
                           if(Get.find<BannerController>().branchStoreList.errand==1)
                           InkWell(
                             child: Container(

@@ -252,7 +252,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                           _order.paymentMethod ==
                                               'cash_on_delivery'
                                               ? 'cash_on_delivery'.tr
-                                              :_order.paymentMethod =='wallet'? 'wallet'.tr:_order.paymentMethod =='digital_payment'? 'digital_payment'.tr:"",
+                                              :_order.paymentMethod =='wallet'? 'wallet'.tr:_order.paymentMethod =='digital_payment'|| _order.paymentMethod =='flutterwave'? 'digital_payment'.tr:_order.paymentMethod =='flutterwave'?'digital_payment'.tr:"",
                                           style: robotoRegular.copyWith(
                                               color: Theme
                                                   .of(context)
@@ -279,9 +279,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                         SizedBox(
                                             width: Dimensions
                                                 .PADDING_SIZE_EXTRA_SMALL),
-                                        Text(
+                                        Text(_order!=null?_order.errand_tasks!=null?
                                           _order.errand_tasks.length
-                                              .toString(),
+                                              .toString():"":"  ",
                                           style: robotoMedium.copyWith(
                                               color:
                                               Theme

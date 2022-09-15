@@ -35,6 +35,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   List<Widget> _screens;
   GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey();
   bool _canExit = GetPlatform.isWeb ? true : false;
+  bool eccorance = false;
 
   @override
   void initState() {
@@ -43,13 +44,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _pageIndex = widget.pageIndex;
 
     _pageController = PageController(initialPage: widget.pageIndex);
+    if (Get.find<StoreController>().store != null &&
+        Get.find<StoreController>().store.ecommerce == 1) {
+      eccorance = true;
+    } else {
+      eccorance = false;
+    }
 
     _screens = [
       HomeScreen(),
-      Get.find<StoreController>().store != null &&
-          Get.find<StoreController>()
-              .store
-              .parcel != 1? CartScreen(fromNav: true):NotificationScreen(),
+      (eccorance ? CartScreen(fromNav: true) : NotificationScreen()),
       /* FavouriteScreen(),*/
       ParcelCategoryScreen(),
       OrderScreen(),
@@ -67,6 +71,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (Get.find<StoreController>().store != null &&
+        Get.find<StoreController>().store.ecommerce == 1) {
+      eccorance = true;
+      _screens = [
+        HomeScreen(),
+        CartScreen(fromNav: true) ,
+        /* FavouriteScreen(),*/
+        ParcelCategoryScreen(),
+        OrderScreen(),
+        Container(),
+      ];
+    } else {
+      eccorance = false;
+      _screens = [
+        HomeScreen(),
+         NotificationScreen(),
+        /* FavouriteScreen(),*/
+        ParcelCategoryScreen(),
+        OrderScreen(),
+        Container(),
+      ];
+    }
+
     return WillPopScope(
       onWillPop: () async {
         if (_pageIndex != 0) {
@@ -127,7 +154,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 backgroundColor: _pageIndex == 2
                     ? Theme.of(context).primaryColor
                     : Theme.of(context).cardColor,
-                onPressed: () => /* _setPage(2)*/ {_setPage(2)},
+                onPressed: () => /* _setPage(2)*/ {
+                  (Get.find<StoreController>().store != null && (Get.find<StoreController>().store.parcel == 1 || Get.find<StoreController>().store.errand == 1 )) ? _setPage(2):
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("This facility is currently not available"),
+                ))
+                },
                 child: CartWidget(
                     color: _pageIndex == 2
                         ? Theme.of(context).cardColor
@@ -151,15 +183,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         onTap: () => _setPage(0),
                         countVisible: false),
                     BottomNavItem(
-                        iconData:  Get.find<StoreController>().store != null &&
-                            Get.find<StoreController>()
-                                .store
-                                .parcel !=
-                                1?Icons.shopping_cart:Icons.notifications,
+                        iconData: eccorance
+                            ? Icons.shopping_cart
+                            : Icons.notifications,
                         isSelected: _pageIndex == 1,
-                        onTap: () => {
-                             _setPage(1)
-                        },
+                        onTap: () => {_setPage(1)},
                         countVisible: true),
                     Expanded(child: SizedBox()),
                     BottomNavItem(
