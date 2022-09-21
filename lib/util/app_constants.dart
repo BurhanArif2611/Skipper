@@ -13,7 +13,7 @@ class AppConstants {
  // static const String BASE_URL = 'https://6ammart-admin.6amtech.com';
   // static const String BASE_URL = 'https://jamboy-admin.khash.ng/admin';
    static const String BASE_URL = 'http://54.194.163.45:5000';
- // static const String BASE_URL = 'http://192.168.1.156:7600';
+  //static const String BASE_URL = 'http://192.168.1.156:7600';
   static const String CATEGORY_URI = '/api/v1/categories';
   static const String BANNER_URI = '/api/v1/banners';
   static const String BRANCG_URI = '/api/v1/stores';
@@ -88,9 +88,13 @@ class AppConstants {
   static const String SUBSCRIPTION_URI = '/api/v1/newsletter/subscribe';
   static const String CUSTOMER_REMOVE = '/api/v1/customer/remove-account';
   static const String WALLET_TRANSACTION_URL = '/api/v1/customer/wallet/transactions';
+  static const String BANK_LIST_URL = '/api/v1/banks/list';
   static const String LOYALTY_TRANSACTION_URL = '/api/v1/customer/loyalty-point/transactions';
   static const String LOYALTY_POINT_TRANSFER_URL = '/api/v1/customer/loyalty-point/point-transfer';
-  static const int StoreID = 24;
+  static const String ADD_BANK_ACCOUNT_URL = '/api/v1/customer/banks/account/create';
+  static const String WITHDRAW_FUND_URL = '/api/v1/customer/banks/account/withdraw';
+  static const String ADD_FUND_URL = '/api/v1/customer/banks/account/add_fund';
+  static const int StoreID = 42;
   static  int ModelID =1;
 
   static const String Store_ID = "store-id";

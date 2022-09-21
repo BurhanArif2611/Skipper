@@ -465,7 +465,8 @@ class _LocationView extends State<LocationView> {
                         child: Container(
                             height: 60,
                             width: 60,
-                            child: DottedBorder(
+                            child:
+                            DottedBorder(
                                 color: Colors.black,
                                 strokeWidth: 1,
                                 child: /*Get.find<UserController>().rawFile.toString()!=""?*/

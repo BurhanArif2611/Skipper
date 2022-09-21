@@ -23,8 +23,10 @@ class LocationSearchDialog extends StatelessWidget {
       alignment: Alignment.topCenter,
       child: Material(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL)),
-        child: SizedBox(width: Dimensions.WEB_MAX_WIDTH, child: TypeAheadField(
-          textFieldConfiguration: TextFieldConfiguration(
+        child: SizedBox(width: Dimensions.WEB_MAX_WIDTH, child:
+        TypeAheadField(
+          textFieldConfiguration:
+          TextFieldConfiguration(
             controller: _controller,
             textInputAction: TextInputAction.search,
             autofocus: true,
@@ -69,7 +71,8 @@ class LocationSearchDialog extends StatelessWidget {
             }
             Get.back();
           },
-        )),
+        )
+        ),
       ),
     );
   }

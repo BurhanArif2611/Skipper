@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/controller/user_controller.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
+import 'package:sixam_mart/data/model/response/bank_list.dart';
 import 'package:sixam_mart/data/model/response/wallet_model.dart';
 import 'package:sixam_mart/data/repository/wallet_repo.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 
-class WalletController extends GetxController implements GetxService{
+import '../helper/route_helper.dart';
+
+class WalletController extends GetxController implements GetxService {
   final WalletRepo walletRepo;
+
   WalletController({@required this.walletRepo});
 
   List<Transaction> _transactionList;
@@ -17,34 +21,41 @@ class WalletController extends GetxController implements GetxService{
   bool _isLoading = false;
 
   List<Transaction> get transactionList => _transactionList;
-  int get popularPageSize => _pageSize;
-  bool get isLoading => _isLoading;
-  int get offset => _offset;
 
+  int get popularPageSize => _pageSize;
+
+  bool get isLoading => _isLoading;
+
+  int get offset => _offset;
+  List<BankList> _predictionList = [];
+  List<BankList> _filterList = [];
+  List<BankList> get predictionList => _predictionList;
+  List<BankList> get filterList => _filterList;
   void setOffset(int offset) {
     _offset = offset;
   }
+
   void showBottomLoader() {
     _isLoading = true;
     update();
   }
 
-  Future<void> getWalletTransactionList(String offset, bool reload, bool isWallet) async {
-    if(offset == '1' || reload) {
+  Future<void> getWalletTransactionList(
+      String offset, bool reload, bool isWallet) async {
+    if (offset == '1' || reload) {
       _offsetList = [];
       _offset = 1;
       _transactionList = null;
-      if(reload) {
+      if (reload) {
         update();
       }
-
     }
     if (!_offsetList.contains(offset)) {
       _offsetList.add(offset);
       Response response;
-      if(isWallet){
+      if (isWallet) {
         response = await walletRepo.getWalletTransactionList(offset);
-      }else{
+      } else {
         response = await walletRepo.getLoyaltyTransactionList(offset);
       }
 
@@ -61,7 +72,7 @@ class WalletController extends GetxController implements GetxService{
         ApiChecker.checkApi(response);
       }
     } else {
-      if(isLoading) {
+      if (isLoading) {
         _isLoading = false;
         update();
       }
@@ -76,7 +87,8 @@ class WalletController extends GetxController implements GetxService{
       Get.back();
       getWalletTransactionList('1', true, fromWallet);
       Get.find<UserController>().getUserInfo();
-      showCustomSnackBar('converted_successfully_transfer_to_your_wallet'.tr, isError: false);
+      showCustomSnackBar('converted_successfully_transfer_to_your_wallet'.tr,
+          isError: false);
     } else {
       ApiChecker.checkApi(response);
     }
@@ -84,6 +96,104 @@ class WalletController extends GetxController implements GetxService{
     update();
   }
 
+  Future<void> addAcountToWallet(String bank_name, String account_number, String holder_name) async {
+    _isLoading = true;
+    update();
+    Response response =
+        await walletRepo.createAccount(bank_name, account_number, holder_name);
+    if (response.statusCode == 200) {
+      Get.back();
+      print("response>>" + response.bodyString);
 
+      if (response.body['status'] == 200) {
+        showCustomSnackBar(response.body['message'].toString(), isError: false);
+      } else {
+        showCustomSnackBar(response.body['message'].toString(), isError: true);
+      }
+    } else {
+      showCustomSnackBar(response.body['message'].toString(), isError: true);
+      ApiChecker.checkApi(response);
+    }
+    _isLoading = false;
+    update();
+  }
+
+  Future<void> bankList() async {
+    _isLoading = true;
+    update();
+    Response response = await walletRepo.getBankList();
+    if (response.statusCode == 200 && response.body['status'] == 'success') {
+      _predictionList = [];
+      response.body['data'].forEach((prediction) => _predictionList.add(BankList.fromJson(prediction)));
+    } else {
+      showCustomSnackBar(response.body['error_message'] ?? response.bodyString);
+    }
+    ApiChecker.checkApi(response);
+
+    _isLoading = false;
+    update();
+  }
+
+  Future<List<BankList>> filter(String search) async {
+   if(search !="") {
+     _filterList = [];
+     _predictionList.forEach((prediction) {
+       print("filter>>>>" + prediction.name);
+
+       if (prediction.name.toLowerCase().contains(search.toLowerCase())) {
+         print("filter>>>>" + search);
+         _filterList.add(prediction);
+       }
+     });
+   }
+
+   return _filterList;
+  }
+
+  Future<void> withdrawFundToWallet(String bank_name, String account_number) async {
+    _isLoading = true;
+    update();
+    Response response =
+    await walletRepo.withdrawFund(bank_name, account_number);
+    if (response.statusCode == 200) {
+      Get.back();
+      print("response>>" + response.bodyString);
+
+      if (response.body['status'] == 200) {
+        showCustomSnackBar(response.body['message'].toString(), isError: false);
+      } else {
+        showCustomSnackBar(response.body['message'].toString(), isError: true);
+      }
+    } else {
+      showCustomSnackBar(response.body['message'].toString(), isError: true);
+      ApiChecker.checkApi(response);
+    }
+    _isLoading = false;
+    update();
+  }
+
+  Future<void> addFundToWallet(String bank_name) async {
+    _isLoading = true;
+    update();
+    Response response =
+    await walletRepo.addFund(bank_name);
+    if (response.statusCode == 200) {
+      Get.back();
+      print("response>>" + response.bodyString);
+      print("response>>" + response.body['link'].toString());
+
+      if (response.body['status'] == 200) {
+        Get.offNamed(RouteHelper.getPaymentRoute(
+            "-12", Get.find<UserController>().userInfoModel.id, response.body['link'].toString()));
+      } else {
+        showCustomSnackBar(response.body['message'].toString(), isError: true);
+      }
+    } else {
+      showCustomSnackBar(response.body['message'].toString(), isError: true);
+      ApiChecker.checkApi(response);
+    }
+    _isLoading = false;
+    update();
+  }
 
 }

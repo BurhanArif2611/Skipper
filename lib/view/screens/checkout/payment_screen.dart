@@ -11,6 +11,8 @@ import 'package:sixam_mart/view/base/custom_app_bar.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:sixam_mart/view/screens/checkout/widget/payment_failed_dialog.dart';
 
+import '../../base/custom_snackbar.dart';
+
 class PaymentScreen extends StatefulWidget {
   final OrderModel orderModel;
   PaymentScreen({@required this.orderModel});
@@ -29,8 +31,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     super.initState();
-    selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?customer_id=${widget.orderModel.userId}&order_id=${widget.orderModel.id}';
-
+    print("type>>>>>>>>"+widget.orderModel.orderType);
+    if(widget.orderModel.id== -12){
+      selectedUrl =widget.orderModel.orderType.toString();
+    }else {
+      selectedUrl =
+      '${AppConstants.BASE_URL}/payment-mobile?customer_id=${widget.orderModel
+          .userId}&order_id=${widget.orderModel.id}';
+    }
+    print("type>>>>>>>>"+selectedUrl);
     _initData();
   }
 
@@ -176,18 +185,37 @@ class MyInAppBrowser extends InAppBrowser {
   }
 
   void _redirect(String url) {
+    print("url>>>>"+url);
+    print("url>>>>"+_canRedirect.toString());
     if(_canRedirect) {
       bool _isSuccess = url.contains('success') && url.contains(AppConstants.BASE_URL);
       bool _isFailed = url.contains('fail') && url.contains(AppConstants.BASE_URL);
       bool _isCancel = url.contains('cancel') && url.contains(AppConstants.BASE_URL);
+      print("url>>>>"+_isSuccess.toString());
+      print("url>>>>"+_isFailed.toString());
+      print("url>>>>"+_isCancel.toString());
       if (_isSuccess || _isFailed || _isCancel) {
         _canRedirect = false;
         close();
       }
+     /* if(orderID=='-12'){
+        close();
+      }*/
       if (_isSuccess) {
-        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
+        if(orderID=='-12'){
+          showCustomSnackBar('Added Fund Successfully ', isError: false);
+          Get.back();
+
+        }else {
+          Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
+        }
       } else if (_isFailed || _isCancel) {
-        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
+        if(orderID=='-12'){
+          showCustomSnackBar('Added Fund Getting Error ', isError: true);
+          Get.back();
+
+        }else {
+        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));}
       }
     }
   }
