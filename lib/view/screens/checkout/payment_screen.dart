@@ -203,7 +203,7 @@ class MyInAppBrowser extends InAppBrowser {
       }*/
       if (_isSuccess) {
         if(orderID=='-12'){
-          showCustomSnackBar('Added Fund Successfully ', isError: false);
+          showCustomSnackBar('Your Add Fund request has been successfully placed. The same will reflect in your account within 24 Hours.', isError: false);
           Get.back();
 
         }else {
@@ -211,7 +211,7 @@ class MyInAppBrowser extends InAppBrowser {
         }
       } else if (_isFailed || _isCancel) {
         if(orderID=='-12'){
-          showCustomSnackBar('Added Fund Getting Error ', isError: true);
+          showCustomSnackBar('We are unable to process your request please try after some time.', isError: true);
           Get.back();
 
         }else {

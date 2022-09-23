@@ -18,6 +18,7 @@ import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:sixam_mart/view/screens/home/home_screen.dart';
 
 import '../data/model/response/store_model.dart';
+import '../util/app_constants.dart';
 
 class SplashController extends GetxController implements GetxService {
   final SplashRepo splashRepo;
@@ -101,6 +102,7 @@ class SplashController extends GetxController implements GetxService {
     }
   }
   Future<void> setModuleWithCallStoreAPI(ModuleModel module,int id, {bool notify = true}) async {
+
     _module = module;
     splashRepo.setModule(module);
     Get.find<StoreController>().getStoreDetails(Store(id: id),true);

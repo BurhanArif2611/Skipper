@@ -4,6 +4,7 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/parcel_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
+import 'package:sixam_mart/controller/store_controller.dart';
 import 'package:sixam_mart/controller/user_controller.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
@@ -91,7 +92,7 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                   fontSize: Dimensions.fontSizeLarge)),
                           SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                           parcelController.parcelCategoryList != null
-                              ? parcelController.parcelCategoryList.length > 0 && Get.find<BannerController>().branchStoreList.parcel == 1
+                              ? parcelController.parcelCategoryList.length > 0 && Get.find<StoreController>().store.parcel == 1
                                   ? GridView.builder(
                                       controller: ScrollController(),
                                       gridDelegate:
@@ -201,7 +202,7 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                       },
                                     )
                                   :
-                          Get.find<BannerController>().branchStoreList.parcel==1?
+                          Get.find<StoreController>().store.parcel==1?
                            Center(
                                       child:
                                           Text('no_parcel_category_found'.tr)):Text("")
@@ -210,7 +211,7 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                       parcelController.parcelCategoryList ==
                                           null),
                           SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-                          if(Get.find<BannerController>().branchStoreList.errand==1)
+                          if(Get.find<StoreController>().store.errand==1)
                           InkWell(
                             child: Container(
                               padding:

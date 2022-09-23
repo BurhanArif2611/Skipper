@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/controller/user_controller.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
+import 'package:sixam_mart/data/model/response/added_bank_account.dart';
 import 'package:sixam_mart/data/model/response/bank_list.dart';
 import 'package:sixam_mart/data/model/response/wallet_model.dart';
 import 'package:sixam_mart/data/repository/wallet_repo.dart';
@@ -28,8 +29,10 @@ class WalletController extends GetxController implements GetxService {
 
   int get offset => _offset;
   List<BankList> _predictionList = [];
+  List<AddedBankAccount> _bankAccountList = [];
   List<BankList> _filterList = [];
   List<BankList> get predictionList => _predictionList;
+  List<AddedBankAccount> get bankAccountList => _bankAccountList;
   List<BankList> get filterList => _filterList;
   void setOffset(int offset) {
     _offset = offset;
@@ -107,6 +110,7 @@ class WalletController extends GetxController implements GetxService {
 
       if (response.body['status'] == 200) {
         showCustomSnackBar(response.body['message'].toString(), isError: false);
+        bankAccountListDetail();
       } else {
         showCustomSnackBar(response.body['message'].toString(), isError: true);
       }
@@ -119,16 +123,32 @@ class WalletController extends GetxController implements GetxService {
   }
 
   Future<void> bankList() async {
-    _isLoading = true;
+     _isLoading = true;
     update();
     Response response = await walletRepo.getBankList();
     if (response.statusCode == 200 && response.body['status'] == 'success') {
       _predictionList = [];
       response.body['data'].forEach((prediction) => _predictionList.add(BankList.fromJson(prediction)));
     } else {
-      showCustomSnackBar(response.body['error_message'] ?? response.bodyString);
+      showCustomSnackBar(response.body['error_message'] );
     }
-    ApiChecker.checkApi(response);
+   // ApiChecker.checkApi(response);
+
+    _isLoading = false;
+    update();
+  }
+  Future<void> bankAccountListDetail() async {
+    _isLoading = true;
+    update();
+    Response response = await walletRepo.getBankAccountList();
+    print("bankAccountList>>"+response.bodyString);
+    if (response.statusCode == 200) {
+      _bankAccountList = [];
+      response.body.forEach((prediction) => _bankAccountList.add(AddedBankAccount.fromJson(prediction)));
+    } else {
+      showCustomSnackBar(response.body['error_message'] );
+    }
+   // ApiChecker.checkApi(response);
 
     _isLoading = false;
     update();
@@ -188,6 +208,24 @@ class WalletController extends GetxController implements GetxService {
       } else {
         showCustomSnackBar(response.body['message'].toString(), isError: true);
       }
+    } else {
+      showCustomSnackBar(response.body['message'].toString(), isError: true);
+      ApiChecker.checkApi(response);
+    }
+    _isLoading = false;
+    update();
+  }
+
+  Future<void> deleteAccount(String account_num) async {
+    _isLoading = true;
+    update();
+    Response response =
+    await walletRepo.deleteAccount(account_num);
+    if (response.statusCode == 200) {
+      Get.back();
+      print("response>>" + response.bodyString);
+      showCustomSnackBar(response.body['message'].toString(), isError: false);
+      bankAccountListDetail();
     } else {
       showCustomSnackBar(response.body['message'].toString(), isError: true);
       ApiChecker.checkApi(response);

@@ -14,6 +14,10 @@ class WalletRepo {
     return await apiClient.getData('${AppConstants.BANK_LIST_URL}');
   }
 
+  Future<Response> getBankAccountList() async {
+    return await apiClient.getData('${AppConstants.GET_BANK_ACCOUNT_LIST_URL}');
+  }
+
   Future<Response> getLoyaltyTransactionList(String offset) async {
     return await apiClient.getData('${AppConstants.LOYALTY_TRANSACTION_URL}?offset=$offset&limit=10');
   }
@@ -32,6 +36,10 @@ class WalletRepo {
 
   Future<Response> addFund(String amount ) async {
     return await apiClient.postData(AppConstants.ADD_FUND_URL, {"amount": amount});
+  }
+
+  Future<Response> deleteAccount(String account_number ) async {
+    return await apiClient.deleteData('${AppConstants.DELETE_BANK_ACCOUNT_URL}${ 'account_number=' }$account_number');
   }
 
 }

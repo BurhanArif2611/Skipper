@@ -94,7 +94,9 @@ class AppConstants {
   static const String ADD_BANK_ACCOUNT_URL = '/api/v1/customer/banks/account/create';
   static const String WITHDRAW_FUND_URL = '/api/v1/customer/banks/account/withdraw';
   static const String ADD_FUND_URL = '/api/v1/customer/banks/account/add_fund';
-  static const int StoreID = 42;
+  static const String GET_BANK_ACCOUNT_LIST_URL = '/api/v1/customer/beneficiaries';
+  static const String DELETE_BANK_ACCOUNT_URL = '/api/v1/customer/banks/account/delete?';
+  static  int StoreID = 45;
   static  int ModelID =1;
 
   static const String Store_ID = "store-id";
