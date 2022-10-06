@@ -159,7 +159,11 @@ class MyInAppBrowser extends InAppBrowser {
   @override
   void onExit() {
     if(_canRedirect) {
-      Get.dialog(PaymentFailedDialog(orderID: orderID));
+      if(orderID=='-12'){
+        Get.back();
+      }
+      else{
+      Get.dialog(PaymentFailedDialog(orderID: orderID));}
     }
     print("\n\nBrowser closed!\n\n");
   }

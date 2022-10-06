@@ -45,19 +45,20 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
   TextEditingController _senderHouseController = TextEditingController();
   TextEditingController _senderFloorController = TextEditingController();
   TextEditingController _orderPriceController = TextEditingController();
-  TextEditingController _receiverStreetNumberController =
-      TextEditingController();
+  TextEditingController _receiverStreetNumberController = TextEditingController();
   TextEditingController _receiverHouseController = TextEditingController();
   TextEditingController _receiverFloorController = TextEditingController();
   String validity = "male";
   TabController _tabController;
-bool checkClickEvent=false;
+  bool checkClickEvent=false;
   @override
   void initState() {
     super.initState();
 
     _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
-
+    Get.find<
+        ParcelController>()
+        .clear_pickupImage();
     Get.find<ParcelController>().setPickupAddress(
         Get.find<LocationController>().getUserAddress(), false);
     Get.find<ParcelController>().setIsPickedUp(true, false);

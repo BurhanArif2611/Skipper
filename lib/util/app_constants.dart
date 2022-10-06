@@ -7,7 +7,7 @@ import 'package:sixam_mart/util/images.dart';
 import '../controller/banner_controller.dart';
 
 class AppConstants {
-  static const String APP_NAME = '6amMart';
+  static const String APP_NAME = 'ShapShap';
   static const double APP_VERSION = 1.5;
 
  // static const String BASE_URL = 'https://6ammart-admin.6amtech.com';
@@ -96,7 +96,7 @@ class AppConstants {
   static const String ADD_FUND_URL = '/api/v1/customer/banks/account/add_fund';
   static const String GET_BANK_ACCOUNT_LIST_URL = '/api/v1/customer/beneficiaries';
   static const String DELETE_BANK_ACCOUNT_URL = '/api/v1/customer/banks/account/delete?';
-  static  int StoreID = 45;
+  static  int StoreID = 43;
   static  int ModelID =1;
 
   static const String Store_ID = "store-id";

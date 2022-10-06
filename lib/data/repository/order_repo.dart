@@ -113,13 +113,16 @@ class OrderRepo {
     );
     List<MultipartBody> multipartBody = [];
     if (Get.find<ParcelController>().anothertaskList.length > 0) {
-      for (int i = 0;
-          i < Get.find<ParcelController>().anothertaskList.length;
-          i++) {
-        if (Get.find<ParcelController>().anothertaskList[i].task_media !=
-            null) {
-          multipartBody.add(MultipartBody('task_media_file_$i[0]',
-              Get.find<ParcelController>().anothertaskList[i].task_media));
+      for (int i = 0; i < Get.find<ParcelController>().anothertaskList.length; i++) {
+        if (Get.find<ParcelController>().anothertaskList[i].task_media != null) {
+          for (int j = 0; j < Get
+              .find<ParcelController>()
+              .anothertaskList[i].task_media.length; j++) {
+            print("image>>"+'task_media_file_$i[${j}]');
+            multipartBody.add(MultipartBody('task_media_file_$i[${j}]', Get
+                .find<ParcelController>()
+                .anothertaskList[i].task_media[j].file));
+          }
         }
       }
     }
@@ -190,3 +193,5 @@ class OrderRepo {
         AppConstants.Accept_ERRAND_COUNTER_URI, updateStatusBody.toJson());
   }
 }
+
+

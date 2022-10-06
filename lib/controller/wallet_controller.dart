@@ -6,9 +6,11 @@ import 'package:sixam_mart/data/model/response/added_bank_account.dart';
 import 'package:sixam_mart/data/model/response/bank_list.dart';
 import 'package:sixam_mart/data/model/response/wallet_model.dart';
 import 'package:sixam_mart/data/repository/wallet_repo.dart';
+import 'package:sixam_mart/view/base/confirmation_dialog.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 
 import '../helper/route_helper.dart';
+import '../util/images.dart';
 
 class WalletController extends GetxController implements GetxService {
   final WalletRepo walletRepo;
@@ -94,6 +96,16 @@ class WalletController extends GetxController implements GetxService {
           isError: false);
     } else {
       ApiChecker.checkApi(response);
+      Get.dialog(
+          ConfirmationDialog(
+            icon: Images.warning,
+            title: 'Are you sure to "Convert Loyalty Points to Currency" ?' ,
+            description: response.statusText,
+            onYesPressed: () {
+              Get.back();
+            },
+          ),
+          barrierDismissible: false);
     }
     _isLoading = false;
     update();

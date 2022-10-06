@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-ThemeData light({Color color = const Color(0xFF68B2C9)}) => ThemeData(
+ThemeData light({Color color = const Color(0xFF68B2C9)}) =>
+    ThemeData(
   fontFamily: 'Mulish',
   primaryColor: color,
   secondaryHeaderColor: Color(0xFF89D6ED),

@@ -276,6 +276,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                           )
                                   ],
                                 ),
+
+                                widget.fromWallet ?
                                 Row(children: [
                                   Expanded(
                                       child: CustomButton(
@@ -308,20 +310,20 @@ class _WalletScreenState extends State<WalletScreen> {
                                           fontSize: 12,
                                           buttonText: 'Add Fund'.tr,
                                           onPressed: () => {
-                                                if (Get.find<WalletController>()
+                                                /*if (Get.find<WalletController>()
                                                         .bankAccountList
                                                         .length >
                                                     0)
-                                                  {
+                                                  {*/
                                                     showAddFundCustomDialog(
                                                         context)
-                                                  }
+                                                 /* }
                                                 else
                                                   {
                                                     showCustomSnackBar(
                                                         'No account added please add bank account first',
                                                         isError: false)
-                                                  },
+                                                  }*/,
                                               })),
                                   SizedBox(
                                       width: Dimensions.PADDING_SIZE_SMALL),
@@ -329,7 +331,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                       child: CustomButton(
                                           height: 40,
                                           fontSize: 12,
-                                          buttonText: 'WithDraw Fund',
+                                          buttonText: 'Withdraw Fund',
                                           onPressed: () => {
                                                 if (Get.find<WalletController>()
                                                         .bankAccountList
@@ -346,7 +348,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                                         isError: false)
                                                   }
                                               })),
-                                ]),
+                                ]): SizedBox(
+                                    height: Dimensions.PADDING_SIZE_SMALL),
                                 Column(children: [
                                   Padding(
                                     padding: EdgeInsets.only(
@@ -532,7 +535,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                         padding: EdgeInsets.all(
                                             Dimensions.PADDING_SIZE_SMALL),
                                         child: Row(children: [
-                                          Icon(Icons.food_bank),
+                                         /* Icon(Icons.food_bank),*/
                                           Expanded(
                                             child: Text(suggestion.name,
                                                 maxLines: 1,
@@ -683,7 +686,7 @@ class _WalletScreenState extends State<WalletScreen> {
         {*/
         return Center(
           child: Container(
-            height: 310,
+            height: 250,
             child: Card(
               child: Padding(
                 padding: EdgeInsets.all(10.0),
@@ -703,7 +706,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   fontSize: Dimensions.fontSizeLarge))),*/
 
                       SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                      Align(
+                      /*Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'Added Account',
@@ -745,13 +748,13 @@ class _WalletScreenState extends State<WalletScreen> {
                                           child: Text(
                                             Get.find<WalletController>()
                                                 .bankAccountList[0]
-                                                .account_number,
+                                                .account_no_mask,
                                             style: robotoRegular.copyWith(
                                                 fontSize: Dimensions.fontSizeSmall,
                                                 color: Colors.black),
                                           ))
                                     ])))),
-                      ),
+                      ),*/
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                       Align(
                         alignment: Alignment.centerLeft,
@@ -838,7 +841,7 @@ class _WalletScreenState extends State<WalletScreen> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Added Account',
+                          'Account Details',
                           style: robotoRegular.copyWith(
                               fontSize: Dimensions.fontSizeSmall,
                               color: Theme.of(context).disabledColor),
@@ -874,10 +877,10 @@ class _WalletScreenState extends State<WalletScreen> {
                                           Dimensions.PADDING_SIZE_EXTRA_SMALL),
                                   Align(
                                       alignment: Alignment.centerLeft,
-                                      child: Text(
+                                      child: Text("**** **** ****"+
                                         Get.find<WalletController>()
                                             .bankAccountList[0]
-                                            .account_number,
+                                            .account_no_mask,
                                         style: robotoRegular.copyWith(
                                             fontSize: Dimensions.fontSizeSmall,
                                             color: Colors.black),
@@ -935,10 +938,7 @@ class _WalletScreenState extends State<WalletScreen> {
   }
 
   void showAddAccountDetailsDialog(BuildContext context) {
-    TextEditingController bankNameController = TextEditingController();
-    TextEditingController bankCodeController = TextEditingController();
-    TextEditingController accountnumberController = TextEditingController();
-    TextEditingController holder_nameController = TextEditingController();
+
 
     showGeneralDialog(
       context: context,
@@ -1020,7 +1020,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                     child: Text(
                                         Get.find<WalletController>()
                                             .bankAccountList[0]
-                                            .customer_id
+                                            .full_name
                                             .toString(),
                                         textAlign: TextAlign.left,
                                         style: robotoRegular.copyWith(
@@ -1048,11 +1048,10 @@ class _WalletScreenState extends State<WalletScreen> {
                                 strokeWidth: 0.2,
                                 child: Align(
                                     alignment: Alignment.center,
-                                    child: Text(
+                                    child: Text("**** **** **** "+
                                         Get.find<WalletController>()
                                             .bankAccountList[0]
-                                            .account_number
-                                            .replaceAll("\\w(?=\\w{4})", "*"),
+                                            .account_no_mask,
                                         style: robotoRegular.copyWith(
                                           fontSize: Dimensions.fontSizeDefault,
                                           color: Colors.black,
@@ -1073,7 +1072,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   Get.find<WalletController>().deleteAccount(
                                       Get.find<WalletController>()
                                           .bankAccountList[0]
-                                          .account_number);
+                                          .account_no_mask);
                                   Get.back();
                                 },
                               ),

@@ -34,7 +34,7 @@ class NotificationHelper {
       if(Get.find<AuthController>().isLoggedIn()) {
         Get.find<OrderController>().getRunningOrders(1);
         Get.find<OrderController>().getHistoryOrders(1);
-        Get.find<NotificationController>().getNotificationList(true);
+        Get.find<NotificationController>().getNotificationList(1,true);
       }
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {

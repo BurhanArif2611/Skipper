@@ -84,7 +84,7 @@ class _LocationView extends State<LocationView> {
           addressModel_ = parcelController.destinationAddress;
         }
         parcelController_main = parcelController;
-        return SingleChildScrollView(
+        return  SingleChildScrollView(
           // controller: ScrollController(),
           child: Center(
               child: FooterView(
@@ -284,32 +284,50 @@ class _LocationView extends State<LocationView> {
                                                     Dimensions.fontSizeLarge))),
                                     SizedBox(
                                         height: Dimensions.PADDING_SIZE_LARGE),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Container(
-                                          height: 60,
-                                          width: 60,
-                                          child: DottedBorder(
-                                              color: Colors.black,
-                                              strokeWidth: 1,
-                                              child: /*Get.find<UserController>().rawFile.toString()!=""?*/
-                                                  SqureImagePickerWidget(
-                                                      image:
-                                                          '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${Get.find<ParcelController>().pickedFile}',
-                                                      onTap: () => Get.find<
-                                                              ParcelController>()
-                                                          .pickImage(),
-                                                      rawFile: Get.find<
-                                                              ParcelController>()
-                                                          .rawFile) /*:
+
+
+                              Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                        children:<Widget> [
+                                      if (Get.find<ParcelController>()
+                                              .pickedFileList
+                                              .length >
+                                          0)
+                                      Container(
+                                              child: updateImagesListView()),
+
+                                       SizedBox(
+                                           width: Dimensions.PADDING_SIZE_SMALL),
+
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Container(
+                                              height: 60,
+                                              width: 60,
+                                              child: DottedBorder(
+                                                  color: Colors.black,
+                                                  strokeWidth: 1,
+                                                  child: /*Get.find<UserController>().rawFile.toString()!=""?*/
+                                                      SqureImagePickerWidget(
+                                                    image:
+                                                        '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${Get.find<ParcelController>().pickedFile}',
+                                                    onTap: () => Get.find<
+                                                            ParcelController>()
+                                                        .pickImage(),
+                                                    /* rawFile: Get.find<
+                                                                  ParcelController>()
+                                                              .rawFile*/
+                                                  ) /*:
                                   Icon(
                                     Icons.add,
                                     size: 20,
 
                                   )*/
 
-                                              )),
-                                    ),
+                                                  )),
+                                        ),
+
+                                    ]),
                                     SizedBox(
                                         height: Dimensions.PADDING_SIZE_LARGE),
                                     Align(
@@ -329,6 +347,7 @@ class _LocationView extends State<LocationView> {
                                       hintText: 'Enter Title',
                                       inputType: TextInputType.name,
                                       controller: main_titleController,
+                                      autoFocus: true,
                                       capitalization: TextCapitalization.words,
                                     ),
                                     SizedBox(
@@ -371,9 +390,10 @@ class _LocationView extends State<LocationView> {
                                   ? null
                                   : EdgeInsets.all(
                                       Dimensions.PADDING_SIZE_SMALL),
-                              buttonText: anotherList.length == 0?'Add Task':'Add a More Task',
+                              buttonText: anotherList.length == 0
+                                  ? 'Add Task'
+                                  : 'Add a More Task',
                               onPressed: () {
-
                                 if (anotherList.length == 0) {
                                   if (main_titleController.text.isEmpty) {
                                     showCustomSnackBar('Enter task title');
@@ -381,28 +401,58 @@ class _LocationView extends State<LocationView> {
                                       .text.isEmpty) {
                                     showCustomSnackBar('Enter task comment');
                                   } else {
+                                    List<File_Unitpath> file_raw =
+                                        List<File_Unitpath>();
+                                    for (int i = 0;
+                                        i <
+                                            Get.find<ParcelController>()
+                                                .pickedFileList
+                                                .length;
+                                        i++) {
+                                      File_Unitpath file_unitpath =
+                                          File_Unitpath(rawFile: Get.find<ParcelController>()
+                                              .pickedUintFileList[i].rawFile);
+                                      file_raw.add(file_unitpath);
+                                    }
+                                    print("file_raw>>>"+file_raw.length.toString());
+
+                                    List<File_path> file_raw1 =
+                                        List<File_path>();
+                                    for (int i = 0;
+                                        i <
+                                            Get.find<ParcelController>()
+                                                .pickedFileList
+                                                .length;
+                                        i++) {
+                                      File_path file_unitpath =
+                                      File_path(file: Get.find<ParcelController>()
+                                              .pickedFileList[i].file);
+                                      file_raw1.add(file_unitpath);
+                                    }
+                                    print("file_raw>>>"+file_raw.length.toString());
                                     TaskModel _destination = TaskModel(
                                       task_title:
                                           main_titleController.text.toString(),
                                       task_description: main_commentController
                                           .text
                                           .toString(),
-                                      task_media: Get.find<ParcelController>()
-                                          .pickedFile,
-                                      rawFile:
-                                          Get.find<ParcelController>().rawFile,
+                                      task_media: file_raw1,
+                                     rawFile: file_raw,
+                                     /* rawFile: Get.find<ParcelController>()
+                                          .pickedUintFileList,*/
                                     );
                                     // anotherList=[];
                                     parcelController_main
                                         .setMultiTask(_destination);
-                                    parcelController_main.pickedFile_null();
+
                                     setState(
                                         () => anotherList.add(_destination));
-
-                                   // showCustomDialog(context);
+                                    parcelController_main.clear_pickupImage();
+                                    parcelController_main.pickedFile_null();
+                                    // createNewTaskCustomDialog(context);
                                   }
                                 } else {
-                                  showCustomDialog(context);
+                                  createNewTaskCustomDialog(context);
                                 }
                               },
                             ),
@@ -411,7 +461,7 @@ class _LocationView extends State<LocationView> {
                                   color: Theme.of(context).primaryColor),
                               mini: true,
                               backgroundColor: Theme.of(context).cardColor,
-                              onPressed: () => showCustomDialog(context))*/
+                              onPressed: () => createNewTaskCustomDialog(context))*/
                           )),
                     ),
                     ResponsiveHelper.isDesktop(context)
@@ -425,7 +475,7 @@ class _LocationView extends State<LocationView> {
     );
   }
 
-  void showCustomDialog(BuildContext context) {
+  void createNewTaskCustomDialog(BuildContext context) {
     TextEditingController titleController = TextEditingController();
     TextEditingController commentController = TextEditingController();
     Uint8List media;
@@ -450,7 +500,8 @@ class _LocationView extends State<LocationView> {
                     child: Column(children: [
                       Align(
                           alignment: Alignment.centerLeft,
-                          child: Text("${'Task'} ${' ('}${anotherList.length + 1}${')'}",
+                          child: Text(
+                              "${'Task'} ${' ('}${anotherList.length + 1}${')'}",
                               style: robotoMedium.copyWith(
                                   fontSize: Dimensions.fontSizeLarge))),
                       Align(
@@ -460,16 +511,15 @@ class _LocationView extends State<LocationView> {
                                   color: Theme.of(context).disabledColor,
                                   fontSize: Dimensions.fontSizeLarge))),
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                      Align(
+                     /* Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
                             height: 60,
                             width: 60,
-                            child:
-                            DottedBorder(
+                            child: DottedBorder(
                                 color: Colors.black,
                                 strokeWidth: 1,
-                                child: /*Get.find<UserController>().rawFile.toString()!=""?*/
+                                child: *//*Get.find<UserController>().rawFile.toString()!=""?*//*
                                     SqureImagePickerWidget(
                                         image:
                                             '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${Get.find<ParcelController>().pickedFile}',
@@ -477,15 +527,59 @@ class _LocationView extends State<LocationView> {
                                             Get.find<ParcelController>()
                                                 .pickImage(),
                                         rawFile: Get.find<ParcelController>()
-                                            .rawFile) /*:
+                                            .rawFile) *//*:
+                                  Icon(
+                                    Icons.add,
+                                    size: 20,
+
+                                  )*//*
+
+                                )),
+                      ),*/
+                      Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children:<Widget> [
+                            if (Get.find<ParcelController>()
+                                .pickedFileList
+                                .length >
+                                0)
+                              Container(
+                                  child: updateImagesListView()),
+
+                            SizedBox(
+                                width: Dimensions.PADDING_SIZE_SMALL),
+
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                  height: 60,
+                                  width: 60,
+                                  child: DottedBorder(
+                                      color: Colors.black,
+                                      strokeWidth: 1,
+                                      child: /*Get.find<UserController>().rawFile.toString()!=""?*/
+                                      SqureImagePickerWidget(
+                                        image:
+                                        '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${Get.find<ParcelController>().pickedFile}',
+                                        onTap: () =>
+                                            setState(() =>  Get.find<
+                                                ParcelController>()
+                                                .pickImage())
+                                           ,
+                                        /* rawFile: Get.find<
+                                                                  ParcelController>()
+                                                              .rawFile*/
+                                      ) /*:
                                   Icon(
                                     Icons.add,
                                     size: 20,
 
                                   )*/
 
-                                )),
-                      ),
+                                  )),
+                            ),
+
+                          ]),
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                       Align(
                         alignment: Alignment.centerLeft,
@@ -501,6 +595,7 @@ class _LocationView extends State<LocationView> {
                         hintText: 'Enter Title',
                         inputType: TextInputType.name,
                         controller: titleController,
+                        autoFocus: true,
                         capitalization: TextCapitalization.words,
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
@@ -534,19 +629,47 @@ class _LocationView extends State<LocationView> {
                           } else if (commentController.text.isEmpty) {
                             showCustomSnackBar('Enter task comment');
                           } else {
+                            List<File_Unitpath> file_raw =
+                            List<File_Unitpath>();
+                            for (int i = 0;
+                            i <
+                                Get.find<ParcelController>()
+                                    .pickedFileList
+                                    .length;
+                            i++) {
+                              File_Unitpath file_unitpath =
+                              File_Unitpath(rawFile: Get.find<ParcelController>()
+                                  .pickedUintFileList[i].rawFile);
+                              file_raw.add(file_unitpath);
+                            }
+                            List<File_path> file_raw1 =
+                            List<File_path>();
+                            for (int i = 0;
+                            i <
+                                Get.find<ParcelController>()
+                                    .pickedFileList
+                                    .length;
+                            i++) {
+                              File_path file_unitpath =
+                              File_path(file: Get.find<ParcelController>()
+                                  .pickedFileList[i].file);
+                              file_raw1.add(file_unitpath);
+                            }
+                            print("file_raw>>>"+file_raw.length.toString());
                             TaskModel _destination = TaskModel(
                               task_title: titleController.text.toString(),
                               task_description:
                                   commentController.text.toString(),
                               task_media:
-                                  Get.find<ParcelController>().pickedFile,
-                              rawFile: Get.find<ParcelController>().rawFile,
+                              file_raw1,
+                              rawFile: file_raw,
                             );
                             // anotherList=[];
                             parcelController_main.setMultiTask(_destination);
-                            parcelController_main.pickedFile_null();
-                            setState(() => anotherList.add(_destination));
 
+                            setState(() => anotherList.add(_destination));
+                            parcelController_main.clear_pickupImage();
+                            parcelController_main.pickedFile_null();
                             Navigator.pop(context, false);
                           }
                         },
@@ -581,9 +704,12 @@ class _LocationView extends State<LocationView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    updateImagesListView();
     setState(() {
       updateListView();
     });
+
+
   }
 
   Widget updateListView() {
@@ -592,48 +718,33 @@ class _LocationView extends State<LocationView> {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, position) {
-        print("<><>" +
-            Get.find<SplashController>()
-                .configModel
-                .baseUrls
-                .customerImageUrl
-                .toString());
+        print("<><>" + anotherList[position].rawFile.length.toString());
 
         return Card(
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Container(
                 child: Column(children: [
-                  Row(children: [
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child:
-                        Text("${'Task'} ${' ('}${position + 1}${')'}",
-                            style: robotoMedium.copyWith(
-                                fontSize: Dimensions.fontSizeLarge))
-                    ),
-
-                    SizedBox(
-                        width: Dimensions
-                            .PADDING_SIZE_EXTRA_SMALL),
-                    Expanded(child: SizedBox()),
-                    InkWell(
-                      child:  Icon(Icons.cancel, size: 25),
-                      onTap: () {
-                        setState(() =>{
-                          Get.find<ParcelController>().removeMultiTask(position),
+              Row(children: [
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("${'Task'} ${' ('}${position + 1}${')'}",
+                        style: robotoMedium.copyWith(
+                            fontSize: Dimensions.fontSizeLarge))),
+                SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                Expanded(child: SizedBox()),
+                InkWell(
+                  child: Icon(Icons.cancel, size: 25),
+                  onTap: () {
+                    setState(() => {
+                          Get.find<ParcelController>()
+                              .removeMultiTask(position),
                           anotherList.removeAt(position)
-                        }
-                        );
-
-                        },
-                    ),
-                    SizedBox(
-                        width: Dimensions
-                            .PADDING_SIZE_EXTRA_SMALL),
-
-                  ]),
-
+                        });
+                  },
+                ),
+                SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+              ]),
               Align(
                   alignment: Alignment.centerLeft,
                   child: Text('Take the picture of the home front',
@@ -641,19 +752,51 @@ class _LocationView extends State<LocationView> {
                           color: Theme.of(context).disabledColor,
                           fontSize: Dimensions.fontSizeLarge))),
               SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-              Align(
+              /* Align(
                   alignment: Alignment.centerLeft,
                   child: DottedBorder(
                       color: Colors.black,
                       strokeWidth: 1,
-                      child:
-                      (anotherList[position].rawFile !=null?
-                      Image.memory(anotherList[position].rawFile,
-                        width: 50,
-                        height: 50,
-                        fit: BoxFit.fill,
-                      ):Image.asset(Images.placeholder, height: 50, width: 50, fit: BoxFit.fill))
-                      )),
+                      child: (anotherList[position].rawFile != null
+                          ? Image.memory(
+                              anotherList[position].rawFile,
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.fill,
+                            )
+                          : Image.asset(Images.placeholder,
+                              height: 50, width: 50, fit: BoxFit.fill)))),*/
+              SizedBox(
+                height: 70,
+                width: double.infinity,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, Position) {
+                    return Container(
+                        width: 70,
+                        child: Stack(children: [
+                          //Stack
+
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: DottedBorder(
+                                  color: Colors.black,
+                                  strokeWidth: 1,
+                                  child: Image.memory(
+                                    anotherList[position]
+                                        .rawFile[Position]
+                                        .rawFile,
+                                    width: 60,
+                                    height: 60,
+                                    fit: BoxFit.fill,
+                                  ))),
+                        ]));
+                  },
+                  itemCount: anotherList[position].rawFile.length,
+                ),
+              ),
               SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
               Align(
                 alignment: Alignment.centerLeft,
@@ -698,6 +841,57 @@ class _LocationView extends State<LocationView> {
         );
       },
       itemCount: anotherList.length,
+    );
+  }
+
+  Widget updateImagesListView() {
+    return
+      SizedBox(
+      height: 70,
+      child: ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        physics: NeverScrollableScrollPhysics(),
+        itemBuilder: (context, position) {
+          return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 1),
+          child:
+            Container(
+              width: 70,
+              child:
+              Stack(children: [
+                //Stack
+
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: DottedBorder(
+                        color: Colors.black,
+                        strokeWidth: 1,
+                        child: Image.memory(
+                          Get.find<ParcelController>()
+                              .pickedUintFileList[position]
+                              .rawFile,
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.fill,
+                        ))),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: InkWell(
+                    child: Icon(Icons.cancel, size: 20),
+                    onTap: () {
+                      setState(() => {
+                            Get.find<ParcelController>()
+                                .removeImageInList(position),
+                          });
+                    },
+                  ),
+                ),
+              ])));
+        },
+        itemCount: Get.find<ParcelController>().pickedFileList.length,
+      ),
     );
   }
 }

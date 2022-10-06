@@ -60,7 +60,11 @@ class ParcelController extends GetxController implements GetxService {
   int get paymentIndex => _paymentIndex;
   List<String> get payerTypes => _payerTypes;
 
+  List<File_path> _pickedFileList = [];
+  List<File_path> get pickedFileList => _pickedFileList;
 
+  List<File_Unitpath> _pickedUintFileList = [];
+  List<File_Unitpath> get pickedUintFileList => _pickedUintFileList;
   XFile _pickedFile;
   Uint8List _rawFile;
 
@@ -89,10 +93,20 @@ class ParcelController extends GetxController implements GetxService {
     if (_pickedFile != null) {
       _pickedFile = await NetworkInfo.compressImage(_pickedFile);
       _rawFile = await _pickedFile.readAsBytes();
+      File_path  file_path= File_path(file: _pickedFile);
+      _pickedFileList.add(file_path);
+
+      File_Unitpath file_unitpath=File_Unitpath(rawFile: _rawFile);
+      _pickedUintFileList.add(file_unitpath);
+
       print("pickImage" + _pickedFile.path);
     }
 
     update();
+  }
+  void clear_pickupImage(){
+    _pickedFileList.clear();
+    _pickedUintFileList.clear();
   }
 
   void setPickupAddress(AddressModel addressModel, bool notify) {
@@ -120,7 +134,8 @@ class ParcelController extends GetxController implements GetxService {
   }
 
   void setMultiTask(TaskModel addressModel) {
-    print("setMultiDropDestinationAddress>>++++");
+    print("setMultiDropDestinationAddress>>++++"+addressModel.rawFile.length.toString());
+    print("setMultiDropDestinationAddress>>++++"+addressModel.task_media.length.toString());
     _anothertaskList.add(addressModel);
     print("setMultiDropDestinationAddress>>" +
         _anothertaskList.length.toString());
@@ -129,6 +144,12 @@ class ParcelController extends GetxController implements GetxService {
   void removeMultiTask(int  position) {
     print("setMultiDropDestinationAddress>>++++");
     _anothertaskList.removeAt(position);
+    update();
+  }
+  void removeImageInList(int  position) {
+    print("setMultiDropDestinationAddress>>++++");
+    _pickedUintFileList.removeAt(position);
+    _pickedFileList.removeAt(position);
     update();
   }
 

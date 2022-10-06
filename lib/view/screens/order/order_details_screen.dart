@@ -1834,7 +1834,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                     SizedBox(
                                                         height: Dimensions
                                                             .PADDING_SIZE_LARGE),
-                                                    Align(
+                                                   /* Align(
                                                         alignment: Alignment
                                                             .centerLeft,
                                                         child:
@@ -1866,7 +1866,79 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                                 width: 50,
                                                                 fit: BoxFit
                                                                     .fill))
-                                                        )),
+                                                        )),*/
+                                                /*Container(
+                                                    child:
+                                                    PhotoView(
+                                                      tightMode: true,
+                                                      imageProvider: NetworkImage(  '${Get
+                                                          .find<
+                                                          SplashController>()
+                                                          .configModel
+                                                          .baseUrls
+                                                          .errandTaskImageUrl}'
+                                                          '/' + _order
+                                                          .errand_tasks[position]
+                                                          .errand_task_media[0]
+                                                          .image),
+
+                                                    )),*/
+
+
+                                                    SizedBox(
+                                                      height: 70,
+                                                      width: double.infinity,
+                                                      child: ListView.builder(
+                                                        shrinkWrap: true,
+                                                        scrollDirection: Axis.horizontal,
+                                                        physics: NeverScrollableScrollPhysics(),
+                                                        itemBuilder: (context, Position) {
+                                                          return Container(
+                                                              width: 60,
+                                                              child: Stack(children: [
+                                                                //Stack
+
+                                                                Align(
+                                                                    alignment: Alignment.centerLeft,
+                                                                    child:
+                                                                    DottedBorder(
+                                                                        color: Colors.black,
+                                                                        strokeWidth: 1,
+                                                                        child: (_order
+                                                                            .errand_tasks[position]
+                                                                            .errand_task_media
+                                                                            .length > 0 ?
+                                                                        CustomImage(
+                                                                          image:
+                                                                          '${Get
+                                                                              .find<
+                                                                              SplashController>()
+                                                                              .configModel
+                                                                              .baseUrls
+                                                                              .errandTaskImageUrl}'
+                                                                              '/' + _order
+                                                                              .errand_tasks[position]
+                                                                              .errand_task_media[Position]
+                                                                              .image,
+                                                                          height: 40,
+                                                                          width: 40,
+                                                                        ) : Image.asset(
+                                                                            Images
+                                                                                .placeholder,
+                                                                            height: 50,
+                                                                            width: 50,
+                                                                            fit: BoxFit
+                                                                                .fill))
+                                                                    )),
+                                                              ]));
+                                                        },
+                                                        itemCount: _order
+                                                            .errand_tasks[position]
+                                                            .errand_task_media
+                                                            .length,
+                                                      ),
+                                                    ),
+
                                                     SizedBox(
                                                         height: Dimensions
                                                             .PADDING_SIZE_LARGE),

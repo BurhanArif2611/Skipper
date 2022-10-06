@@ -234,18 +234,23 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(
                                         Dimensions.RADIUS_SMALL),
-                                    child: CustomImage(
+                                    child: /*CustomImage(
                                       image:
-                                          '${Get.find<SplashController>().configModel.baseUrls.parcelCategoryImageUrl}'
-                                          '/2022-07-29-62e3b7d74b8a9.png',
+                                          Images.wallet,
                                       height: 30,
                                       width: 30,
-                                    ),
+                                    ),*/
+                                    Image.asset(
+                                       Images.errand,
+                                        height: 40,
+                                        width: 40,
+
+                                    )
                                   ),
                                 ),
                                 SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-                                if(Get.find<BannerController>()
-                                    .branchStoreList
+                                if(Get.find<StoreController>()
+                                    .store
                                     .errand == 1)
                                 Expanded(
                                     child: Column(

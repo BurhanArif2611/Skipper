@@ -78,4 +78,5 @@ class Images {
   static const String refer_code = 'assets/image/refer_code.png';
   static const String gift_box1 = 'assets/image/gift_box1.gif';
   static const String gift_box = 'assets/image/giftbox.gif';
+  static const String errand = 'assets/image/errand.png';
 }

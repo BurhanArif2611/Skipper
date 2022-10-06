@@ -31,7 +31,8 @@ class OrderView extends StatelessWidget {
           paginatedOrderModel = isRunning ? orderController.runningOrderModel : orderController.historyOrderModel;
         }
 
-        return paginatedOrderModel != null ? paginatedOrderModel.orders.length > 0 ? RefreshIndicator(
+        return paginatedOrderModel != null ? paginatedOrderModel.orders.length > 0 ?
+        RefreshIndicator(
           onRefresh: () async {
             if(isRunning) {
               await orderController.getRunningOrders(1);

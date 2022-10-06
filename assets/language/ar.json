@@ -534,6 +534,8 @@
   "order_place": "مكان الطلب",
   "order_refund": "طلب استرداد",
   "point_to_wallet": "أشر إلى المحفظة",
+  "add_fund_by_customer": "Fund-Added",
+  "withdraw_fund_by_customer": "Fund-Withdrawn",
   "please_exchange_more_then": "يرجى الصرف أكثر من ذلك الحين",
   "converted_successfully_transfer_to_your_wallet": "تم تحويلها بنجاح إلى محفظتك",
   "your_loyalty_point_will_convert_to_currency_and_transfer_to_your_wallet": "سيتم تحويل نقطة الولاء الخاصة بك إلى عملة وتحويلها إلى محفظتك",

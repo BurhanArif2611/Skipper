@@ -531,6 +531,8 @@
   "points": "points",
   "points_it_will_add_to": "points. It will add to your balance when the order is delivered.",
   "point_to_wallet": "Point to wallet",
+  "withdraw_fund_by_customer": "Fund-Withdrawn",
+  "add_fund_by_customer": "Fund-Added",
   "order_place": "Order place",
   "order_refund": "Order refund",
   "input_field_is_empty": "Input field is empty",

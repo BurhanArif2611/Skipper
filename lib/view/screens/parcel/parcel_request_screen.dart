@@ -446,7 +446,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                 Get.find<SplashController>()
                                             .configModel
                                             .customerWalletStatus ==
-                                        1
+                                        1 &&  parcelController.payerIndex == 0
                                     ? PaymentButton(
                                         icon: Images.wallet,
                                         title: 'wallet_payment'.tr,

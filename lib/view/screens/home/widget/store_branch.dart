@@ -225,18 +225,18 @@ class StoreBranch extends StatelessWidget {
                             freeDelivery: _storeList[index].freeDelivery,
                           ),
                           branchStoreList.isOpenNow(_storeList[index]) ? SizedBox() : NotAvailableWidget(isStore: true),*/
-                          Positioned(
+                         /* Positioned(
                             top: Dimensions.PADDING_SIZE_EXTRA_SMALL, right: Dimensions.PADDING_SIZE_EXTRA_SMALL,
                             child: GetBuilder<WishListController>(builder: (wishController) {
                               bool _isWished = wishController.wishStoreIdList.contains(_storeList.branches[index].id);
                               return InkWell(
                                 onTap: () {
-                                 /* if(Get.find<AuthController>().isLoggedIn()) {
-                                    _isWished ? wishController.removeFromWishList(_storeList[index].id, true)
-                                        : wishController.addToWishList(null, _storeList[index], true);
+                                  if(Get.find<AuthController>().isLoggedIn()) {
+                                    _isWished ? wishController.removeFromWishList(_storeList.branches[index].id, true)
+                                        : wishController.addToWishList(null, _storeList, true);
                                   }else {
                                     showCustomSnackBar('you_are_not_logged_in'.tr);
-                                  }*/
+                                  }
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -250,7 +250,7 @@ class StoreBranch extends StatelessWidget {
                                 ),
                               );
                             }),
-                          ),
+                          ),*/
                         ]),
 
                         Expanded(

@@ -99,7 +99,8 @@ class NewHomeScreen extends StatelessWidget {
         Get.find<ParcelController>().getParcelCategoryList();
       }
     } catch (e) {}
-
+    Color _textColor =
+        ResponsiveHelper.isDesktop(context) ? Colors.white : null;
     final bool _ltr = Get.find<LocalizationController>().isLtr;
     return Scaffold(
       appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : null,
@@ -372,15 +373,19 @@ class NewHomeScreen extends StatelessWidget {
                           pinned: true,
                           floating: false,
                           backgroundColor: Theme.of(context).primaryColor,
-                          /*  leading: IconButton(
-                  icon: Container(
-                    height: 50, width: 50,
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).primaryColor),
-                    alignment: Alignment.center,
-                    child: Icon(Icons.chevron_left, color: Theme.of(context).cardColor),
-                  ),
-                  onPressed: () => Get.back(),
-                ),*/
+                         /* leading: IconButton(
+                            icon: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Theme.of(context).primaryColor),
+                              alignment: Alignment.center,
+                              child: Icon(Icons.chevron_left,
+                                  color: Theme.of(context).cardColor),
+                            ),
+                            onPressed: () => Get.back(),
+                          ),*/
                           flexibleSpace: FlexibleSpaceBar(
                             background: CustomImage(
                               fit: BoxFit.cover,
@@ -518,18 +523,12 @@ class NewHomeScreen extends StatelessWidget {
                                                       .parcelCategoryList
                                                       .length >
                                                   0 &&
-                                              (Get.find<StoreController>()
-                                                          .store
-                                                          .parcel ==
+                                              (storeController.store.parcel ==
                                                       1 ||
-                                                  Get.find<StoreController>()
-                                                          .store
-                                                          .errand ==
+                                                  storeController
+                                                          .store.errand ==
                                                       1)
-                                          ? Get.find<BannerController>()
-                                                      .branchStoreList
-                                                      .parcel ==
-                                                  1
+                                          ? storeController.store.parcel == 1
                                               ? GridView.builder(
                                                   controller:
                                                       ScrollController(),
@@ -671,13 +670,11 @@ class NewHomeScreen extends StatelessWidget {
                                                   'no_parcel_category_found'
                                                       .tr))
                                       : ParcelShimmer(
-                                          isEnabled: Get.find<ParcelController>()
-                                                  .parcelCategoryList ==
-                                              null),
-                                  if (Get.find<BannerController>()
-                                          .branchStoreList
-                                          .errand ==
-                                      1)
+                                          isEnabled:
+                                              Get.find<ParcelController>()
+                                                      .parcelCategoryList ==
+                                                  null),
+                                  if (storeController.store.errand == 1)
                                     InkWell(
                                       child: Container(
                                         padding: EdgeInsets.all(
@@ -701,22 +698,24 @@ class NewHomeScreen extends StatelessWidget {
                                               borderRadius:
                                                   BorderRadius.circular(
                                                       Dimensions.RADIUS_SMALL),
-                                              child: CustomImage(
+                                              child: /*CustomImage(
                                                 image:
                                                     '${Get.find<SplashController>().configModel.baseUrls.parcelCategoryImageUrl}'
                                                     '/2022-07-29-62e3b7d74b8a9.png',
                                                 height: 30,
                                                 width: 30,
+                                              )*/
+                                                  Image.asset(
+                                                Images.errand,
+                                                height: 40,
+                                                width: 40,
                                               ),
                                             ),
                                           ),
                                           SizedBox(
                                               width: Dimensions
                                                   .PADDING_SIZE_SMALL),
-                                          if (Get.find<BannerController>()
-                                                  .branchStoreList
-                                                  .errand ==
-                                              1)
+                                          if (storeController.store.errand == 1)
                                             Expanded(
                                                 child: Column(
                                                     crossAxisAlignment:

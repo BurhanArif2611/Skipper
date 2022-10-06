@@ -2,7 +2,7 @@ class AddedBankAccount {
   int id;
   String beneficiary_id;
   String bank_code;
-  String account_number;
+  String account_no_mask;
   String full_name;
   String bank_name;
   int customer_id;
@@ -14,7 +14,7 @@ class AddedBankAccount {
         this.id,
         this.beneficiary_id,
         this.bank_code,
-        this.account_number,
+        this.account_no_mask,
         this.full_name,
         this.bank_name,
         this.customer_id,
@@ -26,7 +26,7 @@ class AddedBankAccount {
     id = json['id'];
     beneficiary_id = json['beneficiary_id'];
     bank_code = json['bank_code'];
-    account_number = json['account_number'];
+    account_no_mask = json['account_no_mask'];
     full_name = json['full_name'];
     bank_name = json['bank_name'];
     customer_id = json['customer_id'];
@@ -40,7 +40,7 @@ class AddedBankAccount {
     data['id'] = this.id;
     data['beneficiary_id'] = this.beneficiary_id;
     data['bank_code'] = this.bank_code;
-    data['account_number'] = this.account_number;
+    data['account_no_mask'] = this.account_no_mask;
     data['full_name'] = this.full_name;
     data['bank_name'] = this.bank_name;
     data['customer_id'] = this.customer_id;
