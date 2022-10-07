@@ -141,7 +141,7 @@ class Store {
     ecommerce = json['ecommerce'];
     parcel = json['parcel'];
     nonVeg = json['non_veg'];
-    moduleId = json['module_id'];
+    moduleId = json['module_id']!=null?json['module_id']:-1;
     orderPlaceToScheduleInterval = json['order_place_to_schedule_interval'];
     categoryIds = json['category_ids'] != null ? json['category_ids'].cast<int>() : [];
     discount = json['discount'] != null ? new Discount.fromJson(json['discount']) : null;

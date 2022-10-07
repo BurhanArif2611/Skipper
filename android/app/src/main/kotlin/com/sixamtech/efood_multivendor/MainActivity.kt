@@ -1,4 +1,4 @@
-package com.jamboy.customer.androidapp
+package app.shapshap
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -250,6 +250,7 @@ class _SignInScreenState extends State<SignInScreen> {
           if (authController.isActiveRememberMe) {
             authController.saveUserNumberAndPassword(_phone, _password, countryDialCode);
             Get.find<BannerController>().getBranchList(true);
+
             Get.find<StoreController>().getStoreDetails(
                 Store(id: AppConstants.StoreID), true);
 

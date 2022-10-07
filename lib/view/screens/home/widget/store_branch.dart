@@ -33,7 +33,7 @@ class StoreBranch extends StatelessWidget {
     return GetBuilder<BannerController>(builder: (branchStoreList) {
       //List<Store> _storeList = branchStoreList.branchStoreList;
       Store _storeList = branchStoreList.branchStoreList;
-       return (_storeList == null && _storeList.branches.length>0) ? SizedBox() :
+       return (_storeList == null && _storeList.branches!=null && _storeList.branches.length>0) ? SizedBox() :
       Column(
         children: [
           Padding(

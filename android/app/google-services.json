@@ -7,6 +7,45 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:112720047458:android:45e5de0392676d34f2d03b",
+        "android_client_info": {
+          "package_name": "app.shapshap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112720047458-6g0i3hkuibfbob9kp1ego2qptd5v5unf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAB2hCiEBoli2T8LpZqeGOHzOGATgjI-9s"
+        },
+        {
+          "current_key": "AIzaSyA4MCm4CF6tFKf5sikNakUv66147SMTDno"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112720047458-6g0i3hkuibfbob9kp1ego2qptd5v5unf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "112720047458-0c7o0gir4hfcdfed8ve1ltlef9lcupgu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jamboy.customer.iosapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:112720047458:android:60413654650884bbf2d03b",
         "android_client_info": {
           "package_name": "com.jamboy.customer.androidapp"
@@ -19,6 +58,9 @@
         }
       ],
       "api_key": [
+        {
+          "current_key": "AIzaSyAB2hCiEBoli2T8LpZqeGOHzOGATgjI-9s"
+        },
         {
           "current_key": "AIzaSyA4MCm4CF6tFKf5sikNakUv66147SMTDno"
         }
