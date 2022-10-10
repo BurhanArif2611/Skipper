@@ -195,9 +195,8 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                           ),
                         ),
                         GetBuilder<CartController>(builder: (cartController) {
-                          return Text(
-                            itemController.cartIndex != -1 ? cartController.cartList[itemController.cartIndex].quantity.toString()
-                                : itemController.quantity.toString(),
+                          return
+                            Text(itemController.cartIndex != -1 ?cartController.cartList!=null? cartController.cartList[itemController.cartIndex].quantity.toString() : itemController.quantity.toString(): itemController.quantity.toString(),
                             style:robotoMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge),
                           );
                         }),

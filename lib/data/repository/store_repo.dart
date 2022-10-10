@@ -59,7 +59,7 @@ class StoreRepo {
       _addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.USER_ADDRESS)));
     } catch (e) {}
     apiClient.updateHeader(
-      sharedPreferences.getString(AppConstants.TOKEN),_addressModel.zoneIds, sharedPreferences.getString(AppConstants.LANGUAGE_CODE),
+      sharedPreferences.getString(AppConstants.TOKEN),_addressModel.zoneIds!=null?_addressModel.zoneIds:[], sharedPreferences.getString(AppConstants.LANGUAGE_CODE),
       AppConstants.ModelID,
     );
     return await apiClient.getData('${AppConstants.STORE_DETAILS_URI}$storeID');
