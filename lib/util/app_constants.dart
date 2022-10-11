@@ -11,9 +11,9 @@ class AppConstants {
   static const double APP_VERSION = 1.0;
 
   //dev url
-  // static const String BASE_URL = 'http://54.194.163.45:5000';
+   static const String BASE_URL = 'http://54.194.163.45:5000';
   //live url
-   static const String BASE_URL = 'https://portal.shapshap.com';
+   //static const String BASE_URL = 'https://portal.shapshap.com';
   static const String CATEGORY_URI = '/api/v1/categories';
   static const String BANNER_URI = '/api/v1/banners';
   static const String BRANCG_URI = '/api/v1/stores';
