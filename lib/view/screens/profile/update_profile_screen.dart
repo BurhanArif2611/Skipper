@@ -69,7 +69,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           mainWidget: Column(children: [
 
             Expanded(child: Scrollbar(child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
+             /* physics: BouncingScrollPhysics(),*/
               padding: ResponsiveHelper.isDesktop(context) ? EdgeInsets.zero : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
               child: Center(child: FooterView(
                 minHeight: 0.45,

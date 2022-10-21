@@ -28,6 +28,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   PullToRefreshController pullToRefreshController;
   MyInAppBrowser browser;
 
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +43,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
     print("type>>>>>>>>"+selectedUrl);
     _initData();
   }
+  /*@override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(context);
+    super.dispose();
+  }*/
 
   void _initData() async {
     browser = MyInAppBrowser(orderID: widget.orderModel.id.toString(), orderType: widget.orderModel.orderType);
@@ -89,6 +95,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return WillPopScope(
       onWillPop: () => _exitApp(),
       child: Scaffold(

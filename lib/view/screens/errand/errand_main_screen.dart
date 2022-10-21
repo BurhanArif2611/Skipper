@@ -390,6 +390,8 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
       print("if is not working");
       showCustomSnackBar(message);
     }
+    Get.delete<OrderController>();
+    Get.delete<ParcelController>();
   }
 
   void _validateSender() {

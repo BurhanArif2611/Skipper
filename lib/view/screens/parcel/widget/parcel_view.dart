@@ -435,6 +435,7 @@ class _ParcelViewState extends State<ParcelView> {
                           inputType: TextInputType.phone,
                           focusNode: _phoneNode,
                           nextFocus: _streetNode,
+                          maxLength: 11,
                           controller: phoneController,
                         ),
                       ),

@@ -504,10 +504,14 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                 .id, 'parcel'));
           }
         }
+
       }
     } else {
       showCustomSnackBar(message);
     }
+    Get.delete<OrderController>();
+    Get.delete<ParcelController>();
+
   }
 
   Widget _bottomButton(ParcelController parcelController, double charge) {

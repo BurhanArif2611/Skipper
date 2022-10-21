@@ -68,6 +68,10 @@ class Store {
   Discount discount;
   List<Schedules> schedules;
   List<Branches> branches;
+  String app_color;
+  String primary_color;
+  String secondary_color;
+
 
   Store(
       {this.id,
@@ -107,6 +111,9 @@ class Store {
         this.errand,
         this.parcel,
         this.ecommerce,
+        this.app_color,
+        this.primary_color,
+        this.secondary_color,
       });
 
   Store.fromJson(Map<String, dynamic> json) {
@@ -141,6 +148,9 @@ class Store {
     ecommerce = json['ecommerce'];
     parcel = json['parcel'];
     nonVeg = json['non_veg'];
+    secondary_color = json['secondary_color'];
+    primary_color = json['primary_color'];
+    app_color = json['app_color'];
     moduleId = json['module_id']!=null?json['module_id']:-1;
     orderPlaceToScheduleInterval = json['order_place_to_schedule_interval'];
     categoryIds = json['category_ids'] != null ? json['category_ids'].cast<int>() : [];
@@ -195,6 +205,9 @@ class Store {
     data['errand'] = this.errand;
     data['ecommerce'] = this.ecommerce;
     data['category_ids'] = this.categoryIds;
+    data['app_color'] = this.app_color;
+    data['primary_color'] = this.primary_color;
+    data['secondary_color'] = this.secondary_color;
     if (this.discount != null) {
       data['discount'] = this.discount.toJson();
     }

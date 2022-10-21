@@ -47,6 +47,7 @@ class AuthRepo {
     }else {
       _deviceToken = await _saveDeviceToken();
     }
+    print("_deviceToken>>>"+_deviceToken);
     if(!GetPlatform.isWeb) {
       FirebaseMessaging.instance.subscribeToTopic(AppConstants.TOPIC);
     }

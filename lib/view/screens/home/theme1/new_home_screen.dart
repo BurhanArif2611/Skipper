@@ -119,7 +119,13 @@ class NewHomeScreen extends StatelessWidget {
           return (storeController.store != null &&
                   storeController.store.name != null &&
                   categoryController.categoryList != null)
-              ? CustomScrollView(
+              ?NotificationListener<OverscrollIndicatorNotification>(
+              onNotification: (OverscrollIndicatorNotification overscroll) {
+                overscroll.disallowGlow();
+                return;
+              },
+              child:
+          CustomScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
                   controller: scrollController,
                   slivers: [
@@ -371,8 +377,17 @@ class NewHomeScreen extends StatelessWidget {
                           expandedHeight: 230,
                           toolbarHeight: 50,
                           pinned: true,
-                          floating: false,
-                          backgroundColor: Theme.of(context).primaryColor,
+                          floating: true,
+                          title: Text(
+                            AppConstants.APP_NAME,
+                            textAlign: TextAlign.center,
+                              style: robotoMedium.copyWith(
+                                  fontSize: Dimensions
+                                      .fontSizeLarge,
+                                  color: Theme.of(context)
+                                      .primaryColor)
+                          ),
+                          backgroundColor:Colors.white/* Theme.of(context).primaryColor*/,
                          /* leading: IconButton(
                             icon: Container(
                               height: 50,
@@ -917,7 +932,7 @@ class NewHomeScreen extends StatelessWidget {
                           )))
                         : SliverToBoxAdapter(child: SizedBox())),
                   ],
-                )
+                ))
               : Center(child: CircularProgressIndicator());
         });
       }),
