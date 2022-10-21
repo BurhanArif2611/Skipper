@@ -43,7 +43,10 @@ class HomeScreen extends StatefulWidget {
             .isParcel) {
       if (Get.find<ParcelController>().parcelCategoryList != null) {
         if (Get.find<ParcelController>().parcelCategoryList.length == 0) {
-          Get.find<BannerController>().getBannerList(reload);
+          if (Get.find<BannerController>().bannerImageList != null &&
+              Get.find<BannerController>().bannerImageList.length == 0) {
+            Get.find<BannerController>().getBannerList(reload);
+          }
         }
       }
       /*Get.find<CategoryController>().getCategoryList(reload);
@@ -122,7 +125,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: RefreshIndicator(
                   onRefresh: () async {
                     if (Get.find<SplashController>().module != null) {
-                      await Get.find<BannerController>().getBannerList(true);
+                      if (Get.find<BannerController>().bannerImageList !=
+                              null &&
+                          Get.find<BannerController>().bannerImageList.length ==
+                              0) {
+                        await Get.find<BannerController>().getBannerList(true);
+                      }
+
                       /*
                 await Get.find<CategoryController>().getCategoryList(true);
                 await Get.find<StoreController>().getPopularStoreList(true, 'all', false);

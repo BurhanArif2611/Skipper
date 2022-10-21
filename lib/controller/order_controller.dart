@@ -231,6 +231,7 @@ class OrderController extends GetxController implements GetxService {
       callback(true, message, orderID);
       _orderAttachment = null;
       _rawAttachment = null;
+
       print('-------- Order placed successfully $orderID ----------');
     } else {
       callback(false, response.statusText, '-1');

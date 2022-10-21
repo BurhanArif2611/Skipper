@@ -18,7 +18,7 @@ class ProfileBgWidget extends StatelessWidget {
 
         Center(
           child: Container(
-            width: Dimensions.WEB_MAX_WIDTH, height: 260,
+            width: Dimensions.WEB_MAX_WIDTH, height: 240,
             color: Theme.of(context).primaryColor,
           ),
         ),
