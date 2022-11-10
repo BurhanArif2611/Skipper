@@ -75,7 +75,7 @@ class _PickMapScreenState extends State<PickMapScreen> {
               onMapCreated: (GoogleMapController mapController) {
                 _mapController = mapController;
                 if(!widget.fromAddAddress) {
-                  Get.find<LocationController>().getCurrentLocation(false, mapController: mapController);
+                  Get.find<LocationController>().getCurrentLocation(false, mapController: _mapController);
                 }
               },
               scrollGesturesEnabled: !Get.isDialogOpen,

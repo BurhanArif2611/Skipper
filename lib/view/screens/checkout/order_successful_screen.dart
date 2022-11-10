@@ -35,7 +35,10 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: () => Get.offAllNamed(RouteHelper.getInitialRoute()),
+    child:
+    Scaffold(
       appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : null,
       endDrawer: MenuDrawer(),
       body: GetBuilder<OrderController>(builder: (orderController){
@@ -105,6 +108,7 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
           ),
         ) : Center(child: CircularProgressIndicator());
       }),
+    )
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/parcel_controller.dart';
 import 'package:sixam_mart/data/model/response/address_model.dart';
@@ -103,6 +104,8 @@ class _ParcelViewState extends State<ParcelView> {
                         Expanded(
                           flex: 4,
                           child: CustomButton(
+                              fontSize:
+                              Dimensions.fontSizeDefault,
                               buttonText: 'set_from_map'.tr,
                               onPressed: () => {
                                     print("address>ddfdf>>>>"),
@@ -163,7 +166,7 @@ class _ParcelViewState extends State<ParcelView> {
                                             color:
                                                 Theme.of(context).primaryColor,
                                             fontSize:
-                                                Dimensions.fontSizeLarge))),
+                                                Dimensions.fontSizeDefault))),
                               ),
                             )),
                       ]),
@@ -313,6 +316,7 @@ class _ParcelViewState extends State<ParcelView> {
       pageBuilder: (_, __, ___) {
         /*GetBuilder<LocationController>(builder: (locationController)
         {*/
+
         return Center(
           child: Container(
             height: 600,
@@ -324,11 +328,13 @@ class _ParcelViewState extends State<ParcelView> {
                     SearchLocationWidget(
                       mapController: null,
                       // pickedAddress: Selected_address,
-                      pickedAddress: addressModel_ != null
+                       pickedAddress: Get.find<ParcelController>().destinationAddress!=null && Get.find<ParcelController>().destinationAddress.address!=null ? Get.find<ParcelController>().destinationAddress.address:"",
+
+                     /* pickedAddress: addressModel_ != null
                           ? addressModel_.address != null
                               ? addressModel_.address.toString()
                               : ""
-                          : "",
+                          : "",*/
                       isEnabled: false,
                       isPickedUp: false,
                       hint: 'destination'.tr,
@@ -487,10 +493,12 @@ class _ParcelViewState extends State<ParcelView> {
                       // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                       buttonText: 'save'.tr,
                       onPressed: () {
-                        /*if (addressModel_ == null) {
+                        if (addressModel_ == null) {
                           showCustomSnackBar('select_destination_address'.tr);
-                        }else*/
-                        if (nameController.text.isEmpty) {
+                        }
+                       /* if (Selected_address.isEmpty) {
+                          showCustomSnackBar('Please add destination'.tr);
+                        }*/else if (nameController.text.isEmpty) {
                           showCustomSnackBar('enter_receiver_name'.tr);
                         } else if (phoneController.text.isEmpty) {
                           showCustomSnackBar('enter_receiver_phone_number'.tr);

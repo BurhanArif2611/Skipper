@@ -89,7 +89,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           return true;
         }
       },
-      child: Scaffold(
+      child:
+      Scaffold(
         appBar: CustomAppBar(
             title: 'order_details'.tr,
             onBackPressed: () {

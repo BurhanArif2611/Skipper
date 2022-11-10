@@ -114,9 +114,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           1
                                       ? ProfileCard(
                                           title: 'wallet_amount'.tr,
-                                          data: PriceConverter.convertPrice(
+                                          data: (userController!=null && userController.userInfoModel!=null && userController.userInfoModel.walletBalance !=null)? PriceConverter.convertPrice(
                                               userController
-                                                  .userInfoModel.walletBalance),
+                                                  .userInfoModel.walletBalance):"0",
                                         )
                                       : SizedBox.shrink(),
                                   SizedBox(

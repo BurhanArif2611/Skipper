@@ -185,6 +185,8 @@ class StoreBranch extends StatelessWidget {
                           if(module.id == _storeList.branches[index].moduleId) {
                            // Get.find<SplashController>().setModule(module);
                             AppConstants.StoreID=_storeList.branches[index].id;
+                            AppConstants.ModelID=_storeList.branches[index].moduleId;
+                            Get.delete<StoreController>();
                             Get.find<SplashController>().setModuleWithCallStoreAPI(module,_storeList.branches[index].id);
 
                             break;

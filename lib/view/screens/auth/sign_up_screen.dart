@@ -123,7 +123,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           divider: true,
                         ),
 
-                        Row(children: [
+                        Row( crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
                           CodePickerWidget(
                             onChanged: (CountryCode countryCode) {
                               _countryDialCode = countryCode.dialCode;
@@ -145,6 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             nextFocus: _passwordFocus,
                             inputType: TextInputType.phone,
                             divider: false,
+                            maxLength: 11,
                           )),
                         ]),
                         Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE), child: Divider(height: 1)),

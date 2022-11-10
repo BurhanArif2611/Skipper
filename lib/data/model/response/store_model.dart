@@ -67,6 +67,7 @@ class Store {
   int orderPlaceToScheduleInterval;
   Discount discount;
   List<Schedules> schedules;
+  List<Zones> zones;
   List<Branches> branches;
   String app_color;
   String primary_color;
@@ -107,6 +108,7 @@ class Store {
         this.orderPlaceToScheduleInterval,
         this.discount,
         this.schedules,
+        this.zones,
         this.branches,
         this.errand,
         this.parcel,
@@ -159,6 +161,11 @@ class Store {
       schedules = <Schedules>[];
       json['schedules'].forEach((v) {
         schedules.add(new Schedules.fromJson(v));
+      });
+    } if (json['zones'] != null) {
+      zones = <Zones>[];
+      json['zones'].forEach((v) {
+        zones.add(new Zones.fromJson(v));
       });
     }
     if (json['branches'] != null) {
@@ -213,6 +220,8 @@ class Store {
     }
     if (this.schedules != null) {
       data['schedules'] = this.schedules.map((v) => v.toJson()).toList();
+    } if (this.zones != null) {
+      data['zones'] = this.zones.map((v) => v.toJson()).toList();
     }
     if (this.branches != null) {
       data['branches'] = this.branches.map((v) => v.toJson()).toList();
@@ -314,6 +323,36 @@ class Schedules {
     return data;
   }
 }
+class Zones {
+  int id;
+  int store_id;
+  int zone_id;
+
+
+  Zones(
+      {this.id,
+        this.store_id,
+        this.zone_id,
+       });
+
+  Zones.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    store_id = json['store_id'];
+    zone_id = json['zone_id'];
+
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['store_id'] = this.store_id;
+    data['zone_id'] = this.zone_id;
+
+    return data;
+  }
+}
+
+
 class Branches {
   int id;
   String name;

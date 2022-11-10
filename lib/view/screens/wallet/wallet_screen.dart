@@ -642,24 +642,29 @@ class _WalletScreenState extends State<WalletScreen> {
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                      CustomButton(
-                        // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                        buttonText: 'submit'.tr,
-                        onPressed: () {
-                          if (bankCodeController.text.isEmpty) {
-                            showCustomSnackBar('Select Bank');
-                          } else if (holder_nameController.text.isEmpty) {
-                            showCustomSnackBar('Enter holder name !');
-                          } else if (accountnumberController.text.isEmpty) {
-                            showCustomSnackBar('Enter Account number !');
-                          } else {
-                            Get.find<WalletController>().addAcountToWallet(
-                                bankCodeController.text.toString(),
-                                accountnumberController.text.toString(),
-                                holder_nameController.text.toString());
-                          }
-                        },
-                      ),
+                      GetBuilder<WalletController>(builder: (orderController) {
+                        return !orderController.isLoading ?
+                        CustomButton(
+                          // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                          buttonText: 'submit'.tr,
+                          onPressed: () {
+                            if (bankCodeController.text.isEmpty) {
+                              showCustomSnackBar('Select Bank');
+                            } else if (holder_nameController.text.isEmpty) {
+                              showCustomSnackBar('Enter holder name !');
+                            } else if (accountnumberController.text.isEmpty) {
+                              showCustomSnackBar('Enter Account number !');
+                            } else {
+                              Get.find<WalletController>().addAcountToWallet(
+                                  bankCodeController.text.toString(),
+                                  accountnumberController.text.toString(),
+                                  holder_nameController.text.toString());
+                            }
+                          },
+                        ):
+                        Center(child: CircularProgressIndicator());
+                      }),
+
                     ])),
               ),
               color: Colors.white,
@@ -781,6 +786,22 @@ class _WalletScreenState extends State<WalletScreen> {
                                 ))),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                      GetBuilder<WalletController>(builder: (orderController) {
+                        return !orderController.isLoading ?
+                        CustomButton(
+                          // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                          buttonText: 'submit'.tr,
+                          onPressed: () {
+                            if (titleController.text.isEmpty) {
+                              showCustomSnackBar('Enter Amount !');
+                            } else {
+                              Get.find<WalletController>().addFundToWallet(
+                                  titleController.text.toString());
+                            }
+                          },
+                        ) : Center(child: CircularProgressIndicator());
+                      }),
+                     /* (!Get.find<WalletController>().isLoading?
                       CustomButton(
                         // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                         buttonText: 'submit'.tr,
@@ -792,7 +813,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                 titleController.text.toString());
                           }
                         },
-                      ),
+                      ):
+                      Center(child: CircularProgressIndicator())) ,*/
                     ])),
               ),
               color: Colors.white,

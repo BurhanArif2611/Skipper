@@ -104,6 +104,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     Module _module = Get.find<SplashController>().configModel.moduleConfig.module;
     bool showVeg=false;
     try{
@@ -156,7 +160,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           }
           return GetBuilder<CouponController>(builder: (couponController) {
             return GetBuilder<OrderController>(builder: (orderController) {
-
 
               double _deliveryCharge = -1;
               double _charge = -1;
@@ -286,7 +289,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ]),
                           DropdownButton(
                             value: orderController.addressIndex,
-                            items: _addressList,
+                            items: _addressList!=null && _addressList.length>0 ?_addressList:0,
                             itemHeight: ResponsiveHelper.isMobile(context) ? 70 : 85, elevation: 0, iconSize: _addressList.length>1?30:0, underline: SizedBox(),
                             onChanged: (int index) {
                               if(storeController.store.selfDeliverySystem == 0) {
@@ -806,7 +809,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 '${Get.find<UserController>().userInfoModel.lName}',
             contactPersonNumber: _address.contactPersonNumber ?? Get.find<UserController>().userInfoModel.phone,
             streetNumber: _streetNumberController.text.trim() ?? '', house: _houseController.text.trim(), floor: _floorController.text.trim(),
-            discountAmount: discount, taxAmount: tax, receiverDetails: null, parcelCategoryId: null,
+            discountAmount: discount, taxAmount: tax,
+            receiverDetails: null, parcelCategoryId: null,
             chargePayer: null, dmTips: _tipController.text.trim(),
           ), _callback);
         }

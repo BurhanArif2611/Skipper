@@ -17,6 +17,8 @@ import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:sixam_mart/view/base/menu_drawer.dart';
 import 'package:sixam_mart/view/screens/parcel/widget/parcel_view.dart';
 
+import '../../../controller/order_controller.dart';
+
 class ParcelLocationScreen extends StatefulWidget {
   final ParcelCategoryModel category;
   const ParcelLocationScreen({Key key, @required this.category}) : super(key: key);
@@ -92,7 +94,15 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen> with Ticker
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return WillPopScope(
+        onWillPop: () async {
+          Get.delete<OrderController>();
+          Get.delete<ParcelController>();// Action to perform on back pressed
+
+          return false;
+    },
+    child: Scaffold(
       appBar: CustomAppBar(title: 'parcel_location'.tr),
       endDrawer: MenuDrawer(),
       body: GetBuilder<ParcelController>(builder: (parcelController) {
@@ -163,7 +173,9 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen> with Ticker
 
         ]);
       }),
+    )
     );
+
   }
 
   Widget _bottomButton() {

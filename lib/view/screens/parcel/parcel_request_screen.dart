@@ -477,8 +477,9 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
   }
 
   void orderCallback(bool isSuccess, String message, String orderID) {
-    Get.find<ParcelController>().startLoader(true);
+
     if (isSuccess) {
+      Get.find<ParcelController>().startLoader(true);
       if (Get.find<ParcelController>().paymentIndex == 0) {
         Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
       }else if (Get.find<ParcelController>().paymentIndex == 2) {
@@ -507,6 +508,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
 
       }
     } else {
+      Get.find<ParcelController>().startLoader(isSuccess);
       showCustomSnackBar(message);
     }
     Get.delete<OrderController>();

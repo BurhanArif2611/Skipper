@@ -58,7 +58,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
+    return
+      WillPopScope(
       onWillPop: () async {
         if(widget.exitFromApp) {
           if (_canExit) {
@@ -84,7 +85,8 @@ class _SignInScreenState extends State<SignInScreen> {
             });
             return Future.value(false);
           }
-        }else {
+        }
+        else {
           return true;
         }
       },
@@ -151,6 +153,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               nextFocus: _passwordFocus,
                               inputType: TextInputType.phone,
                               divider: false,
+                              maxLength: 11,
                             )),
                           ]),
                           Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE), child: Divider(height: 1)),

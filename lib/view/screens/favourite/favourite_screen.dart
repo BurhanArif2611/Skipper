@@ -27,7 +27,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> with SingleTickerProv
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'favourite'.tr, backButton: false),
+      appBar: CustomAppBar(title: 'favourite'.tr, backButton: true),
       endDrawer: MenuDrawer(),
       body: Get.find<AuthController>().isLoggedIn() ? SafeArea(child: Column(children: [
 

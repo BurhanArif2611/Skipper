@@ -220,7 +220,7 @@ class OrderController extends GetxController implements GetxService {
       Function(bool isSuccess, String message, String orderID) callback) async {
     _isLoading = true;
     update();
-     // print("placeOrder<><>"+placeOrderBody.toJson().toString());
+      print("placeOrder<><>"+placeOrderBody.toJson().toString());
     Response response =
         await orderRepo.placeOrder(placeOrderBody, _orderAttachment);
     /* print("placeOrder<><>"+response.toString());*/

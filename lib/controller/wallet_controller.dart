@@ -119,7 +119,7 @@ class WalletController extends GetxController implements GetxService {
     if (response.statusCode == 200) {
       Get.back();
       print("response>>" + response.bodyString);
-
+      _isLoading = false;
       if (response.body['status'] == 200) {
         showCustomSnackBar(response.body['message'].toString(), isError: false);
         bankAccountListDetail();
@@ -127,10 +127,11 @@ class WalletController extends GetxController implements GetxService {
         showCustomSnackBar(response.body['message'].toString(), isError: true);
       }
     } else {
+      _isLoading = false;
       showCustomSnackBar(response.body['message'].toString(), isError: true);
       ApiChecker.checkApi(response);
     }
-    _isLoading = false;
+
     update();
   }
 
@@ -217,14 +218,18 @@ class WalletController extends GetxController implements GetxService {
       if (response.body['status'] == 200) {
         Get.offNamed(RouteHelper.getPaymentRoute(
             "-12", Get.find<UserController>().userInfoModel.id, response.body['link'].toString()));
+        _isLoading = false;
       } else {
         showCustomSnackBar(response.body['message'].toString(), isError: true);
+        _isLoading = false;
       }
-    } else {
+    }
+    else {
       showCustomSnackBar(response.body['message'].toString(), isError: true);
       ApiChecker.checkApi(response);
+      _isLoading = false;
     }
-    _isLoading = false;
+  //  _isLoading = false;
     update();
   }
 

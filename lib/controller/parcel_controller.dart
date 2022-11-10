@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/order_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
+import 'package:sixam_mart/controller/store_controller.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
 import 'package:sixam_mart/data/model/response/address_model.dart';
 import 'package:sixam_mart/data/model/response/parcel_category_model.dart';
@@ -74,7 +75,6 @@ class ParcelController extends GetxController implements GetxService {
 
   Future<void> getParcelCategoryList() async {
     print("getParcelCategoryList<><>");
-
     Response response = await parcelRepo.getParcelCategory();
 
     if (response.statusCode == 200) {
@@ -180,10 +180,16 @@ class ParcelController extends GetxController implements GetxService {
               .getUserAddress()
               .contactPersonNumber,
         );
+
         ZoneResponseModel _response = await Get.find<LocationController>()
             .getZone(_address.latitude, _address.longitude, false);
+
+       /* print("Location>>1>"+Get.find<LocationController>()
+            .getUserAddress()
+            .zoneIds.toString());
+        print("Location>>2>"+_response.zoneIds[0].toString());*/
         if (_response.isSuccess) {
-          if (Get.find<LocationController>()
+        /*  if (Get.find<LocationController>()
               .getUserAddress()
               .zoneIds
               .contains(_response.zoneIds[0])) {
@@ -198,8 +204,29 @@ class ParcelController extends GetxController implements GetxService {
           } else {
             showCustomSnackBar(
                 'your_selected_location_is_from_different_zone_store'.tr);
+          }*/
+          bool check=false;
+          for(int i=0;i<Get.find<StoreController>().store.zones.length;i++){
+            if(Get.find<StoreController>().store.zones[i].zone_id ==_response.zoneIds[0]){
+              check=true;
+              break;
+            }
+          }
+          if (check) {
+            _address.zoneId = _response.zoneIds[0];
+            _address.zoneIds = [];
+            _address.zoneIds.addAll(_response.zoneIds);
+            if (isPickedUp) {
+              setPickupAddress(_address, true);
+            } else {
+              setDestinationAddress(_address);
+            }
+          } else {
+            showCustomSnackBar(
+                'your_selected_location_is_from_different_zone_store'.tr);
           }
         } else {
+          print("message>>>"+_response.message);
           showCustomSnackBar(_response.message);
         }
       }

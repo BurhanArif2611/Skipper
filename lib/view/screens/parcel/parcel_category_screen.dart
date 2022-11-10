@@ -92,7 +92,7 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                   fontSize: Dimensions.fontSizeLarge)),
                           SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                           parcelController.parcelCategoryList != null
-                              ? parcelController.parcelCategoryList.length > 0 && Get.find<StoreController>().store.parcel == 1
+                              ? parcelController.parcelCategoryList.length > 0 && Get.find<StoreController>().store!=null && Get.find<StoreController>().store.parcel == 1
                                   ? GridView.builder(
                                       controller: ScrollController(),
                                       gridDelegate:
@@ -202,7 +202,7 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                       },
                                     )
                                   :
-                          Get.find<StoreController>().store.parcel==1?
+                          Get.find<StoreController>().store!=null && Get.find<StoreController>().store.parcel==1?
                            Center(
                                       child:
                                           Text('no_parcel_category_found'.tr)):Text("")
@@ -211,7 +211,7 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                       parcelController.parcelCategoryList ==
                                           null),
                           SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-                          if(Get.find<StoreController>().store.errand==1)
+                          if(Get.find<StoreController>().store !=null && Get.find<StoreController>().store.errand==1)
                           InkWell(
                             child: Container(
                               padding:

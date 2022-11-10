@@ -18,6 +18,8 @@ import 'package:get/get.dart';
 
 import '../../../controller/banner_controller.dart';
 import '../../../controller/store_controller.dart';
+import '../../../data/model/response/module_model.dart';
+import '../../../util/app_constants.dart';
 import '../parcel/parcel_category_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -44,8 +46,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _pageIndex = widget.pageIndex;
 
     _pageController = PageController(initialPage: widget.pageIndex);
-    if (Get.find<StoreController>().store != null &&
-        Get.find<StoreController>().store.ecommerce == 1) {
+    if (Get.find<StoreController>().store != null && Get.find<StoreController>().store.ecommerce == 1) {
       eccorance = true;
     } else {
       eccorance = false;
@@ -76,7 +77,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       eccorance = true;
       _screens = [
         HomeScreen(),
-        CartScreen(fromNav: true) ,
+        CartScreen(fromNav: true),
         /* FavouriteScreen(),*/
         ParcelCategoryScreen(),
         OrderScreen(),
@@ -86,7 +87,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       eccorance = false;
       _screens = [
         HomeScreen(),
-         NotificationScreen(),
+        NotificationScreen(),
         /* FavouriteScreen(),*/
         ParcelCategoryScreen(),
         OrderScreen(),
@@ -155,10 +156,54 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ? Theme.of(context).primaryColor
                     : Theme.of(context).cardColor,
                 onPressed: () => /* _setPage(2)*/ {
-                  (Get.find<StoreController>().store != null && (Get.find<StoreController>().store.parcel == 1 || Get.find<StoreController>().store.errand == 1 )) ? _setPage(2):
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("This facility is currently not available"),
-                ))
+                  (Get.find<StoreController>().store != null &&
+                              (Get.find<StoreController>().store.parcel == 1 ||
+                                  Get.find<StoreController>().store.errand ==
+                                      1)) ||
+                          (Get.find<BannerController>().branchStoreList !=
+                                  null &&
+                              (Get.find<BannerController>()
+                                          .branchStoreList
+                                          .parcel ==
+                                      1 ||
+                                  Get.find<BannerController>()
+                                          .branchStoreList
+                                          .errand ==
+                                      1))
+                      ?() {
+
+                          if( Get.find<StoreController>().store == null){
+                          for (ModuleModel module in Get.find<SplashController>().moduleList)
+                            {
+                              if (module.id ==
+                                  Get.find<BannerController>()
+                                      .branchStoreList
+                                      .moduleId)
+                                {
+                                  // Get.find<SplashController>().setModule(module);
+                                  AppConstants.StoreID =
+                                      Get.find<BannerController>()
+                                          .branchStoreList
+                                          .id;
+                                  Get.find<SplashController>()
+                                      .setModuleWithCallStoreAPI(
+                                          module,
+                                          Get.find<BannerController>()
+                                              .branchStoreList
+                                              .id);
+                                  break;
+
+                                }
+
+                            }}
+                          else{
+                            _setPage(2);
+                          }
+                        }()
+                      : ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content:
+                              Text("This facility is currently not available"),
+                        ))
                 },
                 child: CartWidget(
                     color: _pageIndex == 2

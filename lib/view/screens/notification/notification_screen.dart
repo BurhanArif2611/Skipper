@@ -14,6 +14,7 @@ import 'package:sixam_mart/view/screens/notification/widget/notification_dialog.
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/banner_controller.dart';
 import '../../../controller/store_controller.dart';
 import '../../../data/model/response/order_model.dart';
 import '../../../helper/responsive_helper.dart';
@@ -46,12 +47,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     final ScrollController scrollController = ScrollController();
     return Scaffold(
-      appBar: Get.find<StoreController>().store != null &&
-              Get.find<StoreController>().store.ecommerce == 1
+      appBar: Get.find<StoreController>().store == null
           ? CustomAppBar(
-              title: 'notification'.tr,
+              title: 'notification123'.tr,
               backButton: ResponsiveHelper.isDesktop(context))
-          : CustomAppBar(title: 'notification'.tr),
+          : Get.find<StoreController>().store != null &&
+                  Get.find<StoreController>().store.ecommerce == 0
+              ? CustomAppBar(
+                  title: 'notification123'.tr,
+                  backButton: ResponsiveHelper.isDesktop(context))
+              : CustomAppBar(title: 'notification456'.tr, backButton: true),
       endDrawer: MenuDrawer(),
       body: Get.find<AuthController>().isLoggedIn()
           ? GetBuilder<NotificationController>(
