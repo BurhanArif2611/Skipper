@@ -480,6 +480,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
 
     if (isSuccess) {
       Get.find<ParcelController>().startLoader(true);
+
       if (Get.find<ParcelController>().paymentIndex == 0) {
         Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
       }else if (Get.find<ParcelController>().paymentIndex == 2) {
@@ -492,7 +493,8 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
           String selectedUrl =
               '${AppConstants.BASE_URL}/payment-mobile?order_id=$orderID&&customer_id=${Get.find<UserController>().userInfoModel.id}&&callback=$protocol//$hostname${RouteHelper.orderSuccess}?id=$orderID&type=parcel&status=';
           html.window.open(selectedUrl, "_self");
-        } else {
+        }
+        else {
           if(Get
               .find<
               ParcelController>()
@@ -507,12 +509,14 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
         }
 
       }
+      Get.find<OrderController>().clear();
+      Get.find<ParcelController>().clear();
     } else {
       Get.find<ParcelController>().startLoader(isSuccess);
       showCustomSnackBar(message);
     }
-    Get.delete<OrderController>();
-    Get.delete<ParcelController>();
+
+
 
   }
 

@@ -83,6 +83,8 @@ class _LocationView extends State<LocationView> {
         if (parcelController.destinationAddress != null) {
           addressModel_ = parcelController.destinationAddress;
         }
+        print("<><><><>"+parcelController.isSender.toString());
+
         parcelController_main = parcelController;
         return  SingleChildScrollView(
           // controller: ScrollController(),
@@ -96,15 +98,9 @@ class _LocationView extends State<LocationView> {
                     SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                     SearchLocationWidget(
                       mapController: null,
-                      pickedAddress: parcelController.isSender
-                          ? parcelController.pickupAddress.address
-                          : parcelController.destinationAddress != null
-                              ? parcelController.destinationAddress.address
-                              : '',
-                      isEnabled: widget.isSender
-                          ? parcelController.isPickedUp
-                          : !parcelController.isPickedUp,
-                      isPickedUp: parcelController.isSender,
+                      pickedAddress:  parcelController.pickupAddress!=null?parcelController.pickupAddress.address:'',
+                      isEnabled: false,
+                      isPickedUp: true,
                       hint: parcelController.isSender
                           ? 'pick_up'.tr
                           : 'destination'.tr,
@@ -116,8 +112,7 @@ class _LocationView extends State<LocationView> {
                         child: CustomButton(
                             buttonText: 'set_from_map'.tr,
                             onPressed: () => {
-                                  print("address>ddfdf>>>>"),
-                                  Get.toNamed(
+                              Get.toNamed(
                                       RouteHelper.getPickMapRoute(
                                           'parcel', false),
                                       arguments: PickMapScreen(
@@ -126,13 +121,9 @@ class _LocationView extends State<LocationView> {
                                         canRoute: false,
                                         route: '',
                                         onPicked: (AddressModel address) {
-                                          if (parcelController.isPickedUp) {
-                                            parcelController.setPickupAddress(
+                                          parcelController.setPickupAddress(
                                                 address, true);
-                                          } else {
-                                            parcelController
-                                                .setDestinationAddress(address);
-                                          }
+
                                         },
                                       )),
                                 }),
@@ -489,7 +480,8 @@ class _LocationView extends State<LocationView> {
       pageBuilder: (_, __, ___) {
         /*GetBuilder<LocationController>(builder: (locationController)
         {*/
-        return Center(
+       return GetBuilder<ParcelController>(builder: (parcelController) {
+         return Center(
           child: Container(
             height: 520,
             child: Card(
@@ -539,7 +531,7 @@ class _LocationView extends State<LocationView> {
                       Row(
                           mainAxisSize: MainAxisSize.max,
                           children:<Widget> [
-                            if (Get.find<ParcelController>()
+                            if (parcelController
                                 .pickedFileList
                                 .length >
                                 0)
@@ -560,7 +552,7 @@ class _LocationView extends State<LocationView> {
                                       child: /*Get.find<UserController>().rawFile.toString()!=""?*/
                                       SqureImagePickerWidget(
                                         image:
-                                        '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${Get.find<ParcelController>().pickedFile}',
+                                        '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${parcelController.pickedFile}',
                                         onTap: () =>
                                             setState(() =>  Get.find<
                                                 ParcelController>()
@@ -633,26 +625,22 @@ class _LocationView extends State<LocationView> {
                             List<File_Unitpath>();
                             for (int i = 0;
                             i <
-                                Get.find<ParcelController>()
+                                parcelController
                                     .pickedFileList
                                     .length;
                             i++) {
                               File_Unitpath file_unitpath =
-                              File_Unitpath(rawFile: Get.find<ParcelController>()
+                              File_Unitpath(rawFile: parcelController
                                   .pickedUintFileList[i].rawFile);
                               file_raw.add(file_unitpath);
                             }
                             List<File_path> file_raw1 =
                             List<File_path>();
-                            for (int i = 0;
-                            i <
-                                Get.find<ParcelController>()
+                            for (int i = 0; i < parcelController
                                     .pickedFileList
-                                    .length;
-                            i++) {
+                                    .length; i++) {
                               File_path file_unitpath =
-                              File_path(file: Get.find<ParcelController>()
-                                  .pickedFileList[i].file);
+                              File_path(file: parcelController.pickedFileList[i].file);
                               file_raw1.add(file_unitpath);
                             }
                             print("file_raw>>>"+file_raw.length.toString());
@@ -680,7 +668,7 @@ class _LocationView extends State<LocationView> {
             ),
           ),
         );
-        /*});*/
+        });
       },
       transitionBuilder: (_, anim, __, child) {
         Tween<Offset> tween;
@@ -845,6 +833,7 @@ class _LocationView extends State<LocationView> {
   }
 
   Widget updateImagesListView() {
+    return GetBuilder<ParcelController>(builder: (parcelController) {
     return
       SizedBox(
       height: 70,
@@ -890,8 +879,9 @@ class _LocationView extends State<LocationView> {
                 ),
               ])));
         },
-        itemCount: Get.find<ParcelController>().pickedFileList.length,
+        itemCount: parcelController.pickedFileList.length,
       ),
     );
+    });
   }
 }

@@ -14,10 +14,13 @@ class HistoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return
+      Column(children: [
       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+
             fromWallet ? Text(data[index].transactionType == 'order_place'
                 ? PriceConverter.convertPrice(data[index].debit + data[index].adminBonus)
                 : data[index].transactionType == 'withdraw_fund_by_customer'
@@ -36,6 +39,12 @@ class HistoryItem extends StatelessWidget {
             Text(data[index].transactionType.tr,
                 style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall,color: Theme.of(context).disabledColor),
                 maxLines: 1, overflow: TextOverflow.ellipsis),
+            SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+            Text(data[index].status!=null?data[index].status:"",
+                style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall,color: Theme.of(context).disabledColor),
+                maxLines: 1, overflow: TextOverflow.ellipsis),
+
+
           ],
           ),
 
@@ -55,7 +64,7 @@ class HistoryItem extends StatelessWidget {
         ],),
 
       Padding(
-        padding: const EdgeInsets.only(top: Dimensions.PADDING_SIZE_DEFAULT),
+        padding: const EdgeInsets.only(top: Dimensions.PADDING_SIZE_EXTRA_SMALL),
         child: Divider(color: Theme.of(context).disabledColor),
       ),
     ]);

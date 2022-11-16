@@ -32,7 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
 
-    if (_isLoggedIn && Get.find<UserController>().userInfoModel == null) {
+    if (_isLoggedIn /*&& Get.find<UserController>().userInfoModel == null*/) {
       Get.find<UserController>().getUserInfo();
     }
   }

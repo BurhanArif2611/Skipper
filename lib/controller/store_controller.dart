@@ -58,6 +58,15 @@ class StoreController extends GetxController implements GetxService {
   String get searchType => _searchType;
   String get searchText => _searchText;
 
+  void clear() {
+    _categoryList = [];
+    _storeReviewList = [];
+    _featuredStoreList = [];
+    _latestStoreList = [];
+    _popularStoreList = [];
+    _storeModel = null;
+
+  }
   Future<void> getStoreList(int offset, bool reload) async {
     if(reload) {
       _storeModel = null;

@@ -29,13 +29,17 @@ class AuthController extends GetxController implements GetxService {
     Response response = await authRepo.registration(signUpBody);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
-      if(!Get.find<SplashController>().configModel.customerVerification) {
-        authRepo.saveUserToken(response.body["token"]);
-        await authRepo.updateToken();
-      }
-      responseModel = ResponseModel(true, response.body["token"]);
+        if (!Get
+            .find<SplashController>()
+            .configModel
+            .customerVerification) {
+          authRepo.saveUserToken(response.body["token"]);
+          await authRepo.updateToken();
+        }
+        responseModel = ResponseModel(true, response.body["token"]);
+
     } else {
-      responseModel = ResponseModel(false, response.statusText);
+      responseModel = ResponseModel(false, response.body["errors"]!=null?response.body["errors"]["message"].toString():response.statusText);
 
 
     }

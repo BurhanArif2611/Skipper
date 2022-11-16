@@ -58,9 +58,9 @@ class HomeScreen extends StatefulWidget {
       Get.find<StoreController>().getStoreList(1, reload);*/
 
       if (Get.find<AuthController>().isLoggedIn()) {
-        if (Get.find<UserController>().userInfoModel == null) {
+       /* if (Get.find<UserController>().userInfoModel == null) {*/
           Get.find<UserController>().getUserInfo();
-        }
+        /*}*/
         // Get.find<NotificationController>().getNotificationList(reload); //TODO: comment by burhan unnessary call
       }
     }
@@ -142,9 +142,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 await Get.find<StoreController>().getStoreList(1, true);*/
 
                       if (Get.find<AuthController>().isLoggedIn()) {
-                        if (Get.find<UserController>().userInfoModel == null) {
+                      /*  if (Get.find<UserController>().userInfoModel == null) {*/
                           await Get.find<UserController>().getUserInfo();
-                        }
+                        /*}*/
                         // await Get.find<NotificationController>().getNotificationList(true);  //TODO: comment by burhan unnessary call
                       }
                     } else {

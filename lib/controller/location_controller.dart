@@ -64,7 +64,13 @@ class LocationController extends GetxController implements GetxService {
   int get zoneID => _zoneID;
   bool get buttonDisabled => _buttonDisabled;
   GoogleMapController get mapController => _mapController;
+  void clear() {
+    _addressList = [];
+    _addressTypeList = [];
+    _predictionList = [];
+    _markers = [];
 
+  }
   Future<AddressModel> getCurrentLocation(bool fromAddress, {GoogleMapController mapController, LatLng defaultLatLng, bool notify = true}) async {
     _loading = true;
     if(notify) {

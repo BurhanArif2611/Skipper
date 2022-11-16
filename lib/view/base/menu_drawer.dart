@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
+import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
+import 'package:sixam_mart/controller/user_controller.dart';
+import 'package:sixam_mart/controller/wallet_controller.dart';
 import 'package:sixam_mart/controller/wishlist_controller.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
@@ -10,6 +13,10 @@ import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/confirmation_dialog.dart';
+
+import '../../controller/order_controller.dart';
+import '../../controller/parcel_controller.dart';
+import '../../controller/store_controller.dart';
 
 class MenuDrawer extends StatefulWidget {
   const MenuDrawer({Key key}) : super(key: key);
@@ -77,7 +84,16 @@ class _MenuDrawerState extends State<MenuDrawer> with SingleTickerProviderStateM
           Get.find<AuthController>().clearSharedData();
           Get.find<CartController>().clearCartList();
           Get.find<WishListController>().removeWishes();
+          Get.find<UserController>().initData();
+          Get.find<OrderController>().clear();
+          Get.find<ParcelController>().clear();
+          Get.find<WalletController>().clear();
+          Get.find<LocationController>().clear();
+          Get.find<StoreController>().clear();
+          //Get.reset();
           Get.offAllNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
+         /**/
+
         }), useSafeArea: false);
       }else {
         Get.find<WishListController>().removeWishes();

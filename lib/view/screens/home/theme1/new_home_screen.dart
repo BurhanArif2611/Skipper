@@ -229,12 +229,16 @@ class NewHomeScreen extends StatelessWidget {
                                             MainAxisAlignment.start,
                                         children: [
                                           Icon(
-                                            locationController
+                                          locationController
+                                          .getUserAddress() !=null
+                                          && locationController
                                                         .getUserAddress()
                                                         .addressType ==
                                                     'home'
                                                 ? Icons.home_filled
-                                                : locationController
+                                                :   locationController
+                                              .getUserAddress() !=null
+                                              && locationController
                                                             .getUserAddress()
                                                             .addressType ==
                                                         'office'
@@ -250,8 +254,10 @@ class NewHomeScreen extends StatelessWidget {
                                           Flexible(
                                             child: Text(
                                               locationController
+                                                  .getUserAddress() !=null
+                                                  ? locationController
                                                   .getUserAddress()
-                                                  .address,
+                                                  .address:"",
                                               style: robotoRegular.copyWith(
                                                 color: Theme.of(context)
                                                     .textTheme

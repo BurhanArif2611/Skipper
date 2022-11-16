@@ -39,7 +39,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     super.initState();
 
     _isLoggedIn = Get.find<AuthController>().isLoggedIn();
-    if(_isLoggedIn && Get.find<UserController>().userInfoModel == null) {
+
+    if(_isLoggedIn ) {
       Get.find<UserController>().getUserInfo();
     }
     Get.find<UserController>().initData();

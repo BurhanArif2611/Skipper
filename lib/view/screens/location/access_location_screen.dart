@@ -56,7 +56,11 @@ class _AccessLocationScreenState extends State<AccessLocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return
+      WillPopScope(
+        onWillPop: () => Get.offAllNamed(RouteHelper.getInitialRoute()),
+    child:
+      Scaffold(
       appBar: CustomAppBar(title: 'set_location'.tr, backButton: widget.fromHome),
       endDrawer: MenuDrawer(),
       body: SafeArea(child: Padding(
@@ -113,7 +117,8 @@ class _AccessLocationScreenState extends State<AccessLocationScreen> {
           ));
         }),
       )),
-    );
+    ),
+      );
   }
 }
 

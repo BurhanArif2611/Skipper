@@ -102,8 +102,8 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
       Get.find<ParcelController>()
           .setIsPickedUp(_tabController.index == 0, false);
       Get.find<ParcelController>().setIsSender(_tabController.index == 0, true);
-      print('my index is' + _tabController.index.toString());
-      print('is sender : ${Get.find<ParcelController>().isSender}');
+      /*print('my index is' + _tabController.index.toString());
+      print('is sender : ${Get.find<ParcelController>().isSender}');*/
     });
   }
 
@@ -258,16 +258,7 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
                     _validateSender();
                   }
                   else {
-                    /* if(parcelController.destinationAddress == null) {
-                  showCustomSnackBar('select_destination_address'.tr);
-              }
-              else if(_receiverNameController.text.isEmpty){
-                showCustomSnackBar('enter_receiver_name'.tr);
-              }
-              else if(_receiverPhoneController.text.isEmpty){
-                showCustomSnackBar('enter_receiver_phone_number'.tr);
-              }
-              else {*/
+
                     isLoading=true;
                     AddressModel _destination = AddressModel(
                       address: parcelController.destinationAddress != null
@@ -303,7 +294,7 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
                       floor: _receiverFloorController.text.trim(),
                     );
 
-                    parcelController.setDestinationAddress(_destination);
+                    parcelController.setDestinationAddress(_destination,false);
                     print(
                         'pickup : ${Get
                             .find<ParcelController>()
@@ -408,6 +399,8 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
     Get.find<ParcelController>().startLoader(true);
     if (isSuccess) {
       isLoading=false;
+      Get.find<OrderController>().clear();
+      Get.find<ParcelController>().clear();
      /* if (Get.find<ParcelController>().paymentIndex == 0) {*/
         Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
         print("if is working");
@@ -429,8 +422,7 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
        isLoading=false;
       showCustomSnackBar(message);
     }
-    Get.delete<OrderController>();
-    Get.delete<ParcelController>();
+
   }
 
   void _validateSender() {

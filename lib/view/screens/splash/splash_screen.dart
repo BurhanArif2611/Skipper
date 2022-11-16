@@ -141,7 +141,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (Get.find<BannerController>().branchStoreList!=null && Get.find<BannerController>().branchStoreList.branches.length > 0) {
       Get.offNamed(RouteHelper.getInitialRoute());
     } else {
-      AppConstants.ModelID=Get.find<BannerController>().branchStoreList.moduleId;
+      AppConstants.ModelID=Get.find<BannerController>().branchStoreList!=null && Get.find<BannerController>().branchStoreList.moduleId!=null?Get.find<BannerController>().branchStoreList.moduleId:0;
       Get.find<StoreController>().getStoreDetails(Store(id: AppConstants.StoreID),true);
 
       Get.find<StoreController>().getStoreItemList(AppConstants.StoreID, 1, 'all', false);

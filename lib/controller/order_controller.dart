@@ -579,4 +579,10 @@ class OrderController extends GetxController implements GetxService {
       update();
     }
   }
+  void clear() {
+    _runningOrderModel = null;
+    _historyOrderModel = null;
+    _orderDetailsModel = null;
+    _orderDetails = [];
+  }
 }

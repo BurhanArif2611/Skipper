@@ -58,13 +58,17 @@ class ParcelController extends GetxController implements GetxService {
   double get distance => _distance;
 
   int get payerIndex => _payerIndex;
+
   int get paymentIndex => _paymentIndex;
+
   List<String> get payerTypes => _payerTypes;
 
   List<File_path> _pickedFileList = [];
+
   List<File_path> get pickedFileList => _pickedFileList;
 
   List<File_Unitpath> _pickedUintFileList = [];
+
   List<File_Unitpath> get pickedUintFileList => _pickedUintFileList;
   XFile _pickedFile;
   Uint8List _rawFile;
@@ -72,7 +76,13 @@ class ParcelController extends GetxController implements GetxService {
   XFile get pickedFile => _pickedFile;
 
   Uint8List get rawFile => _rawFile;
-
+  void clear() {
+   /* _parcelCategoryList = [];*/
+    _anotherList = [];
+    _anothertaskList = [];
+    _destinationAddress = null;
+    _pickupAddress = null;
+  }
   Future<void> getParcelCategoryList() async {
     print("getParcelCategoryList<><>");
     Response response = await parcelRepo.getParcelCategory();
@@ -93,10 +103,10 @@ class ParcelController extends GetxController implements GetxService {
     if (_pickedFile != null) {
       _pickedFile = await NetworkInfo.compressImage(_pickedFile);
       _rawFile = await _pickedFile.readAsBytes();
-      File_path  file_path= File_path(file: _pickedFile);
+      File_path file_path = File_path(file: _pickedFile);
       _pickedFileList.add(file_path);
 
-      File_Unitpath file_unitpath=File_Unitpath(rawFile: _rawFile);
+      File_Unitpath file_unitpath = File_Unitpath(rawFile: _rawFile);
       _pickedUintFileList.add(file_unitpath);
 
       print("pickImage" + _pickedFile.path);
@@ -104,7 +114,8 @@ class ParcelController extends GetxController implements GetxService {
 
     update();
   }
-  void clear_pickupImage(){
+
+  void clear_pickupImage() {
     _pickedFileList.clear();
     _pickedUintFileList.clear();
   }
@@ -116,8 +127,15 @@ class ParcelController extends GetxController implements GetxService {
     }
   }
 
-  void setDestinationAddress(AddressModel addressModel) {
+  void setDestinationAddress(AddressModel addressModel, bool notify) {
+    if (notify) {
+    _destinationAddress = null;}
     _destinationAddress = addressModel;
+    update();
+  }
+
+  void removeDestinationAddress() {
+    _destinationAddress = null;
     update();
   }
 
@@ -127,26 +145,31 @@ class ParcelController extends GetxController implements GetxService {
     print("setMultiDropDestinationAddress>>" + _anotherList.length.toString());
     update();
   }
+
   void removeMultiDropDestinationAddress(int position) {
     _anotherList.removeAt(position);
-    print("setMultiDropDestinationAddress>>" );
+    print("setMultiDropDestinationAddress>>");
     update();
   }
 
   void setMultiTask(TaskModel addressModel) {
-    print("setMultiDropDestinationAddress>>++++"+addressModel.rawFile.length.toString());
-    print("setMultiDropDestinationAddress>>++++"+addressModel.task_media.length.toString());
+    print("setMultiDropDestinationAddress>>++++" +
+        addressModel.rawFile.length.toString());
+    print("setMultiDropDestinationAddress>>++++" +
+        addressModel.task_media.length.toString());
     _anothertaskList.add(addressModel);
     print("setMultiDropDestinationAddress>>" +
         _anothertaskList.length.toString());
     update();
   }
-  void removeMultiTask(int  position) {
+
+  void removeMultiTask(int position) {
     print("setMultiDropDestinationAddress>>++++");
     _anothertaskList.removeAt(position);
     update();
   }
-  void removeImageInList(int  position) {
+
+  void removeImageInList(int position) {
     print("setMultiDropDestinationAddress>>++++");
     _pickedUintFileList.removeAt(position);
     _pickedFileList.removeAt(position);
@@ -184,12 +207,12 @@ class ParcelController extends GetxController implements GetxService {
         ZoneResponseModel _response = await Get.find<LocationController>()
             .getZone(_address.latitude, _address.longitude, false);
 
-       /* print("Location>>1>"+Get.find<LocationController>()
+        /* print("Location>>1>"+Get.find<LocationController>()
             .getUserAddress()
             .zoneIds.toString());
         print("Location>>2>"+_response.zoneIds[0].toString());*/
         if (_response.isSuccess) {
-        /*  if (Get.find<LocationController>()
+          /*  if (Get.find<LocationController>()
               .getUserAddress()
               .zoneIds
               .contains(_response.zoneIds[0])) {
@@ -205,13 +228,15 @@ class ParcelController extends GetxController implements GetxService {
             showCustomSnackBar(
                 'your_selected_location_is_from_different_zone_store'.tr);
           }*/
-          bool check=false;
-          for(int i=0;i<Get.find<StoreController>().store.zones.length;i++){
-            if(Get.find<StoreController>().store.zones[i].zone_id ==_response.zoneIds[0]){
-              check=true;
+          bool check = false;
+          if(Get.find<StoreController>().store.zones!=null){
+          for (int i = 0; i < Get.find<StoreController>().store.zones.length; i++) {
+            if (Get.find<StoreController>().store.zones!=null && Get.find<StoreController>().store.zones[i].zone_id ==
+                _response.zoneIds[0]) {
+              check = true;
               break;
             }
-          }
+          }}
           if (check) {
             _address.zoneId = _response.zoneIds[0];
             _address.zoneIds = [];
@@ -219,14 +244,14 @@ class ParcelController extends GetxController implements GetxService {
             if (isPickedUp) {
               setPickupAddress(_address, true);
             } else {
-              setDestinationAddress(_address);
+              setDestinationAddress(_address,true);
             }
           } else {
             showCustomSnackBar(
                 'your_selected_location_is_from_different_zone_store'.tr);
           }
         } else {
-          print("message>>>"+_response.message);
+          print("message>>>" + _response.message);
           showCustomSnackBar(_response.message);
         }
       }

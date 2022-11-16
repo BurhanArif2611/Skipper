@@ -97,8 +97,8 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen> with Ticker
 
     return WillPopScope(
         onWillPop: () async {
-          Get.delete<OrderController>();
-          Get.delete<ParcelController>();// Action to perform on back pressed
+          Get.find<OrderController>().clear();
+         Get.find<ParcelController>().clear();// Action to perform on back pressed
 
           return false;
     },
@@ -218,7 +218,7 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen> with Ticker
                   floor: _receiverFloorController.text.trim(),
                 );
 
-                parcelController.setDestinationAddress(_destination);
+                parcelController.setDestinationAddress(_destination,false);
                 print('pickup : ${Get.find<ParcelController>().pickupAddress.toJson()}');
                 print('destination : ${Get.find<ParcelController>().destinationAddress.toJson()}');
 
@@ -265,7 +265,7 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen> with Ticker
                   floor: _receiverFloorController.text.trim(),
                 );
 
-                parcelController.setDestinationAddress(_destination);
+                parcelController.setDestinationAddress(_destination,false);
                 print('pickup : ${Get.find<ParcelController>().pickupAddress.toJson()}');
                 print('destination : ${Get.find<ParcelController>().destinationAddress.toJson()}');
 

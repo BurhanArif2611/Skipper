@@ -86,7 +86,7 @@ class _ReceiverViewState extends State<ReceiverView> {
                       _houseController.text = '';
                       _floorController.text = '';
                     }else {
-                      parcelController.setDestinationAddress(address);
+                      parcelController.setDestinationAddress(address,false);
                     }
                   },
                   )),

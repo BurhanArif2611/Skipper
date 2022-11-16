@@ -33,7 +33,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
 
     _isLoggedIn = Get.find<AuthController>().isLoggedIn();
 
-    if(_isLoggedIn && Get.find<UserController>().userInfoModel == null) {
+    if(_isLoggedIn /*&& Get.find<UserController>().userInfoModel == null*/) {
       Get.find<UserController>().getUserInfo();
     }
   }

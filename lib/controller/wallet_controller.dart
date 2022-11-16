@@ -36,6 +36,14 @@ class WalletController extends GetxController implements GetxService {
   List<BankList> get predictionList => _predictionList;
   List<AddedBankAccount> get bankAccountList => _bankAccountList;
   List<BankList> get filterList => _filterList;
+
+  void clear() {
+    _filterList = [];
+    _bankAccountList = [];
+    _predictionList = [];
+    _transactionList = [];
+
+  }
   void setOffset(int offset) {
     _offset = offset;
   }
@@ -95,12 +103,13 @@ class WalletController extends GetxController implements GetxService {
       showCustomSnackBar('converted_successfully_transfer_to_your_wallet'.tr,
           isError: false);
     } else {
+
       ApiChecker.checkApi(response);
       Get.dialog(
           ConfirmationDialog(
             icon: Images.warning,
             title: 'Are you sure to "Convert Loyalty Points to Currency" ?' ,
-            description: response.statusText,
+            description: response.body["errors"]["message"].toString(),
             onYesPressed: () {
               Get.back();
             },

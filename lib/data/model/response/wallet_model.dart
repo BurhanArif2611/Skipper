@@ -41,6 +41,7 @@ class Transaction {
   double adminBonus;
   double balance;
   String transactionType;
+  String status;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -54,6 +55,7 @@ class Transaction {
     this.transactionType,
     this.createdAt,
     this.updatedAt,
+    this.status,
   });
 
 
@@ -66,6 +68,7 @@ class Transaction {
       adminBonus = json["admin_bonus"].toDouble();
     }
     balance = json["balance"].toDouble();
+    status = json["status"];
     transactionType = json["transaction_type"];
     createdAt = json["created_at"]!=null?DateTime.parse(json["created_at"]):null;
     updatedAt = json["updated_at"]!=null?DateTime.parse(json["updated_at"]):null;
@@ -79,6 +82,7 @@ class Transaction {
     data["debit"] = this.debit;
     data["admin_bonus"] = this.adminBonus;
     data["balance"] = this.balance;
+    data["status"] = this.status;
     data["transaction_type"] = this.transactionType;
     data["created_at"] = this.createdAt.toIso8601String();
     data["updated_at"] = this.updatedAt.toIso8601String();

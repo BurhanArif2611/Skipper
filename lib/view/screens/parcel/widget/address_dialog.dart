@@ -65,7 +65,7 @@ class AddressDialog extends StatelessWidget {
                             Get.find<ParcelController>().setPickupAddress(_address, true);
                             Get.back();
                           }else{
-                            Get.find<ParcelController>().setDestinationAddress(_address);
+                            Get.find<ParcelController>().setDestinationAddress(_address,false);
                             Get.back();
                           }
                         },

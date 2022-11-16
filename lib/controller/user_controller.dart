@@ -95,6 +95,7 @@ class UserController extends GetxController implements GetxService {
   void initData() {
     _pickedFile = null;
     _rawFile = null;
+    _userInfoModel = null;
   }
 
   Future removeUser() async {
@@ -114,5 +115,6 @@ class UserController extends GetxController implements GetxService {
       ApiChecker.checkApi(response);
     }
   }
+
 
 }

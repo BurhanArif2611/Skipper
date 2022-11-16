@@ -158,7 +158,7 @@ class CheckoutButton extends StatelessWidget {
           showCustomSnackBar('one_or_more_product_unavailable'.tr);
         } else {
           Get.find<CouponController>().removeCouponData(false);
-          Get.delete<OrderController>();
+          Get.find<OrderController>().clear();
           Get.toNamed(RouteHelper.getCheckoutRoute('cart'));
         }
       }),

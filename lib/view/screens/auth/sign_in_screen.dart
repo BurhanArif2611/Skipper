@@ -248,6 +248,7 @@ class _SignInScreenState extends State<SignInScreen> {
     }else if (_password.length < 6) {
       showCustomSnackBar('password_should_be'.tr);
     }else {
+
       authController.login(_numberWithCountryCode, _password).then((status) async {
         if (status.isSuccess) {
           if (authController.isActiveRememberMe) {

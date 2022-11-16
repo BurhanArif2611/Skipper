@@ -175,7 +175,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           onSubmit: (text) => (GetPlatform.isWeb && authController.acceptTerms) ? _register(authController, _countryDialCode) : null,
                         ),
 
-                        (Get.find<SplashController>().configModel.refEarningStatus == 1 ) ? CustomTextField(
+                        (Get.find<SplashController>().configModel.refEarningStatus == 1 ) ?
+                        CustomTextField(
                           hintText: 'refer_code'.tr,
                           controller: _referCodeController,
                           focusNode: _referCodeFocus,

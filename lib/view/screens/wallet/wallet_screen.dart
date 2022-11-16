@@ -276,80 +276,91 @@ class _WalletScreenState extends State<WalletScreen> {
                                           )
                                   ],
                                 ),
-
-                                widget.fromWallet ?
-                                Row(children: [
-                                  Expanded(
-                                      child: CustomButton(
-                                    height: 40,
-                                    buttonText: Get.find<WalletController>()
-                                                .bankAccountList
-                                                .length >
-                                            0
-                                        ? 'View Bank AC'.tr
-                                        : 'Add Bank AC'.tr,
-                                    fontSize: 12,
-                                    onPressed: () => {
-                                      Get.find<WalletController>()
-                                          .filterList
-                                          .clear(),
-                                      if (Get.find<WalletController>()
-                                              .bankAccountList
-                                              .length >
-                                          0)
-                                        {showAddAccountDetailsDialog(context)}
-                                      else
-                                        {showAddAccountCustomDialog(context)}
-                                    },
-                                  )),
-                                  SizedBox(
-                                      width: Dimensions.PADDING_SIZE_SMALL),
-                                  Expanded(
-                                      child: CustomButton(
+                                widget.fromWallet
+                                    ? Row(children: [
+                                        Expanded(
+                                            child: CustomButton(
                                           height: 40,
+                                          buttonText:
+                                              Get.find<WalletController>()
+                                                          .bankAccountList
+                                                          .length >
+                                                      0
+                                                  ? 'View Bank AC'.tr
+                                                  : 'Add Bank AC'.tr,
                                           fontSize: 12,
-                                          buttonText: 'Add Fund'.tr,
                                           onPressed: () => {
-                                                /*if (Get.find<WalletController>()
+                                            Get.find<WalletController>()
+                                                .filterList
+                                                .clear(),
+                                            if (Get.find<WalletController>()
+                                                    .bankAccountList
+                                                    .length >
+                                                0)
+                                              {
+                                                showAddAccountDetailsDialog(
+                                                    context)
+                                              }
+                                            else
+                                              {
+                                                showAddAccountCustomDialog(
+                                                    context)
+                                              }
+                                          },
+                                        )),
+                                        SizedBox(
+                                            width:
+                                                Dimensions.PADDING_SIZE_SMALL),
+                                        Expanded(
+                                            child: CustomButton(
+                                                height: 40,
+                                                fontSize: 12,
+                                                buttonText: 'Add Fund'.tr,
+                                                onPressed: () => {
+                                                      /*if (Get.find<WalletController>()
                                                         .bankAccountList
                                                         .length >
                                                     0)
                                                   {*/
-                                                    showAddFundCustomDialog(
-                                                        context)
-                                                 /* }
+                                                      showAddFundCustomDialog(
+                                                          context)
+                                                      /* }
                                                 else
                                                   {
                                                     showCustomSnackBar(
                                                         'No account added please add bank account first',
                                                         isError: false)
-                                                  }*/,
-                                              })),
-                                  SizedBox(
-                                      width: Dimensions.PADDING_SIZE_SMALL),
-                                  Expanded(
-                                      child: CustomButton(
-                                          height: 40,
-                                          fontSize: 12,
-                                          buttonText: 'Withdraw Fund',
-                                          onPressed: () => {
-                                                if (Get.find<WalletController>()
-                                                        .bankAccountList
-                                                        .length >
-                                                    0)
-                                                  {
-                                                    showWithdrawFundCustomDialog(
-                                                        context)
-                                                  }
-                                                else
-                                                  {
-                                                    showCustomSnackBar(
-                                                        'No account added please add bank account first',
-                                                        isError: false)
-                                                  }
-                                              })),
-                                ]): SizedBox(
-                                    height: Dimensions.PADDING_SIZE_SMALL),
+                                                  }*/
+                                                      ,
+                                                    })),
+                                        SizedBox(
+                                            width:
+                                                Dimensions.PADDING_SIZE_SMALL),
+                                        Expanded(
+                                            child: CustomButton(
+                                                height: 40,
+                                                fontSize: 12,
+                                                buttonText: 'Withdraw Fund',
+                                                onPressed: () => {
+                                                      if (Get.find<
+                                                                  WalletController>()
+                                                              .bankAccountList
+                                                              .length >
+                                                          0)
+                                                        {
+                                                          showWithdrawFundCustomDialog(
+                                                              context)
+                                                        }
+                                                      else
+                                                        {
+                                                          showCustomSnackBar(
+                                                              'No account added please add bank account first',
+                                                              isError: false)
+                                                        }
+                                                    })),
+                                      ])
+                                    : SizedBox(
+                                        height: Dimensions.PADDING_SIZE_SMALL),
                                 Column(children: [
                                   Padding(
                                     padding: EdgeInsets.only(
@@ -362,7 +373,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                       ? walletController
                                                   .transactionList.length >
                                               0
-                                          ? GridView.builder(
+                                          ?
+                                  GridView.builder(
                                               key: UniqueKey(),
                                               gridDelegate:
                                                   SliverGridDelegateWithFixedCrossAxisCount(
@@ -395,7 +407,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                                       ? 28
                                                       : 25),
                                               itemBuilder: (context, index) {
-                                                return HistoryItem(
+                                                return
+                                                  HistoryItem(
                                                     index: index,
                                                     fromWallet:
                                                         widget.fromWallet,
@@ -535,7 +548,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                         padding: EdgeInsets.all(
                                             Dimensions.PADDING_SIZE_SMALL),
                                         child: Row(children: [
-                                         /* Icon(Icons.food_bank),*/
+                                          /* Icon(Icons.food_bank),*/
                                           Expanded(
                                             child: Text(suggestion.name,
                                                 maxLines: 1,
@@ -643,28 +656,33 @@ class _WalletScreenState extends State<WalletScreen> {
                       SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                       GetBuilder<WalletController>(builder: (orderController) {
-                        return !orderController.isLoading ?
-                        CustomButton(
-                          // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                          buttonText: 'submit'.tr,
-                          onPressed: () {
-                            if (bankCodeController.text.isEmpty) {
-                              showCustomSnackBar('Select Bank');
-                            } else if (holder_nameController.text.isEmpty) {
-                              showCustomSnackBar('Enter holder name !');
-                            } else if (accountnumberController.text.isEmpty) {
-                              showCustomSnackBar('Enter Account number !');
-                            } else {
-                              Get.find<WalletController>().addAcountToWallet(
-                                  bankCodeController.text.toString(),
-                                  accountnumberController.text.toString(),
-                                  holder_nameController.text.toString());
-                            }
-                          },
-                        ):
-                        Center(child: CircularProgressIndicator());
+                        return !orderController.isLoading
+                            ? CustomButton(
+                                // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                                buttonText: 'submit'.tr,
+                                onPressed: () {
+                                  if (bankCodeController.text.isEmpty) {
+                                    showCustomSnackBar('Select Bank');
+                                  } else if (holder_nameController
+                                      .text.isEmpty) {
+                                    showCustomSnackBar('Enter holder name !');
+                                  } else if (accountnumberController
+                                      .text.isEmpty) {
+                                    showCustomSnackBar(
+                                        'Enter Account number !');
+                                  } else {
+                                    Get.find<WalletController>()
+                                        .addAcountToWallet(
+                                            bankCodeController.text.toString(),
+                                            accountnumberController.text
+                                                .toString(),
+                                            holder_nameController.text
+                                                .toString());
+                                  }
+                                },
+                              )
+                            : Center(child: CircularProgressIndicator());
                       }),
-
                     ])),
               ),
               color: Colors.white,
@@ -673,7 +691,6 @@ class _WalletScreenState extends State<WalletScreen> {
         );
         /*});*/
       },
-
     );
   }
 
@@ -787,21 +804,23 @@ class _WalletScreenState extends State<WalletScreen> {
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                       GetBuilder<WalletController>(builder: (orderController) {
-                        return !orderController.isLoading ?
-                        CustomButton(
-                          // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                          buttonText: 'submit'.tr,
-                          onPressed: () {
-                            if (titleController.text.isEmpty) {
-                              showCustomSnackBar('Enter Amount !');
-                            } else {
-                              Get.find<WalletController>().addFundToWallet(
-                                  titleController.text.toString());
-                            }
-                          },
-                        ) : Center(child: CircularProgressIndicator());
+                        return !orderController.isLoading
+                            ? CustomButton(
+                                // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                                buttonText: 'submit'.tr,
+                                onPressed: () {
+                                  if (titleController.text.isEmpty) {
+                                    showCustomSnackBar('Enter Amount !');
+                                  } else {
+                                    Get.find<WalletController>()
+                                        .addFundToWallet(
+                                            titleController.text.toString());
+                                  }
+                                },
+                              )
+                            : Center(child: CircularProgressIndicator());
                       }),
-                     /* (!Get.find<WalletController>().isLoading?
+                      /* (!Get.find<WalletController>().isLoading?
                       CustomButton(
                         // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                         buttonText: 'submit'.tr,
@@ -823,7 +842,6 @@ class _WalletScreenState extends State<WalletScreen> {
         );
         /*});*/
       },
-
     );
   }
 
@@ -879,35 +897,37 @@ class _WalletScreenState extends State<WalletScreen> {
                                 strokeWidth: 0.2,
                                 child: Padding(
                                     padding: EdgeInsets.all(5.0),
-                                    child:
-                                Column(children: [
-                                  SizedBox(
-                                      height:
-                                          Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                  Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        Get.find<WalletController>()
-                                            .bankAccountList[0]
-                                            .bank_name,
-                                        style: robotoRegular.copyWith(
-                                            fontSize: Dimensions.fontSizeSmall,
-                                            color: Colors.black),
-                                      )),
-                                  SizedBox(
-                                      height:
-                                          Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                  Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text("**** **** ****"+
-                                        Get.find<WalletController>()
-                                            .bankAccountList[0]
-                                            .account_no_mask,
-                                        style: robotoRegular.copyWith(
-                                            fontSize: Dimensions.fontSizeSmall,
-                                            color: Colors.black),
-                                      ))
-                                ])))),
+                                    child: Column(children: [
+                                      SizedBox(
+                                          height: Dimensions
+                                              .PADDING_SIZE_EXTRA_SMALL),
+                                      Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            Get.find<WalletController>()
+                                                .bankAccountList[0]
+                                                .bank_name,
+                                            style: robotoRegular.copyWith(
+                                                fontSize:
+                                                    Dimensions.fontSizeSmall,
+                                                color: Colors.black),
+                                          )),
+                                      SizedBox(
+                                          height: Dimensions
+                                              .PADDING_SIZE_EXTRA_SMALL),
+                                      Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            "**** **** ****" +
+                                                Get.find<WalletController>()
+                                                    .bankAccountList[0]
+                                                    .account_no_mask,
+                                            style: robotoRegular.copyWith(
+                                                fontSize:
+                                                    Dimensions.fontSizeSmall,
+                                                color: Colors.black),
+                                          ))
+                                    ])))),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       Align(
@@ -960,8 +980,6 @@ class _WalletScreenState extends State<WalletScreen> {
   }
 
   void showAddAccountDetailsDialog(BuildContext context) {
-
-
     showGeneralDialog(
       context: context,
       barrierLabel: "Barrier",
@@ -1070,10 +1088,11 @@ class _WalletScreenState extends State<WalletScreen> {
                                 strokeWidth: 0.2,
                                 child: Align(
                                     alignment: Alignment.center,
-                                    child: Text("**** **** **** "+
-                                        Get.find<WalletController>()
-                                            .bankAccountList[0]
-                                            .account_no_mask,
+                                    child: Text(
+                                        "**** **** **** " +
+                                            Get.find<WalletController>()
+                                                .bankAccountList[0]
+                                                .account_no_mask,
                                         style: robotoRegular.copyWith(
                                           fontSize: Dimensions.fontSizeDefault,
                                           color: Colors.black,
@@ -1109,7 +1128,6 @@ class _WalletScreenState extends State<WalletScreen> {
         );
         /*});*/
       },
-
     );
   }
 }
@@ -1134,8 +1152,7 @@ class WalletShimmer extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: 10,
-      padding:
-          EdgeInsets.only(top: ResponsiveHelper.isDesktop(context) ? 28 : 25),
+      padding: EdgeInsets.only(top: ResponsiveHelper.isDesktop(context) ? 25 : 25),
       itemBuilder: (context, index) {
         return Padding(
           padding:
