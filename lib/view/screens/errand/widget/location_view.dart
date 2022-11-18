@@ -275,17 +275,22 @@ class _LocationView extends State<LocationView> {
                                                     Dimensions.fontSizeLarge))),
                                     SizedBox(
                                         height: Dimensions.PADDING_SIZE_LARGE),
-
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                    child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
 
                               Row(
                                   mainAxisSize: MainAxisSize.max,
                                         children:<Widget> [
-                                      if (Get.find<ParcelController>()
+                                      if (parcelController
                                               .pickedFileList
                                               .length >
                                           0)
                                       Container(
-                                              child: updateImagesListView()),
+                                              child:
+                                              updateImagesListView()),
 
                                        SizedBox(
                                            width: Dimensions.PADDING_SIZE_SMALL),
@@ -318,7 +323,8 @@ class _LocationView extends State<LocationView> {
                                                   )),
                                         ),
 
-                                    ]),
+                                    ]),]),),
+
                                     SizedBox(
                                         height: Dimensions.PADDING_SIZE_LARGE),
                                     Align(
@@ -503,32 +509,12 @@ class _LocationView extends State<LocationView> {
                                   color: Theme.of(context).disabledColor,
                                   fontSize: Dimensions.fontSizeLarge))),
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                     /* Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                            height: 60,
-                            width: 60,
-                            child: DottedBorder(
-                                color: Colors.black,
-                                strokeWidth: 1,
-                                child: *//*Get.find<UserController>().rawFile.toString()!=""?*//*
-                                    SqureImagePickerWidget(
-                                        image:
-                                            '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${Get.find<ParcelController>().pickedFile}',
-                                        onTap: () =>
-                                            Get.find<ParcelController>()
-                                                .pickImage(),
-                                        rawFile: Get.find<ParcelController>()
-                                            .rawFile) *//*:
-                                  Icon(
-                                    Icons.add,
-                                    size: 20,
-
-                                  )*//*
-
-                                )),
-                      ),*/
-                      Row(
+         SingleChildScrollView(
+         scrollDirection: Axis.horizontal,
+         child: Column(
+         mainAxisSize: MainAxisSize.min,
+         children: <Widget>[
+         Row(
                           mainAxisSize: MainAxisSize.max,
                           children:<Widget> [
                             if (parcelController
@@ -558,20 +544,13 @@ class _LocationView extends State<LocationView> {
                                                 ParcelController>()
                                                 .pickImage())
                                            ,
-                                        /* rawFile: Get.find<
-                                                                  ParcelController>()
-                                                              .rawFile*/
-                                      ) /*:
-                                  Icon(
-                                    Icons.add,
-                                    size: 20,
 
-                                  )*/
+                                      )
 
                                   )),
                             ),
 
-                          ]),
+                          ]),]),),
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                       Align(
                         alignment: Alignment.centerLeft,
@@ -753,11 +732,12 @@ class _LocationView extends State<LocationView> {
                               fit: BoxFit.fill,
                             )
                           : Image.asset(Images.placeholder,
-                              height: 50, width: 50, fit: BoxFit.fill)))),*/
+                             height: 50, width: 50, fit: BoxFit.fill)))),*/
               SizedBox(
                 height: 70,
                 width: double.infinity,
-                child: ListView.builder(
+                child:
+                ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   physics: NeverScrollableScrollPhysics(),

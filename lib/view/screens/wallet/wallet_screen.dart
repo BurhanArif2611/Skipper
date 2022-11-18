@@ -373,8 +373,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                       ? walletController
                                                   .transactionList.length >
                                               0
-                                          ?
-                                  GridView.builder(
+                                          ? GridView.builder(
                                               key: UniqueKey(),
                                               gridDelegate:
                                                   SliverGridDelegateWithFixedCrossAxisCount(
@@ -407,8 +406,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                                       ? 28
                                                       : 25),
                                               itemBuilder: (context, index) {
-                                                return
-                                                  HistoryItem(
+                                                return HistoryItem(
                                                     index: index,
                                                     fromWallet:
                                                         widget.fromWallet,
@@ -955,18 +953,24 @@ class _WalletScreenState extends State<WalletScreen> {
                                 ))),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                      CustomButton(
-                        // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                        buttonText: 'submit'.tr,
-                        onPressed: () {
-                          if (titleController.text.isEmpty) {
-                            showCustomSnackBar('Enter Amount !');
-                          } else {
-                            Get.find<WalletController>().withdrawFundToWallet(
-                                titleController.text.toString(), "Withdrawal");
-                          }
-                        },
-                      ),
+                      GetBuilder<WalletController>(builder: (orderController) {
+                        return !orderController.isLoading
+                            ? CustomButton(
+                                // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                                buttonText: 'submit'.tr,
+                                onPressed: () {
+                                  if (titleController.text.isEmpty) {
+                                    showCustomSnackBar('Enter Amount !');
+                                  } else {
+                                    Get.find<WalletController>()
+                                        .withdrawFundToWallet(
+                                            titleController.text.toString(),
+                                            "Withdrawal");
+                                  }
+                                },
+                              )
+                            : Center(child: CircularProgressIndicator());
+                      }),
                     ])),
               ),
               color: Colors.white,
@@ -1152,7 +1156,8 @@ class WalletShimmer extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: 10,
-      padding: EdgeInsets.only(top: ResponsiveHelper.isDesktop(context) ? 25 : 25),
+      padding:
+          EdgeInsets.only(top: ResponsiveHelper.isDesktop(context) ? 25 : 25),
       itemBuilder: (context, index) {
         return Padding(
           padding:

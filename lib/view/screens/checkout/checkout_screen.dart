@@ -158,7 +158,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         .contains(storeController.store.zoneId)) {
                       _addressList.add(DropdownMenuItem<int>(
                           value: index,
-                          child: SizedBox(
+                          child:
+                        Container(
+                                  decoration: BoxDecoration(
+                                    color:  Theme.of(context).dividerColor,
+                                 ),
+                                  child:
+                                     SizedBox(
+                            height: 120,
                             width: context.width > Dimensions.WEB_MAX_WIDTH
                                 ? Dimensions.WEB_MAX_WIDTH - 50
                                 : context.width - 50,
@@ -167,7 +174,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               fromAddress: false,
                               fromCheckout: true,
                             ),
-                          )));
+                          ),)
+                      ));
                     }
                   }
                 }
@@ -333,7 +341,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 physics: BouncingScrollPhysics(),
                                 padding: EdgeInsets.all(
                                     Dimensions.PADDING_SIZE_SMALL),
-                                child: FooterView(
+                                child:
+                                FooterView(
                                     child: SizedBox(
                                   width: Dimensions.WEB_MAX_WIDTH,
                                   child: Column(
@@ -447,14 +456,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                                       10)),
 
                                                       // dropdown below..
-                                                      child: DropdownButton(
+                                                      child:
+
+
+                                                      DropdownButton(
                                                         value: orderController
                                                             .addressIndex,
-                                                        dropdownColor:
-                                                        Theme.of(context).hintColor,
+                                                       /* dropdownColor:
+                                                        Theme.of(context).hintColor,*/
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
+                                                        dropdownColor: Colors.white,
+
                                                         isExpanded: true,
                                                         items: _addressList !=
                                                                     null &&
@@ -471,8 +485,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                                 : 85,
                                                         elevation: 0,
                                                         iconSize: _addressList
-                                                                    .length >
-                                                                1
+                                                                    .length > 1
                                                             ? 30
                                                             : 0,
                                                         underline: SizedBox(),
@@ -1061,6 +1074,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         SizedBox(
                                             height:
                                                 Dimensions.PADDING_SIZE_SMALL),
+                                        _isWalletActive
+                                            ? PaymentButton(
+                                          icon: Images.wallet,
+                                          title: 'wallet_payment'.tr,
+                                          subtitle:
+                                          'pay_from_your_existing_balance'
+                                              .tr,
+                                          isSelected: orderController
+                                              .paymentMethodIndex ==
+                                              2,
+                                          onTap: () => orderController
+                                              .setPaymentMethod(2),
+                                        )
+                                            : SizedBox(),
                                         _isCashOnDeliveryActive
                                             ? PaymentButton(
                                                 icon: Images.cash_on_delivery,
@@ -1088,20 +1115,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                     .setPaymentMethod(1),
                                               )
                                             : SizedBox(),
-                                        _isWalletActive
-                                            ? PaymentButton(
-                                                icon: Images.wallet,
-                                                title: 'wallet_payment'.tr,
-                                                subtitle:
-                                                    'pay_from_your_existing_balance'
-                                                        .tr,
-                                                isSelected: orderController
-                                                        .paymentMethodIndex ==
-                                                    2,
-                                                onTap: () => orderController
-                                                    .setPaymentMethod(2),
-                                              )
-                                            : SizedBox(),
+
 
                                         SizedBox(
                                             height:

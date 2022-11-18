@@ -417,6 +417,8 @@ class LocationController extends GetxController implements GetxService {
     String _address = 'Unknown Location Found';
     if(response.statusCode == 200 && response.body['status'] == 'OK') {
       _address = response.body['results'][0]['formatted_address'].toString();
+    }else if(response.statusCode == 200 && response.body['status'] == 'ZERO_RESULTS'){
+      showCustomSnackBar("Please enable location permission");
     }else {
       showCustomSnackBar(response.body['error_message'] ?? response.bodyString);
     }

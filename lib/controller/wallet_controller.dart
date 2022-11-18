@@ -203,12 +203,13 @@ class WalletController extends GetxController implements GetxService {
 
       if (response.body['status'] == 200) {
         showCustomSnackBar(response.body['message'].toString(), isError: false);
+        getWalletTransactionList('1', true, true);
       } else {
         showCustomSnackBar(response.body['message'].toString(), isError: true);
       }
     } else {
-      showCustomSnackBar(response.body['message'].toString(), isError: true);
-      ApiChecker.checkApi(response);
+      showCustomSnackBar(response.body["errors"]["message"]!=null?response.body["errors"]["message"].toString():response.body['message'].toString(), isError: true);
+     // ApiChecker.checkApi(response);
     }
     _isLoading = false;
     update();

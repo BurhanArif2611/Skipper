@@ -45,22 +45,22 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
   TextEditingController _senderHouseController = TextEditingController();
   TextEditingController _senderFloorController = TextEditingController();
   TextEditingController _orderPriceController = TextEditingController();
-  TextEditingController _receiverStreetNumberController = TextEditingController();
+  TextEditingController _receiverStreetNumberController =
+      TextEditingController();
   TextEditingController _receiverHouseController = TextEditingController();
   TextEditingController _receiverFloorController = TextEditingController();
   String validity = "";
   TabController _tabController;
-  bool checkClickEvent=false;
+  bool checkClickEvent = false;
 
-  bool isLoading=false;
+  bool isLoading = false;
+
   @override
   void initState() {
     super.initState();
 
     _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
-    Get.find<
-        ParcelController>()
-        .clear_pickupImage();
+    Get.find<ParcelController>().clear_pickupImage();
     Get.find<ParcelController>().setPickupAddress(
         Get.find<LocationController>().getUserAddress(), false);
     Get.find<ParcelController>().setIsPickedUp(true, false);
@@ -233,10 +233,8 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
 
   Widget _bottomButton() {
     return GetBuilder<ParcelController>(builder: (parcelController) {
-      return
-        (!isLoading
-          ?
-      CustomButton(
+      return (!isLoading
+          ? CustomButton(
               margin: ResponsiveHelper.isDesktop(context)
                   ? null
                   : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
@@ -244,31 +242,27 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
                   ? 'continue'.tr
                   : 'save_and_continue'.tr,
               onPressed: () {
-
-                if(_orderPriceController.text.isEmpty){
+                if (_orderPriceController.text.isEmpty) {
                   showCustomSnackBar('Enter Proposed Price !');
-                }else if(parcelController.anothertaskList.length==0){
+                } else if (parcelController.anothertaskList.length == 0) {
                   showCustomSnackBar('Add Errand task First !');
-                }else if(validity==""){
+                } else if (validity == "") {
                   showCustomSnackBar('Select Expiry Time !');
-                }
-                else {
+                } else {
                   checkClickEvent = true;
                   if (_tabController.index == 0) {
                     _validateSender();
-                  }
-                  else {
-
-                    isLoading=true;
+                  } else {
+                    isLoading = true;
                     AddressModel _destination = AddressModel(
                       address: parcelController.destinationAddress != null
                           ? parcelController.destinationAddress.address
                           : "",
-                      additionalAddress: parcelController.destinationAddress !=
-                          null
-                          ? parcelController.destinationAddress
-                          .additionalAddress
-                          : "",
+                      additionalAddress:
+                          parcelController.destinationAddress != null
+                              ? parcelController
+                                  .destinationAddress.additionalAddress
+                              : "",
                       addressType: parcelController.destinationAddress != null
                           ? parcelController.destinationAddress.addressType
                           : "",
@@ -294,17 +288,11 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
                       floor: _receiverFloorController.text.trim(),
                     );
 
-                    parcelController.setDestinationAddress(_destination,false);
+                    parcelController.setDestinationAddress(_destination, false);
                     print(
-                        'pickup : ${Get
-                            .find<ParcelController>()
-                            .pickupAddress
-                            .toJson()}');
+                        'pickup : ${Get.find<ParcelController>().pickupAddress.toJson()}');
                     print(
-                        'destination : ${Get
-                            .find<ParcelController>()
-                            .destinationAddress
-                            .toJson()}');
+                        'destination : ${Get.find<ParcelController>().destinationAddress.toJson()}');
 
                     // Get.toNamed(RouteHelper.getParcelRequestRoute(
                     //   widget.category,
@@ -329,51 +317,41 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
                             /* paymentMethod: 'parcel',*/
                             couponCode: null,
                             storeId: null,
-                            address: Get
-                                .find<ParcelController>()
+                            address: Get.find<ParcelController>()
                                 .pickupAddress
                                 .address,
-                            latitude: Get
-                                .find<ParcelController>()
+                            latitude: Get.find<ParcelController>()
                                 .pickupAddress
                                 .latitude,
-                            longitude: Get
-                                .find<ParcelController>()
+                            longitude: Get.find<ParcelController>()
                                 .pickupAddress
                                 .longitude,
-                            addressType: Get
-                                .find<ParcelController>()
+                            addressType: Get.find<ParcelController>()
                                 .pickupAddress
                                 .addressType,
-                            contactPersonName: Get
-                                .find<ParcelController>()
-                                .pickupAddress
-                                .contactPersonName ??
+                            contactPersonName: Get.find<ParcelController>()
+                                    .pickupAddress
+                                    .contactPersonName ??
                                 '',
-                            contactPersonNumber: Get
-                                .find<ParcelController>()
-                                .pickupAddress
-                                .contactPersonNumber ??
+                            contactPersonNumber: Get.find<ParcelController>()
+                                    .pickupAddress
+                                    .contactPersonNumber ??
                                 '',
-                            streetNumber: Get
-                                .find<ParcelController>()
-                                .pickupAddress
-                                .streetNumber ??
+                            streetNumber: Get.find<ParcelController>()
+                                    .pickupAddress
+                                    .streetNumber ??
                                 '',
-                            house: Get
-                                .find<ParcelController>()
-                                .pickupAddress
-                                .house ??
+                            house: Get.find<ParcelController>()
+                                    .pickupAddress
+                                    .house ??
                                 '',
-                            floor: Get
-                                .find<ParcelController>()
-                                .pickupAddress
-                                .floor ??
+                            floor: Get.find<ParcelController>()
+                                    .pickupAddress
+                                    .floor ??
                                 '',
                             discountAmount: 0,
                             taxAmount: 0,
-                            parcelCategoryId: Get
-                                .find<ParcelController>()
+                            parcelCategoryId: Get.find<ParcelController>()
                                 .pickupAddress
                                 .id
                                 .toString(),
@@ -398,12 +376,13 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
   void orderCallback(bool isSuccess, String message, String orderID) {
     Get.find<ParcelController>().startLoader(true);
     if (isSuccess) {
-      isLoading=false;
+      isLoading = false;
+
+      /* if (Get.find<ParcelController>().paymentIndex == 0) {*/
+      Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
       Get.find<OrderController>().clear();
       Get.find<ParcelController>().clear();
-     /* if (Get.find<ParcelController>().paymentIndex == 0) {*/
-        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
-        print("if is working");
+      print("if is working");
       /*} else {
         if (GetPlatform.isWeb) {
           Get.back();
@@ -419,10 +398,9 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
       }*/
     } else {
       print("if is not working");
-       isLoading=false;
+      isLoading = false;
       showCustomSnackBar(message);
     }
-
   }
 
   void _validateSender() {

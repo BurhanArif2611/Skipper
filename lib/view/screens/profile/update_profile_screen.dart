@@ -74,7 +74,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               padding: ResponsiveHelper.isDesktop(context) ? EdgeInsets.zero : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
               child: Center(child: FooterView(
                 minHeight: 0.45,
-                child: SizedBox(width: Dimensions.WEB_MAX_WIDTH, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                child:
+                SizedBox(width: Dimensions.WEB_MAX_WIDTH, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
                   Text(
                     'first_name'.tr,
