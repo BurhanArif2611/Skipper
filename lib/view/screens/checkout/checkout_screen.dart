@@ -38,8 +38,11 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sixam_mart/view/screens/checkout/widget/tips_widget.dart';
 import 'package:sixam_mart/view/screens/home/home_screen.dart';
+import 'package:sixam_mart/view/screens/parcel/widget/address_dialog.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
+
+import '../../base/custom_loader.dart';
 
 class CheckoutScreen extends StatefulWidget {
   final List<CartModel> cartList;
@@ -70,6 +73,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   bool _isLoggedIn;
   List<CartModel> _cartList;
   bool _isWalletActive;
+  int Final_index = 0;
 
   @override
   void initState() {
@@ -158,24 +162,22 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         .contains(storeController.store.zoneId)) {
                       _addressList.add(DropdownMenuItem<int>(
                           value: index,
-                          child:
-                        Container(
-                                  decoration: BoxDecoration(
-                                    color:  Theme.of(context).dividerColor,
-                                 ),
-                                  child:
-                                     SizedBox(
-                            height: 120,
-                            width: context.width > Dimensions.WEB_MAX_WIDTH
-                                ? Dimensions.WEB_MAX_WIDTH - 50
-                                : context.width - 50,
-                            child: AddressWidget(
-                              address: locationController.addressList[index],
-                              fromAddress: false,
-                              fromCheckout: true,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).dividerColor,
                             ),
-                          ),)
-                      ));
+                            child: SizedBox(
+                              height: 120,
+                              width: context.width > Dimensions.WEB_MAX_WIDTH
+                                  ? Dimensions.WEB_MAX_WIDTH - 50
+                                  : context.width - 50,
+                              child: AddressWidget(
+                                address: locationController.addressList[index],
+                                fromAddress: false,
+                                fromCheckout: true,
+                              ),
+                            ),
+                          )));
                     }
                   }
                 }
@@ -341,8 +343,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 physics: BouncingScrollPhysics(),
                                 padding: EdgeInsets.all(
                                     Dimensions.PADDING_SIZE_SMALL),
-                                child:
-                                FooterView(
+                                child: FooterView(
                                     child: SizedBox(
                                   width: Dimensions.WEB_MAX_WIDTH,
                                   child: Column(
@@ -458,16 +459,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                       // dropdown below..
                                                       child:
 
-
-                                                      DropdownButton(
+                                                          /* DropdownButton(
                                                         value: orderController
                                                             .addressIndex,
-                                                       /* dropdownColor:
-                                                        Theme.of(context).hintColor,*/
+                                                        dropdownColor:
+                                                        Theme.of(context).hintColor,
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
-                                                        dropdownColor: Colors.white,
+                                                      */ /*  dropdownColor: Colors.white,*/ /*
 
                                                         isExpanded: true,
                                                         items: _addressList !=
@@ -563,6 +563,122 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                                       .floor ??
                                                                   '';
                                                         },
+                                                      ),*/
+
+                                                          Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            print(
+                                                                "djfdkjfkjdjfdjf");
+                                                            if (Get.find<
+                                                                    AuthController>()
+                                                                .isLoggedIn()) {
+                                                              Get.dialog(
+                                                                  AddressDialog(
+                                                                onTap:
+                                                                    (AddressModel
+                                                                        address) {
+                                                                  if (storeController
+                                                                          .store
+                                                                          .selfDeliverySystem ==
+                                                                      0) {
+                                                                    orderController.getDistanceInKM(
+                                                                        LatLng(
+                                                                          double.parse(
+                                                                              address.latitude),
+                                                                          double.parse(
+                                                                              address.longitude),
+                                                                        ),
+                                                                        LatLng(double.parse(storeController.store.latitude), double.parse(storeController.store.longitude)),
+                                                                        "[]");
+                                                                  }
+                                                                  /* orderController
+                                                                  .setAddressIndex(
+                                                                  index);
+                                                              _streetNumberController
+                                                                  .text = index ==
+                                                                  -1
+                                                                  ? locationController
+                                                                  .getUserAddress()
+                                                                  .streetNumber ??
+                                                                  ''
+                                                                  : locationController
+                                                                  .addressList[
+                                                              index]
+                                                                  .streetNumber ??
+                                                                  '';
+                                                              _houseController
+                                                                  .text = index ==
+                                                                  -1
+                                                                  ? locationController
+                                                                  .getUserAddress()
+                                                                  .house ??
+                                                                  ''
+                                                                  : locationController
+                                                                  .addressList[
+                                                              index]
+                                                                  .house ??
+                                                                  '';
+                                                              _floorController
+                                                                  .text = index ==
+                                                                  -1
+                                                                  ? locationController
+                                                                  .getUserAddress()
+                                                                  .floor ??
+                                                                  ''
+                                                                  : locationController
+                                                                  .addressList[
+                                                              index]
+                                                                  .floor ??
+                                                                  '';*/
+                                                                },
+                                                                index1: (int
+                                                                    index) {
+                                                                  Final_index =
+                                                                      index;
+                                                                },
+                                                                /*(AddressModel address) {
+                                                                    widget.streetController.text =
+                                                                        address.streetNumber ?? '';
+                                                                    widget.houseController.text =
+                                                                        address.house ?? '';
+                                                                    widget.floorController.text =
+                                                                        address.floor ?? '';
+                                                                  }*/
+                                                              ));
+                                                            } else {
+                                                              showCustomSnackBar(
+                                                                  'you_are_not_logged_in'
+                                                                      .tr);
+                                                            }
+                                                          },
+                                                          child: SizedBox(
+                                                              height: 80,
+                                                              /* width: context.width > Dimensions.WEB_MAX_WIDTH
+                                                              ? Dimensions.WEB_MAX_WIDTH - 50
+                                                              : context.width - 50,*/
+                                                              child: Padding(
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        Dimensions
+                                                                            .PADDING_SIZE_SMALL),
+                                                                child:
+                                                                    AddressWidget(
+                                                                  address: locationController
+                                                                          .addressList[
+                                                                      Final_index],
+                                                                  fromAddress:
+                                                                      false,
+                                                                  fromCheckout:
+                                                                      true,
+                                                                ),
+                                                              )),
+                                                        ),
                                                       ),
                                                     ),
                                                     SizedBox(
@@ -1076,17 +1192,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                 Dimensions.PADDING_SIZE_SMALL),
                                         _isWalletActive
                                             ? PaymentButton(
-                                          icon: Images.wallet,
-                                          title: 'wallet_payment'.tr,
-                                          subtitle:
-                                          'pay_from_your_existing_balance'
-                                              .tr,
-                                          isSelected: orderController
-                                              .paymentMethodIndex ==
-                                              2,
-                                          onTap: () => orderController
-                                              .setPaymentMethod(2),
-                                        )
+                                                icon: Images.wallet,
+                                                title: 'wallet_payment'.tr,
+                                                subtitle:
+                                                    'pay_from_your_existing_balance'
+                                                        .tr,
+                                                isSelected: orderController
+                                                        .paymentMethodIndex ==
+                                                    2,
+                                                onTap: () => orderController
+                                                    .setPaymentMethod(2),
+                                              )
                                             : SizedBox(),
                                         _isCashOnDeliveryActive
                                             ? PaymentButton(
@@ -1115,7 +1231,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                     .setPaymentMethod(1),
                                               )
                                             : SizedBox(),
-
 
                                         SizedBox(
                                             height:
@@ -1551,6 +1666,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ? Get.find<LocationController>().getUserAddress()
                       : locationController
                           .addressList[orderController.addressIndex];
+
                   orderController.placeOrder(
                       PlaceOrderBody(
                         cart: carts,
@@ -1599,6 +1715,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         dmTips: _tipController.text.trim(),
                       ),
                       _callback);
+
+
                 }
               })
           : Center(child: CircularProgressIndicator()),

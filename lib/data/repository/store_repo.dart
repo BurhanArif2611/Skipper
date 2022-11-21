@@ -80,7 +80,15 @@ class StoreRepo {
   }
 
   Future<Response> getStoreSearchItemList(String searchText, String storeID, int offset, String type) async {
-
+    AddressModel _addressModel;
+    try {
+      _addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.USER_ADDRESS)));
+    } catch (e) {}
+    print("_addressModel.zoneIds>>>"+_addressModel.zoneIds.toString());
+    apiClient.updateHeader(
+      sharedPreferences.getString(AppConstants.TOKEN),_addressModel.zoneIds, sharedPreferences.getString(AppConstants.LANGUAGE_CODE),
+      AppConstants.ModelID,
+    );
     return await apiClient.getData(
       '${AppConstants.SEARCH_URI}items/search?store_id=$storeID&name=$searchText&offset=$offset&limit=10&type=$type',
     );

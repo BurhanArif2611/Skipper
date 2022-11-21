@@ -24,6 +24,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../data/model/body/errand_order_body.dart';
 import '../data/model/body/set_errand_order_body.dart';
 import '../data/model/response/address_model.dart';
+import '../view/base/custom_loader.dart';
 
 class OrderController extends GetxController implements GetxService {
   final OrderRepo orderRepo;
@@ -219,6 +220,7 @@ class OrderController extends GetxController implements GetxService {
   Future<void> placeOrder(PlaceOrderBody placeOrderBody,
       Function(bool isSuccess, String message, String orderID) callback) async {
     _isLoading = true;
+    Get.dialog(CustomLoader(), barrierDismissible: false);
     update();
       print("placeOrder<><>"+placeOrderBody.toJson().toString());
     Response response =
@@ -231,9 +233,10 @@ class OrderController extends GetxController implements GetxService {
       callback(true, message, orderID);
       _orderAttachment = null;
       _rawAttachment = null;
-
+      Get.back();
       print('-------- Order placed successfully $orderID ----------');
     } else {
+      Get.back();
       callback(false, response.statusText, '-1');
     }
     update();

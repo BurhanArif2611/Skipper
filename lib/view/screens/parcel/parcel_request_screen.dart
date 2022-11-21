@@ -413,6 +413,24 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                 ]),
                                 SizedBox(
                                     height:
+                                    Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                                Get.find<SplashController>()
+                                    .configModel
+                                    .customerWalletStatus ==
+                                    1 &&  parcelController.payerIndex == 0
+                                    ? PaymentButton(
+                                  icon: Images.wallet,
+                                  title: 'wallet_payment'.tr,
+                                  subtitle:
+                                  'pay_from_your_existing_balance'.tr,
+                                  isSelected:
+                                  parcelController.paymentIndex == 2,
+                                  onTap: () => parcelController
+                                      .setPaymentIndex(2, true),
+                                )
+                                    : SizedBox(),
+                                SizedBox(
+                                    height:
                                         Dimensions.PADDING_SIZE_EXTRA_SMALL),
                                 Get.find<SplashController>()
                                         .configModel
@@ -442,22 +460,9 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                         onTap: () => parcelController
                                             .setPaymentIndex(1, true),
                                       )
-                                    : SizedBox(),
-                                Get.find<SplashController>()
-                                            .configModel
-                                            .customerWalletStatus ==
-                                        1 &&  parcelController.payerIndex == 0
-                                    ? PaymentButton(
-                                        icon: Images.wallet,
-                                        title: 'wallet_payment'.tr,
-                                        subtitle:
-                                            'pay_from_your_existing_balance'.tr,
-                                        isSelected:
-                                            parcelController.paymentIndex == 2,
-                                        onTap: () => parcelController
-                                            .setPaymentIndex(2, true),
-                                      )
-                                    : SizedBox(),
+                                    :
+                                SizedBox(),
+
                                 SizedBox(
                                     height: ResponsiveHelper.isDesktop(context)
                                         ? Dimensions.PADDING_SIZE_LARGE

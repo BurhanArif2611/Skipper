@@ -9,6 +9,8 @@ import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../view/base/custom_loader.dart';
+
 class AuthController extends GetxController implements GetxService {
   final AuthRepo authRepo;
   AuthController({@required this.authRepo}) {
@@ -26,6 +28,7 @@ class AuthController extends GetxController implements GetxService {
   Future<ResponseModel> registration(SignUpBody signUpBody) async {
     _isLoading = true;
     update();
+    Get.dialog(CustomLoader(), barrierDismissible: false);
     Response response = await authRepo.registration(signUpBody);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
@@ -37,11 +40,10 @@ class AuthController extends GetxController implements GetxService {
           await authRepo.updateToken();
         }
         responseModel = ResponseModel(true, response.body["token"]);
-
+        Get.back();
     } else {
+      Get.back();
       responseModel = ResponseModel(false, response.body["errors"]!=null?response.body["errors"]["message"].toString():response.statusText);
-
-
     }
     _isLoading = false;
     update();
@@ -51,6 +53,7 @@ class AuthController extends GetxController implements GetxService {
   Future<ResponseModel> login(String phone, String password) async {
     _isLoading = true;
     update();
+    Get.dialog(CustomLoader(), barrierDismissible: false);
     Response response = await authRepo.login(phone: phone, password: password);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
@@ -61,7 +64,9 @@ class AuthController extends GetxController implements GetxService {
         await authRepo.updateToken();
       }
       responseModel = ResponseModel(true, '${response.body['is_phone_verified']}${response.body['token']}');
+      Get.back();
     } else {
+      Get.back();
       responseModel = ResponseModel(false, response.statusText);
     }
     _isLoading = false;

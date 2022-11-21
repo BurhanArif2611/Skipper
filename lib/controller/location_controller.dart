@@ -432,7 +432,7 @@ class LocationController extends GetxController implements GetxService {
         _predictionList = [];
         response.body['predictions'].forEach((prediction) => _predictionList.add(PredictionModel.fromJson(prediction)));
       } else {
-        showCustomSnackBar(response.body['error_message'] ?? response.bodyString);
+        showCustomSnackBar(response.body['error_message']!=null ?response.body['error_message'] : response.body['message']!=null?response.body['message']:response.bodyString);
       }
     }
     return _predictionList;

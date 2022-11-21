@@ -83,10 +83,10 @@ class _LocationView extends State<LocationView> {
         if (parcelController.destinationAddress != null) {
           addressModel_ = parcelController.destinationAddress;
         }
-        print("<><><><>"+parcelController.isSender.toString());
+        print("<><><><>" + parcelController.isSender.toString());
 
         parcelController_main = parcelController;
-        return  SingleChildScrollView(
+        return SingleChildScrollView(
           // controller: ScrollController(),
           child: Center(
               child: FooterView(
@@ -98,7 +98,9 @@ class _LocationView extends State<LocationView> {
                     SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                     SearchLocationWidget(
                       mapController: null,
-                      pickedAddress:  parcelController.pickupAddress!=null?parcelController.pickupAddress.address:'',
+                      pickedAddress: parcelController.pickupAddress != null
+                          ? parcelController.pickupAddress.address
+                          : '',
                       isEnabled: false,
                       isPickedUp: true,
                       hint: parcelController.isSender
@@ -112,7 +114,7 @@ class _LocationView extends State<LocationView> {
                         child: CustomButton(
                             buttonText: 'set_from_map'.tr,
                             onPressed: () => {
-                              Get.toNamed(
+                                  Get.toNamed(
                                       RouteHelper.getPickMapRoute(
                                           'parcel', false),
                                       arguments: PickMapScreen(
@@ -122,8 +124,7 @@ class _LocationView extends State<LocationView> {
                                         route: '',
                                         onPicked: (AddressModel address) {
                                           parcelController.setPickupAddress(
-                                                address, true);
-
+                                              address, true);
                                         },
                                       )),
                                 }),
@@ -275,56 +276,52 @@ class _LocationView extends State<LocationView> {
                                                     Dimensions.fontSizeLarge))),
                                     SizedBox(
                                         height: Dimensions.PADDING_SIZE_LARGE),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                    child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: <Widget>[
+                                                  if (parcelController
+                                                          .pickedFileList
+                                                          .length >
+                                                      0)
+                                                    Container(
+                                                        child:
+                                                            updateImagesListView()),
+                                                  SizedBox(
+                                                      width: Dimensions
+                                                          .PADDING_SIZE_SMALL),
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Container(
+                                                        height: 60,
+                                                        width: 60,
+                                                        child: DottedBorder(
+                                                            color: Colors.black,
+                                                            strokeWidth: 1,
+                                                            child: /*Get.find<UserController>().rawFile.toString()!=""?*/
+                                                                SqureImagePickerWidget(
+                                                              image:
+                                                                  '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${Get.find<ParcelController>().pickedFile}',
+                                                              onTap: () => Get.find<
+                                                                      ParcelController>()
+                                                                  .pickImage(),
 
-                              Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                        children:<Widget> [
-                                      if (parcelController
-                                              .pickedFileList
-                                              .length >
-                                          0)
-                                      Container(
-                                              child:
-                                              updateImagesListView()),
+                                                            )
 
-                                       SizedBox(
-                                           width: Dimensions.PADDING_SIZE_SMALL),
+                                                            )),
+                                                  ),
+                                                  SizedBox(
+                                                      width: Dimensions
+                                                          .PADDING_SIZE_LARGE),
+                                                ]),
+                                          ]),
 
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Container(
-                                              height: 60,
-                                              width: 60,
-                                              child: DottedBorder(
-                                                  color: Colors.black,
-                                                  strokeWidth: 1,
-                                                  child: /*Get.find<UserController>().rawFile.toString()!=""?*/
-                                                      SqureImagePickerWidget(
-                                                    image:
-                                                        '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${Get.find<ParcelController>().pickedFile}',
-                                                    onTap: () => Get.find<
-                                                            ParcelController>()
-                                                        .pickImage(),
-                                                    /* rawFile: Get.find<
-                                                                  ParcelController>()
-                                                              .rawFile*/
-                                                  ) /*:
-                                  Icon(
-                                    Icons.add,
-                                    size: 20,
-
-                                  )*/
-
-                                                  )),
-                                        ),
-
-                                    ]),]),),
-
+                                    ),
                                     SizedBox(
                                         height: Dimensions.PADDING_SIZE_LARGE),
                                     Align(
@@ -407,11 +404,15 @@ class _LocationView extends State<LocationView> {
                                                 .length;
                                         i++) {
                                       File_Unitpath file_unitpath =
-                                          File_Unitpath(rawFile: Get.find<ParcelController>()
-                                              .pickedUintFileList[i].rawFile);
+                                          File_Unitpath(
+                                              rawFile:
+                                                  Get.find<ParcelController>()
+                                                      .pickedUintFileList[i]
+                                                      .rawFile);
                                       file_raw.add(file_unitpath);
                                     }
-                                    print("file_raw>>>"+file_raw.length.toString());
+                                    print("file_raw>>>" +
+                                        file_raw.length.toString());
 
                                     List<File_path> file_raw1 =
                                         List<File_path>();
@@ -421,12 +422,14 @@ class _LocationView extends State<LocationView> {
                                                 .pickedFileList
                                                 .length;
                                         i++) {
-                                      File_path file_unitpath =
-                                      File_path(file: Get.find<ParcelController>()
-                                              .pickedFileList[i].file);
+                                      File_path file_unitpath = File_path(
+                                          file: Get.find<ParcelController>()
+                                              .pickedFileList[i]
+                                              .file);
                                       file_raw1.add(file_unitpath);
                                     }
-                                    print("file_raw>>>"+file_raw.length.toString());
+                                    print("file_raw>>>" +
+                                        file_raw.length.toString());
                                     TaskModel _destination = TaskModel(
                                       task_title:
                                           main_titleController.text.toString(),
@@ -434,8 +437,8 @@ class _LocationView extends State<LocationView> {
                                           .text
                                           .toString(),
                                       task_media: file_raw1,
-                                     rawFile: file_raw,
-                                     /* rawFile: Get.find<ParcelController>()
+                                      rawFile: file_raw,
+                                      /* rawFile: Get.find<ParcelController>()
                                           .pickedUintFileList,*/
                                     );
                                     // anotherList=[];
@@ -486,167 +489,156 @@ class _LocationView extends State<LocationView> {
       pageBuilder: (_, __, ___) {
         /*GetBuilder<LocationController>(builder: (locationController)
         {*/
-       return GetBuilder<ParcelController>(builder: (parcelController) {
-         return Center(
-          child: Container(
-            height: 520,
-            child: Card(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
+        return GetBuilder<ParcelController>(builder: (parcelController) {
+          return Center(
+            child: Container(
+              height: 520,
+              child: Card(
                 child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Column(children: [
-                      Align(
+                  padding: EdgeInsets.all(16.0),
+                  child: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Column(children: [
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                                "${'Task'} ${' ('}${anotherList.length + 1}${')'}",
+                                style: robotoMedium.copyWith(
+                                    fontSize: Dimensions.fontSizeLarge))),
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text('Take the picture of the home front',
+                                style: robotoMedium.copyWith(
+                                    color: Theme.of(context).disabledColor,
+                                    fontSize: Dimensions.fontSizeLarge))),
+                        SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Row(mainAxisSize: MainAxisSize.max, children: <
+                                    Widget>[
+                                  if (parcelController.pickedFileList.length >
+                                      0)
+                                    Container(child: updateImagesListView()),
+                                  SizedBox(
+                                      width: Dimensions.PADDING_SIZE_SMALL),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Container(
+                                        height: 60,
+                                        width: 60,
+                                        child: DottedBorder(
+                                            color: Colors.black,
+                                            strokeWidth: 1,
+                                            child: /*Get.find<UserController>().rawFile.toString()!=""?*/
+                                                SqureImagePickerWidget(
+                                              image:
+                                                  '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${parcelController.pickedFile}',
+                                              onTap: () => setState(() =>
+                                                  Get.find<ParcelController>()
+                                                      .pickImage()),
+                                            ))),
+                                  ),
+                                  SizedBox(
+                                      width: Dimensions
+                                          .PADDING_SIZE_LARGE),
+                                ]),
+                              ]),
+                        ),
+                        SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                              "${'Task'} ${' ('}${anotherList.length + 1}${')'}",
-                              style: robotoMedium.copyWith(
-                                  fontSize: Dimensions.fontSizeLarge))),
-                      Align(
+                            'Ttile',
+                            style: robotoRegular.copyWith(
+                                fontSize: Dimensions.fontSizeSmall,
+                                color: Theme.of(context).disabledColor),
+                          ),
+                        ),
+                        SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                        MyTextField(
+                          hintText: 'Enter Title',
+                          inputType: TextInputType.name,
+                          controller: titleController,
+                          autoFocus: true,
+                          capitalization: TextCapitalization.words,
+                        ),
+                        SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                        Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Take the picture of the home front',
-                              style: robotoMedium.copyWith(
-                                  color: Theme.of(context).disabledColor,
-                                  fontSize: Dimensions.fontSizeLarge))),
-                      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-         SingleChildScrollView(
-         scrollDirection: Axis.horizontal,
-         child: Column(
-         mainAxisSize: MainAxisSize.min,
-         children: <Widget>[
-         Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children:<Widget> [
-                            if (parcelController
-                                .pickedFileList
-                                .length >
-                                0)
-                              Container(
-                                  child: updateImagesListView()),
-
-                            SizedBox(
-                                width: Dimensions.PADDING_SIZE_SMALL),
-
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                  height: 60,
-                                  width: 60,
-                                  child: DottedBorder(
-                                      color: Colors.black,
-                                      strokeWidth: 1,
-                                      child: /*Get.find<UserController>().rawFile.toString()!=""?*/
-                                      SqureImagePickerWidget(
-                                        image:
-                                        '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${parcelController.pickedFile}',
-                                        onTap: () =>
-                                            setState(() =>  Get.find<
-                                                ParcelController>()
-                                                .pickImage())
-                                           ,
-
-                                      )
-
-                                  )),
-                            ),
-
-                          ]),]),),
-                      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Ttile',
-                          style: robotoRegular.copyWith(
-                              fontSize: Dimensions.fontSizeSmall,
-                              color: Theme.of(context).disabledColor),
+                          child: Text(
+                            'Comment',
+                            style: robotoRegular.copyWith(
+                                fontSize: Dimensions.fontSizeSmall,
+                                color: Theme.of(context).disabledColor),
+                          ),
                         ),
-                      ),
-                      SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                      MyTextField(
-                        hintText: 'Enter Title',
-                        inputType: TextInputType.name,
-                        controller: titleController,
-                        autoFocus: true,
-                        capitalization: TextCapitalization.words,
-                      ),
-                      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Comment',
-                          style: robotoRegular.copyWith(
-                              fontSize: Dimensions.fontSizeSmall,
-                              color: Theme.of(context).disabledColor),
+                        SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                        MyTextField(
+                          hintText: 'Type here...',
+                          inputType: TextInputType.name,
+                          maxLines: 5,
+                          controller: commentController,
+                          capitalization: TextCapitalization.words,
                         ),
-                      ),
-                      SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                      MyTextField(
-                        hintText: 'Type here...',
-                        inputType: TextInputType.name,
-                        maxLines: 5,
-                        controller: commentController,
-                        capitalization: TextCapitalization.words,
-                      ),
-                      CustomButton(
-                        // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                        buttonText: 'save'.tr,
-                        onPressed: () {
-                          /*if (addressModel_ == null) {
+                        CustomButton(
+                          // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                          buttonText: 'save'.tr,
+                          onPressed: () {
+                            /*if (addressModel_ == null) {
                           showCustomSnackBar('select_destination_address'.tr);
                         }else*/
 
-                          if (titleController.text.isEmpty) {
-                            showCustomSnackBar('Enter task title');
-                          } else if (commentController.text.isEmpty) {
-                            showCustomSnackBar('Enter task comment');
-                          } else {
-                            List<File_Unitpath> file_raw =
-                            List<File_Unitpath>();
-                            for (int i = 0;
-                            i <
-                                parcelController
-                                    .pickedFileList
-                                    .length;
-                            i++) {
-                              File_Unitpath file_unitpath =
-                              File_Unitpath(rawFile: parcelController
-                                  .pickedUintFileList[i].rawFile);
-                              file_raw.add(file_unitpath);
-                            }
-                            List<File_path> file_raw1 =
-                            List<File_path>();
-                            for (int i = 0; i < parcelController
-                                    .pickedFileList
-                                    .length; i++) {
-                              File_path file_unitpath =
-                              File_path(file: parcelController.pickedFileList[i].file);
-                              file_raw1.add(file_unitpath);
-                            }
-                            print("file_raw>>>"+file_raw.length.toString());
-                            TaskModel _destination = TaskModel(
-                              task_title: titleController.text.toString(),
-                              task_description:
-                                  commentController.text.toString(),
-                              task_media:
-                              file_raw1,
-                              rawFile: file_raw,
-                            );
-                            // anotherList=[];
-                            parcelController_main.setMultiTask(_destination);
+                            if (titleController.text.isEmpty) {
+                              showCustomSnackBar('Enter task title');
+                            } else if (commentController.text.isEmpty) {
+                              showCustomSnackBar('Enter task comment');
+                            } else {
+                              List<File_Unitpath> file_raw =
+                                  List<File_Unitpath>();
+                              for (int i = 0;
+                                  i < parcelController.pickedFileList.length;
+                                  i++) {
+                                File_Unitpath file_unitpath = File_Unitpath(
+                                    rawFile: parcelController
+                                        .pickedUintFileList[i].rawFile);
+                                file_raw.add(file_unitpath);
+                              }
+                              List<File_path> file_raw1 = List<File_path>();
+                              for (int i = 0;
+                                  i < parcelController.pickedFileList.length;
+                                  i++) {
+                                File_path file_unitpath = File_path(
+                                    file: parcelController
+                                        .pickedFileList[i].file);
+                                file_raw1.add(file_unitpath);
+                              }
+                              print("file_raw>>>" + file_raw.length.toString());
+                              TaskModel _destination = TaskModel(
+                                task_title: titleController.text.toString(),
+                                task_description:
+                                    commentController.text.toString(),
+                                task_media: file_raw1,
+                                rawFile: file_raw,
+                              );
+                              // anotherList=[];
+                              parcelController_main.setMultiTask(_destination);
 
-                            setState(() => anotherList.add(_destination));
-                            parcelController_main.clear_pickupImage();
-                            parcelController_main.pickedFile_null();
-                            Navigator.pop(context, false);
-                          }
-                        },
-                      ),
-                    ])),
+                              setState(() => anotherList.add(_destination));
+                              parcelController_main.clear_pickupImage();
+                              parcelController_main.pickedFile_null();
+                              Navigator.pop(context, false);
+                            }
+                          },
+                        ),
+                      ])),
+                ),
+                color: Colors.white,
               ),
-              color: Colors.white,
             ),
-          ),
-        );
+          );
         });
       },
       transitionBuilder: (_, anim, __, child) {
@@ -675,8 +667,6 @@ class _LocationView extends State<LocationView> {
     setState(() {
       updateListView();
     });
-
-
   }
 
   Widget updateListView() {
@@ -736,8 +726,7 @@ class _LocationView extends State<LocationView> {
               SizedBox(
                 height: 70,
                 width: double.infinity,
-                child:
-                ListView.builder(
+                child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   physics: NeverScrollableScrollPhysics(),
@@ -814,54 +803,51 @@ class _LocationView extends State<LocationView> {
 
   Widget updateImagesListView() {
     return GetBuilder<ParcelController>(builder: (parcelController) {
-    return
-      SizedBox(
-      height: 70,
-      child: ListView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        physics: NeverScrollableScrollPhysics(),
-        itemBuilder: (context, position) {
-          return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 1),
-          child:
-            Container(
-              width: 70,
-              child:
-              Stack(children: [
-                //Stack
+      return SizedBox(
+        height: 70,
+        child: ListView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          physics: NeverScrollableScrollPhysics(),
+          itemBuilder: (context, position) {
+            return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 1),
+                child: Container(
+                    width: 70,
+                    child: Stack(children: [
+                      //Stack
 
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: DottedBorder(
-                        color: Colors.black,
-                        strokeWidth: 1,
-                        child: Image.memory(
-                          Get.find<ParcelController>()
-                              .pickedUintFileList[position]
-                              .rawFile,
-                          width: 60,
-                          height: 60,
-                          fit: BoxFit.fill,
-                        ))),
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: InkWell(
-                    child: Icon(Icons.cancel, size: 20),
-                    onTap: () {
-                      setState(() => {
-                            Get.find<ParcelController>()
-                                .removeImageInList(position),
-                          });
-                    },
-                  ),
-                ),
-              ])));
-        },
-        itemCount: parcelController.pickedFileList.length,
-      ),
-    );
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: DottedBorder(
+                              color: Colors.black,
+                              strokeWidth: 1,
+                              child: Image.memory(
+                                Get.find<ParcelController>()
+                                    .pickedUintFileList[position]
+                                    .rawFile,
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.fill,
+                              ))),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: InkWell(
+                          child: Icon(Icons.cancel, size: 20),
+                          onTap: () {
+                            setState(() => {
+                                  Get.find<ParcelController>()
+                                      .removeImageInList(position),
+                                });
+                          },
+                        ),
+                      ),
+                    ])));
+          },
+          itemCount: parcelController.pickedFileList.length,
+        ),
+      );
     });
   }
 }

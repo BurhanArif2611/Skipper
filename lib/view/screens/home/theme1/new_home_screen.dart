@@ -119,282 +119,287 @@ class NewHomeScreen extends StatelessWidget {
           return (storeController.store != null &&
                   storeController.store.name != null &&
                   categoryController.categoryList != null)
-              ?NotificationListener<OverscrollIndicatorNotification>(
-              onNotification: (OverscrollIndicatorNotification overscroll) {
-                overscroll.disallowGlow();
-                return;
-              },
-              child:
-          CustomScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  controller: scrollController,
-                  slivers: [
-                    ResponsiveHelper.isDesktop(context)
-                        ? SliverToBoxAdapter(
-                            child: Container(
-                              color: Color(0xFF171A29),
-                              padding:
-                                  EdgeInsets.all(Dimensions.PADDING_SIZE_LARGE),
-                              alignment: Alignment.center,
-                              child: Center(
-                                  child: SizedBox(
-                                      width: Dimensions.WEB_MAX_WIDTH,
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                                Dimensions.PADDING_SIZE_SMALL),
-                                        child: Row(children: [
-                                          Expanded(
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      Dimensions.RADIUS_SMALL),
-                                              child: CustomImage(
-                                                fit: BoxFit.cover,
-                                                height: 220,
-                                                image:
-                                                    '${Get.find<SplashController>().configModel.baseUrls.storeCoverPhotoUrl}/${_store.coverPhoto}',
+              ? NotificationListener<OverscrollIndicatorNotification>(
+                  onNotification: (OverscrollIndicatorNotification overscroll) {
+                    overscroll.disallowGlow();
+                    return;
+                  },
+                  child: CustomScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    controller: scrollController,
+                    slivers: [
+                      ResponsiveHelper.isDesktop(context)
+                          ? SliverToBoxAdapter(
+                              child: Container(
+                                color: Color(0xFF171A29),
+                                padding: EdgeInsets.all(
+                                    Dimensions.PADDING_SIZE_LARGE),
+                                alignment: Alignment.center,
+                                child: Center(
+                                    child: SizedBox(
+                                        width: Dimensions.WEB_MAX_WIDTH,
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: Dimensions
+                                                  .PADDING_SIZE_SMALL),
+                                          child: Row(children: [
+                                            Expanded(
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        Dimensions
+                                                            .RADIUS_SMALL),
+                                                child: CustomImage(
+                                                  fit: BoxFit.cover,
+                                                  height: 220,
+                                                  image:
+                                                      '${Get.find<SplashController>().configModel.baseUrls.storeCoverPhotoUrl}/${_store.coverPhoto}',
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          SizedBox(
-                                              width: Dimensions
-                                                  .PADDING_SIZE_LARGE),
-                                          Expanded(
-                                              child: StoreDescriptionView(
-                                                  store: _store)),
-                                        ]),
-                                      ))),
-                            ),
-                          )
-                        : SliverAppBar(
-                            floating: true,
-                            elevation: 0,
-                            automaticallyImplyLeading: false,
-                            backgroundColor: ResponsiveHelper.isDesktop(context)
-                                ? Colors.transparent
-                                : Theme.of(context).backgroundColor,
-                            title: Center(
-                                child: Container(
-                              width: Dimensions.WEB_MAX_WIDTH,
-                              height: 50,
-                              color: Theme.of(context).backgroundColor,
-                              child: Row(children: [
-                                (storeController.store != null &&
-                                        storeController.store.ecommerce == 1
-                                    ? (splashController.module != null &&
-                                            splashController
-                                                    .configModel.module ==
-                                                null)
-                                        ? InkWell(
-                                            onTap: () => {
-                                              Get.toNamed(RouteHelper
-                                                  .getFavoriteScreen())
-                                              // splashController.removeModule()
-                                            },
-                                            child: Icon(Icons.favorite,
-                                                color: Colors.black,
-                                                size:
-                                                    25), /*Image.asset(Images.module_icon,
+                                            SizedBox(
+                                                width: Dimensions
+                                                    .PADDING_SIZE_LARGE),
+                                            Expanded(
+                                                child: StoreDescriptionView(
+                                                    store: _store)),
+                                          ]),
+                                        ))),
+                              ),
+                            )
+                          : SliverAppBar(
+                              floating: true,
+                              elevation: 0,
+                              automaticallyImplyLeading: false,
+                              backgroundColor:
+                                  ResponsiveHelper.isDesktop(context)
+                                      ? Colors.transparent
+                                      : Theme.of(context).backgroundColor,
+                              title: Center(
+                                  child: Container(
+                                width: Dimensions.WEB_MAX_WIDTH,
+                                height: 50,
+                                color: Theme.of(context).backgroundColor,
+                                child: Row(children: [
+                                  (storeController.store != null &&
+                                          storeController.store.ecommerce == 1
+                                      ? (splashController.module != null &&
+                                              splashController
+                                                      .configModel.module ==
+                                                  null)
+                                          ? InkWell(
+                                              onTap: () => {
+                                                Get.toNamed(RouteHelper
+                                                    .getFavoriteScreen())
+                                                // splashController.removeModule()
+                                              },
+                                              child: Icon(Icons.favorite,
+                                                  color: Colors.black,
+                                                  size:
+                                                      25), /*Image.asset(Images.module_icon,
                                             height: 22, width: 22),*/
-                                          )
-                                        : SizedBox()
-                                    : SizedBox()),
-                                SizedBox(
-                                    width: (splashController.module != null &&
-                                            splashController
-                                                    .configModel.module ==
-                                                null)
-                                        ? Dimensions.PADDING_SIZE_EXTRA_SMALL
-                                        : 0),
-                                Expanded(
-                                    child: InkWell(
-                                  onTap: () => Get.toNamed(
-                                      RouteHelper.getAccessLocationRoute(
-                                          'home')),
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: Dimensions.PADDING_SIZE_SMALL,
-                                      horizontal:
-                                          ResponsiveHelper.isDesktop(context)
-                                              ? Dimensions.PADDING_SIZE_SMALL
-                                              : 0,
-                                    ),
-                                    child: GetBuilder<LocationController>(
-                                        builder: (locationController) {
-                                      return Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                          locationController
-                                          .getUserAddress() !=null
-                                          && locationController
-                                                        .getUserAddress()
-                                                        .addressType ==
-                                                    'home'
-                                                ? Icons.home_filled
-                                                :   locationController
-                                              .getUserAddress() !=null
-                                              && locationController
-                                                            .getUserAddress()
-                                                            .addressType ==
-                                                        'office'
-                                                    ? Icons.work
-                                                    : Icons.location_on,
-                                            size: 20,
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1
-                                                .color,
-                                          ),
-                                          SizedBox(width: 10),
-                                          Flexible(
-                                            child: Text(
+                                            )
+                                          : SizedBox()
+                                      : SizedBox()),
+                                  SizedBox(
+                                      width: (splashController.module != null &&
+                                              splashController
+                                                      .configModel.module ==
+                                                  null)
+                                          ? Dimensions.PADDING_SIZE_EXTRA_SMALL
+                                          : 0),
+                                  Expanded(
+                                      child: InkWell(
+                                    onTap: () => Get.toNamed(
+                                        RouteHelper.getAccessLocationRoute(
+                                            'home')),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: Dimensions.PADDING_SIZE_SMALL,
+                                        horizontal:
+                                            ResponsiveHelper.isDesktop(context)
+                                                ? Dimensions.PADDING_SIZE_SMALL
+                                                : 0,
+                                      ),
+                                      child: GetBuilder<LocationController>(
+                                          builder: (locationController) {
+                                        return Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
                                               locationController
-                                                  .getUserAddress() !=null
-                                                  ? locationController
-                                                  .getUserAddress()
-                                                  .address:"",
-                                              style: robotoRegular.copyWith(
+                                                              .getUserAddress() !=
+                                                          null &&
+                                                      locationController
+                                                              .getUserAddress()
+                                                              .addressType ==
+                                                          'home'
+                                                  ? Icons.home_filled
+                                                  : locationController
+                                                                  .getUserAddress() !=
+                                                              null &&
+                                                          locationController
+                                                                  .getUserAddress()
+                                                                  .addressType ==
+                                                              'office'
+                                                      ? Icons.work
+                                                      : Icons.location_on,
+                                              size: 20,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1
+                                                  .color,
+                                            ),
+                                            SizedBox(width: 10),
+                                            Flexible(
+                                              child: Text(
+                                                locationController
+                                                            .getUserAddress() !=
+                                                        null
+                                                    ? locationController
+                                                        .getUserAddress()
+                                                        .address
+                                                    : "",
+                                                style: robotoRegular.copyWith(
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      .color,
+                                                  fontSize:
+                                                      Dimensions.fontSizeSmall,
+                                                ),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                            Icon(Icons.arrow_drop_down,
                                                 color: Theme.of(context)
                                                     .textTheme
                                                     .bodyText1
-                                                    .color,
-                                                fontSize:
-                                                    Dimensions.fontSizeSmall,
-                                              ),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                          Icon(Icons.arrow_drop_down,
+                                                    .color),
+                                          ],
+                                        );
+                                      }),
+                                    ),
+                                  )),
+                                  if (storeController.store != null &&
+                                      storeController.store.ecommerce == 1)
+                                    InkWell(
+                                      child: GetBuilder<NotificationController>(
+                                          builder: (notificationController) {
+                                        return Stack(children: [
+                                          Icon(Icons.notifications,
+                                              size: 25,
                                               color: Theme.of(context)
                                                   .textTheme
                                                   .bodyText1
                                                   .color),
-                                        ],
-                                      );
-                                    }),
-                                  ),
-                                )),
-                                if (storeController.store != null &&
-                                    storeController.store.ecommerce == 1)
-                                  InkWell(
-                                    child: GetBuilder<NotificationController>(
-                                        builder: (notificationController) {
-                                      return Stack(children: [
-                                        Icon(Icons.notifications,
-                                            size: 25,
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1
-                                                .color),
-                                        notificationController.hasNotification
-                                            ? Positioned(
-                                                top: 0,
-                                                right: 0,
-                                                child: Container(
-                                                  height: 10,
-                                                  width: 10,
-                                                  decoration: BoxDecoration(
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                    shape: BoxShape.circle,
-                                                    border: Border.all(
-                                                        width: 1,
-                                                        color: Theme.of(context)
-                                                            .cardColor),
-                                                  ),
-                                                ))
-                                            : SizedBox(),
-                                      ]);
-                                    }),
-                                    onTap: () => Get.toNamed(
-                                        RouteHelper.getNotificationRoute()),
-                                  ),
-                              ]),
-                            )),
-                            actions: [SizedBox()],
-                          ),
-                    if (storeController.store != null &&
-                        storeController.store.parcel != 1)
-                      SliverPersistentHeader(
-                        pinned: true,
-                        delegate: SliverDelegate(
-                            child: Center(
-                                child: Container(
-                          height: 50,
-                          width: Dimensions.WEB_MAX_WIDTH,
-                          color: Theme.of(context).backgroundColor,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: Dimensions.PADDING_SIZE_SMALL),
-                          child: InkWell(
-                            onTap: () =>
-                                Get.toNamed(RouteHelper.getSearchRoute()),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: Dimensions.PADDING_SIZE_SMALL),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).cardColor,
-                                borderRadius: BorderRadius.circular(25),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors
-                                          .grey[Get.isDarkMode ? 800 : 200],
-                                      spreadRadius: 1,
-                                      blurRadius: 5)
-                                ],
-                              ),
-                              child: Row(children: [
-                                SizedBox(
-                                    width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                Icon(
-                                  Icons.search,
-                                  size: 25,
-                                  color: Theme.of(context).hintColor,
+                                          notificationController.hasNotification
+                                              ? Positioned(
+                                                  top: 0,
+                                                  right: 0,
+                                                  child: Container(
+                                                    height: 10,
+                                                    width: 10,
+                                                    decoration: BoxDecoration(
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      shape: BoxShape.circle,
+                                                      border: Border.all(
+                                                          width: 1,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .cardColor),
+                                                    ),
+                                                  ))
+                                              : SizedBox(),
+                                        ]);
+                                      }),
+                                      onTap: () => Get.toNamed(
+                                          RouteHelper.getNotificationRoute()),
+                                    ),
+                                ]),
+                              )),
+                              actions: [SizedBox()],
+                            ),
+                      if (storeController.store != null &&
+                          storeController.store.parcel != 1)
+                        SliverPersistentHeader(
+                          pinned: true,
+                          delegate: SliverDelegate(
+                              child: Center(
+                                  child: Container(
+                            height: 50,
+                            width: Dimensions.WEB_MAX_WIDTH,
+                            color: Theme.of(context).backgroundColor,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: Dimensions.PADDING_SIZE_SMALL),
+                            child: InkWell(
+                              onTap: () =>
+                                  Get.toNamed(RouteHelper.getSearchRoute()),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: Dimensions.PADDING_SIZE_SMALL),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).cardColor,
+                                  borderRadius: BorderRadius.circular(25),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors
+                                            .grey[Get.isDarkMode ? 800 : 200],
+                                        spreadRadius: 1,
+                                        blurRadius: 5)
+                                  ],
                                 ),
-                                SizedBox(
-                                    width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                Expanded(
-                                    child: Text(
-                                  Get.find<SplashController>()
-                                          .configModel
-                                          .moduleConfig
-                                          .module
-                                          .showRestaurantText
-                                      ? 'search_food_or_restaurant'.tr
-                                      : 'search_item_or_store'.tr,
-                                  style: robotoRegular.copyWith(
-                                    fontSize: Dimensions.fontSizeSmall,
+                                child: Row(children: [
+                                  SizedBox(
+                                      width:
+                                          Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                                  Icon(
+                                    Icons.search,
+                                    size: 25,
                                     color: Theme.of(context).hintColor,
                                   ),
-                                )),
-                              ]),
+                                  SizedBox(
+                                      width:
+                                          Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                                  Expanded(
+                                      child: Text(
+                                    Get.find<SplashController>()
+                                            .configModel
+                                            .moduleConfig
+                                            .module
+                                            .showRestaurantText
+                                        ? 'search_food_or_restaurant'.tr
+                                        : 'search_item_or_store'.tr,
+                                    style: robotoRegular.copyWith(
+                                      fontSize: Dimensions.fontSizeSmall,
+                                      color: Theme.of(context).hintColor,
+                                    ),
+                                  )),
+                                ]),
+                              ),
                             ),
-                          ),
-                        ))),
-                      ),
-                    SliverPadding(
-                      padding: EdgeInsets.only(top: 10.0),
-                      sliver: SliverAppBar(
-                          expandedHeight: 230,
-                          toolbarHeight: 50,
-                          pinned: true,
-                          floating: true,
-                          title: Text(
-                            AppConstants.APP_NAME,
-                            textAlign: TextAlign.center,
-                              style: robotoMedium.copyWith(
-                                  fontSize: Dimensions
-                                      .fontSizeLarge,
-                                  color: Theme.of(context)
-                                      .primaryColor)
-                          ),
-                          backgroundColor:Colors.white/* Theme.of(context).primaryColor*/,
-                         /* leading: IconButton(
+                          ))),
+                        ),
+                      SliverPadding(
+                        padding: EdgeInsets.only(top: 10.0),
+                        sliver: SliverAppBar(
+                            expandedHeight: 230,
+                            toolbarHeight: 50,
+                            pinned: true,
+                            floating: true,
+                            title: Text(AppConstants.APP_NAME,
+                                textAlign: TextAlign.center,
+                                style: robotoMedium.copyWith(
+                                    fontSize: Dimensions.fontSizeLarge,
+                                    color: Theme.of(context).primaryColor)),
+                            backgroundColor: Colors
+                                .white /* Theme.of(context).primaryColor*/,
+                            /* leading: IconButton(
                             icon: Container(
                               height: 50,
                               width: 50,
@@ -407,15 +412,15 @@ class NewHomeScreen extends StatelessWidget {
                             ),
                             onPressed: () => Get.back(),
                           ),*/
-                          flexibleSpace: FlexibleSpaceBar(
-                            background: CustomImage(
-                              fit: BoxFit.cover,
-                              image:
-                                  '${Get.find<SplashController>().configModel.baseUrls.storeCoverPhotoUrl}/${_store.coverPhoto}',
+                            flexibleSpace: FlexibleSpaceBar(
+                              background: CustomImage(
+                                fit: BoxFit.cover,
+                                image:
+                                    '${Get.find<SplashController>().configModel.baseUrls.storeCoverPhotoUrl}/${_store.coverPhoto}',
+                              ),
                             ),
-                          ),
-                          actions: [SizedBox()]
-                          /*  [IconButton(
+                            actions: [SizedBox()]
+                            /*  [IconButton(
                   onPressed: () => Get.toNamed(RouteHelper.getCartRoute()),
                   icon: Container(
                     height: 50, width: 50,
@@ -424,521 +429,566 @@ class NewHomeScreen extends StatelessWidget {
                     child: CartWidget(color: Theme.of(context).cardColor, size: 15, fromStore: true),
                   ),
                 )],*/
-                          ),
-                    ),
-                    SliverToBoxAdapter(
-                        child: Center(
-                            child: Container(
-                      width: Dimensions.WEB_MAX_WIDTH,
-                      padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                      color: Theme.of(context).cardColor,
-                      child: storeController.store != null &&
-                              (storeController.store.ecommerce == 1)
-                          ? Column(children: [
-                              ResponsiveHelper.isDesktop(context)
-                                  ? SizedBox()
-                                  : StoreDescriptionView(store: _store),
-                              (storeController.store != null &&
-                                      storeController.store.ecommerce == 1
-                                  ? _store.discount != null
-                                      ? Container(
-                                          width: context.width,
-                                          margin: EdgeInsets.symmetric(
-                                              vertical: Dimensions
-                                                  .PADDING_SIZE_SMALL),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      Dimensions.RADIUS_SMALL),
-                                              color: Theme.of(context)
-                                                  .primaryColor),
-                                          padding: EdgeInsets.all(
-                                              Dimensions.PADDING_SIZE_SMALL),
-                                          child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  _store.discount
-                                                              .discountType ==
-                                                          'percent'
-                                                      ? '${_store.discount.discount}% OFF'
-                                                      : '${PriceConverter.convertPrice(_store.discount.discount)} OFF',
-                                                  style: robotoMedium.copyWith(
-                                                      fontSize: Dimensions
-                                                          .fontSizeLarge,
-                                                      color: Theme.of(context)
-                                                          .cardColor),
-                                                ),
-                                                Text(
-                                                  _store.discount
-                                                              .discountType ==
-                                                          'percent'
-                                                      ? '${'enjoy'.tr} ${_store.discount.discount}% ${'off_on_all_categories'.tr}'
-                                                      : '${'enjoy'.tr} ${PriceConverter.convertPrice(_store.discount.discount)}'
-                                                          ' ${'off_on_all_categories'.tr}',
-                                                  style: robotoMedium.copyWith(
-                                                      fontSize: Dimensions
-                                                          .fontSizeSmall,
-                                                      color: Theme.of(context)
-                                                          .cardColor),
-                                                ),
-                                                SizedBox(
-                                                    height: (_store.discount
-                                                                    .minPurchase !=
-                                                                0 ||
-                                                            _store.discount
-                                                                    .maxDiscount !=
-                                                                0)
-                                                        ? 5
-                                                        : 0),
-                                                _store.discount.minPurchase != 0
-                                                    ? Text(
-                                                        '[ ${'minimum_purchase'.tr}: ${PriceConverter.convertPrice(_store.discount.minPurchase)} ]',
-                                                        style: robotoRegular.copyWith(
+                            ),
+                      ),
+                      SliverToBoxAdapter(
+                          child: Center(
+                              child: Container(
+                        width: Dimensions.WEB_MAX_WIDTH,
+                        padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                        color: Theme.of(context).cardColor,
+                        child: storeController.store != null &&
+                                (storeController.store.ecommerce == 1)
+                            ? Column(children: [
+                                ResponsiveHelper.isDesktop(context)
+                                    ? SizedBox()
+                                    : StoreDescriptionView(store: _store),
+                                (storeController.store != null &&
+                                        storeController.store.ecommerce == 1
+                                    ? _store.discount != null
+                                        ? Container(
+                                            width: context.width,
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: Dimensions
+                                                    .PADDING_SIZE_SMALL),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        Dimensions
+                                                            .RADIUS_SMALL),
+                                                color: Theme.of(context)
+                                                    .primaryColor),
+                                            padding: EdgeInsets.all(
+                                                Dimensions.PADDING_SIZE_SMALL),
+                                            child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    _store.discount
+                                                                .discountType ==
+                                                            'percent'
+                                                        ? '${_store.discount.discount}% OFF'
+                                                        : '${PriceConverter.convertPrice(_store.discount.discount)} OFF',
+                                                    style:
+                                                        robotoMedium.copyWith(
                                                             fontSize: Dimensions
-                                                                .fontSizeExtraSmall,
+                                                                .fontSizeLarge,
                                                             color: Theme.of(
                                                                     context)
                                                                 .cardColor),
-                                                      )
-                                                    : SizedBox(),
-                                                _store.discount.maxDiscount != 0
-                                                    ? Text(
-                                                        '[ ${'maximum_discount'.tr}: ${PriceConverter.convertPrice(_store.discount.maxDiscount)} ]',
-                                                        style: robotoRegular.copyWith(
-                                                            fontSize: Dimensions
-                                                                .fontSizeExtraSmall,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .cardColor),
-                                                      )
-                                                    : SizedBox(),
-                                                Text(
-                                                  '[ ${'daily_time'.tr}: ${DateConverter.convertTimeToTime(_store.discount.startTime)} '
-                                                  '- ${DateConverter.convertTimeToTime(_store.discount.endTime)} ]',
-                                                  style: robotoRegular.copyWith(
-                                                      fontSize: Dimensions
-                                                          .fontSizeExtraSmall,
-                                                      color: Theme.of(context)
-                                                          .cardColor),
-                                                ),
-                                              ]),
-                                        )
-                                      : SizedBox()
-                                  : SizedBox()),
-                            ])
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                  Text('what_are_you_sending'.tr,
-                                      style: robotoBold.copyWith(
-                                          fontSize: Dimensions.fontSizeLarge)),
-                                  SizedBox(
-                                      height:
-                                          Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                  Get.find<ParcelController>()
-                                              .parcelCategoryList !=
-                                          null
-                                      ? Get.find<ParcelController>()
-                                                      .parcelCategoryList
-                                                      .length >
-                                                  0 &&
-                                              (storeController.store.parcel ==
-                                                      1 ||
-                                                  storeController
-                                                          .store.errand ==
-                                                      1)
-                                          ? storeController.store.parcel == 1
-                                              ? GridView.builder(
-                                                  controller:
-                                                      ScrollController(),
-                                                  gridDelegate:
-                                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                                    crossAxisCount:
-                                                        ResponsiveHelper
-                                                                .isDesktop(
-                                                                    context)
-                                                            ? 3
-                                                            : ResponsiveHelper
-                                                                    .isTab(
-                                                                        context)
-                                                                ? 2
-                                                                : 1,
-                                                    childAspectRatio:
-                                                        ResponsiveHelper
-                                                                .isDesktop(
-                                                                    context)
-                                                            ? (1 / 0.25)
-                                                            : (1 / 0.205),
-                                                    crossAxisSpacing: Dimensions
-                                                        .PADDING_SIZE_SMALL,
-                                                    mainAxisSpacing: Dimensions
-                                                        .PADDING_SIZE_SMALL,
                                                   ),
-                                                  itemCount: Get.find<
-                                                          ParcelController>()
-                                                      .parcelCategoryList
-                                                      .length,
-                                                  shrinkWrap: true,
-                                                  physics:
-                                                      NeverScrollableScrollPhysics(),
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return InkWell(
-                                                      onTap: () => Get.toNamed(RouteHelper
-                                                          .getParcelLocationRoute(
-                                                              Get.find<ParcelController>()
-                                                                      .parcelCategoryList[
-                                                                  index])),
-                                                      child: Container(
-                                                        padding: EdgeInsets.all(
-                                                            Dimensions
-                                                                .PADDING_SIZE_SMALL),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .cardColor,
-                                                          borderRadius: BorderRadius
-                                                              .circular(Dimensions
-                                                                  .RADIUS_SMALL),
-                                                        ),
-                                                        child: Row(children: [
-                                                          Container(
-                                                            height: 55,
-                                                            width: 55,
-                                                            alignment: Alignment
-                                                                .center,
-                                                            decoration: BoxDecoration(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColor
-                                                                    .withOpacity(
-                                                                        0.2),
-                                                                shape: BoxShape
-                                                                    .circle),
-                                                            child: ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                      Dimensions
-                                                                          .RADIUS_SMALL),
-                                                              child:
-                                                                  CustomImage(
-                                                                image:
-                                                                    '${Get.find<SplashController>().configModel.baseUrls.parcelCategoryImageUrl}'
-                                                                    '/${Get.find<ParcelController>().parcelCategoryList[index].image}',
-                                                                height: 30,
-                                                                width: 30,
+                                                  Text(
+                                                    _store.discount
+                                                                .discountType ==
+                                                            'percent'
+                                                        ? '${'enjoy'.tr} ${_store.discount.discount}% ${'off_on_all_categories'.tr}'
+                                                        : '${'enjoy'.tr} ${PriceConverter.convertPrice(_store.discount.discount)}'
+                                                            ' ${'off_on_all_categories'.tr}',
+                                                    style:
+                                                        robotoMedium.copyWith(
+                                                            fontSize: Dimensions
+                                                                .fontSizeSmall,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .cardColor),
+                                                  ),
+                                                  SizedBox(
+                                                      height: (_store.discount
+                                                                      .minPurchase !=
+                                                                  0 ||
+                                                              _store.discount
+                                                                      .maxDiscount !=
+                                                                  0)
+                                                          ? 5
+                                                          : 0),
+                                                  _store.discount.minPurchase !=
+                                                          0
+                                                      ? Text(
+                                                          '[ ${'minimum_purchase'.tr}: ${PriceConverter.convertPrice(_store.discount.minPurchase)} ]',
+                                                          style: robotoRegular.copyWith(
+                                                              fontSize: Dimensions
+                                                                  .fontSizeExtraSmall,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .cardColor),
+                                                        )
+                                                      : SizedBox(),
+                                                  _store.discount.maxDiscount !=
+                                                          0
+                                                      ? Text(
+                                                          '[ ${'maximum_discount'.tr}: ${PriceConverter.convertPrice(_store.discount.maxDiscount)} ]',
+                                                          style: robotoRegular.copyWith(
+                                                              fontSize: Dimensions
+                                                                  .fontSizeExtraSmall,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .cardColor),
+                                                        )
+                                                      : SizedBox(),
+                                                  Text(
+                                                    '[ ${'daily_time'.tr}: ${DateConverter.convertTimeToTime(_store.discount.startTime)} '
+                                                    '- ${DateConverter.convertTimeToTime(_store.discount.endTime)} ]',
+                                                    style: robotoRegular.copyWith(
+                                                        fontSize: Dimensions
+                                                            .fontSizeExtraSmall,
+                                                        color: Theme.of(context)
+                                                            .cardColor),
+                                                  ),
+                                                ]),
+                                          )
+                                        : SizedBox()
+                                    : SizedBox()),
+                              ])
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                    Text('what_are_you_sending'.tr,
+                                        style: robotoBold.copyWith(
+                                            fontSize:
+                                                Dimensions.fontSizeLarge)),
+                                    SizedBox(
+                                        height: Dimensions
+                                            .PADDING_SIZE_EXTRA_SMALL),
+                                    Get.find<ParcelController>()
+                                                .parcelCategoryList !=
+                                            null
+                                        ? Get.find<ParcelController>()
+                                                        .parcelCategoryList
+                                                        .length >
+                                                    0 &&
+                                                (storeController.store.parcel ==
+                                                        1 ||
+                                                    storeController
+                                                            .store.errand ==
+                                                        1)
+                                            ? storeController.store.parcel == 1
+                                                ? GridView.builder(
+                                                    controller:
+                                                        ScrollController(),
+                                                    gridDelegate:
+                                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                                      crossAxisCount:
+                                                          ResponsiveHelper
+                                                                  .isDesktop(
+                                                                      context)
+                                                              ? 3
+                                                              : ResponsiveHelper
+                                                                      .isTab(
+                                                                          context)
+                                                                  ? 2
+                                                                  : 1,
+                                                      childAspectRatio:
+                                                          ResponsiveHelper
+                                                                  .isDesktop(
+                                                                      context)
+                                                              ? (1 / 0.25)
+                                                              : (1 / 0.205),
+                                                      crossAxisSpacing: Dimensions
+                                                          .PADDING_SIZE_SMALL,
+                                                      mainAxisSpacing: Dimensions
+                                                          .PADDING_SIZE_SMALL,
+                                                    ),
+                                                    itemCount: Get.find<
+                                                            ParcelController>()
+                                                        .parcelCategoryList
+                                                        .length,
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        NeverScrollableScrollPhysics(),
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return InkWell(
+                                                        onTap: () => Get.toNamed(
+                                                            RouteHelper.getParcelLocationRoute(
+                                                                Get.find<ParcelController>()
+                                                                        .parcelCategoryList[
+                                                                    index])),
+                                                        child: Container(
+                                                          padding: EdgeInsets
+                                                              .all(Dimensions
+                                                                  .PADDING_SIZE_SMALL),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .cardColor,
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                    Dimensions
+                                                                        .RADIUS_SMALL),
+                                                          ),
+                                                          child: Row(children: [
+                                                            Container(
+                                                              height: 55,
+                                                              width: 55,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              decoration: BoxDecoration(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .primaryColor
+                                                                      .withOpacity(
+                                                                          0.2),
+                                                                  shape: BoxShape
+                                                                      .circle),
+                                                              child: ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        Dimensions
+                                                                            .RADIUS_SMALL),
+                                                                child:
+                                                                    CustomImage(
+                                                                  image:
+                                                                      '${Get.find<SplashController>().configModel.baseUrls.parcelCategoryImageUrl}'
+                                                                      '/${Get.find<ParcelController>().parcelCategoryList[index].image}',
+                                                                  height: 30,
+                                                                  width: 30,
+                                                                ),
                                                               ),
                                                             ),
-                                                          ),
-                                                          SizedBox(
-                                                              width: Dimensions
-                                                                  .PADDING_SIZE_SMALL),
-                                                          Expanded(
-                                                              child: Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                Text(
+                                                            SizedBox(
+                                                                width: Dimensions
+                                                                    .PADDING_SIZE_SMALL),
+                                                            Expanded(
+                                                                child: Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                  Text(
+                                                                      Get.find<
+                                                                              ParcelController>()
+                                                                          .parcelCategoryList[
+                                                                              index]
+                                                                          .name,
+                                                                      style:
+                                                                          robotoMedium),
+                                                                  SizedBox(
+                                                                      height: Dimensions
+                                                                          .PADDING_SIZE_EXTRA_SMALL),
+                                                                  Text(
                                                                     Get.find<
                                                                             ParcelController>()
                                                                         .parcelCategoryList[
                                                                             index]
-                                                                        .name,
-                                                                    style:
-                                                                        robotoMedium),
-                                                                SizedBox(
-                                                                    height: Dimensions
-                                                                        .PADDING_SIZE_EXTRA_SMALL),
-                                                                Text(
-                                                                  Get.find<
-                                                                          ParcelController>()
-                                                                      .parcelCategoryList[
-                                                                          index]
-                                                                      .description,
-                                                                  maxLines: 2,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  style: robotoRegular.copyWith(
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .disabledColor,
-                                                                      fontSize:
-                                                                          Dimensions
-                                                                              .fontSizeSmall),
-                                                                ),
-                                                              ])),
-                                                          SizedBox(
-                                                              width: Dimensions
-                                                                  .PADDING_SIZE_SMALL),
-                                                          Icon(Icons
-                                                              .keyboard_arrow_right),
-                                                        ]),
-                                                      ),
-                                                    );
-                                                  },
-                                                )
-                                              : Text("")
-                                          : Center(
-                                              child: Text(
-                                                  'no_parcel_category_found'
-                                                      .tr))
-                                      : ParcelShimmer(
-                                          isEnabled:
-                                              Get.find<ParcelController>()
-                                                      .parcelCategoryList ==
-                                                  null),
-                                  if (storeController.store.errand == 1)
-                                    InkWell(
-                                      child: Container(
-                                        padding: EdgeInsets.all(
-                                            Dimensions.PADDING_SIZE_SMALL),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).cardColor,
-                                          borderRadius: BorderRadius.circular(
-                                              Dimensions.RADIUS_SMALL),
-                                        ),
-                                        child: Row(children: [
-                                          Container(
-                                            height: 55,
-                                            width: 55,
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .primaryColor
-                                                    .withOpacity(0.2),
-                                                shape: BoxShape.circle),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      Dimensions.RADIUS_SMALL),
-                                              child: /*CustomImage(
+                                                                        .description,
+                                                                    maxLines: 2,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    style: robotoRegular.copyWith(
+                                                                        color: Theme.of(context)
+                                                                            .disabledColor,
+                                                                        fontSize:
+                                                                            Dimensions.fontSizeSmall),
+                                                                  ),
+                                                                ])),
+                                                            SizedBox(
+                                                                width: Dimensions
+                                                                    .PADDING_SIZE_SMALL),
+                                                            Icon(Icons
+                                                                .keyboard_arrow_right),
+                                                          ]),
+                                                        ),
+                                                      );
+                                                    },
+                                                  )
+                                                : Text("")
+                                            : Center(
+                                                child: Text(
+                                                    'no_parcel_category_found'
+                                                        .tr))
+                                        : ParcelShimmer(
+                                            isEnabled:
+                                                Get.find<ParcelController>()
+                                                        .parcelCategoryList ==
+                                                    null),
+                                    if (storeController.store.errand == 1)
+                                      InkWell(
+                                        child: Container(
+                                          padding: EdgeInsets.all(
+                                              Dimensions.PADDING_SIZE_SMALL),
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context).cardColor,
+                                            borderRadius: BorderRadius.circular(
+                                                Dimensions.RADIUS_SMALL),
+                                          ),
+                                          child: Row(children: [
+                                            Container(
+                                              height: 55,
+                                              width: 55,
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                  color: Theme.of(context)
+                                                      .primaryColor
+                                                      .withOpacity(0.2),
+                                                  shape: BoxShape.circle),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        Dimensions
+                                                            .RADIUS_SMALL),
+                                                child: /*CustomImage(
                                                 image:
                                                     '${Get.find<SplashController>().configModel.baseUrls.parcelCategoryImageUrl}'
                                                     '/2022-07-29-62e3b7d74b8a9.png',
                                                 height: 30,
                                                 width: 30,
                                               )*/
-                                                  Image.asset(
-                                                Images.errand,
-                                                height: 40,
-                                                width: 40,
+                                                    Image.asset(
+                                                  Images.errand,
+                                                  height: 40,
+                                                  width: 40,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          SizedBox(
-                                              width: Dimensions
-                                                  .PADDING_SIZE_SMALL),
-                                          if (storeController.store.errand == 1)
-                                            Expanded(
-                                                child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                  Text("Create Errand",
-                                                      style: robotoMedium),
-                                                  SizedBox(
-                                                      height: Dimensions
-                                                          .PADDING_SIZE_EXTRA_SMALL),
-                                                ])),
-                                          SizedBox(
-                                              width: Dimensions
-                                                  .PADDING_SIZE_SMALL),
-                                          Icon(Icons.keyboard_arrow_right),
-                                        ]),
+                                            SizedBox(
+                                                width: Dimensions
+                                                    .PADDING_SIZE_SMALL),
+                                            if (storeController.store.errand ==
+                                                1)
+                                              Expanded(
+                                                  child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                    Text("Create Errand",
+                                                        style: robotoMedium),
+                                                    SizedBox(
+                                                        height: Dimensions
+                                                            .PADDING_SIZE_EXTRA_SMALL),
+                                                  ])),
+                                            SizedBox(
+                                                width: Dimensions
+                                                    .PADDING_SIZE_SMALL),
+                                            Icon(Icons.keyboard_arrow_right),
+                                          ]),
+                                        ),
+                                        onTap: () {
+                                          print("tapped on container");
+                                          Get.toNamed(RouteHelper
+                                              .getErrandLocationRoute());
+                                        },
                                       ),
-                                      onTap: () {
-                                        print("tapped on container");
-                                        Get.toNamed(RouteHelper
-                                            .getErrandLocationRoute());
-                                      },
-                                    ),
-                                ]),
-                    ))),
-                    (storeController.store != null &&
-                            storeController.store.ecommerce == 1
-                        ? (storeController.categoryList.length > 0)
-                            ? SliverPersistentHeader(
-                                pinned: true,
-                                delegate: SliverDelegate(
+                                  ]),
+                      ))),
+                      (storeController.store != null &&
+                              storeController.store.ecommerce == 1
+                          ? (storeController.categoryList.length > 0)
+                              ? SliverPersistentHeader(
+                                  pinned: true,
+                                  delegate: SliverDelegate(
                                     child: Center(
                                         child: Container(
-                                  height: 50,
-                                  width: Dimensions.WEB_MAX_WIDTH,
-                                  color: Theme.of(context).cardColor,
-                                  padding: EdgeInsets.symmetric(
-                                      vertical:
-                                          Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount:
-                                        storeController.categoryList.length,
-                                    padding: EdgeInsets.only(
-                                        left: Dimensions.PADDING_SIZE_SMALL),
-                                    physics: BouncingScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      return InkWell(
-                                        onTap: () => storeController
-                                            .setCategoryIndex(index),
-                                        child: Container(
-                                          padding: EdgeInsets.only(
-                                            left: index == 0
-                                                ? Dimensions.PADDING_SIZE_LARGE
-                                                : Dimensions.PADDING_SIZE_SMALL,
-                                            right: index ==
-                                                    storeController.categoryList
-                                                            .length -
-                                                        1
-                                                ? Dimensions.PADDING_SIZE_LARGE
-                                                : Dimensions.PADDING_SIZE_SMALL,
-                                            top: Dimensions.PADDING_SIZE_SMALL,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.horizontal(
-                                              left: Radius.circular(
-                                                _ltr
-                                                    ? index == 0
-                                                        ? Dimensions
-                                                            .RADIUS_EXTRA_LARGE
-                                                        : 0
-                                                    : index ==
-                                                            storeController
-                                                                    .categoryList
-                                                                    .length -
-                                                                1
-                                                        ? Dimensions
-                                                            .RADIUS_EXTRA_LARGE
-                                                        : 0,
-                                              ),
-                                              right: Radius.circular(
-                                                _ltr
-                                                    ? index ==
-                                                            storeController
-                                                                    .categoryList
-                                                                    .length -
-                                                                1
-                                                        ? Dimensions
-                                                            .RADIUS_EXTRA_LARGE
-                                                        : 0
-                                                    : index == 0
-                                                        ? Dimensions
-                                                            .RADIUS_EXTRA_LARGE
-                                                        : 0,
-                                              ),
-                                            ),
-                                            color: Theme.of(context)
-                                                .primaryColor
-                                                .withOpacity(0.1),
-                                          ),
-                                          child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  storeController
-                                                      .categoryList[index].name,
-                                                  style: index ==
-                                                          storeController
-                                                              .categoryIndex
-                                                      ? robotoMedium.copyWith(
-                                                          fontSize: Dimensions
-                                                              .fontSizeSmall,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor)
-                                                      : robotoRegular.copyWith(
-                                                          fontSize: Dimensions
-                                                              .fontSizeSmall,
+                                            height: 50,
+                                            alignment: Alignment.center,
+                                            width: Dimensions.WEB_MAX_WIDTH,
+                                            color: Theme.of(context).cardColor,
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: Dimensions
+                                                    .PADDING_SIZE_EXTRA_SMALL),
+                                            transformAlignment:
+                                                Alignment.center,
+                                            child:
+
+                                              ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount: storeController
+                                                    .categoryList.length,
+                                                padding: EdgeInsets.only(
+                                                    left: Dimensions
+                                                        .PADDING_SIZE_SMALL),
+                                                physics:
+                                                    BouncingScrollPhysics(),
+                                                itemBuilder: (context, index) {
+                                                  return InkWell(
+                                                    onTap: () => storeController
+                                                        .setCategoryIndex(
+                                                            index),
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child:
+                                                      Container(
+
+                                                        alignment:
+                                                            Alignment.center,
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                          left: index == 0
+                                                              ? Dimensions
+                                                                  .PADDING_SIZE_LARGE
+                                                              : Dimensions
+                                                                  .PADDING_SIZE_SMALL,
+                                                          right: index ==
+                                                                  storeController
+                                                                          .categoryList
+                                                                          .length -
+                                                                      1
+                                                              ? Dimensions
+                                                                  .PADDING_SIZE_LARGE
+                                                              : Dimensions
+                                                                  .PADDING_SIZE_SMALL,
+                                                          top: Dimensions
+                                                              .PADDING_SIZE_SMALL,
+                                                        ),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .horizontal(
+                                                            left:
+                                                                Radius.circular(
+                                                              _ltr
+                                                                  ? index == 0
+                                                                      ? Dimensions
+                                                                          .RADIUS_EXTRA_LARGE
+                                                                      : 0
+                                                                  : index ==
+                                                                          storeController.categoryList.length -
+                                                                              1
+                                                                      ? Dimensions
+                                                                          .RADIUS_EXTRA_LARGE
+                                                                      : 0,
+                                                            ),
+                                                            right:
+                                                                Radius.circular(
+                                                              _ltr
+                                                                  ? index ==
+                                                                          storeController.categoryList.length -
+                                                                              1
+                                                                      ? Dimensions
+                                                                          .RADIUS_EXTRA_LARGE
+                                                                      : 0
+                                                                  : index == 0
+                                                                      ? Dimensions
+                                                                          .RADIUS_EXTRA_LARGE
+                                                                      : 0,
+                                                            ),
+                                                          ),
                                                           color: Theme.of(
                                                                   context)
-                                                              .disabledColor),
-                                                ),
-                                                index ==
-                                                        storeController
-                                                            .categoryIndex
-                                                    ? Container(
-                                                        height: 5,
-                                                        width: 5,
-                                                        decoration: BoxDecoration(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                            shape: BoxShape
-                                                                .circle),
-                                                      )
-                                                    : SizedBox(
-                                                        height: 5, width: 5),
-                                              ]),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ))),
-                              )
-                            : SliverToBoxAdapter(child: SizedBox())
-                        : SliverToBoxAdapter(child: SizedBox())),
-                    (storeController.store != null &&
-                            storeController.store.ecommerce == 1
-                        ? SliverToBoxAdapter(
-                            child: FooterView(
-                                child: Container(
-                            width: Dimensions.WEB_MAX_WIDTH,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).cardColor,
-                            ),
-                            child: PaginatedListView(
-                              scrollController: scrollController,
-                              // onPaginate: (int offset) => storeController.getStoreItemList(widget.store.id, offset, storeController.type, false),
-                              onPaginate: (int offset) =>
-                                  storeController.getStoreItemList(
-                                      (AppConstants.StoreID),
-                                      offset,
-                                      storeController.type,
-                                      false),
-                              totalSize: storeController.storeItemModel != null
-                                  ? storeController.storeItemModel.totalSize
-                                  : null,
-                              offset: storeController.storeItemModel != null
-                                  ? storeController.storeItemModel.offset
-                                  : null,
-                              itemView: ItemsView(
-                                isStore: false,
-                                stores: null,
-                                items: (storeController.categoryList.length >
-                                            0 &&
-                                        storeController.storeItemModel != null)
-                                    ? storeController.storeItemModel.items
+                                                              .primaryColor
+                                                              .withOpacity(0.1),
+                                                        ),
+                                                        child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Text(
+                                                                storeController
+                                                                    .categoryList[
+                                                                        index]
+                                                                    .name,
+                                                                style: index ==
+                                                                        storeController
+                                                                            .categoryIndex
+                                                                    ? robotoMedium.copyWith(
+                                                                        fontSize:
+                                                                            Dimensions
+                                                                                .fontSizeSmall,
+                                                                        color: Theme.of(context)
+                                                                            .primaryColor)
+                                                                    : robotoRegular.copyWith(
+                                                                        fontSize:
+                                                                            Dimensions
+                                                                                .fontSizeSmall,
+                                                                        color: Theme.of(context)
+                                                                            .disabledColor),
+                                                              ),
+                                                              index ==
+                                                                      storeController
+                                                                          .categoryIndex
+                                                                  ? Container(
+                                                                      height: 5,
+                                                                      width: 5,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Theme.of(context)
+                                                                              .primaryColor,
+                                                                          shape:
+                                                                              BoxShape.circle),
+                                                                    )
+                                                                  : SizedBox(
+                                                                      height: 5,
+                                                                      width: 5),
+                                                            ]),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+
+                                            )),
+                                  ))
+                              : SliverToBoxAdapter(child: SizedBox())
+                          : SliverToBoxAdapter(child: SizedBox())),
+                      (storeController.store != null &&
+                              storeController.store.ecommerce == 1
+                          ? SliverToBoxAdapter(
+                              child: FooterView(
+                                  child: Container(
+                              width: Dimensions.WEB_MAX_WIDTH,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).cardColor,
+                              ),
+                              child: PaginatedListView(
+                                scrollController: scrollController,
+                                // onPaginate: (int offset) => storeController.getStoreItemList(widget.store.id, offset, storeController.type, false),
+                                onPaginate: (int offset) =>
+                                    storeController.getStoreItemList(
+                                        (AppConstants.StoreID),
+                                        offset,
+                                        storeController.type,
+                                        false),
+                                totalSize: storeController.storeItemModel !=
+                                        null
+                                    ? storeController.storeItemModel.totalSize
                                     : null,
-                                inStorePage: true,
-                                type: storeController.type,
-                                onVegFilterTap: (String type) {
-                                  storeController.getStoreItemList(
-                                      storeController.store.id, 1, type, true);
-                                },
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: Dimensions.PADDING_SIZE_SMALL,
-                                  vertical: ResponsiveHelper.isDesktop(context)
-                                      ? Dimensions.PADDING_SIZE_SMALL
-                                      : 0,
+                                offset: storeController.storeItemModel != null
+                                    ? storeController.storeItemModel.offset
+                                    : null,
+                                itemView: ItemsView(
+                                  isStore: false,
+                                  stores: null,
+                                  items: (storeController.categoryList.length >
+                                              0 &&
+                                          storeController.storeItemModel !=
+                                              null)
+                                      ? storeController.storeItemModel.items
+                                      : null,
+                                  inStorePage: true,
+                                  type: storeController.type,
+                                  onVegFilterTap: (String type) {
+                                    storeController.getStoreItemList(
+                                        storeController.store.id,
+                                        1,
+                                        type,
+                                        true);
+                                  },
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: Dimensions.PADDING_SIZE_SMALL,
+                                    vertical:
+                                        ResponsiveHelper.isDesktop(context)
+                                            ? Dimensions.PADDING_SIZE_SMALL
+                                            : 0,
+                                  ),
                                 ),
                               ),
-                            ),
-                          )))
-                        : SliverToBoxAdapter(child: SizedBox())),
-                  ],
-                ))
+                            )))
+                          : SliverToBoxAdapter(child: SizedBox())),
+                    ],
+                  ))
               : Center(child: CircularProgressIndicator());
         });
       }),

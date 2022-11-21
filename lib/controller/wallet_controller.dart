@@ -33,8 +33,11 @@ class WalletController extends GetxController implements GetxService {
   List<BankList> _predictionList = [];
   List<AddedBankAccount> _bankAccountList = [];
   List<BankList> _filterList = [];
+
   List<BankList> get predictionList => _predictionList;
+
   List<AddedBankAccount> get bankAccountList => _bankAccountList;
+
   List<BankList> get filterList => _filterList;
 
   void clear() {
@@ -42,8 +45,8 @@ class WalletController extends GetxController implements GetxService {
     _bankAccountList = [];
     _predictionList = [];
     _transactionList = [];
-
   }
+
   void setOffset(int offset) {
     _offset = offset;
   }
@@ -103,24 +106,42 @@ class WalletController extends GetxController implements GetxService {
       showCustomSnackBar('converted_successfully_transfer_to_your_wallet'.tr,
           isError: false);
     } else {
-
-      ApiChecker.checkApi(response);
-      Get.dialog(
-          ConfirmationDialog(
-            icon: Images.warning,
-            title: 'Are you sure to "Convert Loyalty Points to Currency" ?' ,
-            description: response.body["errors"]["message"].toString(),
-            onYesPressed: () {
-              Get.back();
-            },
-          ),
-          barrierDismissible: false);
+      // ApiChecker.checkApi(response);
+      if (response.statusCode == 403) {
+        if (response.body["errors"]["message"] != null) {
+          Get.dialog(
+              ConfirmationDialog(
+                icon: Images.warning,
+                title: 'Are you sure to "Convert Loyalty Points to Currency" ?',
+                description: response.body["errors"]["message"].toString(),
+                onYesPressed: () {
+                  Get.back();
+                },
+              ),
+              barrierDismissible: false);
+        }
+      }
+      if (response.statusCode == 203) {
+        if (response.body["errors"][0]["message"] != null) {
+          Get.dialog(
+              ConfirmationDialog(
+                icon: Images.warning,
+                title: 'Are you sure to "Convert Loyalty Points to Currency" ?',
+                description: response.body["errors"][0]["message"].toString(),
+                onYesPressed: () {
+                  Get.back();
+                },
+              ),
+              barrierDismissible: false);
+        }
+      }
     }
     _isLoading = false;
     update();
   }
 
-  Future<void> addAcountToWallet(String bank_name, String account_number, String holder_name) async {
+  Future<void> addAcountToWallet(
+      String bank_name, String account_number, String holder_name) async {
     _isLoading = true;
     update();
     Response response =
@@ -145,58 +166,62 @@ class WalletController extends GetxController implements GetxService {
   }
 
   Future<void> bankList() async {
-     _isLoading = true;
+    _isLoading = true;
     update();
     Response response = await walletRepo.getBankList();
     if (response.statusCode == 200 && response.body['status'] == 'success') {
       _predictionList = [];
-      response.body['data'].forEach((prediction) => _predictionList.add(BankList.fromJson(prediction)));
+      response.body['data'].forEach(
+          (prediction) => _predictionList.add(BankList.fromJson(prediction)));
     } else {
-      showCustomSnackBar(response.body['error_message'] );
+      showCustomSnackBar(response.body['error_message']);
     }
-   // ApiChecker.checkApi(response);
+    // ApiChecker.checkApi(response);
 
     _isLoading = false;
     update();
   }
+
   Future<void> bankAccountListDetail() async {
     _isLoading = true;
     update();
     Response response = await walletRepo.getBankAccountList();
-    print("bankAccountList>>"+response.bodyString);
+    print("bankAccountList>>" + response.bodyString);
     if (response.statusCode == 200) {
       _bankAccountList = [];
-      response.body.forEach((prediction) => _bankAccountList.add(AddedBankAccount.fromJson(prediction)));
+      response.body.forEach((prediction) =>
+          _bankAccountList.add(AddedBankAccount.fromJson(prediction)));
     } else {
-      showCustomSnackBar(response.body['error_message'] );
+      showCustomSnackBar(response.body['error_message']);
     }
-   // ApiChecker.checkApi(response);
+    // ApiChecker.checkApi(response);
 
     _isLoading = false;
     update();
   }
 
   Future<List<BankList>> filter(String search) async {
-   if(search !="") {
-     _filterList = [];
-     _predictionList.forEach((prediction) {
-       print("filter>>>>" + prediction.name);
+    if (search != "") {
+      _filterList = [];
+      _predictionList.forEach((prediction) {
+        print("filter>>>>" + prediction.name);
 
-       if (prediction.name.toLowerCase().contains(search.toLowerCase())) {
-         print("filter>>>>" + search);
-         _filterList.add(prediction);
-       }
-     });
-   }
+        if (prediction.name.toLowerCase().contains(search.toLowerCase())) {
+          print("filter>>>>" + search);
+          _filterList.add(prediction);
+        }
+      });
+    }
 
-   return _filterList;
+    return _filterList;
   }
 
-  Future<void> withdrawFundToWallet(String bank_name, String account_number) async {
+  Future<void> withdrawFundToWallet(
+      String bank_name, String account_number) async {
     _isLoading = true;
     update();
     Response response =
-    await walletRepo.withdrawFund(bank_name, account_number);
+        await walletRepo.withdrawFund(bank_name, account_number);
     if (response.statusCode == 200) {
       Get.back();
       print("response>>" + response.bodyString);
@@ -208,8 +233,12 @@ class WalletController extends GetxController implements GetxService {
         showCustomSnackBar(response.body['message'].toString(), isError: true);
       }
     } else {
-      showCustomSnackBar(response.body["errors"]["message"]!=null?response.body["errors"]["message"].toString():response.body['message'].toString(), isError: true);
-     // ApiChecker.checkApi(response);
+      showCustomSnackBar(
+          response.body["errors"]["message"] != null
+              ? response.body["errors"]["message"].toString()
+              : response.body['message'].toString(),
+          isError: true);
+      // ApiChecker.checkApi(response);
     }
     _isLoading = false;
     update();
@@ -218,8 +247,7 @@ class WalletController extends GetxController implements GetxService {
   Future<void> addFundToWallet(String bank_name) async {
     _isLoading = true;
     update();
-    Response response =
-    await walletRepo.addFund(bank_name);
+    Response response = await walletRepo.addFund(bank_name);
     if (response.statusCode == 200) {
       Get.back();
       print("response>>" + response.bodyString);
@@ -227,27 +255,27 @@ class WalletController extends GetxController implements GetxService {
 
       if (response.body['status'] == 200) {
         Get.offNamed(RouteHelper.getPaymentRoute(
-            "-12", Get.find<UserController>().userInfoModel.id, response.body['link'].toString()));
+            "-12",
+            Get.find<UserController>().userInfoModel.id,
+            response.body['link'].toString()));
         _isLoading = false;
       } else {
         showCustomSnackBar(response.body['message'].toString(), isError: true);
         _isLoading = false;
       }
-    }
-    else {
+    } else {
       showCustomSnackBar(response.body['message'].toString(), isError: true);
       ApiChecker.checkApi(response);
       _isLoading = false;
     }
-  //  _isLoading = false;
+    //  _isLoading = false;
     update();
   }
 
   Future<void> deleteAccount(String account_num) async {
     _isLoading = true;
     update();
-    Response response =
-    await walletRepo.deleteAccount(account_num);
+    Response response = await walletRepo.deleteAccount(account_num);
     if (response.statusCode == 200) {
       Get.back();
       print("response>>" + response.bodyString);
@@ -260,5 +288,4 @@ class WalletController extends GetxController implements GetxService {
     _isLoading = false;
     update();
   }
-
 }

@@ -795,7 +795,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                 strokeWidth: 0.2,
                                 child: MyTextField(
                                   hintText: 'Enter Amount',
-                                  inputType: TextInputType.number,
+                                  inputType: TextInputType.phone,
                                   controller: titleController,
                                   capitalization: TextCapitalization.words,
                                 ))),
