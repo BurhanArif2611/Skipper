@@ -233,8 +233,8 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
 
   Widget _bottomButton() {
     return GetBuilder<ParcelController>(builder: (parcelController) {
-      return (!isLoading
-          ? CustomButton(
+      return (/*!isLoading ?*/
+      CustomButton(
               margin: ResponsiveHelper.isDesktop(context)
                   ? null
                   : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
@@ -368,8 +368,8 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
                   }
                 }
               },
-            )
-          : Center(child: CircularProgressIndicator()));
+            ));
+          /*: Center(child: CircularProgressIndicator()));*/
     });
   }
 

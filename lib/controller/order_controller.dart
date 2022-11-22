@@ -233,7 +233,7 @@ class OrderController extends GetxController implements GetxService {
       callback(true, message, orderID);
       _orderAttachment = null;
       _rawAttachment = null;
-      Get.back();
+     // Get.back();
       print('-------- Order placed successfully $orderID ----------');
     } else {
       Get.back();
@@ -247,6 +247,7 @@ class OrderController extends GetxController implements GetxService {
     _isLoading = true;
     print("placeOrder<><>" + placeOrderBody.toJson().toString());
     update();
+    Get.dialog(CustomLoader(), barrierDismissible: false);
     Response response = await orderRepo.errandPlaceOrder(placeOrderBody);
     /* print("placeOrder<><>"+response.toString());*/
 
@@ -260,10 +261,13 @@ class OrderController extends GetxController implements GetxService {
       try {
         Get.find<ParcelController>().clearMultiTask();
       } catch (e) {}
+     // Get.back();
       print('-------- Order placed successfully $orderID ----------');
     } else {
       _isLoading = false;
+      Get.back();
       callback(false, response.statusText, '-1');
+
     }
     update();
   }

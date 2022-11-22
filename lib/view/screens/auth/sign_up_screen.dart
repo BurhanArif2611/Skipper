@@ -195,7 +195,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ConditionCheckBox(authController: authController),
                     SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
 
-                    !authController.isLoading ? Row(children: [
+                   /* !authController.isLoading ?*/ Row(children: [
                       Expanded(child: CustomButton(
                         buttonText: 'sign_in'.tr,
                         transparent: true,
@@ -205,7 +205,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         buttonText: 'sign_up'.tr,
                         onPressed: authController.acceptTerms ? () => _register(authController, _countryDialCode) : null,
                       )),
-                    ]) : Center(child: CircularProgressIndicator()),
+                    ])/* : Center(child: CircularProgressIndicator())*/,
                     SizedBox(height: 30),
 
                     // SocialLoginWidget(),

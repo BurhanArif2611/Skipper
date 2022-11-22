@@ -40,7 +40,7 @@ class AuthController extends GetxController implements GetxService {
           await authRepo.updateToken();
         }
         responseModel = ResponseModel(true, response.body["token"]);
-        Get.back();
+      /*  Get.back();*/
     } else {
       Get.back();
       responseModel = ResponseModel(false, response.body["errors"]!=null?response.body["errors"]["message"].toString():response.statusText);
@@ -64,7 +64,7 @@ class AuthController extends GetxController implements GetxService {
         await authRepo.updateToken();
       }
       responseModel = ResponseModel(true, '${response.body['is_phone_verified']}${response.body['token']}');
-      Get.back();
+     /* Get.back();*/
     } else {
       Get.back();
       responseModel = ResponseModel(false, response.statusText);

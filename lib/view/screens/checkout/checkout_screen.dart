@@ -1560,8 +1560,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       padding: ResponsiveHelper.isDesktop(context)
           ? null
           : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-      child: !orderController.isLoading
-          ? CustomButton(
+      child: /*!orderController.isLoading ?*/
+      CustomButton(
               buttonText: 'confirm_order'.tr,
               onPressed: () {
                 bool _isAvailable = true;
@@ -1719,7 +1719,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
                 }
               })
-          : Center(child: CircularProgressIndicator()),
+          /*: Center(child: CircularProgressIndicator())*/,
     );
   }
 }

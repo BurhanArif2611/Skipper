@@ -527,8 +527,8 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
 
   Widget _bottomButton(ParcelController parcelController, double charge) {
     String payment_type="";
-    return !parcelController.isLoading
-        ? CustomButton(
+    return /*!parcelController.isLoading ? */
+    CustomButton(
             buttonText: 'confirm_parcel_request'.tr,
             margin: ResponsiveHelper.isDesktop(context)
                 ? null
@@ -592,6 +592,6 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
               }
             },
           )
-        : Center(child: CircularProgressIndicator());
+        /*: Center(child: CircularProgressIndicator())*/;
   }
 }
