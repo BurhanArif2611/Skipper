@@ -37,7 +37,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       selectedUrl =widget.orderModel.orderType.toString();
     }else {
       selectedUrl =
-      '${AppConstants.BASE_URL}/payment-mobile?customer_id=${widget.orderModel
+      '${AppConstants.BASE_URL}/payment-mobile?transaction_type=place_order&customer_id=${widget.orderModel
           .userId}&order_id=${widget.orderModel.id}';
     }
     print("type>>>>>>>>"+selectedUrl);

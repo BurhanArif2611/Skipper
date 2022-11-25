@@ -363,6 +363,7 @@ class _LocationView extends State<LocationView> {
                                       hintText: 'Type here...',
                                       inputType: TextInputType.name,
                                       maxLines: 5,
+                                      inputAction: TextInputAction.done,
                                       controller: main_commentController,
                                       capitalization: TextCapitalization.words,
                                     ),

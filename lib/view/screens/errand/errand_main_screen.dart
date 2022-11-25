@@ -172,6 +172,7 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
                             hintText: 'Type here...',
                             inputType: TextInputType.number,
                             maxLines: 1,
+                            inputAction: TextInputAction.done,
                             controller: _orderPriceController,
                             capitalization: TextCapitalization.words,
                           ),
