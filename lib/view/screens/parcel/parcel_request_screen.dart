@@ -383,7 +383,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                           style: robotoRegular),
                                     ]),
                                   )),
-                                  Get.find<SplashController>()
+                                 /* Get.find<SplashController>()
                                           .configModel
                                           .cashOnDelivery
                                       ? Expanded(
@@ -409,7 +409,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                                 style: robotoRegular),
                                           ]),
                                         ))
-                                      : SizedBox(),
+                                      : SizedBox(),*/
                                 ]),
                                 SizedBox(
                                     height:

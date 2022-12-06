@@ -67,7 +67,7 @@ class _MyTextFieldState extends State<MyTextField> {
       maxLengthEnforcement: MaxLengthEnforcement.enforced,
       //onChanged: widget.isSearch ? widget.languageProvider.searchLanguage : null,
       obscureText: widget.isPassword ? _obscureText : false,
-      inputFormatters: widget.inputType == TextInputType.phone ? <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp('[0-9+]'))] : <TextInputFormatter>[FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji))],
+      inputFormatters: widget.inputType == TextInputType.phone ? <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp('[0-9]'))] : <TextInputFormatter>[FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji))],
 
       decoration: InputDecoration(
         hintText: widget.hintText,

@@ -53,7 +53,7 @@ class _WalletBottomSheetState extends State<WalletBottomSheet> {
             child: CustomTextField(
               hintText: '0',
               controller: _amountController,
-              inputType: TextInputType.phone,
+              inputType: TextInputType.number,
               maxLines: 1,
               textAlign: TextAlign.center,
             ),

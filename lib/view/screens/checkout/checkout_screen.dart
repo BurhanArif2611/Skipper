@@ -450,7 +450,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                           EdgeInsets.symmetric(
                                                               vertical: 5),
                                                       decoration: BoxDecoration(
-                                                          color: Colors.white,
+                                                          color: Colors.transparent,
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(
@@ -570,10 +570,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                             BoxDecoration(
                                                           color: Colors.white,
                                                         ),
-                                                        child: InkWell(
+                                                        child:
+                                                        InkWell(
                                                           onTap: () {
-                                                            print(
-                                                                "djfdkjfkjdjfdjf");
                                                             if (Get.find<
                                                                     AuthController>()
                                                                 .isLoggedIn()) {
@@ -656,8 +655,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                                       .tr);
                                                             }
                                                           },
-                                                          child: SizedBox(
-                                                              height: 80,
+                                                          child:
+                                                          SizedBox(
+                                                              height: locationController.addressList!=null && locationController.addressList.length>0 ?80:0,
                                                               /* width: context.width > Dimensions.WEB_MAX_WIDTH
                                                               ? Dimensions.WEB_MAX_WIDTH - 50
                                                               : context.width - 50,*/
@@ -668,15 +668,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                                         Dimensions
                                                                             .PADDING_SIZE_SMALL),
                                                                 child:
+                                                                    (locationController.addressList!=null && locationController.addressList.length>0 ?
                                                                     AddressWidget(
-                                                                  address: locationController
-                                                                          .addressList[
-                                                                      Final_index],
+                                                                  address:locationController.addressList!=null && locationController.addressList.length>0? locationController.addressList[Final_index]:null,
                                                                   fromAddress:
                                                                       false,
                                                                   fromCheckout:
                                                                       true,
-                                                                ),
+                                                                ):
+                                                                    SizedBox()),
                                                               )),
                                                         ),
                                                       ),
@@ -1564,9 +1564,28 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       CustomButton(
               buttonText: 'confirm_order'.tr,
               onPressed: () {
+                bool checkStoreIsOnlyFood = false;
+                try {
+                  int moduleId = Get.find<StoreController>().store != null
+                      ? Get.find<StoreController>().store.moduleId
+                      : 0;
+                  if (Get.find<SplashController>().moduleList != null) {
+                    Get.find<SplashController>().moduleList.forEach((storeCategory) => {
+                      if (storeCategory.id == moduleId)
+                        {
+                          if (storeCategory.moduleType == 'food' ||
+                              storeCategory.moduleType == 'Food')
+                            {checkStoreIsOnlyFood = true}
+                        }
+                    });
+                  }
+                } catch (e) {}
+
                 bool _isAvailable = true;
                 DateTime _scheduleStartDate = DateTime.now();
                 DateTime _scheduleEndDate = DateTime.now();
+
+
                 if (orderController.timeSlots == null ||
                     orderController.timeSlots.length == 0) {
                   _isAvailable = false;
@@ -1609,7 +1628,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 } else if (orderAmount < storeController.store.minimumOrder) {
                   showCustomSnackBar(
                       '${'minimum_order_amount_is'.tr} ${storeController.store.minimumOrder}');
-                } else if ((orderController.selectedDateSlot == 0 &&
+                } else if (checkStoreIsOnlyFood && (orderController.selectedDateSlot == 0 &&
                         todayClosed) ||
                     (orderController.selectedDateSlot == 1 && tomorrowClosed)) {
                   showCustomSnackBar(Get.find<SplashController>()
@@ -1619,8 +1638,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           .showRestaurantText
                       ? 'restaurant_is_closed'.tr
                       : 'store_is_closed'.tr);
-                } else if (orderController.timeSlots == null ||
-                    orderController.timeSlots.length == 0) {
+                } else if ( checkStoreIsOnlyFood &&(orderController.timeSlots == null ||
+                    orderController.timeSlots.length == 0)) {
                   if (storeController.store.scheduleOrder) {
                     showCustomSnackBar('select_a_time'.tr);
                   } else {
@@ -1632,7 +1651,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ? 'restaurant_is_closed'.tr
                         : 'store_is_closed'.tr);
                   }
-                } else if (!_isAvailable) {
+                } else if (checkStoreIsOnlyFood && !_isAvailable) {
                   showCustomSnackBar(
                       'one_or_more_products_are_not_available_for_this_selected_time'
                           .tr);
@@ -1662,60 +1681,85 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       _addOnQtyList,
                     ));
                   }
-                  AddressModel _address = orderController.addressIndex == -1
-                      ? Get.find<LocationController>().getUserAddress()
-                      : locationController
-                          .addressList[orderController.addressIndex];
+                  AddressModel _address;
+                  if(locationController.addressList!=null && locationController.addressList.length>0) {
+                    _address = orderController.addressIndex == -1
+                        ? Get.find<LocationController>().getUserAddress()
+                        : locationController
+                        .addressList[orderController.addressIndex];
 
-                  orderController.placeOrder(
-                      PlaceOrderBody(
-                        cart: carts,
-                        couponDiscountAmount:
-                            Get.find<CouponController>().discount,
-                        distance: orderController.distance,
-                        scheduleAt: !storeController.store.scheduleOrder
-                            ? null
-                            : (orderController.selectedDateSlot == 0 &&
-                                    orderController.selectedTimeSlot == 0)
-                                ? null
-                                : DateConverter.dateToDateAndTime(
-                                    _scheduleEndDate),
-                        orderAmount: total,
-                        orderNote: _noteController.text,
-                        orderType: orderController.orderType,
-                        paymentMethod: orderController.paymentMethodIndex == 0
-                            ? 'cash_on_delivery'
-                            : orderController.paymentMethodIndex == 1
-                                ? 'digital_payment'
-                                : 'wallet',
-                        couponCode: (Get.find<CouponController>().discount >
-                                    0 ||
-                                (Get.find<CouponController>().coupon != null &&
-                                    Get.find<CouponController>().freeDelivery))
-                            ? Get.find<CouponController>().coupon.code
-                            : null,
-                        storeId: _cartList[0].item.storeId,
-                        address: _address.address,
-                        latitude: _address.latitude,
-                        longitude: _address.longitude,
-                        addressType: _address.addressType,
-                        contactPersonName: _address.contactPersonName ??
-                            '${Get.find<UserController>().userInfoModel.fName} '
-                                '${Get.find<UserController>().userInfoModel.lName}',
-                        contactPersonNumber: _address.contactPersonNumber ??
-                            Get.find<UserController>().userInfoModel.phone,
-                        streetNumber: _streetNumberController.text.trim() ?? '',
-                        house: _houseController.text.trim(),
-                        floor: _floorController.text.trim(),
-                        discountAmount: discount,
-                        taxAmount: tax,
-                        receiverDetails: null,
-                        parcelCategoryId: null,
-                        chargePayer: null,
-                        dmTips: _tipController.text.trim(),
-                      ),
-                      _callback);
-
+                    orderController.placeOrder(
+                        PlaceOrderBody(
+                          cart: carts,
+                          couponDiscountAmount:
+                          Get
+                              .find<CouponController>()
+                              .discount,
+                          distance: orderController.distance,
+                          scheduleAt: !storeController.store.scheduleOrder
+                              ? null
+                              : (orderController.selectedDateSlot == 0 &&
+                              orderController.selectedTimeSlot == 0)
+                              ? null
+                              : DateConverter.dateToDateAndTime(
+                              _scheduleEndDate),
+                          orderAmount: total,
+                          orderNote: _noteController.text,
+                          orderType: orderController.orderType,
+                          paymentMethod: orderController.paymentMethodIndex == 0
+                              ? 'cash_on_delivery'
+                              : orderController.paymentMethodIndex == 1
+                              ? 'digital_payment'
+                              : 'wallet',
+                          couponCode: (Get
+                              .find<CouponController>()
+                              .discount >
+                              0 ||
+                              (Get
+                                  .find<CouponController>()
+                                  .coupon != null &&
+                                  Get
+                                      .find<CouponController>()
+                                      .freeDelivery))
+                              ? Get
+                              .find<CouponController>()
+                              .coupon
+                              .code
+                              : null,
+                          storeId: _cartList[0].item.storeId,
+                          address: _address.address,
+                          latitude: _address.latitude,
+                          longitude: _address.longitude,
+                          addressType: _address.addressType,
+                          contactPersonName: _address.contactPersonName ??
+                              '${Get
+                                  .find<UserController>()
+                                  .userInfoModel
+                                  .fName} '
+                                  '${Get
+                                  .find<UserController>()
+                                  .userInfoModel
+                                  .lName}',
+                          contactPersonNumber: _address.contactPersonNumber ??
+                              Get
+                                  .find<UserController>()
+                                  .userInfoModel
+                                  .phone,
+                          streetNumber: _streetNumberController.text.trim() ??
+                              '',
+                          house: _houseController.text.trim(),
+                          floor: _floorController.text.trim(),
+                          discountAmount: discount,
+                          taxAmount: tax,
+                          receiverDetails: null,
+                          parcelCategoryId: null,
+                          chargePayer: null,
+                          dmTips: _tipController.text.trim(),
+                        ),
+                        _callback);
+                  }else {
+                    showCustomSnackBar('Please Delivery Address !'.tr);
+                  }
 
                 }
               })

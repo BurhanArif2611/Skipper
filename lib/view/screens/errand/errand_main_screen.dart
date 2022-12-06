@@ -241,7 +241,7 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
                   : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
               buttonText: parcelController.isSender
                   ? 'continue'.tr
-                  : 'save_and_continue'.tr,
+                  : 'continue'.tr,
               onPressed: () {
                 if (_orderPriceController.text.isEmpty) {
                   showCustomSnackBar('Enter Proposed Price !');

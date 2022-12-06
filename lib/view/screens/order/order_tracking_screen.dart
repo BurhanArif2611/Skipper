@@ -102,16 +102,16 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
           ),
 
           _isLoading ? Center(child: CircularProgressIndicator()) : SizedBox(),
-
+          (_track !=null?
           Positioned(
             top: Dimensions.PADDING_SIZE_SMALL, left: Dimensions.PADDING_SIZE_SMALL, right: Dimensions.PADDING_SIZE_SMALL,
             child: TrackingStepperWidget(status: _track.orderStatus, takeAway: _track.orderType == 'take_away'),
-          ),
-
+          ):SizedBox()),
+       /* (_track !=null && _track.orderStatus !=null && _track.store!=null&& _track.deliveryAddress!=null?
           Positioned(
             bottom: Dimensions.PADDING_SIZE_SMALL, left: Dimensions.PADDING_SIZE_SMALL, right: Dimensions.PADDING_SIZE_SMALL,
-            child: TrackDetailsView(status: _track.orderStatus, track: _track),
-          ),
+            child: TrackDetailsView(status: _track.orderStatus!=null?_track.orderStatus:"", track: _track),
+          ):SizedBox()),*/
 
         ]))) : Center(child: CircularProgressIndicator());
       }),

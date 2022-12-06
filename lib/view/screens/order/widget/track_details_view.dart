@@ -36,12 +36,15 @@ class TrackDetailsView extends StatelessWidget {
         color: Theme.of(context).cardColor,
       ),
       alignment: Alignment.center,
-      child: (!_takeAway && track.deliveryMan == null) ? Padding(
+      child: (!_takeAway && track !=null &&  track.deliveryMan == null) ?
+      Padding(
         padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
         child: Text(
           'delivery_man_not_assigned'.tr, style: robotoMedium, textAlign: TextAlign.center,
         ),
-      ) : Column(children: [
+      ) :
+      (track !=null && track.deliveryAddress !=null && track.deliveryMan!=null ?
+      Column(children: [
 
         Text('trip_route'.tr, style: robotoMedium),
         SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
@@ -145,7 +148,7 @@ class TrackDetailsView extends StatelessWidget {
           ),
         ]),
 
-      ]),
+      ]):SizedBox()),
     );
   }
 }

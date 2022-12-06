@@ -210,7 +210,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                     // SocialLoginWidget(),
 
-                    GuestButton(),
+                   /* GuestButton(),*/
 
                   ]);
                 }),
@@ -251,9 +251,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       showCustomSnackBar('enter_a_valid_email_address'.tr);
     }else if (_number.isEmpty) {
       showCustomSnackBar('enter_phone_number'.tr);
-    }else if (!_isValid) {
+    }/*else if (!_isValid) {
       showCustomSnackBar('invalid_phone_number'.tr);
-    }else if (_password.isEmpty) {
+    }*/else if (_password.isEmpty) {
       showCustomSnackBar('enter_password'.tr);
     }else if (_password.length < 6) {
       showCustomSnackBar('password_should_be'.tr);

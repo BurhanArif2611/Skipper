@@ -649,6 +649,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   inputType: TextInputType.number,
                                   controller: accountnumberController,
                                   capitalization: TextCapitalization.words,
+                                    inputAction: TextInputAction.done
                                 ))),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -798,6 +799,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   inputType: TextInputType.phone,
                                   controller: titleController,
                                   capitalization: TextCapitalization.words,
+                                    inputAction: TextInputAction.done
                                 ))),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
@@ -950,6 +952,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   inputType: TextInputType.number,
                                   controller: titleController,
                                   capitalization: TextCapitalization.words,
+                                    inputAction: TextInputAction.done
                                 ))),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),

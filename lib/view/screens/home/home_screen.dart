@@ -268,6 +268,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   children: [
                                                     Icon(
                                                       locationController
+                                                          .getUserAddress()!=null && locationController
+                                                    .getUserAddress()
+                                                    .addressType!=null &&
+                                                locationController
                                                                   .getUserAddress()
                                                                   .addressType ==
                                                               'home'

@@ -114,9 +114,9 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
 
     if (_phone.isEmpty) {
       showCustomSnackBar('enter_phone_number'.tr);
-    }else if (!_isValid) {
+    }/*else if (!_isValid) {
       showCustomSnackBar('invalid_phone_number'.tr);
-    }else {
+    }*/else {
       if(widget.fromSocialLogin) {
         widget.socialLogInBody.phone = _numberWithCountryCode;
         Get.find<AuthController>().registerWithSocialMedia(widget.socialLogInBody);

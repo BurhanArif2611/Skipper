@@ -196,9 +196,10 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                         ),
                         GetBuilder<CartController>(builder: (cartController) {
                           return
+                            (itemController.cartIndex !=null && itemController.cartIndex >= 0 ?
                             Text(itemController.cartIndex != -1 ?cartController.cartList!=null? cartController.cartList[itemController.cartIndex].quantity.toString() : itemController.quantity.toString(): itemController.quantity.toString(),
                             style:robotoMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge),
-                          );
+                          ):SizedBox());
                         }),
                         InkWell(
                           onTap: () => itemController.cartIndex != -1 ? Get.find<CartController>().setQuantity(true, itemController.cartIndex, _stock) :  itemController.setQuantity(true, _stock),
