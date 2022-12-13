@@ -35,9 +35,12 @@ class ParcelController extends GetxController implements GetxService {
   bool _isSender = true;
   bool _isLoading = false;
   double _distance = -1;
+  double _deliveryCharge = 0;
+  double _deliveryFinalCharge = 0;
   List<String> _payerTypes = ['sender', 'receiver'];
   int _payerIndex = 0;
   int _paymentIndex = 0;
+  String _parcelType = "P1";
 
   List<ParcelCategoryModel> get parcelCategoryList => _parcelCategoryList;
 
@@ -57,9 +60,14 @@ class ParcelController extends GetxController implements GetxService {
 
   double get distance => _distance;
 
+  double get deliveryCharge => _deliveryCharge;
+  double get deliveryFinalCharge => _deliveryFinalCharge;
+
   int get payerIndex => _payerIndex;
 
   int get paymentIndex => _paymentIndex;
+
+  String get parcelType => _parcelType;
 
   List<String> get payerTypes => _payerTypes;
 
@@ -76,13 +84,15 @@ class ParcelController extends GetxController implements GetxService {
   XFile get pickedFile => _pickedFile;
 
   Uint8List get rawFile => _rawFile;
+
   void clear() {
-   /* _parcelCategoryList = [];*/
+    /* _parcelCategoryList = [];*/
     _anotherList = [];
     _anothertaskList = [];
     _destinationAddress = null;
     _pickupAddress = null;
   }
+
   Future<void> getParcelCategoryList() async {
     print("getParcelCategoryList<><>");
     Response response = await parcelRepo.getParcelCategory();
@@ -129,7 +139,8 @@ class ParcelController extends GetxController implements GetxService {
 
   void setDestinationAddress(AddressModel addressModel, bool notify) {
     if (notify) {
-    _destinationAddress = null;}
+      _destinationAddress = null;
+    }
     _destinationAddress = addressModel;
     update();
   }
@@ -229,14 +240,18 @@ class ParcelController extends GetxController implements GetxService {
                 'your_selected_location_is_from_different_zone_store'.tr);
           }*/
           bool check = false;
-          if(Get.find<StoreController>().store.zones!=null){
-          for (int i = 0; i < Get.find<StoreController>().store.zones.length; i++) {
-            if (Get.find<StoreController>().store.zones!=null && Get.find<StoreController>().store.zones[i].zone_id ==
-                _response.zoneIds[0]) {
-              check = true;
-              break;
+          if (Get.find<StoreController>().store.zones != null) {
+            for (int i = 0;
+                i < Get.find<StoreController>().store.zones.length;
+                i++) {
+              if (Get.find<StoreController>().store.zones != null &&
+                  Get.find<StoreController>().store.zones[i].zone_id ==
+                      _response.zoneIds[0]) {
+                check = true;
+                break;
+              }
             }
-          }}
+          }
           if (check) {
             _address.zoneId = _response.zoneIds[0];
             _address.zoneIds = [];
@@ -244,7 +259,7 @@ class ParcelController extends GetxController implements GetxService {
             if (isPickedUp) {
               setPickupAddress(_address, true);
             } else {
-              setDestinationAddress(_address,true);
+              setDestinationAddress(_address, true);
             }
           } else {
             showCustomSnackBar(
@@ -327,6 +342,28 @@ class ParcelController extends GetxController implements GetxService {
     if (notify) {
       update();
     }
+  }
+
+  void setParcelType(String parcelType) {
+    _parcelType = parcelType;
+    try{
+     update();}catch(e){}
+  }
+
+  void setDeliveryCharge(double deliveryCharge) {
+    _deliveryCharge = deliveryCharge;
+    if (deliveryCharge> 0) {
+      try{
+      update();}catch(e){}
+    }
+  }
+  void setDeliveryFinalCharge(double deliveryCharge) {
+    _deliveryFinalCharge = deliveryCharge;
+    if (deliveryCharge> 0) {
+      try{
+      update();}catch(e){}
+    }
+    print("setDeliveryFinalCharge>>>"+_deliveryFinalCharge.toString());
   }
 
   void setPaymentIndex(int index, bool notify) {

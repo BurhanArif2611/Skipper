@@ -360,6 +360,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                         SizedBox(
                                             width: Dimensions
                                                 .PADDING_SIZE_EXTRA_SMALL),
+
                                         (_order != null &&
                                             _order.delivered == "" ?
                                         Text(
@@ -378,6 +379,29 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                         ) : SizedBox()),
                                       ]),
                                     ),
+                                    SizedBox(
+                                        width: Dimensions
+                                            .PADDING_SIZE_DEFAULT),
+                                    (_parcel && _order.delivery_type !=null?
+                                    Row(children: [
+
+                                      Text('Delivery Type: '.tr,
+                                          style: robotoRegular),
+                                      SizedBox(
+                                          width: Dimensions
+                                              .PADDING_SIZE_EXTRA_SMALL),
+
+                                      Text(
+                                        _order.delivery_type !=null ?_order.delivery_type.toString():""
+                                            .toString(),
+                                        style: robotoMedium.copyWith(
+                                            color:
+                                            Theme
+                                                .of(context)
+                                                .primaryColor),
+                                      ),
+
+                                    ]):SizedBox()),
                                     Divider(
                                         height: Dimensions.PADDING_SIZE_LARGE),
                                     SizedBox(

@@ -11,7 +11,7 @@ class AppConstants {
   static const double APP_VERSION = 2;
 
   //dev url
-   static const String BASE_URL = 'http://54.194.163.45:5000';
+   static const String BASE_URL = 'http://192.168.1.164:8000';
   //live url
  // static const String BASE_URL = 'https://portal.shapshap.com';
   static const String CATEGORY_URI = '/api/v1/categories';
@@ -112,7 +112,7 @@ class AppConstants {
       '/api/v1/customer/beneficiaries';
   static const String DELETE_BANK_ACCOUNT_URL =
       '/api/v1/customer/banks/account/delete?';
-  static int StoreID = 55;
+  static int StoreID = 1;
   static int ModelID = 1;
 
   static const String Store_ID = "store-id";

@@ -51,6 +51,8 @@ class ConfigModel {
   int dmTipsStatus;
   int refEarningStatus;
   double refEarningExchangeRate;
+  double p2_delivery_charge;
+  double p3_delivery_charge;
 
   ConfigModel(
       {this.businessName,
@@ -103,6 +105,8 @@ class ConfigModel {
         this.dmTipsStatus,
         this.refEarningStatus,
         this.refEarningExchangeRate,
+        this.p2_delivery_charge,
+        this.p3_delivery_charge,
       });
 
   ConfigModel.fromJson(Map<String, dynamic> json) {
@@ -176,6 +180,8 @@ class ConfigModel {
     dmTipsStatus = json['dm_tips_status'];
     refEarningStatus = json['ref_earning_status'];
     refEarningExchangeRate = json['ref_earning_exchange_rate']!=null? json['ref_earning_exchange_rate'].toDouble():0.0;
+    p2_delivery_charge = json['p2_delivery_charge']!=null? json['p2_delivery_charge'].toDouble():0.0;
+    p3_delivery_charge = json['p3_delivery_charge']!=null? json['p3_delivery_charge'].toDouble():0.0;
   }
 
   Map<String, dynamic> toJson() {
@@ -246,6 +252,9 @@ class ConfigModel {
     data['dm_tips_status'] = this.dmTipsStatus;
     data['ref_earning_status'] = this.refEarningStatus;
     data['ref_earning_exchange_rate'] = this.refEarningExchangeRate;
+    data['p2_delivery_charge'] = this.p2_delivery_charge;
+    data['p3_delivery_charge'] = this.p3_delivery_charge;
+    return data;
     return data;
   }
 }

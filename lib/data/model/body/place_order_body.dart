@@ -33,6 +33,7 @@ class PlaceOrderBody {
   String _house;
   String _floor;
   String _dmTips;
+  String _deliveryType;
  // String _task_uploaded_by;
 
 
@@ -63,6 +64,7 @@ class PlaceOrderBody {
         @required String floor,
         @required List<AddressModel> receiver_addresses,
         @required String dmTips,
+        @required String delivery_type,
         // @required String task_uploaded_by,
         // @required List<TaskModel> task_title,
 
@@ -93,6 +95,7 @@ class PlaceOrderBody {
     this._floor = floor;
     this._receiver_addresses = receiver_addresses;
     this._dmTips = dmTips;
+    this._deliveryType = delivery_type;
     // this._task_uploaded_by = task_uploaded_by;
     // this._task_title = task_title;
 
@@ -124,6 +127,7 @@ class PlaceOrderBody {
   List<AddressModel> get receiver_addresses => _receiver_addresses;
   //List<TaskModel> get task_title => _task_title;
   String get dmTips => _dmTips;
+  String get delivery_type => _deliveryType;
   //String get task_uploaded_by => _task_uploaded_by;
 
 
@@ -159,6 +163,7 @@ class PlaceOrderBody {
     _house = json['apartment'];
     _floor = json['floor'];
     _dmTips = json['dm_tips'];
+    _deliveryType = json['delivery_type'];
    // _task_uploaded_by = json['task_uploaded_by'];
 
 
@@ -215,6 +220,7 @@ class PlaceOrderBody {
     data['contact_person_name'] = this._contactPersonName;
     data['contact_person_number'] = this._contactPersonNumber;
     data['address_type'] = this._addressType;
+    data['delivery_type'] = this._deliveryType;
     if (this._parcelCategoryId != null) {
       data['parcel_category_id'] = this._parcelCategoryId;
     }

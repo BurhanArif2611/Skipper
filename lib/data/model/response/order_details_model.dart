@@ -14,6 +14,7 @@ class OrderDetailsModel {
   double taxAmount;
   String variant;
   String order_type;
+  String delivery_type;
   String createdAt;
   String updatedAt;
   int itemCampaignId;
@@ -45,6 +46,7 @@ class OrderDetailsModel {
     this.is_reviewed_count,
     this.is_dm_reviewed_count,
     this.order_type,
+    this.delivery_type,
   });
 
   OrderDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -73,6 +75,7 @@ class OrderDetailsModel {
     discountType = json['discount_type'] != null ? json['discount_type'] : "";
     quantity = json['quantity'];
     order_type = json['order_type'];
+    delivery_type = json['delivery_type'];
     is_reviewed_count = json['is_reviewed_count'];
     is_dm_reviewed_count = json['is_dm_reviewed_count'];
     taxAmount = json['tax_amount'] != null
@@ -119,6 +122,7 @@ class OrderDetailsModel {
     data['discount_on_item'] = this.discountOnItem;
     data['discount_type'] = this.discountType;
     data['order_type'] = this.order_type;
+    data['delivery_type'] = this.delivery_type;
     data['quantity'] = this.quantity;
     data['tax_amount'] = this.taxAmount;
     data['variant'] = this.variant;

@@ -43,6 +43,7 @@ import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
 
 import '../../base/custom_loader.dart';
+import '../../base/text_field_shadow.dart';
 
 class CheckoutScreen extends StatefulWidget {
   final List<CartModel> cartList;
@@ -1764,6 +1765,110 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 }
               })
           /*: Center(child: CircularProgressIndicator())*/,
+    );
+  }
+  void showCustomDialog(BuildContext context) {
+    TextEditingController nameController = TextEditingController();
+    TextEditingController phoneController = TextEditingController();
+    TextEditingController streetController = TextEditingController();
+    TextEditingController houseController = TextEditingController();
+    TextEditingController floorController = TextEditingController();
+
+    showGeneralDialog(
+      context: context,
+      barrierLabel: "Barrier",
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.5),
+      transitionDuration: Duration(milliseconds: 700),
+      pageBuilder: (context, animation1, animation2) {
+        return Center(
+            child: Container(
+              height: 600,
+              child: Card(
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Container(
+                    child: Column(children: [
+
+                      Column(children: [
+                        Center(
+                            child: Text('receiver_information'.tr,
+                                style: robotoMedium)),
+                        SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+
+
+                      ]),
+                      Column(children: [
+                        Center(
+                            child: Text('destination_information'.tr,
+                                style: robotoMedium)),
+                        SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                        TextFieldShadow(
+                          child: MyTextField(
+                            hintText:
+                            "${'street_number'.tr} (${'optional'.tr})",
+                            inputType: TextInputType.streetAddress,
+                            focusNode: _streetNode,
+                            nextFocus: _houseNode,
+                            inputAction:TextInputAction.done,
+                            controller: streetController,
+                          ),
+                        ),
+                        SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                        Row(children: [
+                          Expanded(
+                            child: TextFieldShadow(
+                              child: MyTextField(
+                                hintText: "${'house'.tr} (${'optional'.tr})",
+                                inputType: TextInputType.text,
+                                focusNode: _houseNode,
+                                nextFocus: _floorNode,
+                                inputAction:TextInputAction.done,
+                                controller: houseController,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+                          Expanded(
+                            child: TextFieldShadow(
+                              child: MyTextField(
+                                hintText: "${'floor'.tr} (${'optional'.tr})",
+                                inputType: TextInputType.text,
+                                focusNode: _floorNode,
+                                inputAction: TextInputAction.done,
+                                controller: floorController,
+                              ),
+                            ),
+                          ),
+                        ]),
+                        SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                      ]),
+
+                    ]),
+                  ),
+                ),
+                color: Colors.white,
+              ),
+            ),
+          );
+
+      },
+      transitionBuilder: (context, anim, __, widget) {
+        Tween<Offset> tween;
+        if (anim.status == AnimationStatus.reverse) {
+          tween = Tween(begin: Offset(-1, 0), end: Offset.zero);
+        } else {
+          tween = Tween(begin: Offset(1, 0), end: Offset.zero);
+        }
+
+        return SlideTransition(
+          position: tween.animate(anim),
+          child: FadeTransition(
+            opacity: anim,
+            child: widget,
+          ),
+        );
+      },
     );
   }
 }

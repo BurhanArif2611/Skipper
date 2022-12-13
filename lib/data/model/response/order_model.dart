@@ -104,6 +104,7 @@ class OrderModel {
   int scheduled;
   double storeDiscountAmount;
   String failed;
+  String delivery_type;
   int detailsCount;
   String orderAttachment;
   String chargePayer;
@@ -161,6 +162,7 @@ class OrderModel {
         this.errand_bids,
         this.errand_tasks,
         this.dmTips,
+        this.delivery_type,
       });
 
   OrderModel.fromJson(Map<String, dynamic> json) {
@@ -198,6 +200,7 @@ class OrderModel {
     orderAttachment = json['order_attachment'];
     chargePayer = json['charge_payer'];
     moduleType = json['module_type'];
+    delivery_type = json['delivery_type'];
     deliveryMan = json['delivery_man'] != null ? new DeliveryMan.fromJson(json['delivery_man']) : null;
     store = json['store'] != null ? new Store.fromJson(json['store']) : null;
     deliveryAddress = json['delivery_address'] != null ? new AddressModel.fromJson(json['delivery_address']) : null;
@@ -259,6 +262,7 @@ class OrderModel {
     data['charge_payer'] = this.chargePayer;
     data['module_type'] = this.moduleType;
     data['details_count'] = this.detailsCount;
+    data['delivery_type'] = this.delivery_type;
     if (this.deliveryMan != null) {
       data['delivery_man'] = this.deliveryMan.toJson();
     }
