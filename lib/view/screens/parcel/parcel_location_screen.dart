@@ -103,6 +103,7 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen> with Ticker
           return false;
     },
     child: Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: CustomAppBar(title: 'parcel_location'.tr),
       endDrawer: MenuDrawer(),
       body: GetBuilder<ParcelController>(builder: (parcelController) {

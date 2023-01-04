@@ -268,7 +268,7 @@ class _LocationView extends State<LocationView> {
                                     Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                            'Take the picture of the home front',
+                                            'Take the Picture of Product',
                                             style: robotoMedium.copyWith(
                                                 color: Theme.of(context)
                                                     .disabledColor,
@@ -395,7 +395,13 @@ class _LocationView extends State<LocationView> {
                                   } else if (main_commentController
                                       .text.isEmpty) {
                                     showCustomSnackBar('Enter task comment');
-                                  } else {
+                                  } else if (Get.find<ParcelController>()
+                                      .pickedFileList
+                                      .length==0) {
+                                    showCustomSnackBar('Please select one Task image !');
+                                  }
+                                  else {
+
                                     List<File_Unitpath> file_raw =
                                         List<File_Unitpath>();
                                     for (int i = 0;
@@ -508,7 +514,7 @@ class _LocationView extends State<LocationView> {
                                     fontSize: Dimensions.fontSizeLarge))),
                         Align(
                             alignment: Alignment.centerLeft,
-                            child: Text('Take the picture of the home front',
+                            child: Text('Take the Picture of Product',
                                 style: robotoMedium.copyWith(
                                     color: Theme.of(context).disabledColor,
                                     fontSize: Dimensions.fontSizeLarge))),
@@ -552,7 +558,7 @@ class _LocationView extends State<LocationView> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Ttile',
+                            'Title',
                             style: robotoRegular.copyWith(
                                 fontSize: Dimensions.fontSizeSmall,
                                 color: Theme.of(context).disabledColor),
@@ -563,6 +569,7 @@ class _LocationView extends State<LocationView> {
                           hintText: 'Enter Title',
                           inputType: TextInputType.name,
                           controller: titleController,
+                          inputAction: TextInputAction.done,
                           autoFocus: true,
                           capitalization: TextCapitalization.words,
                         ),
@@ -581,6 +588,7 @@ class _LocationView extends State<LocationView> {
                           hintText: 'Type here...',
                           inputType: TextInputType.name,
                           maxLines: 5,
+                          inputAction: TextInputAction.done,
                           controller: commentController,
                           capitalization: TextCapitalization.words,
                         ),
@@ -596,7 +604,10 @@ class _LocationView extends State<LocationView> {
                               showCustomSnackBar('Enter task title');
                             } else if (commentController.text.isEmpty) {
                               showCustomSnackBar('Enter task comment');
-                            } else {
+                            }else if (parcelController.pickedFileList.length==0) {
+                              showCustomSnackBar('Please select one Task image !');
+                            }
+                            else {
                               List<File_Unitpath> file_raw =
                                   List<File_Unitpath>();
                               for (int i = 0;
@@ -705,7 +716,7 @@ class _LocationView extends State<LocationView> {
               ]),
               Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Take the picture of the home front',
+                  child: Text('Take the Picture of Product',
                       style: robotoMedium.copyWith(
                           color: Theme.of(context).disabledColor,
                           fontSize: Dimensions.fontSizeLarge))),

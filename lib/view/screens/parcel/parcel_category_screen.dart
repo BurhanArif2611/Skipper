@@ -15,9 +15,6 @@ import 'package:sixam_mart/view/base/custom_app_bar.dart';
 import 'package:sixam_mart/view/base/custom_image.dart';
 import 'package:sixam_mart/view/base/footer_view.dart';
 import 'package:sixam_mart/view/screens/home/web/module_widget.dart';
-
-import '../../../controller/banner_controller.dart';
-import '../../../data/model/response/config_model.dart';
 import '../../../util/app_constants.dart';
 
 class ParcelCategoryScreen extends StatefulWidget {

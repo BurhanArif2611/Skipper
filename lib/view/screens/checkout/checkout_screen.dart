@@ -206,7 +206,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         storeController.store.selfDeliverySystem == 1) {
                       _deliveryCharge = storeController.store.deliveryCharge;
                       _charge = storeController.store.deliveryCharge;
-                    } else if (storeController.store != null &&
+                    }
+                    else if (storeController.store != null &&
                         orderController.distance != null &&
                         orderController.distance != -1) {
                       _deliveryCharge = orderController.distance *
@@ -228,7 +229,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             .configModel
                             .minimumShippingCharge;
                       }
-                    } else if (locationController.addressList != null &&
+                    }
+                    else if (locationController.addressList != null &&
                         locationController.addressList.length > 0) {
                       try {
                         orderController.getDistanceInKM(
@@ -310,8 +312,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           (_price - _discount) + _addOns - _couponDiscount;
 
                       if (orderController.orderType == 'take_away' ||
-                          storeController.store.freeDelivery ||
-                          (Get.find<SplashController>()
+                          (storeController.store.freeDelivery &&
+                          Get.find<SplashController>()
                                       .configModel
                                       .freeDeliveryOver !=
                                   null &&
@@ -1524,7 +1526,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           String hostname = html.window.location.hostname;
           String protocol = html.window.location.protocol;
           String selectedUrl =
-              '${AppConstants.BASE_URL}/payment-mobile?order_id=$orderID&&customer_id=${Get.find<UserController>().userInfoModel.id}&&callback=$protocol//$hostname${RouteHelper.orderSuccess}?id=$orderID&status=';
+              '${AppConstants.BASE_URL}/payment-mobile?order_id=$orderID&customer_id=${Get.find<UserController>().userInfoModel.id}&&callback=$protocol//$hostname${RouteHelper.orderSuccess}?id=$orderID&status=';
           html.window.open(selectedUrl, "_self");
         } else {
           Get.offNamed(RouteHelper.getPaymentRoute(

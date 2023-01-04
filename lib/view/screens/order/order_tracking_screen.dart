@@ -57,7 +57,10 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'order_tracking'.tr),
+      appBar: CustomAppBar(title: 'order_tracking'.tr,onBackPressed: () {
+        Get.back();
+
+      }),
       endDrawer: MenuDrawer(),
       body: GetBuilder<OrderController>(builder: (orderController) {
         OrderModel _track;
@@ -89,15 +92,35 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
             onMapCreated: (GoogleMapController controller) {
               _controller = controller;
               _isLoading = false;
-              setMarker(
-                _track.store, _track.deliveryMan ?? DeliveryMan(location: ''),
-                _track.orderType == 'take_away' ? Get.find<LocationController>().position.latitude == 0 ? _track.deliveryAddress : AddressModel(
-                  latitude: Get.find<LocationController>().position.latitude.toString(),
-                  longitude: Get.find<LocationController>().position.longitude.toString(),
-                  address: Get.find<LocationController>().address,
-                ) : _track.deliveryAddress,
-                _track.orderType == 'take_away',
-              );
+              if(_track.orderType=="parcel"){
+                loadData(_track.dropoff_locations);
+
+              }
+              else {
+                setMarker(
+                  _track.store, _track.deliveryMan ?? DeliveryMan(location: ''),
+                  _track.orderType == 'take_away' ? Get
+                      .find<LocationController>()
+                      .position
+                      .latitude == 0 ? _track.deliveryAddress : AddressModel(
+                    latitude: Get
+                        .find<LocationController>()
+                        .position
+                        .latitude
+                        .toString(),
+                    longitude: Get
+                        .find<LocationController>()
+                        .position
+                        .longitude
+                        .toString(),
+                    address: Get
+                        .find<LocationController>()
+                        .address,
+                  ) : _track.deliveryAddress,
+                  _track.orderType == 'take_away',
+                    _track.orderType
+                );
+              }
             },
           ),
 
@@ -105,25 +128,53 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
           (_track !=null?
           Positioned(
             top: Dimensions.PADDING_SIZE_SMALL, left: Dimensions.PADDING_SIZE_SMALL, right: Dimensions.PADDING_SIZE_SMALL,
-            child: TrackingStepperWidget(status: _track.orderStatus, takeAway: _track.orderType == 'take_away'),
+            child: TrackingStepperWidget(status: _track.orderStatus, takeAway: _track.orderType == 'take_away',orderType:_track.orderType),
           ):SizedBox()),
-       /* (_track !=null && _track.orderStatus !=null && _track.store!=null&& _track.deliveryAddress!=null?
+        (_track !=null && _track.orderStatus !=null && _track.store!=null&& _track.deliveryAddress!=null?
           Positioned(
             bottom: Dimensions.PADDING_SIZE_SMALL, left: Dimensions.PADDING_SIZE_SMALL, right: Dimensions.PADDING_SIZE_SMALL,
             child: TrackDetailsView(status: _track.orderStatus!=null?_track.orderStatus:"", track: _track),
-          ):SizedBox()),*/
+          ):SizedBox()),
 
         ]))) : Center(child: CircularProgressIndicator());
       }),
     );
   }
+  void setDropMarker( String latitude,String longitude,String address) async {
+    Uint8List destinationImageData = await convertAssetToUnit8List(
+      Images.my_location_marker , width:  100,
+    );
+    LatLngBounds bounds;
+    _markers = HashSet<Marker>();
+    _markers.add(Marker(
+      markerId: MarkerId('destination'),
+      position: LatLng(double.parse(latitude),double.parse(longitude)),
+      infoWindow: InfoWindow(
+        title: 'Destination',
+        snippet:address,
+      ),
+      icon: GetPlatform.isWeb ? BitmapDescriptor.defaultMarker : BitmapDescriptor.fromBytes(destinationImageData),
+    )) ;
+    bounds = LatLngBounds(
+      southwest: LatLng(double.parse(latitude), double.parse(longitude)),
+      northeast: LatLng(double.parse(latitude), double.parse(longitude)),
+    );
+    LatLng centerBounds = LatLng(
+      (bounds.northeast.latitude + bounds.southwest.latitude)/2,
+      (bounds.northeast.longitude + bounds.southwest.longitude)/2,
+    );
+    _controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(target: centerBounds, zoom: GetPlatform.isWeb ? 10 : 17)));
 
-  void setMarker(Store store, DeliveryMan deliveryMan, AddressModel addressModel, bool takeAway) async {
+    if(!ResponsiveHelper.isWeb()) {
+      zoomToFit(_controller, bounds, centerBounds, padding: 1.5);
+    }
+  }
+  void setMarker(Store store, DeliveryMan deliveryMan, AddressModel addressModel, bool takeAway,String orderType) async {
     try {
       Uint8List restaurantImageData = await convertAssetToUnit8List(Images.restaurant_marker, width: 100);
       Uint8List deliveryBoyImageData = await convertAssetToUnit8List(Images.delivery_man_marker, width: 100);
       Uint8List destinationImageData = await convertAssetToUnit8List(
-        takeAway ? Images.my_location_marker : Images.user_marker,
+        takeAway ? Images.my_location_marker : orderType=="errand"?Images.task_marker: Images.user_marker,
         width: takeAway ? 50 : 100,
       );
 
@@ -167,7 +218,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
         icon: GetPlatform.isWeb ? BitmapDescriptor.defaultMarker : BitmapDescriptor.fromBytes(destinationImageData),
       )) : SizedBox();
 
-      store != null ? _markers.add(Marker(
+      orderType!="errand" && store != null ? _markers.add(Marker(
         markerId: MarkerId('store'),
         position: LatLng(double.parse(store.latitude), double.parse(store.longitude)),
         infoWindow: InfoWindow(
@@ -232,4 +283,35 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
     FrameInfo fi = await codec.getNextFrame();
     return (await fi.image.toByteData(format: ImageByteFormat.png)).buffer.asUint8List();
   }
+
+  void loadData( List<Receiver_details> dropoff_locations) async{
+   try {
+     for (int i = 0; i < dropoff_locations.length; i++) {
+       // final Uint8List markIcons = await getImages(dropoff_locations[i], 100);
+       Uint8List destinationImageData = await convertAssetToUnit8List(
+         Images.parcel_marker, width: 100,
+       );
+       // makers added according to index
+       _markers.add(
+           Marker(
+             // given marker id
+             markerId: MarkerId(i.toString()),
+             // given marker icon
+             icon: BitmapDescriptor.fromBytes(destinationImageData),
+             // given position
+             position: LatLng(
+                 double.parse(dropoff_locations[i].receiver_details.latitude),
+                 double.parse(dropoff_locations[i].receiver_details.longitude)),
+             infoWindow: InfoWindow(
+               // given title for marker
+               title: 'Drop Point: '+(i+1).toString(),
+               snippet:dropoff_locations[i].receiver_details.address,
+             ),
+           )
+       );
+       setState(() {});
+     }
+   }catch(e){}
+  }
+
 }

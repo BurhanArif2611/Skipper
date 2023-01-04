@@ -6,15 +6,8 @@ import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/model/response/address_model.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
-import 'package:sixam_mart/util/styles.dart';
-import 'package:sixam_mart/view/base/custom_image.dart';
-import 'package:sixam_mart/view/base/custom_loader.dart';
-import 'package:sixam_mart/view/base/title_widget.dart';
-import 'package:sixam_mart/view/screens/address/widget/address_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sixam_mart/view/screens/home/widget/banner_view.dart';
-import 'package:sixam_mart/view/screens/home/widget/popular_store_view.dart';
 import 'package:sixam_mart/view/screens/home/widget/store_branch.dart';
 
 class ModuleView extends StatelessWidget {

@@ -131,6 +131,7 @@ class ApiClient extends GetxService {
       ).timeout(Duration(seconds: timeoutInSeconds));
       return handleResponse(_response, uri);
     } catch (e) {
+      print('====> API Body:'+e.toString());
       return Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
@@ -165,6 +166,7 @@ class ApiClient extends GetxService {
           await Http.Response.fromStream(await _request.send());
       return handleResponse(_response, uri);
     } catch (e) {
+      print('====> API Body:'+e.toString());
       return Response(statusCode: 1, statusText: noInternetMessage);
     }
   }

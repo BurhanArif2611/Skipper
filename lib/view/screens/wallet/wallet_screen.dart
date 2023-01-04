@@ -14,10 +14,11 @@ import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/custom_app_bar.dart';
 import 'package:sixam_mart/view/base/menu_drawer.dart';
-import 'package:sixam_mart/view/base/no_data_screen.dart';
 import 'package:sixam_mart/view/base/not_logged_in_screen.dart';
 import 'package:sixam_mart/view/base/title_widget.dart';
-import 'package:sixam_mart/view/screens/wallet/widget/history_item.dart';
+import 'package:sixam_mart/view/screens/wallet/widget/order_view.dart';
+import 'package:sixam_mart/view/screens/wallet/widget/pending_order_view.dart';
+
 import 'package:sixam_mart/view/screens/wallet/widget/wallet_bottom_sheet.dart';
 
 import '../../base/confirmation_dialog.dart';
@@ -34,17 +35,19 @@ class WalletScreen extends StatefulWidget {
   State<WalletScreen> createState() => _WalletScreenState();
 }
 
-class _WalletScreenState extends State<WalletScreen> {
+class _WalletScreenState extends State<WalletScreen> with TickerProviderStateMixin {
   final ScrollController scrollController = ScrollController();
   final bool _isLoggedIn = Get.find<AuthController>().isLoggedIn();
+  TabController _tabController;
 
   @override
   void initState() {
     super.initState();
     if (_isLoggedIn) {
+      _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
       Get.find<UserController>().getUserInfo();
-      Get.find<WalletController>()
-          .getWalletTransactionList('1', false, widget.fromWallet);
+      Get.find<WalletController>().getWalletTransactionList('1',"accepted", false, widget.fromWallet);
+      Get.find<WalletController>().getWalletPendingTransactionList('1',"pending", false, widget.fromWallet);
 
       Get.find<WalletController>().setOffset(1);
       Get.find<WalletController>().bankList();
@@ -52,18 +55,38 @@ class _WalletScreenState extends State<WalletScreen> {
 
       scrollController?.addListener(() {
         if (scrollController.position.pixels ==
-                scrollController.position.maxScrollExtent &&
-            Get.find<WalletController>().transactionList != null &&
-            !Get.find<WalletController>().isLoading) {
+            scrollController.position.maxScrollExtent &&
+            Get
+                .find<WalletController>()
+                .transactionList != null &&
+            !Get
+                .find<WalletController>()
+                .isLoading) {
           int pageSize =
-              (Get.find<WalletController>().popularPageSize / 10).ceil();
-          if (Get.find<WalletController>().offset < pageSize) {
+          (Get
+              .find<WalletController>()
+              .popularPageSize / 10).ceil();
+          if (Get
+              .find<WalletController>()
+              .offset < pageSize) {
             Get.find<WalletController>()
-                .setOffset(Get.find<WalletController>().offset + 1);
+                .setOffset(Get
+                .find<WalletController>()
+                .offset + 1);
             print('end of the page');
             Get.find<WalletController>().showBottomLoader();
             Get.find<WalletController>().getWalletTransactionList(
-                Get.find<WalletController>().offset.toString(),
+                Get
+                    .find<WalletController>()
+                    .offset
+                    .toString(),"accepted",
+                false,
+                widget.fromWallet);
+            Get.find<WalletController>().getWalletPendingTransactionList(
+                Get
+                    .find<WalletController>()
+                    .offset
+                    .toString(),"pending",
                 false,
                 widget.fromWallet);
           }
@@ -82,7 +105,9 @@ class _WalletScreenState extends State<WalletScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).cardColor,
+      backgroundColor: Theme
+          .of(context)
+          .cardColor,
       endDrawer: MenuDrawer(),
       appBar: CustomAppBar(
           title: widget.fromWallet ? 'wallet'.tr : 'loyalty_points'.tr,
@@ -90,290 +115,353 @@ class _WalletScreenState extends State<WalletScreen> {
       body: GetBuilder<UserController>(builder: (userController) {
         return _isLoggedIn
             ? userController.userInfoModel != null
-                ? SafeArea(
-                    child: RefreshIndicator(
-                      onRefresh: () async {
-                        Get.find<WalletController>().getWalletTransactionList(
-                            '1', true, widget.fromWallet);
-                        Get.find<UserController>().getUserInfo();
-                      },
-                      child: SingleChildScrollView(
-                        controller: scrollController,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: Dimensions.PADDING_SIZE_DEFAULT),
-                        child: Center(
-                          child: SizedBox(
-                            width: Dimensions.WEB_MAX_WIDTH,
-                            child: GetBuilder<WalletController>(
-                                builder: (walletController) {
-                              return Column(children: [
-                                Stack(
-                                  children: [
-                                    Container(
-                                      padding: widget.fromWallet
-                                          ? EdgeInsets.all(Dimensions
-                                              .PADDING_SIZE_EXTRA_LARGE)
-                                          : EdgeInsets.only(
-                                              top: 40,
-                                              left: Dimensions
-                                                  .PADDING_SIZE_EXTRA_LARGE,
-                                              right: Dimensions
-                                                  .PADDING_SIZE_EXTRA_LARGE),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            Dimensions.RADIUS_DEFAULT),
-                                        color: widget.fromWallet
-                                            ? Theme.of(context).primaryColor
-                                            : Theme.of(context).cardColor,
-                                      ),
-                                      child: Row(
-                                          mainAxisAlignment: widget.fromWallet
-                                              ? MainAxisAlignment.start
-                                              : MainAxisAlignment.center,
-                                          children: [
-                                            Image.asset(
-                                                widget.fromWallet
-                                                    ? Images.wallet
-                                                    : Images.loyal,
-                                                height: 60,
-                                                width: 60,
-                                                color: widget.fromWallet
-                                                    ? Theme.of(context)
-                                                        .cardColor
-                                                    : null),
-                                            SizedBox(
-                                                width: Dimensions
-                                                    .PADDING_SIZE_EXTRA_LARGE),
-                                            widget.fromWallet
-                                                ? Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                        Text('wallet_amount'.tr,
-                                                            style: robotoRegular.copyWith(
-                                                                fontSize: Dimensions
-                                                                    .fontSizeSmall,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .cardColor)),
-                                                        SizedBox(
-                                                            height: Dimensions
-                                                                .PADDING_SIZE_SMALL),
-                                                        Text(
-                                                          PriceConverter.convertPrice(
-                                                              userController
-                                                                  .userInfoModel
-                                                                  .walletBalance),
-                                                          style: robotoBold.copyWith(
-                                                              fontSize: Dimensions
-                                                                  .fontSizeOverLarge,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .cardColor),
-                                                        ),
-                                                      ])
-                                                : Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                        Text(
-                                                          userController
-                                                                      .userInfoModel
-                                                                      .loyaltyPoint ==
-                                                                  null
-                                                              ? '0'
-                                                              : userController
-                                                                  .userInfoModel
-                                                                  .loyaltyPoint
-                                                                  .toString(),
-                                                          style: robotoBold.copyWith(
-                                                              fontSize: Dimensions
-                                                                  .fontSizeOverLarge,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .bodyText1
-                                                                  .color),
-                                                        ),
-                                                        Text(
-                                                          'loyalty_points'.tr +
-                                                              ' !',
-                                                          style: robotoRegular.copyWith(
-                                                              fontSize: Dimensions
-                                                                  .fontSizeSmall,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .bodyText1
-                                                                  .color),
-                                                        ),
-                                                        SizedBox(
-                                                            height: Dimensions
-                                                                .PADDING_SIZE_SMALL),
-                                                      ])
-                                          ]),
-                                    ),
-                                    widget.fromWallet
-                                        ? SizedBox.shrink()
-                                        : Positioned(
-                                            top: 10,
-                                            right: 10,
-                                            child: InkWell(
-                                              onTap: () {
-                                                ResponsiveHelper.isMobile(
-                                                        context)
-                                                    ? Get.bottomSheet(
-                                                        WalletBottomSheet(
-                                                            fromWallet: widget
-                                                                .fromWallet))
-                                                    : Get.dialog(
-                                                        Dialog(
-                                                            child: WalletBottomSheet(
-                                                                fromWallet: widget
-                                                                    .fromWallet)),
-                                                      );
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    'convert_to_currency'.tr,
-                                                    style:
-                                                        robotoRegular.copyWith(
-                                                            fontSize: Dimensions
-                                                                .fontSizeSmall,
-                                                            color: widget
-                                                                    .fromWallet
-                                                                ? Theme.of(
-                                                                        context)
-                                                                    .cardColor
-                                                                : Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .bodyText1
-                                                                    .color),
-                                                  ),
-                                                  Icon(
-                                                      Icons
-                                                          .keyboard_arrow_down_outlined,
-                                                      size: 16,
-                                                      color: widget
-                                                              .fromWallet
-                                                          ? Theme.of(context)
-                                                              .cardColor
-                                                          : Theme.of(context)
-                                                              .textTheme
-                                                              .bodyText1
-                                                              .color)
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                  ],
+            ? SafeArea(
+          child: /*RefreshIndicator(
+            onRefresh: () async {
+              Get.find<WalletController>().getWalletTransactionList(
+                  '1',"", true, widget.fromWallet);
+              Get.find<UserController>().getUserInfo();
+            },
+            child: */  Column(children: [
+            SingleChildScrollView(
+              controller: scrollController,
+              padding: EdgeInsets.symmetric(
+                  horizontal: Dimensions.PADDING_SIZE_DEFAULT),
+              child: Center(
+                child: SizedBox(
+                  width: Dimensions.WEB_MAX_WIDTH,
+                  child: GetBuilder<WalletController>(
+                      builder: (walletController) {
+                        return Column(children: [
+                          Stack(
+                            children: [
+                              Container(
+                                padding: widget.fromWallet
+                                    ? EdgeInsets.all(Dimensions
+                                    .PADDING_SIZE_EXTRA_LARGE)
+                                    : EdgeInsets.only(
+                                    top: 40,
+                                    left: Dimensions
+                                        .PADDING_SIZE_EXTRA_LARGE,
+                                    right: Dimensions
+                                        .PADDING_SIZE_EXTRA_LARGE),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                      Dimensions.RADIUS_DEFAULT),
+                                  color: widget.fromWallet
+                                      ? Theme
+                                      .of(context)
+                                      .primaryColor
+                                      : Theme
+                                      .of(context)
+                                      .cardColor,
                                 ),
-                                widget.fromWallet
-                                    ? Row(children: [
-                                        Expanded(
-                                            child: CustomButton(
-                                          height: 40,
-                                          buttonText:
-                                              Get.find<WalletController>()
-                                                          .bankAccountList
-                                                          .length >
-                                                      0
-                                                  ? 'View Bank AC'.tr
-                                                  : 'Add Bank AC'.tr,
-                                          fontSize: 12,
-                                          onPressed: () => {
-                                            Get.find<WalletController>()
-                                                .filterList
-                                                .clear(),
-                                            if (Get.find<WalletController>()
-                                                    .bankAccountList
-                                                    .length >
-                                                0)
-                                              {
-                                                showAddAccountDetailsDialog(
-                                                    context)
-                                              }
-                                            else
-                                              {
-                                                showAddAccountCustomDialog(
-                                                    context)
-                                              }
-                                          },
-                                        )),
-                                        SizedBox(
-                                            width:
-                                                Dimensions.PADDING_SIZE_SMALL),
-                                        Expanded(
-                                            child: CustomButton(
-                                                height: 40,
-                                                fontSize: 12,
-                                                buttonText: 'Add Fund'.tr,
-                                                onPressed: () => {
-                                                      /*if (Get.find<WalletController>()
+                                child: Row(
+                                    mainAxisAlignment: widget.fromWallet
+                                        ? MainAxisAlignment.start
+                                        : MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                          widget.fromWallet
+                                              ? Images.wallet
+                                              : Images.loyal,
+                                          height: 60,
+                                          width: 60,
+                                          color: widget.fromWallet
+                                              ? Theme
+                                              .of(context)
+                                              .cardColor
+                                              : null),
+                                      SizedBox(
+                                          width: Dimensions
+                                              .PADDING_SIZE_EXTRA_LARGE),
+                                      widget.fromWallet
+                                          ? Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment
+                                              .start,
+                                          mainAxisSize:
+                                          MainAxisSize.min,
+                                          children: [
+                                            Text('wallet_amount'.tr,
+                                                style: robotoRegular.copyWith(
+                                                    fontSize: Dimensions
+                                                        .fontSizeSmall,
+                                                    color: Theme
+                                                        .of(
+                                                        context)
+                                                        .cardColor)),
+                                            SizedBox(
+                                                height: Dimensions
+                                                    .PADDING_SIZE_SMALL),
+                                            Text(
+                                              PriceConverter.convertPrice(
+                                                  userController
+                                                      .userInfoModel
+                                                      .walletBalance),
+                                              style: robotoBold.copyWith(
+                                                  fontSize: Dimensions
+                                                      .fontSizeOverLarge,
+                                                  color: Theme
+                                                      .of(
+                                                      context)
+                                                      .cardColor),
+                                            ),
+                                          ])
+                                          : Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment
+                                              .center,
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              userController
+                                                  .userInfoModel
+                                                  .loyaltyPoint ==
+                                                  null
+                                                  ? '0'
+                                                  : userController
+                                                  .userInfoModel
+                                                  .loyaltyPoint
+                                                  .toString(),
+                                              style: robotoBold.copyWith(
+                                                  fontSize: Dimensions
+                                                      .fontSizeOverLarge,
+                                                  color: Theme
+                                                      .of(
+                                                      context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      .color),
+                                            ),
+                                            Text(
+                                              'loyalty_points'.tr +
+                                                  ' !',
+                                              style: robotoRegular.copyWith(
+                                                  fontSize: Dimensions
+                                                      .fontSizeSmall,
+                                                  color: Theme
+                                                      .of(
+                                                      context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      .color),
+                                            ),
+                                            SizedBox(
+                                                height: Dimensions
+                                                    .PADDING_SIZE_SMALL),
+                                          ])
+                                    ]),
+                              ),
+                              widget.fromWallet
+                                  ? SizedBox.shrink()
+                                  : Positioned(
+                                top: 10,
+                                right: 10,
+                                child: InkWell(
+                                  onTap: () {
+                                    ResponsiveHelper.isMobile(
+                                        context)
+                                        ? Get.bottomSheet(
+                                        WalletBottomSheet(
+                                            fromWallet: widget
+                                                .fromWallet))
+                                        : Get.dialog(
+                                      Dialog(
+                                          child: WalletBottomSheet(
+                                              fromWallet: widget
+                                                  .fromWallet)),
+                                    );
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'convert_to_currency'.tr,
+                                        style:
+                                        robotoRegular.copyWith(
+                                            fontSize: Dimensions
+                                                .fontSizeSmall,
+                                            color: widget
+                                                .fromWallet
+                                                ? Theme
+                                                .of(
+                                                context)
+                                                .cardColor
+                                                : Theme
+                                                .of(
+                                                context)
+                                                .textTheme
+                                                .bodyText1
+                                                .color),
+                                      ),
+                                      Icon(
+                                          Icons
+                                              .keyboard_arrow_down_outlined,
+                                          size: 16,
+                                          color: widget
+                                              .fromWallet
+                                              ? Theme
+                                              .of(context)
+                                              .cardColor
+                                              : Theme
+                                              .of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              .color)
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          widget.fromWallet
+                              ? Row(children: [
+                            Expanded(
+                                child: CustomButton(
+                                  height: 40,
+                                  buttonText:
+                                  Get
+                                      .find<WalletController>()
+                                      .bankAccountList
+                                      .length >
+                                      0
+                                      ? 'View Bank AC'.tr
+                                      : 'Add Bank AC'.tr,
+                                  fontSize: 12,
+                                  onPressed: () =>
+                                  {
+                                    Get
+                                        .find<WalletController>()
+                                        .filterList
+                                        .clear(),
+                                    if (Get
+                                        .find<WalletController>()
+                                        .bankAccountList
+                                        .length >
+                                        0)
+                                      {
+                                        showAddAccountDetailsDialog(
+                                            context)
+                                      }
+                                    else
+                                      {
+                                        showAddAccountCustomDialog(
+                                            context)
+                                      }
+                                  },
+                                )),
+                            SizedBox(
+                                width:
+                                Dimensions.PADDING_SIZE_SMALL),
+                            Expanded(
+                                child: CustomButton(
+                                    height: 40,
+                                    fontSize: 12,
+                                    buttonText: 'Add Fund'.tr,
+                                    onPressed: () =>
+                                    {
+                                      /*if (Get.find<WalletController>()
                                                         .bankAccountList
                                                         .length >
                                                     0)
                                                   {*/
-                                                      showAddFundCustomDialog(
-                                                          context)
-                                                      /* }
+                                      showAddFundCustomDialog(
+                                          context)
+                                      /* }
                                                 else
                                                   {
                                                     showCustomSnackBar(
                                                         'No account added please add bank account first',
                                                         isError: false)
                                                   }*/
-                                                      ,
-                                                    })),
-                                        SizedBox(
-                                            width:
-                                                Dimensions.PADDING_SIZE_SMALL),
-                                        Expanded(
-                                            child: CustomButton(
-                                                height: 40,
-                                                fontSize: 12,
-                                                buttonText: 'Withdraw Fund',
-                                                onPressed: () => {
-                                                      if (Get.find<
-                                                                  WalletController>()
-                                                              .bankAccountList
-                                                              .length >
-                                                          0)
-                                                        {
-                                                          showWithdrawFundCustomDialog(
-                                                              context)
-                                                        }
-                                                      else
-                                                        {
-                                                          showCustomSnackBar(
-                                                              'No account added please add bank account first',
-                                                              isError: false)
-                                                        }
-                                                    })),
-                                      ])
-                                    : SizedBox(
-                                        height: Dimensions.PADDING_SIZE_SMALL),
-                                Column(children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        top: Dimensions
-                                            .PADDING_SIZE_EXTRA_LARGE),
-                                    child: TitleWidget(
-                                        title: 'transaction_history'.tr),
-                                  ),
-                                  walletController.transactionList != null
-                                      ? walletController
-                                                  .transactionList.length >
-                                              0
-                                          ? GridView.builder(
+                                      ,
+                                    })),
+                            SizedBox(
+                                width:
+                                Dimensions.PADDING_SIZE_SMALL),
+                            Expanded(
+                                child: CustomButton(
+                                    height: 40,
+                                    fontSize: 12,
+                                    buttonText: 'Withdraw Fund',
+                                    onPressed: () =>
+                                    {
+                                      if (Get
+                                          .find<
+                                          WalletController>()
+                                          .bankAccountList
+                                          .length >
+                                          0)
+                                        {
+                                          showWithdrawFundCustomDialog(
+                                              context)
+                                        }
+                                      else
+                                        {
+                                          showCustomSnackBar(
+                                              'No account added please add bank account first',
+                                              isError: false)
+                                        }
+                                    })),
+                          ])
+                              : SizedBox(
+                              height: Dimensions.PADDING_SIZE_SMALL),
+                          Column(children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: Dimensions
+                                      .PADDING_SIZE_EXTRA_LARGE),
+                              child: TitleWidget(
+                                  title: 'transaction_history'.tr),
+                            ),
+                        Column(children: [
+                        Center(
+                        child: Container(
+                        width: Dimensions.WEB_MAX_WIDTH,
+                        color: Theme.of(context).cardColor,
+                        child:
+                          TabBar(
+                              controller: _tabController,
+                              indicatorColor: Theme
+                                  .of(context)
+                                  .primaryColor,
+                              indicatorWeight: 3,
+                              labelColor: Theme
+                                  .of(context)
+                                  .primaryColor,
+                              unselectedLabelColor: Theme
+                                  .of(context)
+                                  .disabledColor,
+                              unselectedLabelStyle: robotoRegular.copyWith(
+                                  color: Theme
+                                      .of(context)
+                                      .disabledColor,
+                                  fontSize: Dimensions.fontSizeSmall),
+                              labelStyle: robotoBold.copyWith(
+                                  fontSize: Dimensions.fontSizeSmall,
+                                  color: Theme
+                                      .of(context)
+                                      .primaryColor),
+                              tabs: [
+                                Tab(text: 'Success'.tr),
+                                Tab(text: 'Pending'.tr),
+                              ],
+                            ))),
+
+                           /* walletController.transactionList != null
+                                ? walletController
+                                .transactionList.length > 0
+                                ?
+                            Expanded(child: TabBarView(
+                              controller: _tabController,
+                              children: [
+                                OrderView(isRunning: true),
+                                OrderView(isRunning: false),
+                              ],
+                            )):NoDataScreen(
+                                text: 'no_data_found'.tr)
+                            *//* GridView.builder(
                                               key: UniqueKey(),
                                               gridDelegate:
                                                   SliverGridDelegateWithFixedCrossAxisCount(
@@ -415,27 +503,40 @@ class _WalletScreenState extends State<WalletScreen> {
                                               },
                                             )
                                           : NoDataScreen(
-                                              text: 'no_data_found'.tr)
-                                      : WalletShimmer(
-                                          walletController: walletController),
-                                  walletController.isLoading
-                                      ? Center(
-                                          child: Padding(
-                                          padding: EdgeInsets.all(
-                                              Dimensions.PADDING_SIZE_SMALL),
-                                          child: CircularProgressIndicator(),
-                                        ))
-                                      : SizedBox(),
-                                ])
-                              ]);
-                            }),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                : Center(child: CircularProgressIndicator())
+                                              text: 'no_data_found'.tr)*//*
+                                : WalletShimmer(
+                                walletController: walletController),*/
+]),
+                            walletController.isLoading
+                                ? Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(
+                                      Dimensions.PADDING_SIZE_SMALL),
+                                  child: CircularProgressIndicator(),
+                                ))
+                                : SizedBox(),
+                          ])
+                        ]);
+                      }),
+                ),
+              ),
+            ),
+
+              Expanded(child: TabBarView(
+                controller: _tabController,
+                children: [
+                  OrderView(isRunning: true),
+                  PendingOrderView(isRunning: false),
+                ],
+              ))
+            ]),
+          /*),*/
+
+        )
+            : Center(child: CircularProgressIndicator())
             : NotLoggedInScreen();
+
+
       }),
     );
   }
@@ -444,7 +545,7 @@ class _WalletScreenState extends State<WalletScreen> {
     TextEditingController bankNameController = TextEditingController();
     TextEditingController bankCodeController = TextEditingController();
     TextEditingController accountnumberController = TextEditingController();
-    TextEditingController holder_nameController = TextEditingController();
+    TextEditingController holderNameController = TextEditingController();
 
     showGeneralDialog(
       context: context,
@@ -471,7 +572,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   fontSize: Dimensions.fontSizeLarge))),
                       /*  Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Take the picture of the home front',
+                          child: Text('Take the Picture of Product',
                               style: robotoMedium.copyWith(
                                   color: Theme.of(context).disabledColor,
                                   fontSize: Dimensions.fontSizeLarge))),*/
@@ -482,7 +583,9 @@ class _WalletScreenState extends State<WalletScreen> {
                           'Bank Name',
                           style: robotoRegular.copyWith(
                               fontSize: Dimensions.fontSizeSmall,
-                              color: Theme.of(context).disabledColor),
+                              color: Theme
+                                  .of(context)
+                                  .disabledColor),
                         ),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -495,44 +598,50 @@ class _WalletScreenState extends State<WalletScreen> {
                                   strokeWidth: 0.2,
                                   child: TypeAheadField(
                                     textFieldConfiguration:
-                                        TextFieldConfiguration(
+                                    TextFieldConfiguration(
                                       controller: bankNameController,
                                       textInputAction: TextInputAction.search,
                                       autofocus: true,
                                       textCapitalization:
-                                          TextCapitalization.words,
+                                      TextCapitalization.words,
                                       keyboardType: TextInputType.streetAddress,
                                       decoration: InputDecoration(
                                         hintText: 'Search Bank Name'.tr,
                                         border: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(10),
+                                          BorderRadius.circular(10),
                                           borderSide: BorderSide(
                                               style: BorderStyle.none,
                                               width: 0),
                                         ),
-                                        hintStyle: Theme.of(context)
+                                        hintStyle: Theme
+                                            .of(context)
                                             .textTheme
                                             .headline2
                                             .copyWith(
-                                              fontSize:
-                                                  Dimensions.fontSizeDefault,
-                                              color: Theme.of(context)
-                                                  .disabledColor,
-                                            ),
+                                          fontSize:
+                                          Dimensions.fontSizeDefault,
+                                          color: Theme
+                                              .of(context)
+                                              .disabledColor,
+                                        ),
                                         filled: true,
-                                        fillColor: Theme.of(context).cardColor,
+                                        fillColor: Theme
+                                            .of(context)
+                                            .cardColor,
                                       ),
-                                      style: Theme.of(context)
+                                      style: Theme
+                                          .of(context)
                                           .textTheme
                                           .headline2
                                           .copyWith(
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1
-                                                .color,
-                                            fontSize: Dimensions.fontSizeLarge,
-                                          ),
+                                        color: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .color,
+                                        fontSize: Dimensions.fontSizeLarge,
+                                      ),
                                     ),
                                     suggestionsCallback: (pattern) async {
                                       print("suggestionsCallback>>" +
@@ -551,17 +660,19 @@ class _WalletScreenState extends State<WalletScreen> {
                                             child: Text(suggestion.name,
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
-                                                style: Theme.of(context)
+                                                style: Theme
+                                                    .of(context)
                                                     .textTheme
                                                     .headline2
                                                     .copyWith(
-                                                      color: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1
-                                                          .color,
-                                                      fontSize: Dimensions
-                                                          .fontSizeLarge,
-                                                    )),
+                                                  color: Theme
+                                                      .of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      .color,
+                                                  fontSize: Dimensions
+                                                      .fontSizeLarge,
+                                                )),
                                           ),
                                         ]),
                                       );
@@ -608,7 +719,9 @@ class _WalletScreenState extends State<WalletScreen> {
                           'Holder Name',
                           style: robotoRegular.copyWith(
                               fontSize: Dimensions.fontSizeSmall,
-                              color: Theme.of(context).disabledColor),
+                              color: Theme
+                                  .of(context)
+                                  .disabledColor),
                         ),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
@@ -622,7 +735,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                 child: MyTextField(
                                   hintText: 'Enter Holder Name',
                                   inputType: TextInputType.name,
-                                  controller: holder_nameController,
+                                  controller: holderNameController,
                                   capitalization: TextCapitalization.words,
                                 ))),
                       ),
@@ -633,7 +746,9 @@ class _WalletScreenState extends State<WalletScreen> {
                           'Account no.',
                           style: robotoRegular.copyWith(
                               fontSize: Dimensions.fontSizeSmall,
-                              color: Theme.of(context).disabledColor),
+                              color: Theme
+                                  .of(context)
+                                  .disabledColor),
                         ),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
@@ -645,10 +760,10 @@ class _WalletScreenState extends State<WalletScreen> {
                                 color: Colors.black,
                                 strokeWidth: 0.2,
                                 child: MyTextField(
-                                  hintText: 'Enter Account no.',
-                                  inputType: TextInputType.number,
-                                  controller: accountnumberController,
-                                  capitalization: TextCapitalization.words,
+                                    hintText: 'Enter Account no.',
+                                    inputType: TextInputType.number,
+                                    controller: accountnumberController,
+                                    capitalization: TextCapitalization.words,
                                     inputAction: TextInputAction.done
                                 ))),
                       ),
@@ -657,29 +772,29 @@ class _WalletScreenState extends State<WalletScreen> {
                       GetBuilder<WalletController>(builder: (orderController) {
                         return !orderController.isLoading
                             ? CustomButton(
-                                // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                                buttonText: 'submit'.tr,
-                                onPressed: () {
-                                  if (bankCodeController.text.isEmpty) {
-                                    showCustomSnackBar('Select Bank');
-                                  } else if (holder_nameController
-                                      .text.isEmpty) {
-                                    showCustomSnackBar('Enter holder name !');
-                                  } else if (accountnumberController
-                                      .text.isEmpty) {
-                                    showCustomSnackBar(
-                                        'Enter Account number !');
-                                  } else {
-                                    Get.find<WalletController>()
-                                        .addAcountToWallet(
-                                            bankCodeController.text.toString(),
-                                            accountnumberController.text
-                                                .toString(),
-                                            holder_nameController.text
-                                                .toString());
-                                  }
-                                },
-                              )
+                          // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                          buttonText: 'submit'.tr,
+                          onPressed: () {
+                            if (bankCodeController.text.isEmpty) {
+                              showCustomSnackBar('Select Bank');
+                            } else if (holderNameController
+                                .text.isEmpty) {
+                              showCustomSnackBar('Enter holder name !');
+                            } else if (accountnumberController
+                                .text.isEmpty) {
+                              showCustomSnackBar(
+                                  'Enter Account number !');
+                            } else {
+                              Get.find<WalletController>()
+                                  .addAcountToWallet(
+                                  bankCodeController.text.toString(),
+                                  accountnumberController.text
+                                      .toString(),
+                                  holderNameController.text
+                                      .toString());
+                            }
+                          },
+                        )
                             : Center(child: CircularProgressIndicator());
                       }),
                     ])),
@@ -695,7 +810,6 @@ class _WalletScreenState extends State<WalletScreen> {
 
   void showAddFundCustomDialog(BuildContext context) {
     TextEditingController titleController = TextEditingController();
-    TextEditingController commentController = TextEditingController();
     showGeneralDialog(
       context: context,
       barrierLabel: "Barrier",
@@ -721,7 +835,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   fontSize: Dimensions.fontSizeLarge))),
                       /*  Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Take the picture of the home front',
+                          child: Text('Take the Picture of Product',
                               style: robotoMedium.copyWith(
                                   color: Theme.of(context).disabledColor,
                                   fontSize: Dimensions.fontSizeLarge))),*/
@@ -783,7 +897,9 @@ class _WalletScreenState extends State<WalletScreen> {
                           'Amount',
                           style: robotoRegular.copyWith(
                               fontSize: Dimensions.fontSizeSmall,
-                              color: Theme.of(context).disabledColor),
+                              color: Theme
+                                  .of(context)
+                                  .disabledColor),
                         ),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -795,10 +911,10 @@ class _WalletScreenState extends State<WalletScreen> {
                                 color: Colors.black,
                                 strokeWidth: 0.2,
                                 child: MyTextField(
-                                  hintText: 'Enter Amount',
-                                  inputType: TextInputType.phone,
-                                  controller: titleController,
-                                  capitalization: TextCapitalization.words,
+                                    hintText: 'Enter Amount',
+                                    inputType: TextInputType.phone,
+                                    controller: titleController,
+                                    capitalization: TextCapitalization.words,
                                     inputAction: TextInputAction.done
                                 ))),
                       ),
@@ -806,18 +922,18 @@ class _WalletScreenState extends State<WalletScreen> {
                       GetBuilder<WalletController>(builder: (orderController) {
                         return !orderController.isLoading
                             ? CustomButton(
-                                // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                                buttonText: 'submit'.tr,
-                                onPressed: () {
-                                  if (titleController.text.isEmpty) {
-                                    showCustomSnackBar('Enter Amount !');
-                                  } else {
-                                    Get.find<WalletController>()
-                                        .addFundToWallet(
-                                            titleController.text.toString());
-                                  }
-                                },
-                              )
+                          // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                          buttonText: 'submit'.tr,
+                          onPressed: () {
+                            if (titleController.text.isEmpty) {
+                              showCustomSnackBar('Enter Amount !');
+                            } else {
+                              Get.find<WalletController>()
+                                  .addFundToWallet(
+                                  titleController.text.toString());
+                            }
+                          },
+                        )
                             : Center(child: CircularProgressIndicator());
                       }),
                       /* (!Get.find<WalletController>().isLoading?
@@ -847,7 +963,6 @@ class _WalletScreenState extends State<WalletScreen> {
 
   void showWithdrawFundCustomDialog(BuildContext context) {
     TextEditingController titleController = TextEditingController();
-    TextEditingController commentController = TextEditingController();
     showGeneralDialog(
       context: context,
       barrierLabel: "Barrier",
@@ -873,7 +988,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   fontSize: Dimensions.fontSizeLarge))),
                       /*  Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Take the picture of the home front',
+                          child: Text('Take the Picture of Product',
                               style: robotoMedium.copyWith(
                                   color: Theme.of(context).disabledColor,
                                   fontSize: Dimensions.fontSizeLarge))),*/
@@ -884,7 +999,9 @@ class _WalletScreenState extends State<WalletScreen> {
                           'Account Details',
                           style: robotoRegular.copyWith(
                               fontSize: Dimensions.fontSizeSmall,
-                              color: Theme.of(context).disabledColor),
+                              color: Theme
+                                  .of(context)
+                                  .disabledColor),
                         ),
                       ),
                       Align(
@@ -904,12 +1021,13 @@ class _WalletScreenState extends State<WalletScreen> {
                                       Align(
                                           alignment: Alignment.centerLeft,
                                           child: Text(
-                                            Get.find<WalletController>()
+                                            Get
+                                                .find<WalletController>()
                                                 .bankAccountList[0]
                                                 .bank_name,
                                             style: robotoRegular.copyWith(
                                                 fontSize:
-                                                    Dimensions.fontSizeSmall,
+                                                Dimensions.fontSizeSmall,
                                                 color: Colors.black),
                                           )),
                                       SizedBox(
@@ -919,12 +1037,13 @@ class _WalletScreenState extends State<WalletScreen> {
                                           alignment: Alignment.centerLeft,
                                           child: Text(
                                             "**** **** ****" +
-                                                Get.find<WalletController>()
+                                                Get
+                                                    .find<WalletController>()
                                                     .bankAccountList[0]
                                                     .account_no_mask,
                                             style: robotoRegular.copyWith(
                                                 fontSize:
-                                                    Dimensions.fontSizeSmall,
+                                                Dimensions.fontSizeSmall,
                                                 color: Colors.black),
                                           ))
                                     ])))),
@@ -936,7 +1055,9 @@ class _WalletScreenState extends State<WalletScreen> {
                           'Amount',
                           style: robotoRegular.copyWith(
                               fontSize: Dimensions.fontSizeSmall,
-                              color: Theme.of(context).disabledColor),
+                              color: Theme
+                                  .of(context)
+                                  .disabledColor),
                         ),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -948,10 +1069,10 @@ class _WalletScreenState extends State<WalletScreen> {
                                 color: Colors.black,
                                 strokeWidth: 0.2,
                                 child: MyTextField(
-                                  hintText: 'Enter Amount',
-                                  inputType: TextInputType.number,
-                                  controller: titleController,
-                                  capitalization: TextCapitalization.words,
+                                    hintText: 'Enter Amount',
+                                    inputType: TextInputType.number,
+                                    controller: titleController,
+                                    capitalization: TextCapitalization.words,
                                     inputAction: TextInputAction.done
                                 ))),
                       ),
@@ -959,19 +1080,19 @@ class _WalletScreenState extends State<WalletScreen> {
                       GetBuilder<WalletController>(builder: (orderController) {
                         return !orderController.isLoading
                             ? CustomButton(
-                                // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                                buttonText: 'submit'.tr,
-                                onPressed: () {
-                                  if (titleController.text.isEmpty) {
-                                    showCustomSnackBar('Enter Amount !');
-                                  } else {
-                                    Get.find<WalletController>()
-                                        .withdrawFundToWallet(
-                                            titleController.text.toString(),
-                                            "Withdrawal");
-                                  }
-                                },
-                              )
+                          // margin: ResponsiveHelper.isDesktop(context) ? null : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                          buttonText: 'submit'.tr,
+                          onPressed: () {
+                            if (titleController.text.isEmpty) {
+                              showCustomSnackBar('Enter Amount !');
+                            } else {
+                              Get.find<WalletController>()
+                                  .withdrawFundToWallet(
+                                  titleController.text.toString(),
+                                  "Withdrawal");
+                            }
+                          },
+                        )
                             : Center(child: CircularProgressIndicator());
                       }),
                     ])),
@@ -1012,7 +1133,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   fontSize: Dimensions.fontSizeLarge))),
                       /*  Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Take the picture of the home front',
+                          child: Text('Take the Picture of Product',
                               style: robotoMedium.copyWith(
                                   color: Theme.of(context).disabledColor,
                                   fontSize: Dimensions.fontSizeLarge))),*/
@@ -1023,7 +1144,9 @@ class _WalletScreenState extends State<WalletScreen> {
                           'Bank Name',
                           style: robotoRegular.copyWith(
                               fontSize: Dimensions.fontSizeSmall,
-                              color: Theme.of(context).disabledColor),
+                              color: Theme
+                                  .of(context)
+                                  .disabledColor),
                         ),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -1037,12 +1160,13 @@ class _WalletScreenState extends State<WalletScreen> {
                                   child: Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                          Get.find<WalletController>()
+                                          Get
+                                              .find<WalletController>()
                                               .bankAccountList[0]
                                               .bank_name,
                                           style: robotoRegular.copyWith(
                                               fontSize:
-                                                  Dimensions.fontSizeSmall,
+                                              Dimensions.fontSizeSmall,
                                               color: Colors.black)))))),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       Align(
@@ -1051,7 +1175,9 @@ class _WalletScreenState extends State<WalletScreen> {
                           'Holder Name',
                           style: robotoRegular.copyWith(
                               fontSize: Dimensions.fontSizeSmall,
-                              color: Theme.of(context).disabledColor),
+                              color: Theme
+                                  .of(context)
+                                  .disabledColor),
                         ),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
@@ -1065,14 +1191,15 @@ class _WalletScreenState extends State<WalletScreen> {
                                 child: Align(
                                     alignment: Alignment.center,
                                     child: Text(
-                                        Get.find<WalletController>()
+                                        Get
+                                            .find<WalletController>()
                                             .bankAccountList[0]
                                             .full_name
                                             .toString(),
                                         textAlign: TextAlign.left,
                                         style: robotoRegular.copyWith(
                                             fontSize:
-                                                Dimensions.fontSizeDefault,
+                                            Dimensions.fontSizeDefault,
                                             color: Colors.black))))),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
@@ -1082,7 +1209,9 @@ class _WalletScreenState extends State<WalletScreen> {
                           'Account no.',
                           style: robotoRegular.copyWith(
                               fontSize: Dimensions.fontSizeDefault,
-                              color: Theme.of(context).disabledColor),
+                              color: Theme
+                                  .of(context)
+                                  .disabledColor),
                         ),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
@@ -1097,7 +1226,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                     alignment: Alignment.center,
                                     child: Text(
                                         "**** **** **** " +
-                                            Get.find<WalletController>()
+                                            Get
+                                                .find<WalletController>()
                                                 .bankAccountList[0]
                                                 .account_no_mask,
                                         style: robotoRegular.copyWith(
@@ -1118,7 +1248,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                 description: 'You want to delete account'.tr,
                                 onYesPressed: () {
                                   Get.find<WalletController>().deleteAccount(
-                                      Get.find<WalletController>()
+                                      Get
+                                          .find<WalletController>()
                                           .bankAccountList[0]
                                           .account_no_mask);
                                   Get.back();
@@ -1160,11 +1291,11 @@ class WalletShimmer extends StatelessWidget {
       shrinkWrap: true,
       itemCount: 10,
       padding:
-          EdgeInsets.only(top: ResponsiveHelper.isDesktop(context) ? 25 : 25),
+      EdgeInsets.only(top: ResponsiveHelper.isDesktop(context) ? 25 : 25),
       itemBuilder: (context, index) {
         return Padding(
           padding:
-              EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_SMALL),
+          EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_SMALL),
           child: Shimmer(
             duration: Duration(seconds: 2),
             enabled: walletController.transactionList == null,
@@ -1212,7 +1343,9 @@ class WalletShimmer extends StatelessWidget {
                 Padding(
                     padding: const EdgeInsets.only(
                         top: Dimensions.PADDING_SIZE_LARGE),
-                    child: Divider(color: Theme.of(context).disabledColor)),
+                    child: Divider(color: Theme
+                        .of(context)
+                        .disabledColor)),
               ],
             ),
           ),

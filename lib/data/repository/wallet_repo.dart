@@ -7,8 +7,8 @@ class WalletRepo {
   final ApiClient apiClient;
   WalletRepo({@required this.apiClient});
 
-  Future<Response> getWalletTransactionList(String offset) async {
-    return await apiClient.getData('${AppConstants.WALLET_TRANSACTION_URL}?offset=$offset&limit=10');
+  Future<Response> getWalletTransactionList(String offset,String status) async {
+    return await apiClient.getData('${AppConstants.WALLET_TRANSACTION_URL}/$status?offset=$offset&limit=10');
   }
   Future<Response> getBankList() async {
     return await apiClient.getData('${AppConstants.BANK_LIST_URL}');

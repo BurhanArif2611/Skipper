@@ -247,9 +247,12 @@ class _ParcelLocationScreenState extends State<ErrandMainScreen>
                   showCustomSnackBar('Enter Proposed Price !');
                 } else if (parcelController.anothertaskList.length == 0) {
                   showCustomSnackBar('Add Errand task First !');
+                }  else if (double.parse(_orderPriceController.text.toString())<=100) {
+                  showCustomSnackBar('Proposed Price should be greater than ₦100 ');
                 } else if (validity == "") {
                   showCustomSnackBar('Select Expiry Time !');
-                } else {
+                }
+                else {
                   checkClickEvent = true;
                   if (_tabController.index == 0) {
                     _validateSender();

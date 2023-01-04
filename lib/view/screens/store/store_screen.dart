@@ -22,7 +22,6 @@ import 'package:sixam_mart/view/screens/store/widget/store_description_view.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../util/app_constants.dart';
 
 class StoreScreen extends StatefulWidget {
   final Store store;

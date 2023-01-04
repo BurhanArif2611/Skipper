@@ -11,7 +11,10 @@ class AppConstants {
   static const double APP_VERSION = 2;
 
   //dev url
-   static const String BASE_URL = 'http://192.168.1.164:8000';
+   //static const String BASE_URL = 'http://192.168.1.164:8000';
+
+    static const String BASE_URL = 'http://52.17.19.170:5000';
+ // static const String BASE_URL = 'http://portal-dev.shapshap.com';
   //live url
  // static const String BASE_URL = 'https://portal.shapshap.com';
   static const String CATEGORY_URI = '/api/v1/categories';
@@ -112,7 +115,7 @@ class AppConstants {
       '/api/v1/customer/beneficiaries';
   static const String DELETE_BANK_ACCOUNT_URL =
       '/api/v1/customer/banks/account/delete?';
-  static int StoreID = 1;
+  static int StoreID = 55;
   static int ModelID = 1;
 
   static const String Store_ID = "store-id";
@@ -131,6 +134,7 @@ class AppConstants {
   static const String SEARCH_HISTORY = '6ammart_search_history';
   static const String INTRO = '6ammart_intro';
   static const String NOTIFICATION_COUNT = '6ammart_notification_count';
+  static const String Canceled = 'canceled';
 
   static const String TOPIC = 'all_zone_customer';
   static const String ZONE_ID = 'zoneId';

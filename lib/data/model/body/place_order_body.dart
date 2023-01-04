@@ -8,7 +8,8 @@ import 'package:sixam_mart/data/model/response/task_model.dart';
 class PlaceOrderBody {
   List<Cart> _cart;
   List<AddressModel> _receiver_addresses;
- // List<TaskModel> _task_title;
+
+  // List<TaskModel> _task_title;
   double _couponDiscountAmount;
   double _orderAmount;
   String _orderType;
@@ -34,41 +35,40 @@ class PlaceOrderBody {
   String _floor;
   String _dmTips;
   String _deliveryType;
- // String _task_uploaded_by;
 
+  // String _task_uploaded_by;
 
-  PlaceOrderBody(
-      {@required List<Cart> cart,
-        @required double couponDiscountAmount,
-        @required String couponCode,
-        @required double orderAmount,
-        @required String orderType,
-        @required String paymentMethod,
-        @required int storeId,
-        @required double distance,
-        @required String scheduleAt,
-        @required double discountAmount,
-        @required double taxAmount,
-        @required String orderNote,
-        @required String address,
-        @required AddressModel receiverDetails,
-        @required String latitude,
-        @required String longitude,
-        @required String contactPersonName,
-        @required String contactPersonNumber,
-        @required String addressType,
-        @required String parcelCategoryId,
-        @required String chargePayer,
-        @required String streetNumber,
-        @required String house,
-        @required String floor,
-        @required List<AddressModel> receiver_addresses,
-        @required String dmTips,
-        @required String delivery_type,
-        // @required String task_uploaded_by,
-        // @required List<TaskModel> task_title,
-
-      }) {
+  PlaceOrderBody({
+    @required List<Cart> cart,
+    @required double couponDiscountAmount,
+    @required String couponCode,
+    @required double orderAmount,
+    @required String orderType,
+    @required String paymentMethod,
+    @required int storeId,
+    @required double distance,
+    @required String scheduleAt,
+    @required double discountAmount,
+    @required double taxAmount,
+    @required String orderNote,
+    @required String address,
+    @required AddressModel receiverDetails,
+    @required String latitude,
+    @required String longitude,
+    @required String contactPersonName,
+    @required String contactPersonNumber,
+    @required String addressType,
+    @required String parcelCategoryId,
+    @required String chargePayer,
+    @required String streetNumber,
+    @required String house,
+    @required String floor,
+    @required List<AddressModel> receiver_addresses,
+    @required String dmTips,
+    @required String delivery_type,
+    // @required String task_uploaded_by,
+    // @required List<TaskModel> task_title,
+  }) {
     this._cart = cart;
     this._couponDiscountAmount = couponDiscountAmount;
     this._orderAmount = orderAmount;
@@ -98,39 +98,62 @@ class PlaceOrderBody {
     this._deliveryType = delivery_type;
     // this._task_uploaded_by = task_uploaded_by;
     // this._task_title = task_title;
-
   }
 
   List<Cart> get cart => _cart;
+
   double get couponDiscountAmount => _couponDiscountAmount;
+
   double get orderAmount => _orderAmount;
+
   String get orderType => _orderType;
+
   String get paymentMethod => _paymentMethod;
+
   String get orderNote => _orderNote;
+
   String get couponCode => _couponCode;
+
   int get storeId => _storeId;
+
   double get distance => _distance;
+
   String get scheduleAt => _scheduleAt;
+
   double get discountAmount => _discountAmount;
+
   double get taxAmount => _taxAmount;
+
   String get address => _address;
+
   AddressModel get receiverDetails => _receiverDetails;
+
   String get latitude => _latitude;
+
   String get longitude => _longitude;
+
   String get contactPersonName => _contactPersonName;
+
   String get contactPersonNumber => _contactPersonNumber;
+
   String get parcelCategoryId => _parcelCategoryId;
+
   String get chargePayer => _chargePayer;
+
   String get streetNumber => _streetNumber;
+
   String get house => _house;
+
   String get floor => _floor;
+
   List<AddressModel> get receiver_addresses => _receiver_addresses;
+
   //List<TaskModel> get task_title => _task_title;
   String get dmTips => _dmTips;
+
   String get delivery_type => _deliveryType;
+
   //String get task_uploaded_by => _task_uploaded_by;
-
-
 
   PlaceOrderBody.fromJson(Map<String, dynamic> json) {
     if (json['cart'] != null) {
@@ -139,19 +162,24 @@ class PlaceOrderBody {
         _cart.add(new Cart.fromJson(v));
       });
     }
-    _couponDiscountAmount = json['coupon_discount_amount'] !=null?json['coupon_discount_amount']:0;
-    _orderAmount = json['order_amount'] !=null?json['order_amount']:0;
+    _couponDiscountAmount = json['coupon_discount_amount'] != null
+        ? json['coupon_discount_amount']
+        : 0;
+    _orderAmount = json['order_amount'] != null ? json['order_amount'] : 0;
     _orderType = json['order_type'];
     _paymentMethod = json['payment_method'];
     _orderNote = json['order_note'];
     _couponCode = json['coupon_code'];
     _storeId = json['store_id'];
-    _distance = json['distance'] !=null?json['distance']:0;
+    _distance = json['distance'] != null ? json['distance'] : 0;
     _scheduleAt = json['schedule_at'];
-    _discountAmount = json['discount_amount']!=null ?json['discount_amount']:0;
-    _taxAmount = json['tax_amount']!=null?json['tax_amount']:0;
+    _discountAmount =
+        json['discount_amount'] != null ? json['discount_amount'] : 0;
+    _taxAmount = json['tax_amount'] != null ? json['tax_amount'] : 0;
     _address = json['address'];
-    _receiverDetails = json['receiver_details'] != null ? new AddressModel.fromJson(json['receiver_details']) : null;
+    _receiverDetails = json['receiver_details'] != null
+        ? new AddressModel.fromJson(json['receiver_details'])
+        : null;
     _latitude = json['latitude'];
     _longitude = json['longitude'];
     _contactPersonName = json['contact_person_name'];
@@ -163,17 +191,14 @@ class PlaceOrderBody {
     _house = json['apartment'];
     _floor = json['floor'];
     _dmTips = json['dm_tips'];
-    _deliveryType = json['delivery_type'];
-   // _task_uploaded_by = json['task_uploaded_by'];
-
-
+    _deliveryType = json['delivery_type'] != null ? json['delivery_type'] : '';
+    // _task_uploaded_by = json['task_uploaded_by'];
 
     if (json['receiver_addresses'] != null) {
       _receiver_addresses = [];
       json['receiver_addresses'].forEach((v) {
         _receiver_addresses.add(new AddressModel.fromJson(v));
       });
-
     }
 
     // if (json['task_title'] != null) {
@@ -182,7 +207,6 @@ class PlaceOrderBody {
     //     _task_title.add(new TaskModel.fromJson(v));
     //   });
     // }
-
   }
 
   Map<String, String> toJson() {
@@ -190,23 +214,23 @@ class PlaceOrderBody {
     if (this._cart != null) {
       data['cart'] = jsonEncode(this._cart.map((v) => v.toJson()).toList());
     }
-    if(this._couponDiscountAmount != null) {
+    if (this._couponDiscountAmount != null) {
       data['coupon_discount_amount'] = this._couponDiscountAmount.toString();
     }
     data['order_amount'] = this._orderAmount.toString();
     data['order_type'] = this._orderType;
     data['payment_method'] = this._paymentMethod;
-    if(this._orderNote != null && this._orderNote.isNotEmpty) {
+    if (this._orderNote != null && this._orderNote.isNotEmpty) {
       data['order_note'] = this._orderNote;
     }
-    if(this._couponCode != null) {
+    if (this._couponCode != null) {
       data['coupon_code'] = this._couponCode;
     }
-    if(this._storeId != null) {
+    if (this._storeId != null) {
       data['store_id'] = this._storeId.toString();
     }
     data['distance'] = this._distance.toString();
-    if(this._scheduleAt != null) {
+    if (this._scheduleAt != null) {
       data['schedule_at'] = this._scheduleAt;
     }
     data['discount_amount'] = this._discountAmount.toString();
@@ -220,7 +244,10 @@ class PlaceOrderBody {
     data['contact_person_name'] = this._contactPersonName;
     data['contact_person_number'] = this._contactPersonNumber;
     data['address_type'] = this._addressType;
-    data['delivery_type'] = this._deliveryType;
+    if (this._deliveryType != null) {
+      data['delivery_type'] =
+          this._deliveryType != null ? this._deliveryType : "";
+    }
     if (this._parcelCategoryId != null) {
       data['parcel_category_id'] = this._parcelCategoryId;
     }
@@ -231,13 +258,14 @@ class PlaceOrderBody {
     data['house'] = this._house;
     data['floor'] = this._floor;
     if (this._receiver_addresses != null) {
-      data['receiver_addresses'] = jsonEncode(this._receiver_addresses.map((v) => v.toJson()).toList());
+      data['receiver_addresses'] =
+          jsonEncode(this._receiver_addresses.map((v) => v.toJson()).toList());
     }
     // if (this._task_title != null) {
     //   data['task_title'] = jsonEncode(this._task_title.map((v) => v.toJson()).toList());
     // }
     data['dm_tips'] = this._dmTips;
-   // data['task_uploaded_by'] = this._task_uploaded_by;
+    // data['task_uploaded_by'] = this._task_uploaded_by;
 
     return data;
   }
@@ -257,13 +285,13 @@ class Cart {
   Cart(
       int itemId,
       int itemCampaignId,
-        String price,
-        String variant,
-        List<Variation> variation,
-        int quantity,
-        List<int> addOnIds,
-        List<AddOns> addOns,
-        List<int> addOnQtys) {
+      String price,
+      String variant,
+      List<Variation> variation,
+      int quantity,
+      List<int> addOnIds,
+      List<AddOns> addOns,
+      List<int> addOnQtys) {
     this._itemId = itemId;
     this._itemCampaignId = itemCampaignId;
     this._price = price;
@@ -276,13 +304,21 @@ class Cart {
   }
 
   int get itemId => _itemId;
+
   int get itemCampaignId => _itemCampaignId;
+
   String get price => _price;
+
   String get variant => _variant;
+
   List<Variation> get variation => _variation;
+
   int get quantity => _quantity;
+
   List<int> get addOnIds => _addOnIds;
+
   List<AddOns> get addOns => _addOns;
+
   List<int> get addOnQtys => _addOnQtys;
 
   Cart.fromJson(Map<String, dynamic> json) {

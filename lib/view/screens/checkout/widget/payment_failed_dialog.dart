@@ -9,7 +9,8 @@ import 'package:get/get.dart';
 
 class PaymentFailedDialog extends StatelessWidget {
   final String orderID;
-  PaymentFailedDialog({@required this.orderID});
+  final String orderType;
+  PaymentFailedDialog({@required this.orderID,@required this.orderType});
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +54,7 @@ class PaymentFailedDialog extends StatelessWidget {
               SizedBox(width: Dimensions.PADDING_SIZE_LARGE),
               TextButton(
                 onPressed: () {
+                  orderController.cancelOrder(int.parse(orderID));
                   Get.offAllNamed(RouteHelper.getInitialRoute());
                 },
                 style: TextButton.styleFrom(

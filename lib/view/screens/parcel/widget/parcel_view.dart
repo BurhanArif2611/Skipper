@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/parcel_controller.dart';
 import 'package:sixam_mart/data/model/response/address_model.dart';
@@ -16,9 +15,7 @@ import 'package:sixam_mart/view/base/text_field_shadow.dart';
 import 'package:sixam_mart/view/screens/location/pick_map_screen.dart';
 import 'package:sixam_mart/view/screens/location/widget/serach_location_widget.dart';
 import 'package:sixam_mart/view/screens/parcel/widget/address_dialog.dart';
-import 'package:flutter/material.dart';
 
-import '../../../../controller/location_controller.dart';
 
 class ParcelView extends StatefulWidget {
   final bool isSender;
@@ -310,7 +307,7 @@ class _ParcelViewState extends State<ParcelView> {
     TextEditingController streetController = TextEditingController();
     TextEditingController houseController = TextEditingController();
     TextEditingController floorController = TextEditingController();
-    String Selected_address = "";
+    String selectedAddress = "";
      AddressModel addressModel_ = null;
     showGeneralDialog(
       context: context,
@@ -334,8 +331,8 @@ class _ParcelViewState extends State<ParcelView> {
                     child: Column(children: [
                       SearchLocationWidget(
                         mapController: null,
-                        // pickedAddress: Selected_address,
-                        // pickedAddress:Selected_address!=null && Selected_address!=""?Selected_address: Get.find<ParcelController>().destinationAddress!=null && Get.find<ParcelController>().destinationAddress.address!=null ? Get.find<ParcelController>().destinationAddress.address:"",
+                        // pickedAddress: selectedAddress,
+                        // pickedAddress:selectedAddress!=null && selectedAddress!=""?selectedAddress: Get.find<ParcelController>().destinationAddress!=null && Get.find<ParcelController>().destinationAddress.address!=null ? Get.find<ParcelController>().destinationAddress.address:"",
                         /*pickedAddress: addressModel_ != null
                             ? addressModel_.address != null
                                 ? addressModel_.address.toString()
@@ -371,7 +368,7 @@ class _ParcelViewState extends State<ParcelView> {
                                                 .removeDestinationAddress();
                                             addressModel_ = null;
                                             addressModel_ = address;
-                                            Selected_address = addressModel_
+                                            selectedAddress = addressModel_
                                                         .additionalAddress !=
                                                     null
                                                 ? addressModel_
@@ -382,7 +379,7 @@ class _ParcelViewState extends State<ParcelView> {
                                                         .toString()
                                                     : "";
                                             print("Selected_address>>>" +
-                                                Selected_address);
+                                                selectedAddress);
                                           },
                                         )),
                                   }),
@@ -405,7 +402,7 @@ class _ParcelViewState extends State<ParcelView> {
                                   widget.floorController.text =
                                       address.floor ?? '';*/
                                     addressModel_ = address;
-                                    Selected_address = addressModel_
+                                    selectedAddress = addressModel_
                                                 .additionalAddress !=
                                             null
                                         ? addressModel_.additionalAddress
@@ -414,7 +411,7 @@ class _ParcelViewState extends State<ParcelView> {
                                             ? addressModel_.address.toString()
                                             : "";
                                     print("Selected_address>>>" +
-                                        Selected_address);
+                                        selectedAddress);
                                   }));
                                 } else {
                                   showCustomSnackBar(
@@ -464,7 +461,7 @@ class _ParcelViewState extends State<ParcelView> {
                             hintText: 'receiver_phone_number'.tr,
                             inputType: TextInputType.phone,
                             focusNode: _phoneNode,
-                            nextFocus: _streetNode,
+                            /*nextFocus: _streetNode,*/
                             maxLength: 11,
                             inputAction:TextInputAction.done,
                             controller: phoneController,

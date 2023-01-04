@@ -15,14 +15,21 @@ class HistoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-      Column(children: [
+      Container(
+        padding: EdgeInsets.all(5),
+
+
+    child:
+      Column(
+          children: [
       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
 
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Column(crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
             fromWallet ? Text(data[index].transactionType == 'order_place'
-                ? PriceConverter.convertPrice(data[index].debit + data[index].adminBonus)
+                ?(data[index].debit!=null && data[index].adminBonus!=null)? PriceConverter.convertPrice(data[index].debit + data[index].adminBonus):"0.0"
                 : data[index].transactionType == 'withdraw_fund_by_customer'
                 ? PriceConverter.convertPrice(data[index].debit):PriceConverter.convertPrice(data[index].credit + data[index].adminBonus),
               style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault), maxLines: 1, overflow: TextOverflow.ellipsis,
@@ -67,6 +74,6 @@ class HistoryItem extends StatelessWidget {
         padding: const EdgeInsets.only(top: Dimensions.PADDING_SIZE_EXTRA_SMALL),
         child: Divider(color: Theme.of(context).disabledColor),
       ),
-    ]);
+    ]));
   }
 }

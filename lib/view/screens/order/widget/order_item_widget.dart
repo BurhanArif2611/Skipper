@@ -57,7 +57,7 @@ class OrderItemWidget extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
           child: CustomImage(
-            height: 50, width: 50, fit: BoxFit.cover,
+            height: 50, width: 50, fit: BoxFit.fill,
             image: '${orderDetails.itemCampaignId != null ? Get.find<SplashController>().configModel.baseUrls.campaignImageUrl
                 : Get.find<SplashController>().configModel.baseUrls.itemImageUrl}/'
                 '${orderDetails.itemDetails.image}',

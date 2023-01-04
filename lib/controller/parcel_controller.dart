@@ -40,7 +40,7 @@ class ParcelController extends GetxController implements GetxService {
   List<String> _payerTypes = ['sender', 'receiver'];
   int _payerIndex = 0;
   int _paymentIndex = 0;
-  String _parcelType = "P1";
+  String _parcelType = "EXPRESS DELIVERY";
 
   List<ParcelCategoryModel> get parcelCategoryList => _parcelCategoryList;
 

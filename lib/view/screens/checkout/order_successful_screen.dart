@@ -45,6 +45,7 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
         double total = 0;
         bool success = true;
         bool parcel = false;
+        String errand = (orderController.trackModel !=null && orderController.trackModel.orderType!=null)?orderController.trackModel.orderType:"";
         if(orderController.trackModel != null) {
           total = ((orderController.trackModel.orderAmount / 100) * Get.find<SplashController>().configModel.loyaltyPointItemPurchasePoint);
           success = orderController.trackModel.paymentStatus == 'paid' || orderController.trackModel.paymentMethod == 'cash_on_delivery'|| orderController.trackModel.paymentMethod == 'null'|| orderController.trackModel.paymentMethod == null;
@@ -73,7 +74,7 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
 
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE, vertical: Dimensions.PADDING_SIZE_SMALL),
-                child: Text(
+                child: Text( (success && errand=="errand")?'Your order is placed successfully. We start our process and you will be assigned Vendor soon.':
                   success ? parcel ? 'your_parcel_request_is_placed_successfully'.tr
                       : 'your_order_is_placed_successfully'.tr : 'your_order_is_failed_to_place_because'.tr,
                   style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
@@ -90,7 +91,7 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE),
-                  child: Text(
+                  child: Text( (success && errand=="errand")?'you_have_earned'.tr + ' ${total.floor().toString()} ' + 'points. It will add to your balance when the Task is completed.'.tr :
                     'you_have_earned'.tr + ' ${total.floor().toString()} ' + 'points_it_will_add_to'.tr,
                     style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge,color: Theme.of(context).disabledColor),
                     textAlign: TextAlign.center,

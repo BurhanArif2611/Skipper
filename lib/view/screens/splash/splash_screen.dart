@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
@@ -21,7 +20,6 @@ import '../../../controller/banner_controller.dart';
 import '../../../controller/category_controller.dart';
 import '../../../controller/localization_controller.dart';
 import '../../../controller/store_controller.dart';
-import '../../../data/api/api_client.dart';
 import '../../../data/model/response/module_model.dart';
 import '../../../data/model/response/store_model.dart';
 
@@ -109,7 +107,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 }catch (e){}
                 if (Get.find<LocationController>().getUserAddress() != null) {
                   //Get.offNamed(RouteHelper.getInitialRoute());
-                  GetBranchList();
+                  getBranchList();
                 } else {
                   Get.offNamed(RouteHelper.getAccessLocationRoute('splash'));
                 }
@@ -137,7 +135,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-  void GetBranchList() {
+  void getBranchList() {
     if (Get.find<BannerController>().branchStoreList!=null && Get.find<BannerController>().branchStoreList.branches.length > 0) {
       Get.offNamed(RouteHelper.getInitialRoute());
     } else {

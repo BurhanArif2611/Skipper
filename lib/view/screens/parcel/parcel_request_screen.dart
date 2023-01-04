@@ -27,9 +27,6 @@ import 'package:sixam_mart/view/screens/checkout/widget/payment_button.dart';
 import 'package:sixam_mart/view/screens/parcel/widget/card_widget.dart';
 import 'package:sixam_mart/view/screens/parcel/widget/details_widget.dart';
 import 'package:universal_html/html.dart' as html;
-
-import '../../base/my_text_field.dart';
-import '../../base/text_field_shadow.dart';
 import '../checkout/widget/tips_widget.dart';
 
 class ParcelRequestScreen extends StatefulWidget {
@@ -50,6 +47,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
   TextEditingController _tipController = TextEditingController();
   bool _isLoggedIn = Get.find<AuthController>().isLoggedIn();
   String validity = "";
+  double checkAmountLocally = 0.0;
 
   @override
   void initState() {
@@ -67,7 +65,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
       }
       Get.find<OrderController>().updateTips(-1, notify: false);
 
-      Get.find<ParcelController>().setParcelType("P1");
+      Get.find<ParcelController>().setParcelType("EXPRESS DELIVERY");
       Get.find<ParcelController>().setDeliveryFinalCharge(0);
     }
   }
@@ -84,20 +82,24 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
               Get.find<SplashController>()
                   .configModel
                   .parcelPerKmShippingCharge;
-          parcelController.setDeliveryCharge(_charge);
+
           if (parcelController.deliveryFinalCharge <= 0) {
+            parcelController.setDeliveryCharge(_charge);
             parcelController.setDeliveryFinalCharge(_charge);
           }
-          if (_charge <
-              Get.find<SplashController>()
+          if (checkAmountLocally == 0.0) {
+            if (_charge <
+                Get.find<SplashController>()
+                    .configModel
+                    .parcelMinimumShippingCharge) {
+              _charge = Get.find<SplashController>()
                   .configModel
-                  .parcelMinimumShippingCharge) {
-            _charge = Get.find<SplashController>()
-                .configModel
-                .parcelMinimumShippingCharge;
-            parcelController.setDeliveryCharge(_charge);
-            if (parcelController.deliveryFinalCharge <= 0) {
+                  .parcelMinimumShippingCharge;
+              parcelController.setDeliveryCharge(_charge);
+              /*if (parcelController.deliveryFinalCharge <= 0) {*/
               parcelController.setDeliveryFinalCharge(_charge);
+              checkAmountLocally = _charge;
+              /*}*/
             }
           }
         }
@@ -241,6 +243,15 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                           Text('delivery_fee'.tr,
                                               style: robotoRegular),
                                           Text(
+                                              '(' +
+                                                  parcelController.parcelType +
+                                                  ')',
+                                              style: robotoRegular.copyWith(
+                                                  color: Theme.of(context)
+                                                      .disabledColor,
+                                                  fontSize: Dimensions
+                                                      .fontSizeLargeExtraSmall)),
+                                          Text(
                                             parcelController.distance == -1
                                                 ? 'calculating'.tr
                                                 :
@@ -254,7 +265,8 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                           ),
                                         ]),
                                     SizedBox(
-                                        width: Dimensions.PADDING_SIZE_LARGE),
+                                        width: Dimensions
+                                            .PADDING_SIZE_EXTRA_SMALL),
                                     InkWell(
                                       child: Icon(
                                         Icons.chevron_right,
@@ -390,7 +402,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                         ? Dimensions.PADDING_SIZE_EXTRA_SMALL
                                         : 0),
                                 Text('charge_pay_by'.tr, style: robotoMedium),
-                                SizedBox(
+                               /* SizedBox(
                                     height:
                                         Dimensions.PADDING_SIZE_EXTRA_SMALL),
                                 Row(children: [
@@ -413,7 +425,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                           style: robotoRegular),
                                     ]),
                                   )),
-                                  /* Get.find<SplashController>()
+                                   Get.find<SplashController>()
                                           .configModel
                                           .cashOnDelivery
                                       ? Expanded(
@@ -439,8 +451,8 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                                 style: robotoRegular),
                                           ]),
                                         ))
-                                      : SizedBox(),*/
-                                ]),
+                                      : SizedBox(),
+                                ]),*/
                                 SizedBox(
                                     height:
                                         Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -524,7 +536,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
           String hostname = html.window.location.hostname;
           String protocol = html.window.location.protocol;
           String selectedUrl =
-              '${AppConstants.BASE_URL}/payment-mobile?order_id=$orderID&&customer_id=${Get.find<UserController>().userInfoModel.id}&&callback=$protocol//$hostname${RouteHelper.orderSuccess}?id=$orderID&type=parcel&status=';
+              '${AppConstants.BASE_URL}/payment-mobile?order_id=$orderID&customer_id=${Get.find<UserController>().userInfoModel.id}&&callback=$protocol//$hostname${RouteHelper.orderSuccess}?id=$orderID&type=parcel&status=';
           html.window.open(selectedUrl, "_self");
         } else {
           if (Get.find<ParcelController>().paymentIndex == 1) {
@@ -545,7 +557,9 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
     String payment_type = "";
     return /*!parcelController.isLoading ? */
         CustomButton(
-      buttonText: 'confirm_parcel_request'.tr,
+      buttonText: parcelController.distance == -1
+          ? 'calculating'.tr
+          : 'confirm_parcel_request'.tr,
       margin: ResponsiveHelper.isDesktop(context)
           ? null
           : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
@@ -564,37 +578,43 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
             Get.find<ParcelController>().startLoader(true);
             Get.find<OrderController>().placeOrder(
                 PlaceOrderBody(
-                  cart: [],
-                  couponDiscountAmount: null,
-                  distance: parcelController.distance,
-                  scheduleAt: null,
-                  orderAmount: charge,
-                  orderNote: '',
-                  orderType: 'parcel',
-                  receiverDetails: widget.destinationAddress,
-                  paymentMethod: payment_type,
-                  couponCode: null,
-                  storeId: null,
-                  address: widget.pickedUpAddress.address,
-                  latitude: widget.pickedUpAddress.latitude,
-                  longitude: widget.pickedUpAddress.longitude,
-                  addressType: widget.pickedUpAddress.addressType,
-                  contactPersonName:
-                      widget.pickedUpAddress.contactPersonName ?? '',
-                  contactPersonNumber:
-                      widget.pickedUpAddress.contactPersonNumber ?? '',
-                  streetNumber: widget.pickedUpAddress.streetNumber ?? '',
-                  house: widget.pickedUpAddress.house ?? '',
-                  floor: widget.pickedUpAddress.floor ?? '',
-                  discountAmount: 0,
-                  taxAmount: 0,
-                  parcelCategoryId: widget.parcelCategory.id.toString(),
-                  chargePayer:
-                      parcelController.payerTypes[parcelController.payerIndex],
-                  dmTips: _tipController.text.trim(),
-                  receiver_addresses: parcelController.anotherList,
-                  delivery_type:parcelController.parcelType
-                ),
+                    cart: [],
+                    couponDiscountAmount: null,
+                    distance: parcelController.distance,
+                    scheduleAt: null,
+                    orderAmount: parcelController.deliveryFinalCharge == 0 ? charge: parcelController.deliveryFinalCharge,
+                    orderNote: '',
+                    orderType: 'parcel',
+                    receiverDetails: widget.destinationAddress,
+                    paymentMethod: payment_type,
+                    couponCode: null,
+                    storeId: null,
+                    address: widget.pickedUpAddress.address,
+                    latitude: widget.pickedUpAddress.latitude,
+                    longitude: widget.pickedUpAddress.longitude,
+                    addressType: widget.pickedUpAddress.addressType,
+                    contactPersonName:
+                        widget.pickedUpAddress.contactPersonName ?? '',
+                    contactPersonNumber:
+                        widget.pickedUpAddress.contactPersonNumber ?? '',
+                    streetNumber: widget.pickedUpAddress.streetNumber ?? '',
+                    house: widget.pickedUpAddress.house ?? '',
+                    floor: widget.pickedUpAddress.floor ?? '',
+                    discountAmount: 0,
+                    taxAmount: 0,
+                    parcelCategoryId: widget.parcelCategory.id.toString(),
+                    chargePayer: parcelController
+                        .payerTypes[parcelController.payerIndex],
+                    dmTips: _tipController.text.trim(),
+                    receiver_addresses: parcelController.anotherList,
+                    delivery_type: parcelController.parcelType ==
+                            "EXPRESS DELIVERY"
+                        ? 'P1'
+                        : parcelController.parcelType == "STANDARD DELIVERY"
+                            ? 'P2'
+                            : parcelController.parcelType == "NORMAL DELIVERY"
+                                ? 'P3'
+                                : 'P1'),
                 orderCallback);
           } else {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -615,9 +635,18 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
       transitionDuration: Duration(milliseconds: 700),
       pageBuilder: (context, animation1, animation2) {
         return GetBuilder<ParcelController>(builder: (parcelController) {
+          double p2 = parcelController.deliveryCharge -
+              (parcelController.deliveryCharge *
+                  Get.find<SplashController>().configModel.p2_delivery_charge /
+                  100);
+          double p3 = parcelController.deliveryCharge -
+              (parcelController.deliveryCharge *
+                  Get.find<SplashController>().configModel.p3_delivery_charge /
+                  100);
+          double p1 = parcelController.deliveryCharge;
           return Center(
             child: Container(
-              height: 300,
+              height: 340,
               child: Card(
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
@@ -640,8 +669,13 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                       ]),
                       SizedBox(width: Dimensions.PADDING_SIZE_LARGE),
                       RadioListTile(
-                        title: Text("EXPRESS DELIVERY"),
-                        value: "P1",
+                        title: Text(
+                            "EXPRESS DELIVERY (" +
+                                PriceConverter.convertPrice(p1) +
+                                ")",
+                            style: robotoRegular.copyWith(
+                                fontSize: Dimensions.fontSizeDefault)),
+                        value: "EXPRESS DELIVERY",
                         groupValue: parcelController.parcelType,
                         onChanged: (value) {
                           setState(() {
@@ -651,8 +685,34 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                         },
                       ),
                       RadioListTile(
-                        title: Text("STANDARD DELIVERY"),
-                        value: "P2",
+                        /* title: Text('STANDARD DELIVERY ( less than '+ (Get.find<SplashController>().configModel.p2_delivery_charge.toString())+'%)',style: robotoRegular.copyWith(
+                        fontSize: Dimensions.fontSizeDefault)),*/
+                        title: Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                  'STANDARD DELIVERY (' +
+                                      PriceConverter.convertPrice(p2) +
+                                      ")",
+                                  style: robotoRegular.copyWith(
+                                      fontSize: Dimensions.fontSizeDefault)),
+                              SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                              Text(
+                                  '(Charges Slash by' +
+                                      Get.find<SplashController>()
+                                          .configModel
+                                          .p2_delivery_charge
+                                          .toString() +
+                                      '% than Express Delivery)',
+                                  style: robotoRegular.copyWith(
+                                      color: Theme.of(context).disabledColor,
+                                      fontSize: Dimensions.fontSizeLargeExtraSmall)),
+                            ]),
+
+
+
+                        value: "STANDARD DELIVERY",
                         groupValue: parcelController.parcelType,
                         onChanged: (value) {
                           setState(() {
@@ -660,9 +720,35 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                           });
                         },
                       ),
+
                       RadioListTile(
-                        title: Text("NORMAL DELIVERY"),
-                        value: "P3",
+                        /*title: Text('NORMAL DELIVERY ( less than '+ (Get.find<SplashController>().configModel.p3_delivery_charge.toString())+'%)',style: robotoRegular.copyWith(
+                            fontSize: Dimensions.fontSizeDefault)),*/
+                        title:Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                  'NORMAL DELIVERY (' +
+                                      PriceConverter.convertPrice(p3) +
+                                      ")",
+                                  style: robotoRegular.copyWith(
+                                      fontSize: Dimensions.fontSizeDefault)),
+                              SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                              Text(
+                                  '(Charges Slash by' +
+                                      Get.find<SplashController>()
+                                          .configModel
+                                          .p3_delivery_charge
+                                          .toString() +
+                                      '% than Express Delivery)',
+                                  style: robotoRegular.copyWith(
+                                      color: Theme.of(context).disabledColor,
+                                      fontSize: Dimensions.fontSizeLargeExtraSmall)),
+                            ]),
+
+
+                        value: "NORMAL DELIVERY",
                         groupValue: parcelController.parcelType,
                         onChanged: (value) {
                           setState(() {
@@ -670,11 +756,13 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                           });
                         },
                       ),
+
                       SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                       CustomButton(
                           buttonText: 'Confirm'.tr,
                           onPressed: () {
-                            if (parcelController.parcelType == "P2") {
+                            if (parcelController.parcelType ==
+                                "STANDARD DELIVERY") {
                               // Get.find<SplashController>().configModel.p2_delivery_charge
                               double total = parcelController.deliveryCharge -
                                   (parcelController.deliveryCharge *
@@ -684,7 +772,8 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                       100);
                               print("total>P2>>" + total.toString());
                               parcelController.setDeliveryFinalCharge(total);
-                            } else if (parcelController.parcelType == "P3") {
+                            } else if (parcelController.parcelType ==
+                                "NORMAL DELIVERY") {
                               double total = parcelController.deliveryCharge -
                                   (parcelController.deliveryCharge *
                                       Get.find<SplashController>()

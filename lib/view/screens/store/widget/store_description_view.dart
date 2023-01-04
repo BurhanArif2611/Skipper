@@ -30,7 +30,7 @@ class StoreDescriptionView extends StatelessWidget {
           child: Stack(children: [
             CustomImage(
               image: '${Get.find<SplashController>().configModel.baseUrls.storeImageUrl}/${store.logo}',
-              height: ResponsiveHelper.isDesktop(context) ? 80 : 60, width: ResponsiveHelper.isDesktop(context) ? 100 : 70, fit: BoxFit.cover,
+              height: ResponsiveHelper.isDesktop(context) ? 80 : 60, width: ResponsiveHelper.isDesktop(context) ? 100 : 70, fit: BoxFit.fill,
             ),
             _isAvailable ? SizedBox() : Positioned(
               bottom: 0, left: 0, right: 0,

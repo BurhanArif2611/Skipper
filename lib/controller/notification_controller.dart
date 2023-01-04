@@ -65,7 +65,7 @@ class NotificationController extends GetxController implements GetxService {
       }
       update();
     }
-    print("_notificationList>>>"+_notificationList.length.toString());
+   // print("_notificationList>>>"+_notificationList.length.toString());
     return _notificationList.length;
   }
 

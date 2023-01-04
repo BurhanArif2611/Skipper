@@ -79,4 +79,6 @@ class Images {
   static const String gift_box1 = 'assets/image/gift_box1.gif';
   static const String gift_box = 'assets/image/giftbox.gif';
   static const String errand = 'assets/image/errand.png';
+  static const String parcel_marker = 'assets/image/parcel_marker.png';
+  static const String task_marker = 'assets/image/task_marker.png';
 }

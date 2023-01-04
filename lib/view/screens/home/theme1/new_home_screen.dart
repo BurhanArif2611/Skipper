@@ -255,25 +255,29 @@ class NewHomeScreen extends StatelessWidget {
                                             ),
                                             SizedBox(width: 10),
                                             Flexible(
-                                              child: Text(
-                                                locationController
-                                                            .getUserAddress() !=
-                                                        null
-                                                    ? locationController
-                                                        .getUserAddress()
-                                                        .address
-                                                    : "",
-                                                style: robotoRegular.copyWith(
-                                                  color: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      .color,
-                                                  fontSize:
-                                                      Dimensions.fontSizeSmall,
-                                                ),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
+                                              child: Container(
+                                                  width: double.infinity,
+                                                  child: Text(
+                                                    locationController
+                                                                .getUserAddress() !=
+                                                            null
+                                                        ? locationController
+                                                            .getUserAddress()
+                                                            .address
+                                                        : "",
+                                                    style:
+                                                        robotoRegular.copyWith(
+                                                      color: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          .color,
+                                                      fontSize: Dimensions
+                                                          .fontSizeSmall,
+                                                    ),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  )),
                                             ),
                                             Icon(Icons.arrow_drop_down,
                                                 color: Theme.of(context)
@@ -392,13 +396,18 @@ class NewHomeScreen extends StatelessWidget {
                             toolbarHeight: 50,
                             pinned: true,
                             floating: true,
-                            title: Text(AppConstants.APP_NAME,
-                                textAlign: TextAlign.center,
-                                style: robotoMedium.copyWith(
-                                    fontSize: Dimensions.fontSizeLarge,
-                                    color: Theme.of(context).primaryColor)),
-                            backgroundColor: Colors
-                                .white /* Theme.of(context).primaryColor*/,
+                            title: Container(
+                              width: double.infinity,
+                              child: Text(AppConstants.APP_NAME,
+                                  textAlign: TextAlign.center,
+                                  style: robotoMedium.copyWith(
+                                      fontSize: Dimensions.fontSizeLarge,
+                                      color: Theme.of(context).primaryColor)),
+                            ),
+                            /*,*/
+                            backgroundColor: Colors.white,
+
+                            /* Theme.of(context).primaryColor*/
                             /* leading: IconButton(
                             icon: Container(
                               height: 50,
@@ -414,7 +423,7 @@ class NewHomeScreen extends StatelessWidget {
                           ),*/
                             flexibleSpace: FlexibleSpaceBar(
                               background: CustomImage(
-                                fit: BoxFit.cover,
+                                fit: BoxFit.fill,
                                 image:
                                     '${Get.find<SplashController>().configModel.baseUrls.storeCoverPhotoUrl}/${_store.coverPhoto}',
                               ),
@@ -789,147 +798,139 @@ class NewHomeScreen extends StatelessWidget {
                                   delegate: SliverDelegate(
                                     child: Center(
                                         child: Container(
-                                            height: 50,
-                                            alignment: Alignment.center,
-                                            width: Dimensions.WEB_MAX_WIDTH,
-                                            color: Theme.of(context).cardColor,
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: Dimensions
-                                                    .PADDING_SIZE_EXTRA_SMALL),
-                                            transformAlignment:
-                                                Alignment.center,
-                                            child:
-
-                                              ListView.builder(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemCount: storeController
-                                                    .categoryList.length,
-                                                padding: EdgeInsets.only(
-                                                    left: Dimensions
-                                                        .PADDING_SIZE_SMALL),
-                                                physics:
-                                                    BouncingScrollPhysics(),
-                                                itemBuilder: (context, index) {
-                                                  return InkWell(
-                                                    onTap: () => storeController
-                                                        .setCategoryIndex(
-                                                            index),
-                                                    child: Align(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child:
-                                                      Container(
-
-                                                        alignment:
-                                                            Alignment.center,
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                          left: index == 0
-                                                              ? Dimensions
-                                                                  .PADDING_SIZE_LARGE
-                                                              : Dimensions
-                                                                  .PADDING_SIZE_SMALL,
-                                                          right: index ==
-                                                                  storeController
-                                                                          .categoryList
-                                                                          .length -
-                                                                      1
-                                                              ? Dimensions
-                                                                  .PADDING_SIZE_LARGE
-                                                              : Dimensions
-                                                                  .PADDING_SIZE_SMALL,
-                                                          top: Dimensions
+                                      height: 50,
+                                      alignment: Alignment.center,
+                                      width: Dimensions.WEB_MAX_WIDTH,
+                                      color: Theme.of(context).cardColor,
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: Dimensions
+                                              .PADDING_SIZE_EXTRA_SMALL),
+                                      transformAlignment: Alignment.center,
+                                      child: Container(
+                                          alignment: Alignment.center,
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: storeController
+                                                .categoryList.length,
+                                            padding: EdgeInsets.only(
+                                                left: Dimensions
+                                                    .PADDING_SIZE_SMALL),
+                                            physics: BouncingScrollPhysics(),
+                                            itemBuilder: (context, index) {
+                                              return InkWell(
+                                                onTap: () => storeController
+                                                    .setCategoryIndex(index),
+                                                child:  Container(
+                                                alignment: Alignment.center,
+                                                child: Container(
+                                                    alignment: Alignment.center,
+                                                    padding: EdgeInsets.only(
+                                                      left: index == 0
+                                                          ? Dimensions
+                                                              .PADDING_SIZE_LARGE
+                                                          : Dimensions
                                                               .PADDING_SIZE_SMALL,
-                                                        ),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .horizontal(
-                                                            left:
-                                                                Radius.circular(
-                                                              _ltr
-                                                                  ? index == 0
-                                                                      ? Dimensions
-                                                                          .RADIUS_EXTRA_LARGE
-                                                                      : 0
-                                                                  : index ==
-                                                                          storeController.categoryList.length -
-                                                                              1
-                                                                      ? Dimensions
-                                                                          .RADIUS_EXTRA_LARGE
-                                                                      : 0,
-                                                            ),
-                                                            right:
-                                                                Radius.circular(
-                                                              _ltr
-                                                                  ? index ==
-                                                                          storeController.categoryList.length -
-                                                                              1
-                                                                      ? Dimensions
-                                                                          .RADIUS_EXTRA_LARGE
-                                                                      : 0
-                                                                  : index == 0
-                                                                      ? Dimensions
-                                                                          .RADIUS_EXTRA_LARGE
-                                                                      : 0,
-                                                            ),
-                                                          ),
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .primaryColor
-                                                              .withOpacity(0.1),
-                                                        ),
-                                                        child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text(
-                                                                storeController
-                                                                    .categoryList[
-                                                                        index]
-                                                                    .name,
-                                                                style: index ==
-                                                                        storeController
-                                                                            .categoryIndex
-                                                                    ? robotoMedium.copyWith(
-                                                                        fontSize:
-                                                                            Dimensions
-                                                                                .fontSizeSmall,
-                                                                        color: Theme.of(context)
-                                                                            .primaryColor)
-                                                                    : robotoRegular.copyWith(
-                                                                        fontSize:
-                                                                            Dimensions
-                                                                                .fontSizeSmall,
-                                                                        color: Theme.of(context)
-                                                                            .disabledColor),
-                                                              ),
-                                                              index ==
-                                                                      storeController
-                                                                          .categoryIndex
-                                                                  ? Container(
-                                                                      height: 5,
-                                                                      width: 5,
-                                                                      decoration: BoxDecoration(
-                                                                          color: Theme.of(context)
-                                                                              .primaryColor,
-                                                                          shape:
-                                                                              BoxShape.circle),
-                                                                    )
-                                                                  : SizedBox(
-                                                                      height: 5,
-                                                                      width: 5),
-                                                            ]),
-                                                      ),
+                                                      right: index ==
+                                                              storeController
+                                                                      .categoryList
+                                                                      .length -
+                                                                  1
+                                                          ? Dimensions
+                                                              .PADDING_SIZE_LARGE
+                                                          : Dimensions
+                                                              .PADDING_SIZE_SMALL,
+                                                      top: Dimensions
+                                                          .PADDING_SIZE_SMALL,
                                                     ),
-                                                  );
-                                                },
-                                              ),
-
-                                            )),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius
+                                                          .horizontal(
+                                                        left: Radius.circular(
+                                                          _ltr
+                                                              ? index == 0
+                                                                  ? Dimensions
+                                                                      .RADIUS_EXTRA_LARGE
+                                                                  : 0
+                                                              : index ==
+                                                                      storeController
+                                                                              .categoryList
+                                                                              .length -
+                                                                          1
+                                                                  ? Dimensions
+                                                                      .RADIUS_EXTRA_LARGE
+                                                                  : 0,
+                                                        ),
+                                                        right: Radius.circular(
+                                                          _ltr
+                                                              ? index ==
+                                                                      storeController
+                                                                              .categoryList
+                                                                              .length -
+                                                                          1
+                                                                  ? Dimensions
+                                                                      .RADIUS_EXTRA_LARGE
+                                                                  : 0
+                                                              : index == 0
+                                                                  ? Dimensions
+                                                                      .RADIUS_EXTRA_LARGE
+                                                                  : 0,
+                                                        ),
+                                                      ),
+                                                      color: Theme.of(context)
+                                                          .primaryColor
+                                                          .withOpacity(0.1),
+                                                    ),
+                                                    child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            storeController
+                                                                .categoryList[
+                                                                    index]
+                                                                .name,
+                                                            style: index ==
+                                                                    storeController
+                                                                        .categoryIndex
+                                                                ? robotoMedium.copyWith(
+                                                                    fontSize:
+                                                                        Dimensions
+                                                                            .fontSizeSmall,
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .primaryColor)
+                                                                : robotoRegular.copyWith(
+                                                                    fontSize:
+                                                                        Dimensions
+                                                                            .fontSizeSmall,
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .disabledColor),
+                                                          ),
+                                                          index ==
+                                                                  storeController
+                                                                      .categoryIndex
+                                                              ? Container(
+                                                                  height: 5,
+                                                                  width: 5,
+                                                                  decoration: BoxDecoration(
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .primaryColor,
+                                                                      shape: BoxShape
+                                                                          .circle),
+                                                                )
+                                                              : SizedBox(
+                                                                  height: 5,
+                                                                  width: 5),
+                                                        ]),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          )),
+                                    )),
                                   ))
                               : SliverToBoxAdapter(child: SizedBox())
                           : SliverToBoxAdapter(child: SizedBox())),

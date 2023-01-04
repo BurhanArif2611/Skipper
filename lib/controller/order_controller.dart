@@ -209,6 +209,7 @@ class OrderController extends GetxController implements GetxService {
         ApiChecker.checkApi(response);
       }
       _isLoading = false;
+      getOrderDetails(orderID);
       update();
     } else {
       _trackModel = orderModel;
@@ -553,6 +554,7 @@ class OrderController extends GetxController implements GetxService {
   Future<bool> acceptErrandCounter(int order_id, int id,String payment_type, void Function(bool isSuccess, String message, String orderID) orderCallback, {bool back = false}) async {
     _isLoading = true;
     update();
+    Get.dialog(CustomLoader(), barrierDismissible: false);
     SetErrandOrderBody _updateStatusBody = SetErrandOrderBody(
       orderId: order_id,
       bid_id: id,
@@ -574,6 +576,7 @@ class OrderController extends GetxController implements GetxService {
       _isSuccess = true;
     } else {
       ApiChecker.checkApi(response);
+      Get.back();
       _isSuccess = false;
     }
     _isLoading = false;

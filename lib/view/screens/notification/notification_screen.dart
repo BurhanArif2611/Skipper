@@ -49,14 +49,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Scaffold(
       appBar: Get.find<StoreController>().store == null
           ? CustomAppBar(
-              title: 'notification123'.tr,
+              title: 'notification'.tr,
               backButton: ResponsiveHelper.isDesktop(context))
           : Get.find<StoreController>().store != null &&
                   Get.find<StoreController>().store.ecommerce == 0
               ? CustomAppBar(
-                  title: 'notification123'.tr,
+                  title: 'notification'.tr,
                   backButton: ResponsiveHelper.isDesktop(context))
-              : CustomAppBar(title: 'notification456'.tr, backButton: true),
+              : CustomAppBar(title: 'notification'.tr, backButton: true),
       endDrawer: MenuDrawer(),
       body: Get.find<AuthController>().isLoggedIn()
           ? GetBuilder<NotificationController>(
@@ -73,7 +73,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             await notificationController.getNotificationList(
                                 1, true);
                           },
-                          child: Scrollbar(
+                          child: NotificationListener<OverscrollIndicatorNotification>(
+                            onNotification: (OverscrollIndicatorNotification overscroll) {
+                              overscroll.disallowGlow();
+                              return;
+                            },
+                            child:
+                          Scrollbar(
                               child: SingleChildScrollView(
                             controller: scrollController,
                             physics: AlwaysScrollableScrollPhysics(),
@@ -218,7 +224,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                         },
                                       ))),
                             ),
-                          )),
+                          ))),
                         )
                       : NoDataScreen(
                           text: 'no_notification_found'.tr, showFooter: true)

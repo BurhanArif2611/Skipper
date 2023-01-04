@@ -63,9 +63,9 @@ class Transaction {
     userId = json["user_id"];
     transactionId = json["transaction_id"];
     credit = json["credit"].toDouble();
-    debit = json["debit"].toDouble();
+    debit = json["debit"] !=null ?json["debit"].toDouble():0.0;
     if(json["admin_bonus"] != null){
-      adminBonus = json["admin_bonus"].toDouble();
+      adminBonus = json["admin_bonus"]!=null?json["admin_bonus"].toDouble():0.0;
     }
     balance = json["balance"].toDouble();
     status = json["status"];

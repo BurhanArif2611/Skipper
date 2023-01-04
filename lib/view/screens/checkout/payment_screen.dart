@@ -119,7 +119,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   Future<bool> _exitApp() async {
-    return Get.dialog(PaymentFailedDialog(orderID: widget.orderModel.id.toString()));
+    return Get.dialog(PaymentFailedDialog(orderID: widget.orderModel.id.toString(),orderType:widget.orderModel.orderType), barrierDismissible: false);
   }
 
 }
@@ -171,7 +171,7 @@ class MyInAppBrowser extends InAppBrowser {
         Get.back();
       }
       else{
-      Get.dialog(PaymentFailedDialog(orderID: orderID));}
+      Get.dialog(PaymentFailedDialog(orderID: orderID,orderType:orderType), barrierDismissible: false);}
     }
     print("\n\nBrowser closed!\n\n");
   }

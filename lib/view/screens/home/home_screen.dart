@@ -276,7 +276,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .addressType ==
                                                               'home'
                                                           ? Icons.home_filled
-                                                          : locationController
+                                                          :locationController
+                                                    .getUserAddress()!=null&& locationController
+                                                    .getUserAddress().address!=null && locationController
                                                                       .getUserAddress()
                                                                       .addressType ==
                                                                   'office'
@@ -291,10 +293,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ),
                                                     SizedBox(width: 10),
                                                     Flexible(
-                                                      child: Text(
+                                                      child:Container(
+                                                      width: double.infinity,
+                                                        child:
+                                                      Text(locationController
+                                                          .getUserAddress()!=null&& locationController
+                                                          .getUserAddress().address!=null ?
                                                         locationController
                                                             .getUserAddress()
-                                                            .address,
+                                                            .address:'',
                                                         style: robotoRegular
                                                             .copyWith(
                                                           color:
@@ -308,7 +315,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         maxLines: 1,
                                                         overflow: TextOverflow
                                                             .ellipsis,
-                                                      ),
+                                                      )),
                                                     ),
                                                     Icon(Icons.arrow_drop_down,
                                                         color: Theme.of(context)
