@@ -79,6 +79,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   void initState() {
     super.initState();
+    Get.find<OrderController>().clearPrevData();
     _isLoggedIn = Get.find<AuthController>().isLoggedIn();
     if (_isLoggedIn) {
       if (Get.find<UserController>().userInfoModel == null) {
@@ -99,6 +100,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       _isWalletActive =
           Get.find<SplashController>().configModel.customerWalletStatus == 1;
       Get.find<OrderController>().updateTips(-1, notify: false);
+      Get.find<OrderController>().addTips(0.0);
     }
   }
 
@@ -362,8 +364,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                 value: 'delivery',
                                                 title: 'home_delivery'.tr,
                                                 charge: _charge,
-                                                isFree: storeController
-                                                    .store.freeDelivery,
+                                                isFree: (storeController.store.freeDelivery  &&
+                        Get.find<SplashController>()
+                            .configModel
+                            .freeDeliveryOver !=
+                        null &&
+                        _orderAmount >=
+                        Get.find<SplashController>()
+                            .configModel
+                            .freeDeliveryOver ||
+                        couponController.freeDelivery)?true:false,
                                               )
                                             : SizedBox(),
                                         showVeg &&

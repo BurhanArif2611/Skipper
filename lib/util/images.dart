@@ -81,4 +81,6 @@ class Images {
   static const String errand = 'assets/image/errand.png';
   static const String parcel_marker = 'assets/image/parcel_marker.png';
   static const String task_marker = 'assets/image/task_marker.png';
+  static const String arrow_right = 'assets/image/arrow-right.png';
+  static const String nextArrow = 'assets/image/next-arrow-forward-svgrepo-com.svg';
 }

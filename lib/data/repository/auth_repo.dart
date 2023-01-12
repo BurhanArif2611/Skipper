@@ -23,6 +23,9 @@ class AuthRepo {
   Future<Response> login({String phone, String password}) async {
     return await apiClient.postData(AppConstants.LOGIN_URI, {"phone": phone, "password": password});
   }
+  Future<Response> checkMobileNumber({String phone}) async {
+    return await apiClient.postData(AppConstants.CHECK_PHONE_URI, {"phone": phone});
+  }
 
   Future<Response> loginWithSocialMedia(String email) async {
     return await apiClient.postData(AppConstants.SOCIAL_LOGIN_URL, {"email": email});

@@ -23,6 +23,10 @@ import 'package:get/get.dart';
 import 'package:phone_number/phone_number.dart';
 
 class SignUpScreen extends StatefulWidget {
+  final String number;
+
+  SignUpScreen({@required this.number});
+
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
@@ -54,6 +58,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("number>>>"+widget.number.toString());
+    _phoneController.text=widget.number;
     return Scaffold(
       appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : null,
       endDrawer: MenuDrawer(),

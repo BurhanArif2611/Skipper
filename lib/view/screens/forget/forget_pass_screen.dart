@@ -20,7 +20,8 @@ import 'package:phone_number/phone_number.dart';
 class ForgetPassScreen extends StatefulWidget {
   final bool fromSocialLogin;
   final SocialLogInBody socialLogInBody;
-  ForgetPassScreen({@required this.fromSocialLogin, @required this.socialLogInBody});
+  final String number;
+  ForgetPassScreen({@required this.fromSocialLogin, @required this.socialLogInBody, @required this.number});
 
   @override
   State<ForgetPassScreen> createState() => _ForgetPassScreenState();
@@ -32,6 +33,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _numberController.text=widget.number.toString();
     return Scaffold(
       appBar: CustomAppBar(title: widget.fromSocialLogin ? 'phone'.tr : 'forgot_password'.tr),
       endDrawer: MenuDrawer(),

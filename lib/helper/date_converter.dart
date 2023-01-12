@@ -21,19 +21,19 @@ class DateConverter {
   }
 
   static String dateTimeStringToDateTime(String dateTime) {
-    return DateFormat('dd MMM yyyy  ${_timeFormatter()}').format(DateFormat('yyyy-MM-dd HH:mm:ss').parse(dateTime).toLocal());
+    return DateFormat('dd MMM yyyy  ${_timeFormatter()}').format(DateFormat('yyyy-MM-dd HH:mm:ss').parseUtc(dateTime).toLocal());
   }
 
   static String dateTimeStringToDateOnly(String dateTime) {
-    return DateFormat('dd MMM yyyy').format(DateFormat('yyyy-MM-dd HH:mm:ss').parse(dateTime).toLocal());
+    return DateFormat('dd MMM yyyy').format(DateFormat('yyyy-MM-dd HH:mm:ss').parseUtc(dateTime).toLocal());
   }
 
   static DateTime dateTimeStringToDate(String dateTime) {
-    return DateFormat('yyyy-MM-dd HH:mm:ss').parse(dateTime).toLocal();
+    return DateFormat('yyyy-MM-dd HH:mm:ss').parseUtc(dateTime).toLocal();
   }
 
   static DateTime isoStringToLocalDate(String dateTime) {
-    return DateFormat('yyyy-MM-ddTHH:mm:ss.SSS').parse(dateTime).toLocal();
+    return DateFormat('yyyy-MM-ddTHH:mm:ss.SSS').parseUtc(dateTime).toLocal();
   }
 
   static String isoStringToDateTimeString(String dateTime) {
@@ -45,7 +45,7 @@ class DateConverter {
   }
 
   static String stringToLocalDateOnly(String dateTime) {
-    return DateFormat('dd MMM yyyy').format(DateFormat('yyyy-MM-dd').parse(dateTime).toLocal());
+    return DateFormat('dd MMM yyyy').format(DateFormat('yyyy-MM-dd').parseUtc(dateTime).toLocal());
   }
 
   static String localDateToIsoString(DateTime dateTime) {
@@ -53,11 +53,11 @@ class DateConverter {
   }
 
   static String convertTimeToTime(String time) {
-    return DateFormat(_timeFormatter()).format(DateFormat('HH:mm').parse(time).toLocal());
+    return DateFormat(_timeFormatter()).format(DateFormat('HH:mm').parseUtc(time).toLocal());
   }
 
   static DateTime convertStringTimeToDate(String time) {
-    return DateFormat('HH:mm').parse(time).toLocal();
+    return DateFormat('HH:mm').parseUtc(time).toLocal();
   }
 
   static bool isAvailable(String start, String end, {DateTime time}) {

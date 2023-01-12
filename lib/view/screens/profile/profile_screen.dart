@@ -234,7 +234,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             Dimensions.fontSizeExtraSmall)),
                                 SizedBox(
                                     width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                Text(AppConstants.APP_VERSION.toString(),
+                                Text(AppConstants.ANDROID_APP_VERSION.toString(),
                                     style: robotoMedium.copyWith(
                                         fontSize:
                                             Dimensions.fontSizeExtraSmall)),

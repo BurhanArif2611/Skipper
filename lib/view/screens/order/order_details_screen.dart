@@ -193,7 +193,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                     SizedBox(
                                         width: Dimensions
                                             .PADDING_SIZE_EXTRA_SMALL),
-                                    Text(widget.isRunning?
+                                    Text(widget.isRunning!=null && widget.isRunning?
                                       DateConverter.dateTimeStringToDateTime(_order.createdAt): DateConverter.dateTimeStringToDateTime(_order.delivered!=null?_order.delivered!=""?_order.delivered:_order.createdAt:_order.canceled!=null?_order.canceled !=""?_order.canceled:_order.createdAt:_order.createdAt),
                                       style: robotoRegular,
                                     ),

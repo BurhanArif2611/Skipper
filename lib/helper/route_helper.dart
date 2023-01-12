@@ -123,7 +123,7 @@ class RouteHelper {
   static String getLanguageRoute(String page) => '$language?page=$page';
   static String getOnBoardingRoute() => '$onBoarding';
   static String getSignInRoute(String page) => '$signIn?page=$page';
-  static String getSignUpRoute() => '$signUp';
+  static String getSignUpRoute(String number) => '$signUp?number=$number';
   static String getVerificationRoute(String number, String token, String page, String pass) {
     return '$verification?page=$page&number=$number&token=$token&pass=$pass';
   }
@@ -131,12 +131,12 @@ class RouteHelper {
   static String getPickMapRoute(String page, bool canRoute) => '$pickMap?page=$page&route=${canRoute.toString()}';
   static String getInterestRoute() => '$interest';
   static String getMainRoute(String page) => '$main?page=$page';
-  static String getForgotPassRoute(bool fromSocialLogin, SocialLogInBody socialLogInBody) {
+  static String getForgotPassRoute(bool fromSocialLogin, SocialLogInBody socialLogInBody,String number) {
     String _data;
     if(fromSocialLogin) {
       _data = base64Encode(utf8.encode(jsonEncode(socialLogInBody.toJson())));
     }
-    return '$forgotPassword?page=${fromSocialLogin ? 'social-login' : 'forgot-password'}&data=${fromSocialLogin ? _data : 'null'}';
+    return '$forgotPassword?page=${fromSocialLogin ? 'social-login' : 'forgot-password'}&data=${fromSocialLogin ? _data : 'null'}&number=$number';
   }
   static String getResetPasswordRoute(String phone, String token, String page) => '$resetPassword?phone=$phone&token=$token&page=$page';
   static String getSearchRoute({String queryText}) => '$search?query=${queryText ?? ''}';
@@ -217,7 +217,7 @@ class RouteHelper {
     GetPage(name: signIn, page: () => SignInScreen(
       exitFromApp: Get.parameters['page'] == signUp || Get.parameters['page'] == splash || Get.parameters['page'] == onBoarding,
     )),
-    GetPage(name: signUp, page: () => SignUpScreen()),
+    GetPage(name: signUp, page: () => SignUpScreen(number: Get.parameters['number'])),
     GetPage(name: verification, page: () {
       List<int> _decode = base64Decode(Get.parameters['pass'].replaceAll(' ', '+'));
       String _data = utf8.decode(_decode);
@@ -249,7 +249,7 @@ class RouteHelper {
         List<int> _decode = base64Decode(Get.parameters['data'].replaceAll(' ', '+'));
         _data = SocialLogInBody.fromJson(jsonDecode(utf8.decode(_decode)));
       }
-      return ForgetPassScreen(fromSocialLogin: Get.parameters['page'] == 'social-login', socialLogInBody: _data);
+      return ForgetPassScreen(fromSocialLogin: Get.parameters['page'] == 'social-login', socialLogInBody: _data,number: Get.parameters['number']);
     }),
     GetPage(name: resetPassword, page: () => NewPassScreen(
       resetToken: Get.parameters['token'], number: Get.parameters['phone'], fromPasswordChange: Get.parameters['page'] == 'password-change',
@@ -346,7 +346,7 @@ class RouteHelper {
     }else if(GetPlatform.isIOS) {
       _minimumVersion = Get.find<SplashController>().configModel.appMinimumVersionIos;
     }
-    return AppConstants.APP_VERSION < _minimumVersion ? UpdateScreen(isUpdate: true)
+    return AppConstants.ANDROID_APP_VERSION < _minimumVersion ? UpdateScreen(isUpdate: true)
         : Get.find<SplashController>().configModel.maintenanceMode ? UpdateScreen(isUpdate: false)
         : Get.find<LocationController>().getUserAddress() == null
         ? AccessLocationScreen(fromSignUp: false, fromHome: false, route: Get.currentRoute) : navigateTo;

@@ -8,13 +8,16 @@ import '../controller/banner_controller.dart';
 
 class AppConstants {
   static const String APP_NAME = 'ShapShap';
-  static const double APP_VERSION = 2;
+  static const double ANDROID_APP_VERSION = 10.0;
+  static const double IOS_APP_VERSION = 10.0;
 
   //dev url
    //static const String BASE_URL = 'http://192.168.1.164:8000';
-
+  // staging url
     static const String BASE_URL = 'http://52.17.19.170:5000';
- // static const String BASE_URL = 'http://portal-dev.shapshap.com';
+  //local url
+   //static const String BASE_URL = 'http://192.168.1.164:8000';
+ // static const String BASE_URL = 'https://portal-dev.shapshap.com';
   //live url
  // static const String BASE_URL = 'https://portal.shapshap.com';
   static const String CATEGORY_URI = '/api/v1/categories';
@@ -41,6 +44,7 @@ class AppConstants {
   static const String VERIFY_EMAIL_URI = '/api/v1/auth/verify-email';
   static const String REGISTER_URI = '/api/v1/auth/sign-up';
   static const String LOGIN_URI = '/api/v1/auth/login';
+  static const String CHECK_PHONE_URI = '/api/v1/auth/check_phone';
   static const String TOKEN_URI = '/api/v1/customer/cm-firebase-token';
   static const String PLACE_ORDER_URI = '/api/v1/customer/order/place';
   static const String ADDRESS_LIST_URI = '/api/v1/customer/address/list';

@@ -29,6 +29,7 @@ class AuthController extends GetxController implements GetxService {
     _isLoading = true;
     update();
     Get.dialog(CustomLoader(), barrierDismissible: false);
+    clearUserNumberAndPassword();
     Response response = await authRepo.registration(signUpBody);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
@@ -74,6 +75,23 @@ class AuthController extends GetxController implements GetxService {
     return responseModel;
   }
 
+  Future<Response> checkUserMobileNumber(String phone) async {
+    _isLoading = true;
+    update();
+    Get.dialog(CustomLoader(), barrierDismissible: false);
+    Response response = await authRepo.checkMobileNumber(phone: phone);
+ //   ResponseModel responseModel;
+   // print("responseModel>>"+response.toString());
+    if (response.statusCode == 200) {
+      Get.back();
+    } else {
+      Get.back();
+    }
+    _isLoading = false;
+    update();
+    return response;
+  }
+
   Future<void> loginWithSocialMedia(SocialLogInBody socialLogInBody) async {
     _isLoading = true;
     update();
@@ -89,7 +107,7 @@ class AuthController extends GetxController implements GetxService {
           Get.toNamed(RouteHelper.getAccessLocationRoute('sign-in'));
         }
       }else {
-        Get.toNamed(RouteHelper.getForgotPassRoute(true, socialLogInBody));
+        Get.toNamed(RouteHelper.getForgotPassRoute(true, socialLogInBody,""));
       }
     } else {
       showCustomSnackBar(response.statusText);

@@ -89,43 +89,101 @@ class _SplashScreenState extends State<SplashScreen> {
           }
 
          // Get.offNamed(RouteHelper.getStoreRoute(0,  'store'));
-          if(AppConstants.APP_VERSION < _minimumVersion || Get.find<SplashController>().configModel.maintenanceMode) {
-            Get.offNamed(RouteHelper.getUpdateRoute(AppConstants.APP_VERSION < _minimumVersion));
-          }
-          else {
-            if(widget.orderID != null) {
-              Get.offNamed(RouteHelper.getOrderDetailsRoute(int.parse(widget.orderID)));
+          if(GetPlatform.isAndroid) {
+            if (AppConstants.ANDROID_APP_VERSION < _minimumVersion || Get
+                .find<SplashController>()
+                .configModel
+                .maintenanceMode) {
+              Get.offNamed(RouteHelper.getUpdateRoute(
+                  AppConstants.ANDROID_APP_VERSION < _minimumVersion));
             }
             else {
-              if (Get.find<AuthController>().isLoggedIn()) {
-                Get.find<AuthController>().updateToken();
-                await Get.find<WishListController>().getWishList();
-                try {
-                  await Firebase.initializeApp();
-                  FlutterError.onError =
-                      FirebaseCrashlytics.instance.recordFlutterFatalError;
-                }catch (e){}
-                if (Get.find<LocationController>().getUserAddress() != null) {
-                  //Get.offNamed(RouteHelper.getInitialRoute());
-                  getBranchList();
-                } else {
-                  Get.offNamed(RouteHelper.getAccessLocationRoute('splash'));
-                }
-              } else {
-                if (Get.find<SplashController>().showIntro()) {
-                  if(AppConstants.languages.length > 1) {
-                  //  Get.offNamed(RouteHelper.getLanguageRoute('splash'));
-                    Get.find<LocalizationController>().setLanguage(Locale(
-                      AppConstants.languages[0].languageCode,
-                      AppConstants.languages[0].countryCode,
-                    ));
-                    Get.find<LocalizationController>().setSelectIndex(0);
-                    Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
-                  }else {
-                    Get.offNamed(RouteHelper.getOnBoardingRoute());
+              if (widget.orderID != null) {
+                Get.offNamed(RouteHelper.getOrderDetailsRoute(
+                    int.parse(widget.orderID)));
+              }
+              else {
+                if (Get.find<AuthController>().isLoggedIn()) {
+                  Get.find<AuthController>().updateToken();
+                  await Get.find<WishListController>().getWishList();
+                  try {
+                    await Firebase.initializeApp();
+                    FlutterError.onError =
+                        FirebaseCrashlytics.instance.recordFlutterFatalError;
+                  } catch (e) {}
+                  if (Get.find<LocationController>().getUserAddress() != null) {
+                    //Get.offNamed(RouteHelper.getInitialRoute());
+                    getBranchList();
+                  } else {
+                    Get.offNamed(RouteHelper.getAccessLocationRoute('splash'));
                   }
                 } else {
-                  Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
+                  if (Get.find<SplashController>().showIntro()) {
+                    if (AppConstants.languages.length > 1) {
+                      //  Get.offNamed(RouteHelper.getLanguageRoute('splash'));
+                      Get.find<LocalizationController>().setLanguage(Locale(
+                        AppConstants.languages[0].languageCode,
+                        AppConstants.languages[0].countryCode,
+                      ));
+                      Get.find<LocalizationController>().setSelectIndex(0);
+                      Get.offNamed(
+                          RouteHelper.getSignInRoute(RouteHelper.splash));
+                    } else {
+                      Get.offNamed(RouteHelper.getOnBoardingRoute());
+                    }
+                  } else {
+                    Get.offNamed(
+                        RouteHelper.getSignInRoute(RouteHelper.splash));
+                  }
+                }
+              }
+            }
+          }else if(GetPlatform.isIOS) {
+            if (AppConstants.IOS_APP_VERSION < _minimumVersion || Get
+                .find<SplashController>()
+                .configModel
+                .maintenanceMode) {
+              Get.offNamed(RouteHelper.getUpdateRoute(
+                  AppConstants.IOS_APP_VERSION < _minimumVersion));
+            }
+            else {
+              if (widget.orderID != null) {
+                Get.offNamed(RouteHelper.getOrderDetailsRoute(
+                    int.parse(widget.orderID)));
+              }
+              else {
+                if (Get.find<AuthController>().isLoggedIn()) {
+                  Get.find<AuthController>().updateToken();
+                  await Get.find<WishListController>().getWishList();
+                  try {
+                    await Firebase.initializeApp();
+                    FlutterError.onError =
+                        FirebaseCrashlytics.instance.recordFlutterFatalError;
+                  } catch (e) {}
+                  if (Get.find<LocationController>().getUserAddress() != null) {
+                    //Get.offNamed(RouteHelper.getInitialRoute());
+                    getBranchList();
+                  } else {
+                    Get.offNamed(RouteHelper.getAccessLocationRoute('splash'));
+                  }
+                } else {
+                  if (Get.find<SplashController>().showIntro()) {
+                    if (AppConstants.languages.length > 1) {
+                      //  Get.offNamed(RouteHelper.getLanguageRoute('splash'));
+                      Get.find<LocalizationController>().setLanguage(Locale(
+                        AppConstants.languages[0].languageCode,
+                        AppConstants.languages[0].countryCode,
+                      ));
+                      Get.find<LocalizationController>().setSelectIndex(0);
+                      Get.offNamed(
+                          RouteHelper.getSignInRoute(RouteHelper.splash));
+                    } else {
+                      Get.offNamed(RouteHelper.getOnBoardingRoute());
+                    }
+                  } else {
+                    Get.offNamed(
+                        RouteHelper.getSignInRoute(RouteHelper.splash));
+                  }
                 }
               }
             }
