@@ -585,7 +585,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                     orderAmount: parcelController.deliveryFinalCharge == 0 ? charge: parcelController.deliveryFinalCharge,
                     orderNote: '',
                     orderType: 'parcel',
-                    receiverDetails: widget.destinationAddress,
+                    receiverDetails: widget.pickedUpAddress,
                     paymentMethod: payment_type,
                     couponCode: null,
                     storeId: null,

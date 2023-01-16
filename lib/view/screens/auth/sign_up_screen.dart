@@ -52,14 +52,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   void initState() {
     super.initState();
-
+    _phoneController.text=widget.number.toString();
     _countryDialCode = CountryCode.fromCountryCode(Get.find<SplashController>().configModel.country).dialCode;
   }
 
   @override
   Widget build(BuildContext context) {
     print("number>>>"+widget.number.toString());
-    _phoneController.text=widget.number;
     return Scaffold(
       appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : null,
       endDrawer: MenuDrawer(),

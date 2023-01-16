@@ -242,9 +242,16 @@ class _SignInScreenState extends State<SignInScreen> {
                                                     _showPassword = true;
                                                   }
                                                   else {
-                                                    Get.toNamed(RouteHelper
+                                                   /* Get.toNamed(RouteHelper
                                                         .getForgotPassRoute(
-                                                        false, null,_phoneController.text));
+                                                        false, null,_phoneController.text));*/
+                                                    authController.forgetPassword(_numberWithCountryCode).then((status) async {
+                                                      if (status.isSuccess) {
+                                                        Get.toNamed(RouteHelper.getVerificationRoute(_numberWithCountryCode.toString(), '', RouteHelper.signIn, ''));
+                                                      }else {
+                                                        showCustomSnackBar(status.message);
+                                                      }
+                                                    });
                                                   }
                                                 } else {
                                                   print("else is working");
@@ -259,7 +266,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                           },
                                           child:
                                           Image.asset(
-                                              Images.arrow_right, height: 20))),
+                                              Images.arrow_right, height: 20,color: Colors.white,))),
                                 ]),
                                 Padding(padding: EdgeInsets.symmetric(
                                     horizontal: Dimensions.PADDING_SIZE_LARGE),
@@ -309,6 +316,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                       Get.toNamed(
                                           RouteHelper.getForgotPassRoute(
                                               false, null,"")),
+
                                   child: Text('${'forgot_password'.tr}?'),
                                 ),
                               ]),

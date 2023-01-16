@@ -42,6 +42,7 @@ import 'package:sixam_mart/view/screens/parcel/widget/address_dialog.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
 
+import '../../../controller/parcel_controller.dart';
 import '../../base/custom_loader.dart';
 import '../../base/text_field_shadow.dart';
 
@@ -1698,8 +1699,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   if(locationController.addressList!=null && locationController.addressList.length>0) {
                     _address = orderController.addressIndex == -1
                         ? Get.find<LocationController>().getUserAddress()
-                        : locationController
-                        .addressList[orderController.addressIndex];
+                        : locationController.addressList[orderController.addressIndex];
 
                     orderController.placeOrder(
                         PlaceOrderBody(

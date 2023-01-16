@@ -147,14 +147,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       : SizedBox.shrink(),
                                 ])
                               : SizedBox(),
-                          SizedBox(height: _isLoggedIn ? 30 : 0),
+                         /* SizedBox(height: _isLoggedIn ? 30 : 0),
                           ProfileButton(
                               icon: Icons.dark_mode,
                               title: 'dark_mode'.tr,
                               isButtonActive: Get.isDarkMode,
                               onTap: () {
                                 Get.find<ThemeController>().toggleTheme();
-                              }),
+                              }),*/
                           SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                           _isLoggedIn
                               ? GetBuilder<AuthController>(

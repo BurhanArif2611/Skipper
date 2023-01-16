@@ -32,8 +32,13 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
   String _countryDialCode = CountryCode.fromCountryCode(Get.find<SplashController>().configModel.country).dialCode;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     _numberController.text=widget.number.toString();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: widget.fromSocialLogin ? 'phone'.tr : 'forgot_password'.tr),
       endDrawer: MenuDrawer(),

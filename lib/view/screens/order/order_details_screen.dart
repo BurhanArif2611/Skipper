@@ -84,8 +84,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
     super.initState();
     WidgetsBinding.instance?.addObserver(this);
     _stream = FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      try{
       print("onMessage on Details: ${message.data}");
-      _loadData(context, true);
+      _loadData(context, true);}catch (e){}
     });
 
     _loadData(context, false);
@@ -424,7 +425,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                               DetailsWidget(
                                                   title: 'sender_details'.tr,
                                                   address:
-                                                      _order.deliveryAddress),
+                                                      _order.receiverDetails),
                                               SizedBox(
                                                   height: Dimensions
                                                       .PADDING_SIZE_LARGE),

@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sixam_mart/util/html_type.dart';
 
+import '../../controller/theme_controller.dart';
+
 class SplashRepo {
   ApiClient apiClient;
   final SharedPreferences sharedPreferences;
@@ -19,9 +21,10 @@ class SplashRepo {
   }
 
   Future<ModuleModel> initSharedData() async {
-    if(!sharedPreferences.containsKey(AppConstants.THEME)) {
+    sharedPreferences.setBool(AppConstants.THEME, true);
+   /* if(!sharedPreferences.containsKey(AppConstants.THEME)) {
       sharedPreferences.setBool(AppConstants.THEME, false);
-    }
+    }*/
     if(!sharedPreferences.containsKey(AppConstants.COUNTRY_CODE)) {
       sharedPreferences.setString(AppConstants.COUNTRY_CODE, AppConstants.languages[0].countryCode);
     }

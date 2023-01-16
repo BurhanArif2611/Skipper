@@ -14,6 +14,7 @@ import 'package:flutter/foundation.dart' as Foundation;
 import 'package:http/http.dart' as Http;
 
 import '../../controller/banner_controller.dart';
+import '../../controller/theme_controller.dart';
 
 class ApiClient extends GetxService {
   final String appBaseUrl;
@@ -103,6 +104,7 @@ class ApiClient extends GetxService {
   Future<Response> getData(String uri,
       {Map<String, dynamic> query, Map<String, String> headers}) async {
     try {
+      Get.find<ThemeController>().toggleTheme();
       if (Foundation.kDebugMode) {
         print('====> API Call: $uri\nHeader: $_mainHeaders');
       }

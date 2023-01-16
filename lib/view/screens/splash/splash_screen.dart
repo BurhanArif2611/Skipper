@@ -20,6 +20,7 @@ import '../../../controller/banner_controller.dart';
 import '../../../controller/category_controller.dart';
 import '../../../controller/localization_controller.dart';
 import '../../../controller/store_controller.dart';
+import '../../../controller/theme_controller.dart';
 import '../../../data/model/response/module_model.dart';
 import '../../../data/model/response/store_model.dart';
 
@@ -41,6 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+
     if (Get.find<SplashController>().module == null){
     Get.find<SplashController>().getModules();}
     Get.find<BannerController>().getBranchList(true);
@@ -66,6 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
 
     Get.find<CartController>().getCartData();
+    //Get.find<ThemeController>().toggleTheme();
     _route();
 
   }
