@@ -1859,7 +1859,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ]),
                   ),
                 ),
-                color: Colors.white,
+                color: Color(0xFF303030),
               ),
             ),
           );

@@ -799,7 +799,7 @@ class _WalletScreenState extends State<WalletScreen> with TickerProviderStateMix
                       }),
                     ])),
               ),
-              color: Colors.white,
+              color: Color(0xFF303030),
             ),
           ),
         );
@@ -952,7 +952,7 @@ class _WalletScreenState extends State<WalletScreen> with TickerProviderStateMix
                       Center(child: CircularProgressIndicator())) ,*/
                     ])),
               ),
-              color: Colors.white,
+              color: Color(0xFF303030),
             ),
           ),
         );
@@ -1097,7 +1097,7 @@ class _WalletScreenState extends State<WalletScreen> with TickerProviderStateMix
                       }),
                     ])),
               ),
-              color: Colors.white,
+              color: Color(0xFF303030),
             ),
           ),
         );
@@ -1260,7 +1260,7 @@ class _WalletScreenState extends State<WalletScreen> with TickerProviderStateMix
                       ),
                     ])),
               ),
-              color: Colors.white,
+              color: Color(0xFF303030),
             ),
           ),
         );

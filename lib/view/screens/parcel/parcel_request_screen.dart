@@ -632,7 +632,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
       barrierLabel: "Barrier",
       barrierDismissible: true,
       barrierColor: Colors.black.withOpacity(0.5),
-      transitionDuration: Duration(milliseconds: 700),
+      transitionDuration: Duration(milliseconds: 500),
       pageBuilder: (context, animation1, animation2) {
         return GetBuilder<ParcelController>(builder: (parcelController) {
           double p2 = parcelController.deliveryCharge -
@@ -646,7 +646,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
           double p1 = parcelController.deliveryCharge;
           return Center(
             child: Container(
-              height: 340,
+              height: 310,
               child: Card(
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
@@ -673,7 +673,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                             "EXPRESS DELIVERY (" +
                                 PriceConverter.convertPrice(p1) +
                                 ")",
-                            style: robotoRegular.copyWith(
+                            style: robotoRegular.copyWith(color: Colors.white,
                                 fontSize: Dimensions.fontSizeDefault)),
                         value: "EXPRESS DELIVERY",
                         groupValue: parcelController.parcelType,
@@ -695,7 +695,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                   'STANDARD DELIVERY (' +
                                       PriceConverter.convertPrice(p2) +
                                       ")",
-                                  style: robotoRegular.copyWith(
+                                  style: robotoRegular.copyWith(color: Colors.white,
                                       fontSize: Dimensions.fontSizeDefault)),
                               SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                               Text(
@@ -732,7 +732,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                   'NORMAL DELIVERY (' +
                                       PriceConverter.convertPrice(p3) +
                                       ")",
-                                  style: robotoRegular.copyWith(
+                                  style: robotoRegular.copyWith(color: Colors.white,
                                       fontSize: Dimensions.fontSizeDefault)),
                               SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                               Text(
@@ -791,7 +791,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                     ]),
                   ),
                 ),
-                color: Colors.white,
+                color: Color(0xFF303030),
               ),
             ),
           );

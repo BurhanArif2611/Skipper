@@ -325,9 +325,11 @@ class _ParcelViewState extends State<ParcelView> {
             child: Container(
               height: 600,
               child: Card(
+
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Container(
+
                     child: Column(children: [
                       SearchLocationWidget(
                         mapController: null,
@@ -561,7 +563,7 @@ class _ParcelViewState extends State<ParcelView> {
                     ]),
                   ),
                 ),
-                color: Colors.white,
+                color:Color(0xFF303030) ,
               ),
             ),
           );
@@ -758,7 +760,7 @@ class _ParcelViewState extends State<ParcelView> {
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                   Row(children: [
                     Expanded(
-                      child: TextFieldShadow(
+                     /* child: TextFieldShadow(*/
                         child: Align(
                             alignment: Alignment.centerLeft,
                             child: Column(children: [
@@ -790,11 +792,11 @@ class _ParcelViewState extends State<ParcelView> {
                                 ]),
                               )
                             ])),
-                      ),
+                     /* ),*/
                     ),
                     SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
                     Expanded(
-                      child: TextFieldShadow(
+                    /*  child: TextFieldShadow(*/
                         child: Align(
                             alignment: Alignment.centerLeft,
                             child: Column(children: [
@@ -810,8 +812,7 @@ class _ParcelViewState extends State<ParcelView> {
                                         textAlign: TextAlign.start,
                                         style: robotoMedium.copyWith(
                                             color: Colors.black,
-                                            fontSize:
-                                                Dimensions.fontSizeDefault)),
+                                            fontSize: Dimensions.fontSizeDefault)),
                                   ),
                                   Align(
                                     alignment: Alignment.centerLeft,
@@ -826,7 +827,7 @@ class _ParcelViewState extends State<ParcelView> {
                                 ]),
                               )
                             ])),
-                      ),
+                     /* ),*/
                     ),
                   ]),
                   SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
@@ -834,7 +835,7 @@ class _ParcelViewState extends State<ParcelView> {
               ]),
             ),
           ),
-          color: Colors.white,
+          color: Color(0xFF303030),
         );
       },
       itemCount: anotherList.length,
