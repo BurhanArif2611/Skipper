@@ -15,9 +15,9 @@ class NotificationHelper {
 
   static Future<void> initialize(FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
     var androidInitialize = new AndroidInitializationSettings('notification_icon');
-    var iOSInitialize = new IOSInitializationSettings();
-    var initializationsSettings = new InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
-    flutterLocalNotificationsPlugin.initialize(initializationsSettings, onSelectNotification: (String payload) async {
+   /* var iOSInitialize = new IOSInitializationSettings();*/
+    var initializationsSettings = new InitializationSettings(android: androidInitialize/*, iOS: iOSInitialize*/);
+   /* flutterLocalNotificationsPlugin.initialize(initializationsSettings, onSelectNotification: (String payload) async {
       try{
         if(payload != null && payload.isNotEmpty) {
           Get.toNamed(RouteHelper.getOrderDetailsRoute(int.parse(payload)));
@@ -27,7 +27,7 @@ class NotificationHelper {
       }catch (e) {}
       return;
     });
-
+*/
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print("onMessage: ${message.notification.title}/${message.notification.body}/${message.notification.titleLocKey}");
       NotificationHelper.showNotification(message, flutterLocalNotificationsPlugin, false);
