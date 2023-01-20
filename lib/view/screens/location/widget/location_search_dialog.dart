@@ -1,3 +1,5 @@
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/parcel_controller.dart';
 import 'package:sixam_mart/data/model/response/prediction_model.dart';
@@ -8,10 +10,15 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../../controller/splash_controller.dart';
+import '../../../../util/styles.dart';
+
 class LocationSearchDialog extends StatelessWidget {
   final GoogleMapController mapController;
   final bool isPickedUp;
-  LocationSearchDialog({@required this.mapController, this.isPickedUp});
+
+  final BuildContext context;
+  LocationSearchDialog({@required this.mapController, this.isPickedUp,@required this.context});
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +30,48 @@ class LocationSearchDialog extends StatelessWidget {
       alignment: Alignment.topCenter,
       child: Material(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL)),
-        child: SizedBox(width: Dimensions.WEB_MAX_WIDTH, child: TypeAheadField(
-          textFieldConfiguration: TextFieldConfiguration(
+        child: SizedBox(width: Dimensions.WEB_MAX_WIDTH, child:
+    Padding(
+    padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
+    child:
+        GooglePlaceAutoCompleteTextField(
+            textEditingController: _controller,
+            googleAPIKey:
+            Get.find<SplashController>().configModel.map_api_key,
+            inputDecoration: InputDecoration(
+              hintText: 'search_location'.tr,
+              hintStyle: robotoRegular.copyWith(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: Dimensions.fontSizeDefault),
+              border: InputBorder.none,
+            ),
+            debounceTime: 800,
+            // default 600 ms,
+            countries: ["in", "fr"],
+            // optional by default null is set
+            isLatLngRequired: true,
+            // if you required coordinates from place detail
+            getPlaceDetailWithLatLng: (Prediction prediction) {
+              // this method will return latlng with place detail
+              print("placeDetails" + prediction.lng.toString());
+
+              if(isPickedUp == null) {
+                Get.find<LocationController>().setLocation(prediction.placeId, prediction.description, mapController);
+              }else {
+                Get.find<ParcelController>().setLocationFromPlace(prediction.placeId, prediction.description, isPickedUp,context);
+              }
+              Get.back();
+            },
+            // this callback is called when isLatLngRequired is true
+            itmClick: (Prediction prediction) {
+              _controller.text = prediction.description;
+              _controller.selection = TextSelection.fromPosition(
+                  TextPosition(
+                      offset: prediction.description.length));
+            })),
+        /*TypeAheadField(
+          textFieldConfiguration:
+          TextFieldConfiguration(
             controller: _controller,
             textInputAction: TextInputAction.search,
             autofocus: true,
@@ -69,7 +116,8 @@ class LocationSearchDialog extends StatelessWidget {
             }
             Get.back();
           },
-        )),
+        )*/
+        ),
       ),
     );
   }

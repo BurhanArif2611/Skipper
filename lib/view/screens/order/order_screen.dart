@@ -33,6 +33,7 @@ class _OrderScreenState extends State<OrderScreen> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: CustomAppBar(title: 'my_orders'.tr, backButton: ResponsiveHelper.isDesktop(context)),
       endDrawer: MenuDrawer(),

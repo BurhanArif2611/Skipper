@@ -80,7 +80,8 @@ class WishListController extends GetxController implements GetxService {
         _wishStoreList.add(_store);
         _wishStoreIdList.add(_store.id);
       });
-    } else {
+    }else if (response.statusCode == 500) {}
+    else {
       ApiChecker.checkApi(response);
     }
     update();

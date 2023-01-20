@@ -4,6 +4,7 @@ import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/controller/wishlist_controller.dart';
 import 'package:sixam_mart/data/model/response/config_model.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
+import 'package:sixam_mart/data/model/response/module_model.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
 import 'package:sixam_mart/helper/date_converter.dart';
 import 'package:sixam_mart/helper/price_converter.dart';
@@ -54,7 +55,15 @@ class ItemWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         if(isStore) {
-          if(store != null){
+          if(store != null) {
+            if(isFeatured && Get.find<SplashController>().moduleList != null) {
+              for(ModuleModel module in Get.find<SplashController>().moduleList) {
+                if(module.id == store.moduleId) {
+                  Get.find<SplashController>().setModule(module);
+                  break;
+                }
+              }
+            }
             Get.toNamed(
               RouteHelper.getStoreRoute(store.id, isFeatured ? 'module' : 'item'),
               arguments: StoreScreen(store: store, fromModule: isFeatured),

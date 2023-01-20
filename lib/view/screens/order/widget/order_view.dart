@@ -31,7 +31,8 @@ class OrderView extends StatelessWidget {
           paginatedOrderModel = isRunning ? orderController.runningOrderModel : orderController.historyOrderModel;
         }
 
-        return paginatedOrderModel != null ? paginatedOrderModel.orders.length > 0 ? RefreshIndicator(
+        return paginatedOrderModel != null ? paginatedOrderModel.orders.length > 0 ?
+        RefreshIndicator(
           onRefresh: () async {
             if(isRunning) {
               await orderController.getRunningOrders(1);
@@ -63,6 +64,7 @@ class OrderView extends StatelessWidget {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       bool _isParcel = paginatedOrderModel.orders[index].orderType == 'parcel';
+                      bool _isErrand = paginatedOrderModel.orders[index].orderType == 'errand';
 
                       return InkWell(
                         onTap: () {
@@ -71,6 +73,7 @@ class OrderView extends StatelessWidget {
                             arguments: OrderDetailsScreen(
                               orderId: paginatedOrderModel.orders[index].id,
                               orderModel: paginatedOrderModel.orders[index],
+                              isRunning: isRunning,
                             ),
                           );
                         },
@@ -99,7 +102,7 @@ class OrderView extends StatelessWidget {
                                           '/${paginatedOrderModel.orders[index].parcelCategory != null ? paginatedOrderModel.orders[index].parcelCategory.image : ''}'
                                           : '${Get.find<SplashController>().configModel.baseUrls.storeImageUrl}/${paginatedOrderModel.orders[index].store != null
                                           ? paginatedOrderModel.orders[index].store.logo : ''}',
-                                      height: _isParcel ? 35 : 60, width: _isParcel ? 35 : 60, fit: _isParcel ? null : BoxFit.cover,
+                                      height: _isParcel ? 35 : 60, width: _isParcel ? 35 : 60, fit: _isParcel ? null : BoxFit.fill,
                                     ),
                                   ),
                                 ),
@@ -110,6 +113,15 @@ class OrderView extends StatelessWidget {
                                     color: Theme.of(context).primaryColor,
                                   ),
                                   child: Text('parcel'.tr, style: robotoMedium.copyWith(
+                                    fontSize: Dimensions.fontSizeExtraSmall, color: Colors.white,
+                                  )),
+                                )) : _isErrand ?Positioned(left: 0, top: 10, child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.horizontal(right: Radius.circular(Dimensions.RADIUS_SMALL)),
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                  child: Text('Errand', style: robotoMedium.copyWith(
                                     fontSize: Dimensions.fontSizeExtraSmall, color: Colors.white,
                                   )),
                                 )) : SizedBox(),
@@ -127,8 +139,8 @@ class OrderView extends StatelessWidget {
                                     Text('#${paginatedOrderModel.orders[index].id}', style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall)),
                                   ]),
                                   SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                                  Text(
-                                    DateConverter.dateTimeStringToDateTime(paginatedOrderModel.orders[index].createdAt),
+                                  Text(isRunning?
+                                    DateConverter.dateTimeStringToDateTime(paginatedOrderModel.orders[index].createdAt): DateConverter.dateTimeStringToDateTime(paginatedOrderModel.orders[index].delivered!=null?paginatedOrderModel.orders[index].delivered!=""?paginatedOrderModel.orders[index].delivered:paginatedOrderModel.orders[index].createdAt:paginatedOrderModel.orders[index].canceled!=null?paginatedOrderModel.orders[index].canceled !=""?paginatedOrderModel.orders[index].canceled:paginatedOrderModel.orders[index].createdAt:paginatedOrderModel.orders[index].createdAt),
                                     style: robotoRegular.copyWith(color: Theme.of(context).disabledColor, fontSize: Dimensions.fontSizeSmall),
                                   ),
                                 ]),
@@ -163,10 +175,18 @@ class OrderView extends StatelessWidget {
                                       )),
                                     ]),
                                   ),
-                                ) : Text(
+                                ) :_isParcel? Text(
+                                  '${paginatedOrderModel.orders[index].dropoff_locations.length} ${paginatedOrderModel.orders[index].dropoff_locations.length > 1 ? 'drops'.tr : 'drop'.tr}',
+                                  style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall),
+                                ):_isErrand?Text(
+                                  '${paginatedOrderModel.orders[index].errand_tasks.length} ${paginatedOrderModel.orders[index].errand_tasks.length > 1 ? 'tasks'.tr : 'task'.tr}',
+                                  style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall),
+                                ):Text(
                                   '${paginatedOrderModel.orders[index].detailsCount} ${paginatedOrderModel.orders[index].detailsCount > 1 ? 'items'.tr : 'item'.tr}',
                                   style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall),
-                                ),
+                                )
+
+                                ,
                               ]),
 
                             ]),

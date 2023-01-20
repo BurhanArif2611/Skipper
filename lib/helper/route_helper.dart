@@ -25,6 +25,7 @@ import 'package:sixam_mart/view/screens/checkout/order_successful_screen.dart';
 import 'package:sixam_mart/view/screens/checkout/payment_screen.dart';
 import 'package:sixam_mart/view/screens/coupon/coupon_screen.dart';
 import 'package:sixam_mart/view/screens/dashboard/dashboard_screen.dart';
+import 'package:sixam_mart/view/screens/errand/errand_main_screen.dart';
 import 'package:sixam_mart/view/screens/item/item_campaign_screen.dart';
 import 'package:sixam_mart/view/screens/item/item_details_screen.dart';
 import 'package:sixam_mart/view/screens/item/popular_item_screen.dart';
@@ -47,6 +48,7 @@ import 'package:sixam_mart/view/screens/parcel/parcel_location_screen.dart';
 import 'package:sixam_mart/view/screens/parcel/parcel_request_screen.dart';
 import 'package:sixam_mart/view/screens/profile/profile_screen.dart';
 import 'package:sixam_mart/view/screens/profile/update_profile_screen.dart';
+import 'package:sixam_mart/view/screens/refer_and_earn/refer_and_earn_screen.dart';
 import 'package:sixam_mart/view/screens/store/all_store_screen.dart';
 import 'package:sixam_mart/view/screens/store/campaign_screen.dart';
 import 'package:sixam_mart/view/screens/store/store_item_search_screen.dart';
@@ -58,6 +60,9 @@ import 'package:sixam_mart/view/screens/support/support_screen.dart';
 import 'package:sixam_mart/view/screens/update/update_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sixam_mart/view/screens/wallet/wallet_screen.dart';
+
+import '../view/screens/favourite/favourite_screen.dart';
 
 class RouteHelper {
   static const String initial = '/';
@@ -103,17 +108,22 @@ class RouteHelper {
   static const String itemImages = '/item-images';
   static const String parcelCategory = '/parcel-category';
   static const String parcelLocation = '/parcel-location';
+  static const String errandmainscreen = '/errand_main_screen';
   static const String parcelRequest = '/parcel-request';
   static const String searchStoreItem = '/search-store-item';
   static const String order = '/order';
   static const String itemDetails = '/item-details';
+  static const String wallet = '/wallet';
+  static const String referAndEarn = '/refer-and-earn';
+  static const String favouritescreen = '/favourite_screen';
 
   static String getInitialRoute() => '$initial';
+  static String getFavoriteScreen() => '$favouritescreen';
   static String getSplashRoute(int orderID) => '$splash?id=$orderID';
   static String getLanguageRoute(String page) => '$language?page=$page';
   static String getOnBoardingRoute() => '$onBoarding';
   static String getSignInRoute(String page) => '$signIn?page=$page';
-  static String getSignUpRoute() => '$signUp';
+  static String getSignUpRoute(String number) => '$signUp?number=$number';
   static String getVerificationRoute(String number, String token, String page, String pass) {
     return '$verification?page=$page&number=$number&token=$token&pass=$pass';
   }
@@ -121,12 +131,12 @@ class RouteHelper {
   static String getPickMapRoute(String page, bool canRoute) => '$pickMap?page=$page&route=${canRoute.toString()}';
   static String getInterestRoute() => '$interest';
   static String getMainRoute(String page) => '$main?page=$page';
-  static String getForgotPassRoute(bool fromSocialLogin, SocialLogInBody socialLogInBody) {
+  static String getForgotPassRoute(bool fromSocialLogin, SocialLogInBody socialLogInBody,String number) {
     String _data;
     if(fromSocialLogin) {
       _data = base64Encode(utf8.encode(jsonEncode(socialLogInBody.toJson())));
     }
-    return '$forgotPassword?page=${fromSocialLogin ? 'social-login' : 'forgot-password'}&data=${fromSocialLogin ? _data : 'null'}';
+    return '$forgotPassword?page=${fromSocialLogin ? 'social-login' : 'forgot-password'}&data=${fromSocialLogin ? _data : 'null'}&number=$number';
   }
   static String getResetPasswordRoute(String phone, String token, String page) => '$resetPassword?phone=$phone&token=$token&page=$page';
   static String getSearchRoute({String queryText}) => '$search?query=${queryText ?? ''}';
@@ -144,8 +154,8 @@ class RouteHelper {
     return '$map?address=$_data&page=$page';
   }
   static String getAddressRoute() => '$address';
-  static String getOrderSuccessRoute(String orderID, String status, bool parcel) {
-    return '$orderSuccess?id=$orderID&type=${parcel ? 'parcel' : 'delivery'}&status=$status';
+  static String getOrderSuccessRoute(String orderID) {
+    return '$orderSuccess?id=$orderID';
   }
   static String getPaymentRoute(String id, int user, String type) => '$payment?id=$id&user=$user&type=$type';
   static String getCheckoutRoute(String page) => '$checkout?page=$page';
@@ -167,7 +177,7 @@ class RouteHelper {
   static String getReviewRoute() => '$rateReview';
   static String getUpdateRoute(bool isUpdate) => '$update?update=${isUpdate.toString()}';
   static String getCartRoute() => '$cart';
-  static String getAddAddressRoute(bool fromCheckout) => '$addAddress?page=${fromCheckout ? 'checkout' : 'address'}';
+  static String getAddAddressRoute(bool fromCheckout, int zoneId) => '$addAddress?page=${fromCheckout ? 'checkout' : 'address'}&zone_id=$zoneId';
   static String getEditAddressRoute(AddressModel address) {
     String _data = base64Url.encode(utf8.encode(jsonEncode(address.toJson())));
     return '$editAddress?data=$_data';
@@ -183,6 +193,9 @@ class RouteHelper {
     String _data = base64Url.encode(utf8.encode(jsonEncode(category.toJson())));
     return '$parcelLocation?data=$_data';
   }
+  static String getErrandLocationRoute() {
+    return '$errandmainscreen';
+  }
   static String getParcelRequestRoute(ParcelCategoryModel category, AddressModel pickupAddress, AddressModel destinationAddress) {
     String _category = base64Url.encode(utf8.encode(jsonEncode(category.toJson())));
     String _pickedUpAddress = base64Url.encode(utf8.encode(jsonEncode(pickupAddress.toJson())));
@@ -192,16 +205,19 @@ class RouteHelper {
   static String getSearchStoreItemRoute(int storeID) => '$searchStoreItem?id=$storeID';
   static String getOrderRoute() => '$order';
   static String getItemDetailsRoute(int itemID, bool isRestaurant) => '$itemDetails?id=$itemID&page=${isRestaurant ? 'restaurant' : 'item'}';
+  static String getWalletRoute(bool fromWallet) => '$wallet?page=${fromWallet ? 'wallet' : 'loyalty_points'}';
+  static String getReferAndEarnRoute() => '$referAndEarn';
 
   static List<GetPage> routes = [
     GetPage(name: initial, page: () => getRoute(DashboardScreen(pageIndex: 0))),
+    GetPage(name: favouritescreen, page: () => getRoute(FavouriteScreen())),
     GetPage(name: splash, page: () => SplashScreen(orderID: Get.parameters['id'] == 'null' ? null : Get.parameters['id'])),
     GetPage(name: language, page: () => ChooseLanguageScreen(fromMenu: Get.parameters['page'] == 'menu')),
     GetPage(name: onBoarding, page: () => OnBoardingScreen()),
     GetPage(name: signIn, page: () => SignInScreen(
       exitFromApp: Get.parameters['page'] == signUp || Get.parameters['page'] == splash || Get.parameters['page'] == onBoarding,
     )),
-    GetPage(name: signUp, page: () => SignUpScreen()),
+    GetPage(name: signUp, page: () => SignUpScreen(number: Get.parameters['number'])),
     GetPage(name: verification, page: () {
       List<int> _decode = base64Decode(Get.parameters['pass'].replaceAll(' ', '+'));
       String _data = utf8.decode(_decode);
@@ -233,7 +249,7 @@ class RouteHelper {
         List<int> _decode = base64Decode(Get.parameters['data'].replaceAll(' ', '+'));
         _data = SocialLogInBody.fromJson(jsonDecode(utf8.decode(_decode)));
       }
-      return ForgetPassScreen(fromSocialLogin: Get.parameters['page'] == 'social-login', socialLogInBody: _data);
+      return ForgetPassScreen(fromSocialLogin: Get.parameters['page'] == 'social-login', socialLogInBody: _data,number: Get.parameters['number']);
     }),
     GetPage(name: resetPassword, page: () => NewPassScreen(
       resetToken: Get.parameters['token'], number: Get.parameters['phone'], fromPasswordChange: Get.parameters['page'] == 'password-change',
@@ -258,10 +274,7 @@ class RouteHelper {
       return getRoute(MapScreen(fromStore: Get.parameters['page'] == 'store', address: _data));
     }),
     GetPage(name: address, page: () => getRoute(AddressScreen())),
-    GetPage(name: orderSuccess, page: () => getRoute(OrderSuccessfulScreen(
-      orderID: Get.parameters['id'], success: Get.parameters['status'].contains('success'),
-      parcel: Get.parameters['type'] == 'parcel',
-    ))),
+    GetPage(name: orderSuccess, page: () => getRoute(OrderSuccessfulScreen(orderID: Get.parameters['id']))),
     GetPage(name: payment, page: () => getRoute(PaymentScreen(orderModel: OrderModel(
         id: int.parse(Get.parameters['id']), orderType: Get.parameters['type'], userId: int.parse(Get.parameters['user'],
     ))))),
@@ -292,7 +305,9 @@ class RouteHelper {
     GetPage(name: support, page: () => getRoute(SupportScreen())),
     GetPage(name: update, page: () => UpdateScreen(isUpdate: Get.parameters['update'] == 'true')),
     GetPage(name: cart, page: () => getRoute(CartScreen(fromNav: false))),
-    GetPage(name: addAddress, page: () => getRoute(AddAddressScreen(fromCheckout: Get.parameters['page'] == 'checkout'))),
+    GetPage(name: addAddress, page: () => getRoute(AddAddressScreen(
+      fromCheckout: Get.parameters['page'] == 'checkout', zoneId: int.parse(Get.parameters['zone_id']),
+    ))),
     GetPage(name: editAddress, page: () => getRoute(AddAddressScreen(
       fromCheckout: false,
       address: AddressModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['data'].replaceAll(' ', '+'))))),
@@ -309,6 +324,9 @@ class RouteHelper {
     GetPage(name: parcelLocation, page: () => getRoute(ParcelLocationScreen(
       category: ParcelCategoryModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['data'].replaceAll(' ', '+'))))),
     ))),
+    GetPage(name: errandmainscreen, page: () => getRoute(ErrandMainScreen())),
+
+
     GetPage(name: parcelRequest, page: () => getRoute(ParcelRequestScreen(
       parcelCategory: ParcelCategoryModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['category'].replaceAll(' ', '+'))))),
       pickedUpAddress: AddressModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['picked'].replaceAll(' ', '+'))))),
@@ -317,6 +335,8 @@ class RouteHelper {
     GetPage(name: searchStoreItem, page: () => getRoute(StoreItemSearchScreen(storeID: Get.parameters['id']))),
     GetPage(name: order, page: () => getRoute(OrderScreen())),
     GetPage(name: itemDetails, page: () => getRoute(Get.arguments != null ? Get.arguments : ItemDetailsScreen(item: Item(id: int.parse(Get.parameters['id'])), inStorePage: Get.parameters['page'] == 'restaurant'))),
+    GetPage(name: wallet, page: () => getRoute(WalletScreen(fromWallet: Get.parameters['page'] == 'wallet'))),
+    GetPage(name: referAndEarn, page: () => getRoute(ReferAndEarnScreen())),
   ];
 
   static getRoute(Widget navigateTo) {
@@ -326,7 +346,7 @@ class RouteHelper {
     }else if(GetPlatform.isIOS) {
       _minimumVersion = Get.find<SplashController>().configModel.appMinimumVersionIos;
     }
-    return AppConstants.APP_VERSION < _minimumVersion ? UpdateScreen(isUpdate: true)
+    return AppConstants.ANDROID_APP_VERSION < _minimumVersion ? UpdateScreen(isUpdate: true)
         : Get.find<SplashController>().configModel.maintenanceMode ? UpdateScreen(isUpdate: false)
         : Get.find<LocationController>().getUserAddress() == null
         ? AccessLocationScreen(fromSignUp: false, fromHome: false, route: Get.currentRoute) : navigateTo;

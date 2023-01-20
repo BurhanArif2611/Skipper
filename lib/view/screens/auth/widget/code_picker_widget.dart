@@ -154,12 +154,12 @@ class CodePickerWidgetState extends State<CodePickerWidget> {
     Widget _widget;
     if (widget.builder != null)
       _widget = InkWell(
-        onTap: showCountryCodePickerDialog,
+     /*  onTap: showCountryCodePickerDialog,*/
         child: widget.builder(selectedItem),
       );
     else {
       _widget = TextButton(
-        onPressed: widget.enabled ? showCountryCodePickerDialog : null,
+        /*onPressed: widget.enabled ? showCountryCodePickerDialog : null,*/
         child: Flex(
           direction: Axis.horizontal,
           mainAxisSize: MainAxisSize.min,

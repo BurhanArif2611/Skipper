@@ -5,8 +5,9 @@ import 'package:get/get.dart';
 
 class TrackingStepperWidget extends StatelessWidget {
   final String status;
+  final String orderType;
   final bool takeAway;
-  TrackingStepperWidget({@required this.status, @required this.takeAway});
+  TrackingStepperWidget({@required this.status, @required this.takeAway, @required this.orderType});
 
   @override
   Widget build(BuildContext context) {
@@ -33,19 +34,21 @@ class TrackingStepperWidget extends StatelessWidget {
       ),
       child: Row(children: [
         CustomStepper(
-          title: 'order_placed'.tr, isActive: _status > -1, haveLeftBar: false, haveRightBar: true, rightActive: _status > 0,
+          title:'order_placed'.tr, isActive: _status > -1, haveLeftBar: false, haveRightBar: true, rightActive: _status > 0,
         ),
         CustomStepper(
-          title: 'order_confirmed'.tr, isActive: _status > 0, haveLeftBar: true, haveRightBar: true, rightActive: _status > 1,
+          title:orderType=='errand'?'Order Confirmed & Vendor Assigned' :'order_confirmed'.tr, isActive: _status > 0, haveLeftBar: true, haveRightBar: true, rightActive: _status > 1,
         ),
+        (orderType!='parcel' && orderType!='errand'?
         CustomStepper(
-          title: 'preparing_item'.tr, isActive: _status > 1, haveLeftBar: true, haveRightBar: true, rightActive: _status > 2,
-        ),
+          title: orderType=='parcel'?'':'preparing_item'.tr, isActive:orderType=='parcel'?false: _status > 1, haveLeftBar:orderType=='parcel'?false: true, haveRightBar:orderType=='parcel'?false: true, rightActive:orderType=='parcel'?false: _status > 2,
+        ):SizedBox()) ,
+        (orderType!='errand'?
         CustomStepper(
-          title: takeAway ? 'ready_for_handover'.tr : 'delivery_on_the_way'.tr, isActive: _status > 2, haveLeftBar: true, haveRightBar: true, rightActive: _status > 3,
-        ),
+          title: orderType=='parcel'?'Pick Up': takeAway ? 'ready_for_handover'.tr : 'delivery_on_the_way'.tr, isActive: _status > 2, haveLeftBar: true, haveRightBar: true, rightActive: _status > 3,
+        ):SizedBox()),
         CustomStepper(
-          title: 'delivered'.tr, isActive: _status > 3, haveLeftBar: true, haveRightBar: false, rightActive: _status > 4,
+          title: orderType=='errand'?'Task Completed'.tr:'delivered'.tr, isActive: _status > 3, haveLeftBar: true, haveRightBar: false, rightActive: _status > 4,
         ),
       ]),
     );

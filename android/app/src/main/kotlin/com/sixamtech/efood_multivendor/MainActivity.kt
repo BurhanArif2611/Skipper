@@ -1,4 +1,4 @@
-package com.sixamtech.sixam_mart
+package app.shapshap
 
 import io.flutter.embedding.android.FlutterActivity
 

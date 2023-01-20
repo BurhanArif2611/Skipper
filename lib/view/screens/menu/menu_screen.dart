@@ -27,13 +27,23 @@ class _MenuScreenState extends State<MenuScreen> {
     _menuList = [
       MenuModel(icon: '', title: 'profile'.tr, route: RouteHelper.getProfileRoute()),
       MenuModel(icon: Images.location, title: 'my_address'.tr, route: RouteHelper.getAddressRoute()),
-      MenuModel(icon: Images.language, title: 'language'.tr, route: RouteHelper.getLanguageRoute('menu')),
+     // MenuModel(icon: Images.language, title: 'language'.tr, route: RouteHelper.getLanguageRoute('menu')),
       MenuModel(icon: Images.coupon, title: 'coupon'.tr, route: RouteHelper.getCouponRoute()),
       MenuModel(icon: Images.support, title: 'help_support'.tr, route: RouteHelper.getSupportRoute()),
       MenuModel(icon: Images.policy, title: 'privacy_policy'.tr, route: RouteHelper.getHtmlRoute('privacy-policy')),
       MenuModel(icon: Images.about_us, title: 'about_us'.tr, route: RouteHelper.getHtmlRoute('about-us')),
       MenuModel(icon: Images.terms, title: 'terms_conditions'.tr, route: RouteHelper.getHtmlRoute('terms-and-condition')),
     ];
+
+    if(Get.find<SplashController>().configModel.refEarningStatus == 1 ){
+      _menuList.add(MenuModel(icon: Images.refer_code, title: 'refer_and_earn'.tr, route: RouteHelper.getReferAndEarnRoute()));
+    }
+    if(Get.find<SplashController>().configModel.customerWalletStatus == 1 ){
+      _menuList.add(MenuModel(icon: Images.wallet, title: 'wallet'.tr, route: RouteHelper.getWalletRoute(true)));
+    }
+    if(Get.find<SplashController>().configModel.loyaltyPointStatus == 1 ){
+      _menuList.add(MenuModel(icon: Images.loyal, title: 'loyalty_points'.tr, route: RouteHelper.getWalletRoute(false)));
+    }
     if(Get.find<SplashController>().configModel.toggleDmRegistration && !ResponsiveHelper.isDesktop(context)) {
       _menuList.add(MenuModel(
         icon: Images.delivery_man_join, title: 'join_as_a_delivery_man'.tr,

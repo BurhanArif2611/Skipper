@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
@@ -9,12 +11,20 @@ import 'package:sixam_mart/view/screens/dashboard/widget/bottom_nav_item.dart';
 import 'package:sixam_mart/view/screens/favourite/favourite_screen.dart';
 import 'package:sixam_mart/view/screens/home/home_screen.dart';
 import 'package:sixam_mart/view/screens/menu/menu_screen.dart';
+import 'package:sixam_mart/view/screens/notification/notification_screen.dart';
 import 'package:sixam_mart/view/screens/order/order_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/banner_controller.dart';
+import '../../../controller/store_controller.dart';
+import '../../../data/model/response/module_model.dart';
+import '../../../util/app_constants.dart';
+import '../parcel/parcel_category_screen.dart';
+
 class DashboardScreen extends StatefulWidget {
   final int pageIndex;
+
   DashboardScreen({@required this.pageIndex});
 
   @override
@@ -22,11 +32,12 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  PageController _pageController;
+  static PageController _pageController;
   int _pageIndex = 0;
   List<Widget> _screens;
   GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey();
   bool _canExit = GetPlatform.isWeb ? true : false;
+  bool eccorance = false;
 
   @override
   void initState() {
@@ -35,11 +46,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _pageIndex = widget.pageIndex;
 
     _pageController = PageController(initialPage: widget.pageIndex);
+    if (Get.find<StoreController>().store != null && Get.find<StoreController>().store.ecommerce == 1) {
+      eccorance = true;
+    } else {
+      eccorance = false;
+    }
 
     _screens = [
       HomeScreen(),
-      FavouriteScreen(),
-      CartScreen(fromNav: true),
+      (eccorance ? CartScreen(fromNav: true) : NotificationScreen()),
+      /* FavouriteScreen(),*/
+      ParcelCategoryScreen(),
       OrderScreen(),
       Container(),
     ];
@@ -55,21 +72,66 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (Get.find<StoreController>().store != null &&
+        Get.find<StoreController>().store.ecommerce == 1) {
+      eccorance = true;
+      _screens = [
+        HomeScreen(),
+        CartScreen(fromNav: true),
+        /* FavouriteScreen(),*/
+        ParcelCategoryScreen(),
+        OrderScreen(),
+        Container(),
+      ];
+    } else {
+      eccorance = false;
+      _screens = [
+        HomeScreen(),
+        NotificationScreen(),
+        /* FavouriteScreen(),*/
+        ParcelCategoryScreen(),
+        OrderScreen(),
+        Container(),
+      ];
+    }
+
     return WillPopScope(
       onWillPop: () async {
         if (_pageIndex != 0) {
           _setPage(0);
           return false;
         } else {
-          if(!ResponsiveHelper.isDesktop(context) && Get.find<SplashController>().module != null) {
-            Get.find<SplashController>().setModule(null);
-            return false;
-          }else {
-            if(_canExit) {
+          if (!ResponsiveHelper.isDesktop(context) &&
+              Get.find<SplashController>().module != null &&
+              Get.find<SplashController>().configModel.module == null) {
+            if (Get.find<BannerController>().branchStoreList.branches.length >
+                0) {
+              Get.find<SplashController>().setModule(null);
+            } else if (_canExit) {
               return true;
-            }else {
+            } else {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text('back_press_again_to_exit'.tr, style: TextStyle(color: Colors.white)),
+                content: Text('back_press_again_to_exit'.tr,
+                    style: TextStyle(color: Colors.white)),
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.green,
+                duration: Duration(seconds: 2),
+                margin: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+              ));
+              _canExit = true;
+              Timer(Duration(seconds: 2), () {
+                _canExit = false;
+              });
+              return false;
+            }
+            return false;
+          } else {
+            if (_canExit) {
+              return true;
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text('back_press_again_to_exit'.tr,
+                    style: TextStyle(color: Colors.white)),
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: Colors.green,
                 duration: Duration(seconds: 2),
@@ -86,34 +148,110 @@ class _DashboardScreenState extends State<DashboardScreen> {
       },
       child: Scaffold(
         key: _scaffoldKey,
+        floatingActionButton: ResponsiveHelper.isDesktop(context)
+            ? null
+            : FloatingActionButton(
+                elevation: 5,
+                backgroundColor: _pageIndex == 2
+                    ? Theme.of(context).primaryColor
+                    : Theme.of(context).cardColor,
+                onPressed: () => /* _setPage(2)*/ {
+                  (Get.find<StoreController>().store != null &&
+                              (Get.find<StoreController>().store.parcel == 1 ||
+                                  Get.find<StoreController>().store.errand ==
+                                      1)) ||
+                          (Get.find<BannerController>().branchStoreList !=
+                                  null &&
+                              (Get.find<BannerController>()
+                                          .branchStoreList
+                                          .parcel ==
+                                      1 ||
+                                  Get.find<BannerController>()
+                                          .branchStoreList
+                                          .errand ==
+                                      1))
+                      ?() {
 
-        floatingActionButton: ResponsiveHelper.isDesktop(context) ? null : FloatingActionButton(
-          elevation: 5,
-          backgroundColor: _pageIndex == 2 ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
-          onPressed: () => _setPage(2),
-          child: CartWidget(color: _pageIndex == 2 ? Theme.of(context).cardColor : Theme.of(context).disabledColor, size: 30),
-        ),
+                          if( Get.find<StoreController>().store == null){
+                          for (ModuleModel module in Get.find<SplashController>().moduleList)
+                            {
+                              if (module.id ==
+                                  Get.find<BannerController>()
+                                      .branchStoreList
+                                      .moduleId)
+                                {
+                                  // Get.find<SplashController>().setModule(module);
+                                  AppConstants.StoreID =
+                                      Get.find<BannerController>()
+                                          .branchStoreList
+                                          .id;
+                                  Get.find<SplashController>()
+                                      .setModuleWithCallStoreAPI(
+                                          module,
+                                          Get.find<BannerController>()
+                                              .branchStoreList
+                                              .id);
+                                  break;
+
+                                }
+
+                            }}
+                          else{
+                            _setPage(2);
+                          }
+                        }()
+                      : ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content:
+                              Text("This facility is currently not available"),
+                        ))
+                },
+                child: CartWidget(
+                    color: _pageIndex == 2
+                        ? Theme.of(context).cardColor
+                        : Theme.of(context).disabledColor,
+                    size: 30),
+              ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
-        bottomNavigationBar: ResponsiveHelper.isDesktop(context) ? SizedBox() : BottomAppBar(
-          elevation: 5,
-          notchMargin: 5,
-          clipBehavior: Clip.antiAlias,
-          shape: CircularNotchedRectangle(),
-
-          child: Padding(
-            padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
-            child: Row(children: [
-              BottomNavItem(iconData: Icons.home, isSelected: _pageIndex == 0, onTap: () => _setPage(0)),
-              BottomNavItem(iconData: Icons.favorite, isSelected: _pageIndex == 1, onTap: () => _setPage(1)),
-              Expanded(child: SizedBox()),
-              BottomNavItem(iconData: Icons.shopping_bag, isSelected: _pageIndex == 3, onTap: () => _setPage(3)),
-              BottomNavItem(iconData: Icons.menu, isSelected: _pageIndex == 4, onTap: () {
-                Get.bottomSheet(MenuScreen(), backgroundColor: Colors.transparent, isScrollControlled: true);
-              }),
-            ]),
-          ),
-        ),
+        bottomNavigationBar: ResponsiveHelper.isDesktop(context)
+            ? SizedBox()
+            : BottomAppBar(
+                elevation: 5,
+                notchMargin: 5,
+                clipBehavior: Clip.antiAlias,
+                shape: CircularNotchedRectangle(),
+                child: Padding(
+                  padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                  child: Row(children: [
+                    BottomNavItem(
+                        iconData: Icons.home,
+                        isSelected: _pageIndex == 0,
+                        onTap: () => _setPage(0),
+                        countVisible: false),
+                    BottomNavItem(
+                        iconData: eccorance
+                            ? Icons.shopping_cart
+                            : Icons.notifications,
+                        isSelected: _pageIndex == 1,
+                        onTap: () => {_setPage(1)},
+                        countVisible: true),
+                    Expanded(child: SizedBox()),
+                    BottomNavItem(
+                        iconData: Icons.shopping_bag,
+                        isSelected: _pageIndex == 3,
+                        onTap: () => _setPage(3),
+                        countVisible: false),
+                    BottomNavItem(
+                        iconData: Icons.menu,
+                        isSelected: _pageIndex == 4,
+                        onTap: () {
+                          Get.bottomSheet(MenuScreen(),
+                              backgroundColor: Colors.transparent,
+                              isScrollControlled: true);
+                        },
+                        countVisible: false),
+                  ]),
+                ),
+              ),
         body: PageView.builder(
           controller: _pageController,
           itemCount: _screens.length,

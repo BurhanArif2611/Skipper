@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1000163153346",
-    "project_id": "ammart-8885e",
-    "storage_bucket": "ammart-8885e.appspot.com"
+    "project_number": "114113749507",
+    "project_id": "shapshapcustomer",
+    "storage_bucket": "shapshapcustomer.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1000163153346:android:7d49ab307cc6e18406b25b",
+        "mobilesdk_app_id": "1:114113749507:android:a396266d7e57beca0f6436",
         "android_client_info": {
-          "package_name": "com.sixamtech.sixam_mart"
+          "package_name": "app.shapshap"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1000163153346-48ckm2uf7h70hmgn74kg1gq02sval158.apps.googleusercontent.com",
+          "client_id": "114113749507-5m2uhfkijj5ru23q8qgkisnk06262fcd.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCic6Mw3RRPFcimXhwGidwhCN0tXY7HFFc"
+          "current_key": "AIzaSyCalcLkr0u8hHP7OdH7dUaogRg2IjuSSfQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1000163153346-48ckm2uf7h70hmgn74kg1gq02sval158.apps.googleusercontent.com",
+              "client_id": "114113749507-5m2uhfkijj5ru23q8qgkisnk06262fcd.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

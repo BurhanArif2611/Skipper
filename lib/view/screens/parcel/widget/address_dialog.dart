@@ -10,7 +10,9 @@ import 'package:sixam_mart/view/screens/address/widget/address_widget.dart';
 
 class AddressDialog extends StatelessWidget {
   final Function(AddressModel address) onTap;
-  const AddressDialog({@required this.onTap});
+  final Function(int index) index1;
+
+  const AddressDialog({@required this.onTap,@required this.index1});
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class AddressDialog extends StatelessWidget {
                         address: locationController.addressList[index],
                         fromAddress: false,
                         onTap: () {
+                          print("addressList>>>>>"+index.toString());
                           print(locationController.addressList[index].toJson());
 
                           onTap(locationController.addressList[index]);
@@ -65,9 +68,11 @@ class AddressDialog extends StatelessWidget {
                             Get.find<ParcelController>().setPickupAddress(_address, true);
                             Get.back();
                           }else{
-                            Get.find<ParcelController>().setDestinationAddress(_address);
+                            Get.find<ParcelController>().setDestinationAddress(_address,false);
                             Get.back();
                           }
+                          try{
+                          index1(index);}catch(e){}
                         },
                       )));
                     }else {

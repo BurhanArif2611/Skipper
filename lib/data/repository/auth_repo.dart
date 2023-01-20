@@ -23,6 +23,9 @@ class AuthRepo {
   Future<Response> login({String phone, String password}) async {
     return await apiClient.postData(AppConstants.LOGIN_URI, {"phone": phone, "password": password});
   }
+  Future<Response> checkMobileNumber({String phone}) async {
+    return await apiClient.postData(AppConstants.CHECK_PHONE_URI, {"phone": phone});
+  }
 
   Future<Response> loginWithSocialMedia(String email) async {
     return await apiClient.postData(AppConstants.SOCIAL_LOGIN_URL, {"email": email});
@@ -34,6 +37,7 @@ class AuthRepo {
 
   Future<Response> updateToken() async {
     String _deviceToken;
+  //  saveUserToken(sharedPreferences.getString(AppConstants.TOKEN));
     if (GetPlatform.isIOS && !GetPlatform.isWeb) {
       FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(alert: true, badge: true, sound: true);
       NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
@@ -46,6 +50,7 @@ class AuthRepo {
     }else {
       _deviceToken = await _saveDeviceToken();
     }
+    print("_deviceToken>>>"+_deviceToken);
     if(!GetPlatform.isWeb) {
       FirebaseMessaging.instance.subscribeToTopic(AppConstants.TOPIC);
     }

@@ -19,6 +19,8 @@ import 'package:sixam_mart/view/screens/cart/widget/cart_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/order_controller.dart';
+
 class CartScreen extends StatefulWidget {
   final fromNav;
   CartScreen({@required this.fromNav});
@@ -156,6 +158,7 @@ class CheckoutButton extends StatelessWidget {
           showCustomSnackBar('one_or_more_product_unavailable'.tr);
         } else {
           Get.find<CouponController>().removeCouponData(false);
+          Get.find<OrderController>().clear();
           Get.toNamed(RouteHelper.getCheckoutRoute('cart'));
         }
       }),

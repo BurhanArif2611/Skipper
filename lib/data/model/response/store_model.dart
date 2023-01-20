@@ -49,6 +49,8 @@ class Store {
   double avgRating;
   double tax;
   int ratingCount;
+  int featured;
+  int zoneId;
   int selfDeliverySystem;
   bool posSystem;
   double deliveryCharge;
@@ -59,9 +61,18 @@ class Store {
   int veg;
   int nonVeg;
   int moduleId;
+  int parcel;
+  int errand;
+  int ecommerce;
   int orderPlaceToScheduleInterval;
   Discount discount;
   List<Schedules> schedules;
+  List<Zones> zones;
+  List<Branches> branches;
+  String app_color;
+  String primary_color;
+  String secondary_color;
+
 
   Store(
       {this.id,
@@ -81,6 +92,8 @@ class Store {
         this.scheduleOrder,
         this.avgRating,
         this.tax,
+        this.featured,
+        this.zoneId,
         this.ratingCount,
         this.selfDeliverySystem,
         this.posSystem,
@@ -95,6 +108,14 @@ class Store {
         this.orderPlaceToScheduleInterval,
         this.discount,
         this.schedules,
+        this.zones,
+        this.branches,
+        this.errand,
+        this.parcel,
+        this.ecommerce,
+        this.app_color,
+        this.primary_color,
+        this.secondary_color,
       });
 
   Store.fromJson(Map<String, dynamic> json) {
@@ -113,18 +134,26 @@ class Store {
     delivery = json['delivery'];
     takeAway = json['take_away'];
     scheduleOrder = json['schedule_order'];
-    avgRating = json['avg_rating'].toDouble();
+    avgRating = json['avg_rating']!=null?json['avg_rating'].toDouble():0.0;
     tax = json['tax'] != null ? json['tax'].toDouble() : null;
     ratingCount = json['rating_count '];
     selfDeliverySystem = json['self_delivery_system'];
     posSystem = json['pos_system'];
-    deliveryCharge = json['delivery_charge'].toDouble();
+    deliveryCharge = json['delivery_charge']!=null?json['delivery_charge'].toDouble():0;
     open = json['open'];
     active = json['active'];
+    featured = json['featured'];
+    zoneId = json['zone_id'];
     deliveryTime = json['delivery_time'];
     veg = json['veg'];
+    errand = json['errand'];
+    ecommerce = json['ecommerce'];
+    parcel = json['parcel'];
     nonVeg = json['non_veg'];
-    moduleId = json['module_id'];
+    secondary_color = json['secondary_color'];
+    primary_color = json['primary_color'];
+    app_color = json['app_color'];
+    moduleId = json['module_id']!=null?json['module_id']:-1;
     orderPlaceToScheduleInterval = json['order_place_to_schedule_interval'];
     categoryIds = json['category_ids'] != null ? json['category_ids'].cast<int>() : [];
     discount = json['discount'] != null ? new Discount.fromJson(json['discount']) : null;
@@ -132,6 +161,17 @@ class Store {
       schedules = <Schedules>[];
       json['schedules'].forEach((v) {
         schedules.add(new Schedules.fromJson(v));
+      });
+    } if (json['zones'] != null) {
+      zones = <Zones>[];
+      json['zones'].forEach((v) {
+        zones.add(new Zones.fromJson(v));
+      });
+    }
+    if (json['branches'] != null) {
+      branches = <Branches>[];
+      json['branches'].forEach((v) {
+        branches.add(new Branches.fromJson(v));
       });
     }
   }
@@ -162,16 +202,29 @@ class Store {
     data['open'] = this.open;
     data['active'] = this.active;
     data['veg'] = this.veg;
+    data['featured'] = this.featured;
+    data['zone_id'] = this.zoneId;
     data['non_veg'] = this.nonVeg;
     data['module_id'] = this.moduleId;
     data['order_place_to_schedule_interval'] = this.orderPlaceToScheduleInterval;
     data['delivery_time'] = this.deliveryTime;
+    data['parcel'] = this.parcel;
+    data['errand'] = this.errand;
+    data['ecommerce'] = this.ecommerce;
     data['category_ids'] = this.categoryIds;
+    data['app_color'] = this.app_color;
+    data['primary_color'] = this.primary_color;
+    data['secondary_color'] = this.secondary_color;
     if (this.discount != null) {
       data['discount'] = this.discount.toJson();
     }
     if (this.schedules != null) {
       data['schedules'] = this.schedules.map((v) => v.toJson()).toList();
+    } if (this.zones != null) {
+      data['zones'] = this.zones.map((v) => v.toJson()).toList();
+    }
+    if (this.branches != null) {
+      data['branches'] = this.branches.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -267,6 +320,190 @@ class Schedules {
     data['day'] = this.day;
     data['opening_time'] = this.openingTime;
     data['closing_time'] = this.closingTime;
+    return data;
+  }
+}
+class Zones {
+  int id;
+  int store_id;
+  int zone_id;
+
+
+  Zones(
+      {this.id,
+        this.store_id,
+        this.zone_id,
+       });
+
+  Zones.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    store_id = json['store_id'];
+    zone_id = json['zone_id'];
+
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['store_id'] = this.store_id;
+    data['zone_id'] = this.zone_id;
+
+    return data;
+  }
+}
+
+
+class Branches {
+  int id;
+  String name;
+  String phone;
+  String email;
+  String logo;
+  String latitude;
+  String longitude;
+  String address;
+  double minimumOrder;
+  String currency;
+  bool freeDelivery;
+  String coverPhoto;
+  bool delivery;
+  bool takeAway;
+  bool scheduleOrder;
+  double avgRating;
+  double tax;
+  int ratingCount;
+  int featured;
+  int zoneId;
+  int selfDeliverySystem;
+  bool posSystem;
+  double deliveryCharge;
+  int open;
+  bool active;
+  String deliveryTime;
+  List<int> categoryIds;
+  int veg;
+  int nonVeg;
+  int moduleId;
+  int orderPlaceToScheduleInterval;
+  Discount discount;
+  List<Schedules> schedules;
+
+  Branches(
+      {this.id,
+        this.name,
+        this.phone,
+        this.email,
+        this.logo,
+        this.latitude,
+        this.longitude,
+        this.address,
+        this.minimumOrder,
+        this.currency,
+        this.freeDelivery,
+        this.coverPhoto,
+        this.delivery,
+        this.takeAway,
+        this.scheduleOrder,
+        this.avgRating,
+        this.tax,
+        this.featured,
+        this.zoneId,
+        this.ratingCount,
+        this.selfDeliverySystem,
+        this.posSystem,
+        this.deliveryCharge,
+        this.open,
+        this.active,
+        this.deliveryTime,
+        this.categoryIds,
+        this.veg,
+        this.nonVeg,
+        this.moduleId,
+        this.orderPlaceToScheduleInterval,
+        this.discount,
+        this.schedules,
+        });
+
+  Branches.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    phone = json['phone'];
+    email = json['email'];
+    logo = json['logo'] != null ? json['logo'] : '';
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+    address = json['address'];
+    minimumOrder = json['minimum_order'] == null ? 0 : json['minimum_order'].toDouble();
+    currency = json['currency'];
+    freeDelivery = json['free_delivery'];
+    coverPhoto = json['cover_photo'] != null ? json['cover_photo'] : '';
+    delivery = json['delivery'];
+    takeAway = json['take_away'];
+    scheduleOrder = json['schedule_order'];
+    avgRating = json['avg_rating']!=null?json['avg_rating'].toDouble():0.0;
+    tax = json['tax'] != null ? json['tax'].toDouble() : null;
+    ratingCount = json['rating_count '];
+    selfDeliverySystem = json['self_delivery_system'];
+    posSystem = json['pos_system'];
+    deliveryCharge = json['delivery_charge']!=null?json['delivery_charge'].toDouble():0;
+    open = json['open'];
+    active = json['active'];
+    featured = json['featured'];
+    zoneId = json['zone_id'];
+    deliveryTime = json['delivery_time'];
+    veg = json['veg'];
+    nonVeg = json['non_veg'];
+    moduleId = json['module_id'];
+    orderPlaceToScheduleInterval = json['order_place_to_schedule_interval'];
+    categoryIds = json['category_ids'] != null ? json['category_ids'].cast<int>() : [];
+    discount = json['discount'] != null ? new Discount.fromJson(json['discount']) : null;
+    if (json['schedules'] != null) {
+      schedules = <Schedules>[];
+      json['schedules'].forEach((v) {
+        schedules.add(new Schedules.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['phone'] = this.phone;
+    data['email'] = this.email;
+    data['logo'] = this.logo;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    data['address'] = this.address;
+    data['minimum_order'] = this.minimumOrder;
+    data['currency'] = this.currency;
+    data['free_delivery'] = this.freeDelivery;
+    data['cover_photo'] = this.coverPhoto;
+    data['delivery'] = this.delivery;
+    data['take_away'] = this.takeAway;
+    data['schedule_order'] = this.scheduleOrder;
+    data['avg_rating'] = this.avgRating;
+    data['tax'] = this.tax;
+    data['rating_count '] = this.ratingCount;
+    data['self_delivery_system'] = this.selfDeliverySystem;
+    data['pos_system'] = this.posSystem;
+    data['delivery_charge'] = this.deliveryCharge;
+    data['open'] = this.open;
+    data['active'] = this.active;
+    data['veg'] = this.veg;
+    data['featured'] = this.featured;
+    data['zone_id'] = this.zoneId;
+    data['non_veg'] = this.nonVeg;
+    data['module_id'] = this.moduleId;
+    data['order_place_to_schedule_interval'] = this.orderPlaceToScheduleInterval;
+    data['delivery_time'] = this.deliveryTime;
+    data['category_ids'] = this.categoryIds;
+    if (this.discount != null) {
+      data['discount'] = this.discount.toJson();
+    }
+    if (this.schedules != null) {
+      data['schedules'] = this.schedules.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

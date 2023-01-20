@@ -15,7 +15,8 @@ class NoDataScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: FooterView(
         visibility: showFooter,
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        child:
+        Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
 
           Image.asset(
             isCart ? Images.empty_cart : Images.no_data_found,

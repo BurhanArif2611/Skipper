@@ -6,15 +6,9 @@ import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/model/response/address_model.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
-import 'package:sixam_mart/util/styles.dart';
-import 'package:sixam_mart/view/base/custom_image.dart';
-import 'package:sixam_mart/view/base/custom_loader.dart';
-import 'package:sixam_mart/view/base/title_widget.dart';
-import 'package:sixam_mart/view/screens/address/widget/address_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sixam_mart/view/screens/home/widget/banner_view.dart';
-import 'package:sixam_mart/view/screens/home/widget/popular_store_view.dart';
+import 'package:sixam_mart/view/screens/home/widget/store_branch.dart';
 
 class ModuleView extends StatelessWidget {
   final SplashController splashController;
@@ -24,11 +18,11 @@ class ModuleView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-      GetBuilder<BannerController>(builder: (bannerController) {
+      /*GetBuilder<BannerController>(builder: (bannerController) {
         return BannerView(isFeatured: true);
-      }),
+      }),*/
 
-      splashController.moduleList != null ? splashController.moduleList.length > 0 ? GridView.builder(
+     /* splashController.moduleList != null ? splashController.moduleList.length > 0 ? GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3, mainAxisSpacing: Dimensions.PADDING_SIZE_SMALL,
           crossAxisSpacing: Dimensions.PADDING_SIZE_SMALL, childAspectRatio: (1/1),
@@ -37,8 +31,11 @@ class ModuleView extends StatelessWidget {
         itemCount: splashController.moduleList.length,
         shrinkWrap: true, physics: NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
-          return InkWell(
-            onTap: () => splashController.switchModule(index, true),
+          return
+            InkWell(
+            onTap: () => {
+              splashController.switchModule(index, true)
+            },
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Dimensions.RADIUS_DEFAULT),
@@ -69,9 +66,9 @@ class ModuleView extends StatelessWidget {
       ) : Center(child: Padding(
         padding: EdgeInsets.only(top: Dimensions.PADDING_SIZE_SMALL), child: Text('no_module_found'.tr),
       )) : ModuleShimmer(isEnabled: splashController.moduleList == null),
-      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),*/
 
-      Padding(
+     /* Padding(
         padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL),
         child: TitleWidget(title: 'deliver_to'.tr),
       ),
@@ -97,7 +94,7 @@ class ModuleView extends StatelessWidget {
           _addressList.add(Get.find<LocationController>().getUserAddress());
         }
         return (!Get.find<AuthController>().isLoggedIn() || locationController.addressList != null) ? SizedBox(
-          height: 70,
+          height: 80,
           child: ListView.builder(
             physics: BouncingScrollPhysics(),
             itemCount: _addressList.length,
@@ -123,9 +120,13 @@ class ModuleView extends StatelessWidget {
             },
           ),
         ) : AddressShimmer(isEnabled: Get.find<AuthController>().isLoggedIn() && locationController.addressList == null);
-      }),
+      }),*/
 
-      PopularStoreView(isPopular: false, isFeatured: true),
+     // PopularStoreView(isPopular: false, isFeatured: true),
+      StoreBranch(isPopular: false, isFeatured: true),
+   /* (Get.find<BannerController>().branchStoreList.length>0 ?
+      StoreBranch(isPopular: false, isFeatured: true):
+    Text("data")),*/
 
       SizedBox(height: 30),
 

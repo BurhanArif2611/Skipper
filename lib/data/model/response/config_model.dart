@@ -43,6 +43,17 @@ class ConfigModel {
   List<SocialMedia> socialMedia;
   String footerText;
   LandingPageLinks landingPageLinks;
+  int loyaltyPointExchangeRate;
+  double loyaltyPointItemPurchasePoint;
+  int loyaltyPointStatus;
+  int minimumPointToTransfer;
+  int customerWalletStatus;
+  int dmTipsStatus;
+  int refEarningStatus;
+  double refEarningExchangeRate;
+  double p2_delivery_charge;
+  double p3_delivery_charge;
+  String map_api_key;
 
   ConfigModel(
       {this.businessName,
@@ -87,6 +98,17 @@ class ConfigModel {
         this.socialMedia,
         this.footerText,
         this.landingPageLinks,
+        this.loyaltyPointExchangeRate,
+        this.loyaltyPointItemPurchasePoint,
+        this.loyaltyPointStatus,
+        this.minimumPointToTransfer,
+        this.customerWalletStatus,
+        this.dmTipsStatus,
+        this.refEarningStatus,
+        this.refEarningExchangeRate,
+        this.p2_delivery_charge,
+        this.p3_delivery_charge,
+        this.map_api_key,
       });
 
   ConfigModel.fromJson(Map<String, dynamic> json) {
@@ -152,6 +174,17 @@ class ConfigModel {
     }
     footerText = json['footer_text'];
     landingPageLinks = json['landing_page_links'] != null ? LandingPageLinks.fromJson(json['landing_page_links']) : null;
+    loyaltyPointExchangeRate = json['loyalty_point_exchange_rate'];
+    loyaltyPointItemPurchasePoint = json['loyalty_point_item_purchase_point']!=null? json['loyalty_point_item_purchase_point'].toDouble():0.0;
+    loyaltyPointStatus = json['loyalty_point_status'] ;
+    minimumPointToTransfer = json['minimum_point_to_transfer'];
+    customerWalletStatus = json['customer_wallet_status'];
+    dmTipsStatus = json['dm_tips_status'];
+    map_api_key = json['map_api_key'];
+    refEarningStatus = json['ref_earning_status'];
+    refEarningExchangeRate = json['ref_earning_exchange_rate']!=null? json['ref_earning_exchange_rate'].toDouble():0.0;
+    p2_delivery_charge = json['p2_delivery_charge']!=null? json['p2_delivery_charge'].toDouble():0.0;
+    p3_delivery_charge = json['p3_delivery_charge']!=null? json['p3_delivery_charge'].toDouble():0.0;
   }
 
   Map<String, dynamic> toJson() {
@@ -214,6 +247,18 @@ class ConfigModel {
     if (this.landingPageLinks != null) {
       data['landing_page_links'] = this.landingPageLinks.toJson();
     }
+    data['loyalty_point_exchange_rate'] = this.loyaltyPointExchangeRate;
+    data['loyalty_point_item_purchase_point'] = this.loyaltyPointItemPurchasePoint;
+    data['loyalty_point_status'] = this.loyaltyPointStatus;
+    data['minimum_point_to_transfer'] = this.minimumPointToTransfer;
+    data['customer_wallet_status'] = this.customerWalletStatus;
+    data['dm_tips_status'] = this.dmTipsStatus;
+    data['ref_earning_status'] = this.refEarningStatus;
+    data['ref_earning_exchange_rate'] = this.refEarningExchangeRate;
+    data['p2_delivery_charge'] = this.p2_delivery_charge;
+    data['p3_delivery_charge'] = this.p3_delivery_charge;
+    data['map_api_key'] = this.map_api_key;
+    return data;
     return data;
   }
 }
@@ -235,6 +280,7 @@ class BaseUrls {
   String orderAttachmentUrl;
   String parcelCategoryImageUrl;
   String landingPageImageUrl;
+  String errandTaskImageUrl;
 
   BaseUrls(
       {this.itemImageUrl,
@@ -253,6 +299,7 @@ class BaseUrls {
         this.orderAttachmentUrl,
         this.parcelCategoryImageUrl,
         this.landingPageImageUrl,
+        this.errandTaskImageUrl,
       });
 
   BaseUrls.fromJson(Map<String, dynamic> json) {
@@ -272,6 +319,7 @@ class BaseUrls {
     orderAttachmentUrl = json['order_attachment_url'];
     parcelCategoryImageUrl = json['parcel_category_image_url'];
     landingPageImageUrl = json['landing_page_image_url'];
+    errandTaskImageUrl = json['errand_task_image_url'];
   }
 
   Map<String, dynamic> toJson() {
@@ -292,6 +340,7 @@ class BaseUrls {
     data['order_attachment_url'] = this.orderAttachmentUrl;
     data['parcel_category_image_url'] = this.parcelCategoryImageUrl;
     data['landing_page_image_url'] = this.landingPageImageUrl;
+    data['errand_task_image_url'] = this.errandTaskImageUrl;
     return data;
   }
 }

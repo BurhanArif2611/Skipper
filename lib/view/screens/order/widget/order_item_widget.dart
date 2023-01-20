@@ -8,6 +8,8 @@ import 'package:sixam_mart/view/base/custom_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../controller/store_controller.dart';
+
 class OrderItemWidget extends StatelessWidget {
   final OrderModel order;
   final OrderDetailsModel orderDetails;
@@ -33,13 +35,29 @@ class OrderItemWidget extends StatelessWidget {
         _variationText = orderDetails.itemDetails.variations[0].type;
       }
     }
+
+    bool showVeg=false;
+    try{
+      int moduleId = Get.find<StoreController>().store != null
+          ? Get.find<StoreController>().store.moduleId
+          : 0;
+      if (Get.find<SplashController>().moduleList != null) {
+        Get.find<SplashController>().moduleList.forEach((storeCategory) => {
+          if (storeCategory.id == moduleId)
+            {
+              if (storeCategory.moduleType == 'food' ||
+                  storeCategory.moduleType == 'Food')
+                {showVeg = true}
+            }
+        });
+      }}catch(e){}
     
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Row(children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
           child: CustomImage(
-            height: 50, width: 50, fit: BoxFit.cover,
+            height: 50, width: 50, fit: BoxFit.fill,
             image: '${orderDetails.itemCampaignId != null ? Get.find<SplashController>().configModel.baseUrls.campaignImageUrl
                 : Get.find<SplashController>().configModel.baseUrls.itemImageUrl}/'
                 '${orderDetails.itemDetails.image}',
@@ -67,7 +85,9 @@ class OrderItemWidget extends StatelessWidget {
                 style: robotoMedium,
               )),
               ((Get.find<SplashController>().configModel.moduleConfig.module.unit && orderDetails.itemDetails.unitType != null)
-              || (Get.find<SplashController>().configModel.moduleConfig.module.vegNonVeg && Get.find<SplashController>().configModel.toggleVegNonVeg)) ? Container(
+              || (Get.find<SplashController>().configModel.moduleConfig.module.vegNonVeg && Get.find<SplashController>().configModel.toggleVegNonVeg)) ?
+
+              showVeg?Container(
                 padding: EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_EXTRA_SMALL, horizontal: Dimensions.PADDING_SIZE_SMALL),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
@@ -78,7 +98,7 @@ class OrderItemWidget extends StatelessWidget {
                       : orderDetails.itemDetails.veg == 0 ? 'non_veg'.tr : 'veg'.tr,
                   style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Colors.white),
                 ),
-              ) : SizedBox(),
+              ) : SizedBox():SizedBox(),
             ]),
 
           ]),

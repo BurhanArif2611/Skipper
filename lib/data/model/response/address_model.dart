@@ -32,17 +32,17 @@ class AddressModel {
       });
 
   AddressModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['id'] != null ? json['id'] == ""? 0: json['id']  : 0;
     addressType = json['address_type'];
-    contactPersonNumber = json['contact_person_number'];
+    contactPersonNumber = json['contact_person_number'] !=null? json['contact_person_number']:"";
     address = json['address'];
     additionalAddress = json['additional_address'];
     latitude = json['latitude'];
     longitude = json['longitude'];
-    zoneId = json['zone_id'];
-    zoneIds = json['zone_ids'] != null ? json['zone_ids'].cast<int>() : null;
+    zoneId = json['zone_id']!= null ? json['zone_id'] == ""? 0: json['zone_id']  : 0;
+    zoneIds = json['zone_ids'] != null ?json['zone_ids'] =="" ? []: json['zone_ids'].cast<int>() : null;
     method = json['_method'];
-    contactPersonName = json['contact_person_name'];
+    contactPersonName = json['contact_person_name']!=null ?json['contact_person_name'] :"";
     streetNumber = json['road'];
     house = json['house'];
     floor = json['floor'] ;

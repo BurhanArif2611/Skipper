@@ -20,7 +20,8 @@ import 'package:phone_number/phone_number.dart';
 class ForgetPassScreen extends StatefulWidget {
   final bool fromSocialLogin;
   final SocialLogInBody socialLogInBody;
-  ForgetPassScreen({@required this.fromSocialLogin, @required this.socialLogInBody});
+  final String number;
+  ForgetPassScreen({@required this.fromSocialLogin, @required this.socialLogInBody, @required this.number});
 
   @override
   State<ForgetPassScreen> createState() => _ForgetPassScreenState();
@@ -29,6 +30,12 @@ class ForgetPassScreen extends StatefulWidget {
 class _ForgetPassScreenState extends State<ForgetPassScreen> {
   final TextEditingController _numberController = TextEditingController();
   String _countryDialCode = CountryCode.fromCountryCode(Get.find<SplashController>().configModel.country).dialCode;
+
+  @override
+  void initState() {
+    super.initState();
+    _numberController.text=widget.number.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +86,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                   inputType: TextInputType.phone,
                   inputAction: TextInputAction.done,
                   hintText: 'phone'.tr,
+                  maxLength: 11,
                   onSubmit: (text) => GetPlatform.isWeb ? _forgetPass(_countryDialCode) : null,
                 )),
               ]),
@@ -113,9 +121,9 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
 
     if (_phone.isEmpty) {
       showCustomSnackBar('enter_phone_number'.tr);
-    }else if (!_isValid) {
+    }/*else if (!_isValid) {
       showCustomSnackBar('invalid_phone_number'.tr);
-    }else {
+    }*/else {
       if(widget.fromSocialLogin) {
         widget.socialLogInBody.phone = _numberWithCountryCode;
         Get.find<AuthController>().registerWithSocialMedia(widget.socialLogInBody);

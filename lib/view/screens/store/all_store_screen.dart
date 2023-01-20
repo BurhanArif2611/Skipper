@@ -23,7 +23,7 @@ class _AllStoreScreenState extends State<AllStoreScreen> {
   @override
   void initState() {
     super.initState();
-
+print("All Screens>>"+widget.isFeatured.toString());
     if(widget.isFeatured) {
       Get.find<StoreController>().getFeaturedStoreList();
     }else if(widget.isPopular) {

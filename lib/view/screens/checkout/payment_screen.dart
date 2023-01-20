@@ -11,6 +11,8 @@ import 'package:sixam_mart/view/base/custom_app_bar.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:sixam_mart/view/screens/checkout/widget/payment_failed_dialog.dart';
 
+import '../../base/custom_snackbar.dart';
+
 class PaymentScreen extends StatefulWidget {
   final OrderModel orderModel;
   PaymentScreen({@required this.orderModel});
@@ -26,13 +28,26 @@ class _PaymentScreenState extends State<PaymentScreen> {
   PullToRefreshController pullToRefreshController;
   MyInAppBrowser browser;
 
+
   @override
   void initState() {
     super.initState();
-    selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?customer_id=${widget.orderModel.userId}&order_id=${widget.orderModel.id}';
-
+    print("type>>>>>>>>"+widget.orderModel.orderType);
+    if(widget.orderModel.id== -12){
+      selectedUrl =widget.orderModel.orderType.toString();
+    }else {
+      selectedUrl =
+      '${AppConstants.BASE_URL}/payment-mobile?transaction_type=place_order&customer_id=${widget.orderModel
+          .userId}&order_id=${widget.orderModel.id}';
+    }
+    print("type>>>>>>>>"+selectedUrl);
     _initData();
   }
+  /*@override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(context);
+    super.dispose();
+  }*/
 
   void _initData() async {
     browser = MyInAppBrowser(orderID: widget.orderModel.id.toString(), orderType: widget.orderModel.orderType);
@@ -80,9 +95,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return WillPopScope(
       onWillPop: () => _exitApp(),
-      child: Scaffold(
+      child:
+      Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
         appBar: CustomAppBar(title: 'payment'.tr, onBackPressed: () => _exitApp()),
         body: Center(
@@ -102,7 +119,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   Future<bool> _exitApp() async {
-    return Get.dialog(PaymentFailedDialog(orderID: widget.orderModel.id.toString()));
+    return Get.dialog(PaymentFailedDialog(orderID: widget.orderModel.id.toString(),orderType:widget.orderModel.orderType), barrierDismissible: false);
   }
 
 }
@@ -150,7 +167,11 @@ class MyInAppBrowser extends InAppBrowser {
   @override
   void onExit() {
     if(_canRedirect) {
-      Get.dialog(PaymentFailedDialog(orderID: orderID));
+      if(orderID=='-12'){
+        Get.back();
+      }
+      else{
+      Get.dialog(PaymentFailedDialog(orderID: orderID,orderType:orderType), barrierDismissible: false);}
     }
     print("\n\nBrowser closed!\n\n");
   }
@@ -176,18 +197,37 @@ class MyInAppBrowser extends InAppBrowser {
   }
 
   void _redirect(String url) {
+    print("url>>>>"+url);
+    print("url>>>>"+_canRedirect.toString());
     if(_canRedirect) {
       bool _isSuccess = url.contains('success') && url.contains(AppConstants.BASE_URL);
       bool _isFailed = url.contains('fail') && url.contains(AppConstants.BASE_URL);
       bool _isCancel = url.contains('cancel') && url.contains(AppConstants.BASE_URL);
+      print("url>>>>"+_isSuccess.toString());
+      print("url>>>>"+_isFailed.toString());
+      print("url>>>>"+_isCancel.toString());
       if (_isSuccess || _isFailed || _isCancel) {
         _canRedirect = false;
         close();
       }
+     /* if(orderID=='-12'){
+        close();
+      }*/
       if (_isSuccess) {
-        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID, 'success', orderType == 'parcel'));
+        if(orderID=='-12'){
+          showCustomSnackBar('Your Add Fund request has been successfully placed. The same will reflect in your account within 24 Hours.', isError: false);
+          Get.back();
+
+        }else {
+          Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));
+        }
       } else if (_isFailed || _isCancel) {
-        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID, 'fail', orderType == 'parcel'));
+        if(orderID=='-12'){
+          showCustomSnackBar('We are unable to process your request please try after some time.', isError: true);
+          Get.back();
+
+        }else {
+        Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID));}
       }
     }
   }

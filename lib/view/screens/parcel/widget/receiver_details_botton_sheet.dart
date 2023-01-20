@@ -142,7 +142,7 @@ class _ReceiverDetailsBottomSheetState extends State<ReceiverDetailsBottomSheet>
                 _address.floor = _floor;
 
                 // _address.additionalAddress = _additional;
-                Get.find<ParcelController>().setDestinationAddress(_address);
+                Get.find<ParcelController>().setDestinationAddress(_address,false);
                 AddressModel _pickedAddress = Get.find<ParcelController>().pickupAddress;
                 if((_pickedAddress.contactPersonName == null || _pickedAddress.contactPersonName.isEmpty)
                     && Get.find<UserController>().userInfoModel != null) {

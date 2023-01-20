@@ -13,6 +13,8 @@ import 'package:sixam_mart/view/base/rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../controller/store_controller.dart';
+
 class CartItemWidget extends StatelessWidget {
   final CartModel cart;
   final int cartIndex;
@@ -50,6 +52,22 @@ class CartItemWidget extends StatelessWidget {
         _variationText = cart.item.variations[0].type;
       }
     }
+
+    bool showVeg=false;
+    try{
+      int moduleId = Get.find<StoreController>().store != null
+          ? Get.find<StoreController>().store.moduleId
+          : 0;
+      if (Get.find<SplashController>().moduleList != null) {
+        Get.find<SplashController>().moduleList.forEach((storeCategory) => {
+          if (storeCategory.id == moduleId)
+            {
+              if (storeCategory.moduleType == 'food' ||
+                  storeCategory.moduleType == 'Food')
+                {showVeg = true}
+            }
+        });
+      }}catch(e){}
 
     return Padding(
       padding: EdgeInsets.only(bottom: Dimensions.PADDING_SIZE_DEFAULT),
@@ -130,7 +148,9 @@ class CartItemWidget extends StatelessWidget {
 
                       Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                         ((Get.find<SplashController>().configModel.moduleConfig.module.unit && cart.item.unitType != null)
-                        || (Get.find<SplashController>().configModel.moduleConfig.module.vegNonVeg && Get.find<SplashController>().configModel.toggleVegNonVeg)) ? Container(
+                        || (Get.find<SplashController>().configModel.moduleConfig.module.vegNonVeg && Get.find<SplashController>().configModel.toggleVegNonVeg)) ?
+                        showVeg?
+                        Container(
                           padding: EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_EXTRA_SMALL, horizontal: Dimensions.PADDING_SIZE_SMALL),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
@@ -141,7 +161,7 @@ class CartItemWidget extends StatelessWidget {
                                 : cart.item.veg == 0 ? 'non_veg'.tr : 'veg'.tr,
                             style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Colors.white),
                           ),
-                        ) : SizedBox(),
+                        ) : SizedBox():SizedBox(),
                         SizedBox(height: Get.find<SplashController>().configModel.toggleVegNonVeg ? Dimensions.PADDING_SIZE_EXTRA_SMALL : 0),
                         Row(children: [
                           QuantityButton(

@@ -1,6 +1,7 @@
 import 'package:sixam_mart/controller/localization_controller.dart';
 import 'package:sixam_mart/controller/item_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
+import 'package:sixam_mart/controller/store_controller.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:flutter/material.dart';
@@ -14,16 +15,31 @@ class VegFilterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool _ltr = Get.find<LocalizationController>().isLtr;
-
+    bool showVeg=false;
+    try{
+      int moduleId = Get.find<StoreController>().store != null
+          ? Get.find<StoreController>().store.moduleId
+          : 0;
+      if (Get.find<SplashController>().moduleList != null) {
+        Get.find<SplashController>().moduleList.forEach((storeCategory) => {
+          if (storeCategory.id == moduleId)
+            {
+              if (storeCategory.moduleType == 'food' ||
+                  storeCategory.moduleType == 'Food')
+                {showVeg = true}
+            }
+        });
+      }}catch(e){}
     return (Get.find<SplashController>().configModel.moduleConfig.module.vegNonVeg
     && Get.find<SplashController>().configModel.toggleVegNonVeg) ? Align(alignment: Alignment.center, child: Container(
-      height: 30,
+      height: showVeg?30:0,
       margin: EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_SMALL),
-      decoration: BoxDecoration(
+      decoration: showVeg?BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(Dimensions.RADIUS_SMALL)),
         border: Border.all(color: Theme.of(context).primaryColor),
-      ),
-      child: ListView.builder(
+      ):null,
+      child:showVeg?
+      ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: Get.find<ItemController>().itemTypeList.length,
         physics: NeverScrollableScrollPhysics(),
@@ -59,7 +75,7 @@ class VegFilterWidget extends StatelessWidget {
             ),
           );
         },
-      ),
+      ):SizedBox( width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
     )) : SizedBox();
   }
 }

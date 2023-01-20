@@ -195,10 +195,14 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                           ),
                         ),
                         GetBuilder<CartController>(builder: (cartController) {
-                          return Text(
-                            itemController.cartIndex != -1 ? cartController.cartList[itemController.cartIndex].quantity.toString()
-                                : itemController.quantity.toString(),
-                            style:robotoMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge),
+                          return
+                          /*  (itemController.cartIndex !=null && itemController.cartIndex >= 0 ?
+                            Text(itemController.cartIndex >0  && itemController.cartIndex != -1 ?cartController.cartList!=null? cartController.cartList[itemController.cartIndex].quantity.toString() : itemController.quantity.toString(): itemController.quantity.toString(),
+                            style:robotoMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge,color:  Theme.of(context).primaryColor),
+                          ):SizedBox());*/
+
+                            Text(itemController.cartIndex >0  && itemController.cartIndex != -1 ?cartController.cartList!=null? cartController.cartList[itemController.cartIndex].quantity.toString() : itemController.quantity.toString(): itemController.quantity.toString(),
+                            style:robotoMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge,color:  Theme.of(context).primaryColor),
                           );
                         }),
                         InkWell(

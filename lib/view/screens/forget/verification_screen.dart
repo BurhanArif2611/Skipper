@@ -76,7 +76,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
             boxShadow: [BoxShadow(color: Colors.grey[Get.isDarkMode ? 700 : 300], blurRadius: 5, spreadRadius: 1)],
           ) : null,
           child: GetBuilder<AuthController>(builder: (authController) {
-            return Column(children: [
+            return Padding(
+                padding: EdgeInsets.all(Dimensions.PADDING_SIZE_LARGE),
+            child:
+            Column(children: [
 
               Get.find<SplashController>().configModel.demo ? Text(
                 'for_demo_purpose'.tr, style: robotoRegular,
@@ -87,7 +90,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 39, vertical: 35),
-                child: PinCodeTextField(
+                child:
+                PinCodeTextField(
                   length: 4,
                   appContext: context,
                   keyboardType: TextInputType.number,
@@ -144,7 +148,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 ),
               ]) : SizedBox(),
 
-              authController.verificationCode.length == 4 ? !authController.isLoading ? CustomButton(
+              authController.verificationCode.length == 4 ? !authController.isLoading ?
+              CustomButton(
                 buttonText: 'verify'.tr,
                 onPressed: () {
                   if(widget.fromSignUp) {
@@ -184,7 +189,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 },
               ) : Center(child: CircularProgressIndicator()) : SizedBox.shrink(),
 
-            ]);
+            ]));
           }),
         )),
       )))),

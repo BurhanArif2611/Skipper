@@ -8,6 +8,9 @@ class UserInfoModel {
   String password;
   int orderCount;
   int memberSinceDays;
+  double walletBalance;
+  int loyaltyPoint;
+  String refCode;
 
   UserInfoModel(
       {this.id,
@@ -18,7 +21,10 @@ class UserInfoModel {
         this.phone,
         this.password,
         this.orderCount,
-        this.memberSinceDays});
+        this.memberSinceDays,
+        this.walletBalance,
+        this.loyaltyPoint,
+        this.refCode});
 
   UserInfoModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -30,6 +36,9 @@ class UserInfoModel {
     password = json['password'];
     orderCount = json['order_count'];
     memberSinceDays = json['member_since_days'];
+    walletBalance = json['wallet_balance'] !=null? json['wallet_balance'].toDouble():0.0;
+    loyaltyPoint = json['loyalty_point'];
+    refCode = json['ref_code'];
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +52,9 @@ class UserInfoModel {
     data['password'] = this.password;
     data['order_count'] = this.orderCount;
     data['member_since_days'] = this.memberSinceDays;
+    data['wallet_balance'] = this.walletBalance;
+    data['loyalty_point'] = this.loyaltyPoint;
+    data['ref_code'] = this.refCode;
     return data;
   }
 }

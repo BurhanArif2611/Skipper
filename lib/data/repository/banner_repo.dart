@@ -9,6 +9,9 @@ class BannerRepo {
   Future<Response> getBannerList() async {
     return await apiClient.getData(AppConstants.BANNER_URI);
   }
+  Future<Response> getBranchList() async {
+    return await apiClient.getData('${AppConstants.BRANCG_URI}/'+AppConstants.StoreID.toString()+'/branches');
+  }
 
   Future<Response> getFeaturedBannerList() async {
     return await apiClient.getData('${AppConstants.BANNER_URI}?featured=1');

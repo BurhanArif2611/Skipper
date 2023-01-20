@@ -39,7 +39,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     super.initState();
 
     _isLoggedIn = Get.find<AuthController>().isLoggedIn();
-    if(_isLoggedIn && Get.find<UserController>().userInfoModel == null) {
+
+    if(_isLoggedIn ) {
       Get.find<UserController>().getUserInfo();
     }
     Get.find<UserController>().initData();
@@ -59,7 +60,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           _emailController.text = userController.userInfoModel.email ?? '';
         }
 
-        return _isLoggedIn ? userController.userInfoModel != null ? ProfileBgWidget(
+        return _isLoggedIn ? userController.userInfoModel != null ?
+        ProfileBgWidget(
           backButton: true,
           circularImage: ImagePickerWidget(
             image: '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}/${userController.userInfoModel.image}',
@@ -68,11 +70,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           mainWidget: Column(children: [
 
             Expanded(child: Scrollbar(child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
+             /* physics: BouncingScrollPhysics(),*/
               padding: ResponsiveHelper.isDesktop(context) ? EdgeInsets.zero : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
               child: Center(child: FooterView(
                 minHeight: 0.45,
-                child: SizedBox(width: Dimensions.WEB_MAX_WIDTH, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                child:
+                SizedBox(width: Dimensions.WEB_MAX_WIDTH, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
                   Text(
                     'first_name'.tr,

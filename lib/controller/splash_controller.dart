@@ -1,6 +1,7 @@
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/banner_controller.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
+import 'package:sixam_mart/controller/category_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/store_controller.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
@@ -15,6 +16,9 @@ import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/view/base/confirmation_dialog.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:sixam_mart/view/screens/home/home_screen.dart';
+
+import '../data/model/response/store_model.dart';
+import '../util/app_constants.dart';
 
 class SplashController extends GetxController implements GetxService {
   final SplashRepo splashRepo;
@@ -97,7 +101,22 @@ class SplashController extends GetxController implements GetxService {
       update();
     }
   }
+  Future<void> setModuleWithCallStoreAPI(ModuleModel module,int id, {bool notify = true}) async {
 
+    _module = module;
+    splashRepo.setModule(module);
+    Get.find<StoreController>().getStoreDetails(Store(id: id),true);
+    Get.find<StoreController>().getStoreItemList(id, 1, 'all', false);
+    /*if(Get.find<CategoryController>().categoryList == null) {*/
+    Get.find<CategoryController>().getCategoryList(true);
+    /*}*/
+    if(module != null) {
+      _configModel.moduleConfig.module = Module.fromJson(_data['module_config'][module.moduleType]);
+    }
+    if(notify) {
+      update();
+    }
+  }
   Module getModule(String moduleType) => Module.fromJson(_data['module_config'][moduleType]);
 
   Future<void> getModules() async {
@@ -113,11 +132,13 @@ class SplashController extends GetxController implements GetxService {
   }
 
   void switchModule(int index, bool fromPhone) async {
+
     if(_module == null || _module.id != _moduleList[index].id) {
       bool _clearData = (Get.find<CartController>().cartList.length > 0
           && Get.find<CartController>().cartList[0].item.moduleId != _moduleList[index].id);
       bool _switch = _module != null && _module.id != _moduleList[index].id;
       if(_clearData || (_switch && !fromPhone)) {
+
         Get.dialog(ConfirmationDialog(
           icon: Images.warning, title: _clearData ? 'are_you_sure_to_reset'.tr : null,
           description: 'if_you_continue_without_another_store'.tr,
@@ -131,6 +152,8 @@ class SplashController extends GetxController implements GetxService {
       }else {
         await Get.find<SplashController>().setModule(_moduleList[index]);
         HomeScreen.loadData(true);
+
+
       }
     }
   }
@@ -139,6 +162,7 @@ class SplashController extends GetxController implements GetxService {
     _moduleIndex = index;
     update();
   }
+
 
   void removeModule() {
     setModule(null);

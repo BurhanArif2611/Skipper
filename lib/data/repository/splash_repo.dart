@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sixam_mart/util/html_type.dart';
 
+import '../../controller/theme_controller.dart';
+
 class SplashRepo {
   ApiClient apiClient;
   final SharedPreferences sharedPreferences;
@@ -19,9 +21,10 @@ class SplashRepo {
   }
 
   Future<ModuleModel> initSharedData() async {
-    if(!sharedPreferences.containsKey(AppConstants.THEME)) {
+    sharedPreferences.setBool(AppConstants.THEME, true);
+   /* if(!sharedPreferences.containsKey(AppConstants.THEME)) {
       sharedPreferences.setBool(AppConstants.THEME, false);
-    }
+    }*/
     if(!sharedPreferences.containsKey(AppConstants.COUNTRY_CODE)) {
       sharedPreferences.setString(AppConstants.COUNTRY_CODE, AppConstants.languages[0].countryCode);
     }
@@ -82,7 +85,7 @@ class SplashRepo {
     }catch(e) {}
     apiClient.updateHeader(
       sharedPreferences.getString(AppConstants.TOKEN), _addressModel == null ? null : _addressModel.zoneIds,
-      sharedPreferences.getString(AppConstants.LANGUAGE_CODE), module != null ? module.id : null,
+      sharedPreferences.getString(AppConstants.LANGUAGE_CODE), module != null ? AppConstants.ModelID : null,
     );
     if(module != null) {
       await sharedPreferences.setString(AppConstants.MODULE_ID, jsonEncode(module.toJson()));
@@ -96,6 +99,7 @@ class SplashRepo {
     if(sharedPreferences.containsKey(AppConstants.MODULE_ID)) {
       try {
         _module = ModuleModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.MODULE_ID)));
+
       }catch(e) {}
     }
     return _module;
@@ -108,7 +112,8 @@ class SplashRepo {
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
-        AppConstants.MODULE_ID: ''
+        AppConstants.MODULE_ID: '',
+        AppConstants.Store_ID: AppConstants.StoreID.toString()
       },
     );
   }

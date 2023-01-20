@@ -28,6 +28,7 @@ class PriceConverter {
 
   static double calculation(double amount, double discount, String type, int quantity) {
     double calculatedAmount = 0;
+    if(discount !=null)
     if(type == 'amount') {
       calculatedAmount = discount * quantity;
     }else if(type == 'percent') {

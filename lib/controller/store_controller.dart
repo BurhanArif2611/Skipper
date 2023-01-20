@@ -1,8 +1,12 @@
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sixam_mart/controller/category_controller.dart';
 import 'package:sixam_mart/controller/coupon_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/order_controller.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
+import 'package:sixam_mart/data/model/response/branch.dart';
 import 'package:sixam_mart/data/model/response/category_model.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
@@ -15,10 +19,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:sixam_mart/view/screens/home/home_screen.dart';
 
+import '../util/app_constants.dart';
+
 class StoreController extends GetxController implements GetxService {
   final StoreRepo storeRepo;
   StoreController({@required this.storeRepo});
-
+   SharedPreferences sharedPreferences;
   StoreModel _storeModel;
   List<Store> _popularStoreList;
   List<Store> _latestStoreList;
@@ -39,6 +45,7 @@ class StoreController extends GetxController implements GetxService {
   List<Store> get popularStoreList => _popularStoreList;
   List<Store> get latestStoreList => _latestStoreList;
   List<Store> get featuredStoreList => _featuredStoreList;
+
   Store get store => _store;
   ItemModel get storeItemModel => _storeItemModel;
   ItemModel get storeSearchItemModel => _storeSearchItemModel;
@@ -51,6 +58,15 @@ class StoreController extends GetxController implements GetxService {
   String get searchType => _searchType;
   String get searchText => _searchText;
 
+  void clear() {
+    _categoryList = [];
+    _storeReviewList = [];
+    _featuredStoreList = [];
+    _latestStoreList = [];
+    _popularStoreList = [];
+    _storeModel = null;
+
+  }
   Future<void> getStoreList(int offset, bool reload) async {
     if(reload) {
       _storeModel = null;
@@ -127,6 +143,8 @@ class StoreController extends GetxController implements GetxService {
     update();
   }
 
+
+
   void setCategoryList() {
     if(Get.find<CategoryController>().categoryList != null && _store != null) {
       _categoryList = [];
@@ -150,6 +168,7 @@ class StoreController extends GetxController implements GetxService {
   }
 
   Future<Store> getStoreDetails(Store store, bool fromModule) async {
+   // await sharedPreferences.setString(AppConstants.MODULE_ID, '1');
     _categoryIndex = 0;
     if(store.name != null) {
       _store = store;
@@ -160,13 +179,13 @@ class StoreController extends GetxController implements GetxService {
       if (response.statusCode == 200) {
         _store = Store.fromJson(response.body);
         Get.find<OrderController>().initializeTimeSlot(_store);
-        Get.find<OrderController>().getDistanceInKM(
+       /* Get.find<OrderController>().getDistanceInKM(
           LatLng(
             double.parse(Get.find<LocationController>().getUserAddress().latitude),
             double.parse(Get.find<LocationController>().getUserAddress().longitude),
           ),
-          LatLng(double.parse(_store.latitude), double.parse(_store.longitude)),
-        );
+          LatLng(double.parse(_store.latitude), double.parse(_store.longitude)),"[]"
+        );*/
         if(fromModule) {
           HomeScreen.loadData(true);
         }
@@ -174,7 +193,7 @@ class StoreController extends GetxController implements GetxService {
         ApiChecker.checkApi(response);
       }
       Get.find<OrderController>().setOrderType(
-        _store != null ? _store.delivery ? 'delivery' : 'take_away' : 'delivery', notify: false,
+        _store != null ? _store.delivery!=null && _store.delivery ? 'delivery' : 'take_away' : 'delivery', notify: false,
       );
 
       _isLoading = false;
@@ -184,6 +203,7 @@ class StoreController extends GetxController implements GetxService {
   }
 
   Future<void> getStoreItemList(int storeID, int offset, String type, bool notify) async {
+   // await sharedPreferences.setString(AppConstants.MODULE_ID, '1');
     if(offset == 1 || _storeItemModel == null) {
       _type = type;
       _storeItemModel = null;
@@ -261,7 +281,7 @@ class StoreController extends GetxController implements GetxService {
   }
 
   bool isStoreClosed(bool today, bool active, List<Schedules> schedules) {
-    if(!active) {
+    if(active!=null && !active) {
       return true;
     }
     DateTime _date = DateTime.now();
@@ -272,6 +292,7 @@ class StoreController extends GetxController implements GetxService {
     if(_weekday == 7) {
       _weekday = 0;
     }
+    if(schedules !=null)
     for(int index=0; index<schedules.length; index++) {
       if(_weekday == schedules[index].day) {
         return false;
@@ -303,4 +324,8 @@ class StoreController extends GetxController implements GetxService {
 
   String getDiscountType(Store store) => store.discount != null ? store.discount.discountType : 'percent';
 
+  void startLoader(bool isEnable) {
+    _isLoading = isEnable;
+    update();
+  }
 }

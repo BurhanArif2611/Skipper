@@ -23,7 +23,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(Dimensions.PADDING_SIZE_LARGE),
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          child:
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
 
             Image.asset(
               widget.isUpdate ? Images.update : Images.maintenance,

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-ThemeData light({Color color = const Color(0xFF039D55)}) => ThemeData(
-  fontFamily: 'Roboto',
+ThemeData light({Color color = const Color(0xFF796102)}) =>
+    ThemeData(
+  fontFamily: 'Mulish',
   primaryColor: color,
-  secondaryHeaderColor: Color(0xFF1ED7AA),
+  secondaryHeaderColor: Color(0xFF796102),
   disabledColor: Color(0xFFBABFC4),
   backgroundColor: Color(0xFFF3F3F3),
   errorColor: Color(0xFFE84D4F),

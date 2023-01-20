@@ -38,7 +38,8 @@ class PopularStoreView extends StatelessWidget {
             child: TitleWidget(
               title: isFeatured ? 'featured_stores'.tr : isPopular ? Get.find<SplashController>().configModel.moduleConfig.module.showRestaurantText
                   ? 'popular_restaurants'.tr : 'popular_stores'.tr : '${'new_on'.tr} ${AppConstants.APP_NAME}',
-              onTap: () => Get.toNamed(RouteHelper.getAllStoreRoute(isFeatured ? 'featured' : isPopular ? 'popular' : 'latest')),
+              onTap: () =>
+                  Get.toNamed(RouteHelper.getAllStoreRoute(isFeatured ? 'featured' : isPopular ? 'popular' : 'latest')),
             ),
           ),
 

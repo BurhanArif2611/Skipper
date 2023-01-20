@@ -37,7 +37,7 @@ class _ReceiverViewState extends State<ReceiverView> {
   @override
   void initState() {
     super.initState();
-
+    {print('Reciver detail card design >>>>>>>>>');}
     Get.find<ParcelController>().setPickupAddress(Get.find<LocationController>().getUserAddress(), false);
     Get.find<ParcelController>().setIsPickedUp(false, false);
     if(Get.find<AuthController>().isLoggedIn() && Get.find<LocationController>().addressList == null) {
@@ -71,6 +71,7 @@ class _ReceiverViewState extends State<ReceiverView> {
               isEnabled: !parcelController.isPickedUp,
               isPickedUp: false,
               hint: 'destination'.tr,
+              context: context,
             ),
             SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
 
@@ -86,7 +87,7 @@ class _ReceiverViewState extends State<ReceiverView> {
                       _houseController.text = '';
                       _floorController.text = '';
                     }else {
-                      parcelController.setDestinationAddress(address);
+                      parcelController.setDestinationAddress(address,false);
                     }
                   },
                   )),

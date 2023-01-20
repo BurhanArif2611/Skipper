@@ -22,6 +22,7 @@ class AddressWidget extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Container(
+
           padding: EdgeInsets.all(ResponsiveHelper.isDesktop(context) ? Dimensions.PADDING_SIZE_DEFAULT
               : Dimensions.PADDING_SIZE_SMALL),
           decoration: BoxDecoration(
@@ -30,7 +31,8 @@ class AddressWidget extends StatelessWidget {
             border: fromCheckout ? Border.all(color: Theme.of(context).disabledColor, width: 1) : null,
             boxShadow: fromCheckout ? null : [BoxShadow(color: Colors.grey[Get.isDarkMode ? 800 : 200], blurRadius: 5, spreadRadius: 1)],
           ),
-          child: Row(mainAxisSize: MainAxisSize.min, children: [
+          child:
+          Row(mainAxisSize: MainAxisSize.min, children: [
             Icon(
               address.addressType == 'home' ? Icons.home_filled : address.addressType == 'office'
                   ? Icons.work : Icons.location_on,

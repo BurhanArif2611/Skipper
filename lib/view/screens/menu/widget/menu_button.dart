@@ -1,6 +1,8 @@
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
+import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
+import 'package:sixam_mart/controller/store_controller.dart';
 import 'package:sixam_mart/controller/user_controller.dart';
 import 'package:sixam_mart/controller/wishlist_controller.dart';
 import 'package:sixam_mart/data/model/response/menu_model.dart';
@@ -14,6 +16,11 @@ import 'package:sixam_mart/view/base/custom_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
+import '../../../../controller/order_controller.dart';
+import '../../../../controller/parcel_controller.dart';
+import '../../../../controller/wallet_controller.dart';
+import '../../../../data/model/response/userinfo_model.dart';
 
 class MenuButton extends StatelessWidget {
   final MenuModel menu;
@@ -35,7 +42,15 @@ class MenuButton extends StatelessWidget {
               Get.find<AuthController>().clearSharedData();
               Get.find<CartController>().clearCartList();
               Get.find<WishListController>().removeWishes();
+              Get.find<UserController>().initData();
+              Get.find<OrderController>().clear();
+              Get.find<ParcelController>().clear();
+              Get.find<WalletController>().clear();
+              Get.find<LocationController>().clear();
+              Get.find<StoreController>().clear();
+
               Get.offAllNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
+             // Get.reset();
             }), useSafeArea: false);
           }else {
             Get.find<WishListController>().removeWishes();
@@ -43,7 +58,7 @@ class MenuButton extends StatelessWidget {
           }
         }else if(menu.route.startsWith('http')) {
           if(await canLaunchUrlString(menu.route)) {
-            launchUrlString(menu.route);
+            launchUrlString(menu.route, mode: LaunchMode.externalApplication);
           }
         }else {
           Get.offNamed(menu.route);

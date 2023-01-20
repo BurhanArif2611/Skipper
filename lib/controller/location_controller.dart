@@ -64,7 +64,13 @@ class LocationController extends GetxController implements GetxService {
   int get zoneID => _zoneID;
   bool get buttonDisabled => _buttonDisabled;
   GoogleMapController get mapController => _mapController;
+  void clear() {
+    _addressList = [];
+    _addressTypeList = [];
+    _predictionList = [];
+    _markers = [];
 
+  }
   Future<AddressModel> getCurrentLocation(bool fromAddress, {GoogleMapController mapController, LatLng defaultLatLng, bool notify = true}) async {
     _loading = true;
     if(notify) {
@@ -186,7 +192,7 @@ class LocationController extends GetxController implements GetxService {
     if (response.statusCode == 200) {
       _addressList = [];
       _allAddressList = [];
-      response.body.forEach((address) {
+      response.body['addresses'].forEach((address) {
         _addressList.add(AddressModel.fromJson(address));
         _allAddressList.add(AddressModel.fromJson(address));
       });
@@ -212,14 +218,14 @@ class LocationController extends GetxController implements GetxService {
     }
   }
 
-  Future<ResponseModel> addAddress(AddressModel addressModel, bool fromCheckout) async {
+  Future<ResponseModel> addAddress(AddressModel addressModel, bool fromCheckout, int storeZoneId) async {
     _isLoading = true;
     update();
     Response response = await locationRepo.addAddress(addressModel);
     _isLoading = false;
     ResponseModel responseModel;
     if (response.statusCode == 200) {
-      if(fromCheckout && !getUserAddress().zoneIds.contains(response.body['zone_id'].toString())) {
+      if(fromCheckout && !response.body['zone_ids'].contains(storeZoneId)) {
         responseModel = ResponseModel(false, Get.find<SplashController>().configModel.moduleConfig.module.showRestaurantText
             ? 'your_selected_location_is_from_different_zone'.tr : 'your_selected_location_is_from_different_zone_store'.tr);
       }else {
@@ -332,7 +338,8 @@ class LocationController extends GetxController implements GetxService {
     HomeScreen.loadData(true);
     Get.find<OrderController>().clearPrevData();
     if(fromSignUp) {
-      Get.offAllNamed(RouteHelper.getInterestRoute());
+    //  Get.offAllNamed(RouteHelper.getInterestRoute());
+      Get.offAllNamed(RouteHelper.getInitialRoute());
     }else {
       if(route != null && canRoute) {
         Get.offAllNamed(route);
@@ -410,6 +417,8 @@ class LocationController extends GetxController implements GetxService {
     String _address = 'Unknown Location Found';
     if(response.statusCode == 200 && response.body['status'] == 'OK') {
       _address = response.body['results'][0]['formatted_address'].toString();
+    }else if(response.statusCode == 200 && response.body['status'] == 'ZERO_RESULTS'){
+      showCustomSnackBar("Please enable location permission");
     }else {
       showCustomSnackBar(response.body['error_message'] ?? response.bodyString);
     }
@@ -423,7 +432,7 @@ class LocationController extends GetxController implements GetxService {
         _predictionList = [];
         response.body['predictions'].forEach((prediction) => _predictionList.add(PredictionModel.fromJson(prediction)));
       } else {
-        showCustomSnackBar(response.body['error_message'] ?? response.bodyString);
+        showCustomSnackBar(response.body['error_message']!=null ?response.body['error_message'] : response.body['message']!=null?response.body['message']:response.bodyString);
       }
     }
     return _predictionList;

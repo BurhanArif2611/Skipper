@@ -15,15 +15,15 @@ dependencies:
   get: ^4.6.5
   shared_preferences: ^2.0.11
   connectivity: ^3.0.6
-  firebase_core: ^1.2.1
-  firebase_messaging: ^11.4.1
-  flutter_local_notifications: ^9.5.3+1
+  firebase_core: ^2.4.1
+  firebase_messaging: ^14.2.1
+  flutter_local_notifications: ^13.0.0
   path_provider: ^2.0.8
   url_strategy: ^0.2.0
   pin_code_fields: ^7.3.0
-  geolocator: ^8.0.1
+  geolocator: ^9.0.2
   google_maps_flutter: ^2.1.5
-  google_maps_flutter_web: ^0.3.2
+  google_maps_flutter_web: ^0.4.0+4
   flutter_typeahead: ^4.0.0
   carousel_slider: ^4.0.0
   shimmer_animation: ^2.1.0+1
@@ -33,21 +33,28 @@ dependencies:
   flutter_inappwebview: ^5.4.3+7
   flutter_widget_from_html: ^0.8.5
   fwfh_selectable_text: ^0.8.3+1
-  flutter_html: ^2.2.1
+  flutter_html: ^3.0.0-alpha.6
   url_launcher: ^6.1.2
   http: ^0.13.4
   pointer_interceptor: ^0.9.0+1
-  phone_number: ^0.12.0+1
+  phone_number: ^1.0.0
   country_code_picker: ^2.0.2
   cached_network_image: ^3.2.1
 #  google_sign_in: ^5.2.1
 #  flutter_facebook_auth: ^3.5.7
   photo_view: ^0.14.0
   image_compression_flutter: ^1.0.2
+  dotted_border: ^2.0.0+1
+  share_plus: ^6.3.0
+  firebase_crashlytics: ^3.0.10
+  google_places_flutter: ^2.0.5
+
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
 flutter:
   uses-material-design: true
@@ -57,13 +64,13 @@ flutter:
     - assets/language/
 
   fonts:
-    - family: Roboto
+    - family: Poppins
       fonts:
-        - asset: assets/font/Roboto-Regular.ttf
+        - asset: assets/font/Mulish-Regular.ttf
           weight: 400
-        - asset: assets/font/Roboto-Medium.ttf
+        - asset: assets/font/Mulish-Medium.ttf
           weight: 500
-        - asset: assets/font/Roboto-Bold.ttf
+        - asset: assets/font/Mulish-Bold.ttf
           weight: 700
-        - asset: assets/font/Roboto-Black.ttf
+        - asset: assets/font/Mulish-Black.ttf
           weight: 900

@@ -13,13 +13,14 @@ class CartWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(clipBehavior: Clip.none, children: [
       Icon(
-        Icons.shopping_cart, size: size,
+        Icons.delivery_dining, size: size,
         color: color,
       ),
-      GetBuilder<CartController>(builder: (cartController) {
+      /*GetBuilder<CartController>(builder: (cartController) {
         return cartController.cartList.length > 0 ? Positioned(
           top: -5, right: -5,
-          child: Container(
+          child:
+          Container(
             height: size < 20 ? 10 : size/2, width: size < 20 ? 10 : size/2, alignment: Alignment.center,
             decoration: BoxDecoration(
               shape: BoxShape.circle, color: fromStore ? Theme.of(context).cardColor : Theme.of(context).primaryColor,
@@ -34,7 +35,7 @@ class CartWidget extends StatelessWidget {
             ),
           ),
         ) : SizedBox();
-      }),
+      }),*/
     ]);
   }
 }

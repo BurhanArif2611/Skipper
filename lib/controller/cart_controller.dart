@@ -40,6 +40,7 @@ class CartController extends GetxController implements GetxService {
     } else {
       _cartList[cartIndex].quantity = _cartList[cartIndex].quantity - 1;
     }
+    print("quantity>>"+ _cartList[cartIndex].quantity.toString());
     cartRepo.addToCartList(_cartList);
 
     update();
