@@ -53,6 +53,7 @@ class ConfigModel {
   double refEarningExchangeRate;
   double p2_delivery_charge;
   double p3_delivery_charge;
+  String map_api_key;
 
   ConfigModel(
       {this.businessName,
@@ -107,6 +108,7 @@ class ConfigModel {
         this.refEarningExchangeRate,
         this.p2_delivery_charge,
         this.p3_delivery_charge,
+        this.map_api_key,
       });
 
   ConfigModel.fromJson(Map<String, dynamic> json) {
@@ -178,6 +180,7 @@ class ConfigModel {
     minimumPointToTransfer = json['minimum_point_to_transfer'];
     customerWalletStatus = json['customer_wallet_status'];
     dmTipsStatus = json['dm_tips_status'];
+    map_api_key = json['map_api_key'];
     refEarningStatus = json['ref_earning_status'];
     refEarningExchangeRate = json['ref_earning_exchange_rate']!=null? json['ref_earning_exchange_rate'].toDouble():0.0;
     p2_delivery_charge = json['p2_delivery_charge']!=null? json['p2_delivery_charge'].toDouble():0.0;
@@ -254,6 +257,7 @@ class ConfigModel {
     data['ref_earning_exchange_rate'] = this.refEarningExchangeRate;
     data['p2_delivery_charge'] = this.p2_delivery_charge;
     data['p3_delivery_charge'] = this.p3_delivery_charge;
+    data['map_api_key'] = this.map_api_key;
     return data;
     return data;
   }

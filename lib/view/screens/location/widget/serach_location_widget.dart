@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:sixam_mart/controller/parcel_controller.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
@@ -13,22 +15,27 @@ class SearchLocationWidget extends StatelessWidget {
   final bool isPickedUp;
   final String hint;
 
-  const SearchLocationWidget(
-      {@required this.mapController,
-      @required this.pickedAddress,
-      @required this.isEnabled,
-      this.isPickedUp,
-      this.hint});
+  final BuildContext context;
+
+  const SearchLocationWidget({
+    @required this.mapController,
+    @required this.pickedAddress,
+    @required this.isEnabled,
+    this.isPickedUp,
+    this.hint,
+    @required this.context,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _controller = TextEditingController();
     return InkWell(
       onTap: () {
-        if (isPickedUp!=null &&  !isPickedUp) {
+        if (isPickedUp != null && !isPickedUp) {
           Get.find<ParcelController>().removeDestinationAddress();
         }
         Get.dialog(LocationSearchDialog(
-            mapController: mapController, isPickedUp: isPickedUp));
+            mapController: mapController, isPickedUp: isPickedUp,context:context));
         if (isEnabled != null) {
           Get.find<ParcelController>().setIsPickedUp(isPickedUp, true);
         }

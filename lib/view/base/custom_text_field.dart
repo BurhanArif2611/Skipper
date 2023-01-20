@@ -71,7 +71,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
          // inputFormatters: widget.inputType == TextInputType.phone ? <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp('[0-9]'))] : null,
           inputFormatters: widget.inputType == TextInputType.phone  ? <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp('[0-9+]'))] :widget.inputType == TextInputType.visiblePassword || widget.inputType == TextInputType.emailAddress? null: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9]"))],
 
-          decoration: InputDecoration(
+          decoration:
+          InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
               borderSide: BorderSide(style: BorderStyle.none, width: 0),

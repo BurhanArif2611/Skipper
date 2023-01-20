@@ -84,7 +84,7 @@ class _ParcelViewState extends State<ParcelView> {
                       SearchLocationWidget(
                         mapController: null,
                         pickedAddress: parcelController.isSender
-                            ? parcelController.pickupAddress.address
+                            ? parcelController.pickupAddress!=null ? parcelController.pickupAddress.address:''
                             : parcelController.destinationAddress != null
                                 ? parcelController.destinationAddress.address
                                 : '',
@@ -95,6 +95,7 @@ class _ParcelViewState extends State<ParcelView> {
                         hint: parcelController.isSender
                             ? 'pick_up'.tr
                             : 'destination'.tr,
+                        context:context,
                       ),
                     SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                     if (parcelController.isSender)
@@ -348,6 +349,7 @@ class _ParcelViewState extends State<ParcelView> {
                         isEnabled: false,
                         isPickedUp: false,
                         hint: 'destination'.tr,
+                        context: context,
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       Row(children: [

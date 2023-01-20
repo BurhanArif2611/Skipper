@@ -20,7 +20,7 @@ import 'package:sixam_mart/util/app_constants.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 
 import '../helper/network_info.dart';
-
+import 'package:sixam_mart/util/styles.dart';
 class ParcelController extends GetxController implements GetxService {
   final ParcelRepo parcelRepo;
 
@@ -197,7 +197,7 @@ class ParcelController extends GetxController implements GetxService {
   }
 
   void setLocationFromPlace(
-      String placeID, String address, bool isPickedUp) async {
+      String placeID, String address, bool isPickedUp,BuildContext context) async {
     Response response = await parcelRepo.getPlaceDetails(placeID);
     if (response.statusCode == 200) {
       PlaceDetailsModel _placeDetails =
@@ -267,7 +267,27 @@ class ParcelController extends GetxController implements GetxService {
           }
         } else {
           print("message>>>" + _response.message);
-          showCustomSnackBar(_response.message);
+         // showCustomSnackBar(_response.message);
+            String msg=_response.message.toString();
+          showDialog(
+            context: Get.context,
+            builder: (ctx) => AlertDialog(
+              title: const Text("Alert"),
+              content: const Text("Service not available in this area !"),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                  child: Container(
+                    color: Theme.of(Get.context).disabledColor,
+                    padding: const EdgeInsets.all(14),
+                    child: const Text("okay"),
+                  ),
+                ),
+              ],
+            ),
+          );
         }
       }
     }

@@ -71,6 +71,7 @@ class _ReceiverViewState extends State<ReceiverView> {
               isEnabled: !parcelController.isPickedUp,
               isPickedUp: false,
               hint: 'destination'.tr,
+              context: context,
             ),
             SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
 

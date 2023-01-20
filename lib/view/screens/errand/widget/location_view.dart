@@ -106,6 +106,7 @@ class _LocationView extends State<LocationView> {
                       hint: parcelController.isSender
                           ? 'pick_up'.tr
                           : 'destination'.tr,
+                      context: context,
                     ),
                     SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                     Row(children: [
