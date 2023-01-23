@@ -57,7 +57,7 @@ class DateConverter {
   }
 
   static DateTime convertStringTimeToDate(String time) {
-    return DateFormat('HH:mm').parseUtc(time).toLocal();
+    return DateFormat('HH:mm').parse(time);
   }
 
   static bool isAvailable(String start, String end, {DateTime time}) {

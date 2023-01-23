@@ -60,6 +60,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   final TextEditingController _couponController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
   final TextEditingController _streetNumberController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
   final TextEditingController _houseController = TextEditingController();
   final TextEditingController _floorController = TextEditingController();
   TextEditingController _tipController = TextEditingController();
@@ -209,8 +210,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         storeController.store.selfDeliverySystem == 1) {
                       _deliveryCharge = storeController.store.deliveryCharge;
                       _charge = storeController.store.deliveryCharge;
-                    }
-                    else if (storeController.store != null &&
+                    } else if (storeController.store != null &&
                         orderController.distance != null &&
                         orderController.distance != -1) {
                       _deliveryCharge = orderController.distance *
@@ -232,8 +232,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             .configModel
                             .minimumShippingCharge;
                       }
-                    }
-                    else if (locationController.addressList != null &&
+                    } else if (locationController.addressList != null &&
                         locationController.addressList.length > 0) {
                       try {
                         orderController.getDistanceInKM(
@@ -316,7 +315,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
                       if (orderController.orderType == 'take_away' ||
                           (storeController.store.freeDelivery &&
-                          Get.find<SplashController>()
+                              Get.find<SplashController>()
                                       .configModel
                                       .freeDeliveryOver !=
                                   null &&
@@ -365,16 +364,21 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                 value: 'delivery',
                                                 title: 'home_delivery'.tr,
                                                 charge: _charge,
-                                                isFree: (storeController.store.freeDelivery  &&
-                        Get.find<SplashController>()
-                            .configModel
-                            .freeDeliveryOver !=
-                        null &&
-                        _orderAmount >=
-                        Get.find<SplashController>()
-                            .configModel
-                            .freeDeliveryOver ||
-                        couponController.freeDelivery)?true:false,
+                                                isFree: (storeController.store
+                                                                .freeDelivery &&
+                                                            Get.find<SplashController>()
+                                                                    .configModel
+                                                                    .freeDeliveryOver !=
+                                                                null &&
+                                                            _orderAmount >=
+                                                                Get.find<
+                                                                        SplashController>()
+                                                                    .configModel
+                                                                    .freeDeliveryOver ||
+                                                        couponController
+                                                            .freeDelivery)
+                                                    ? true
+                                                    : false,
                                               )
                                             : SizedBox(),
                                         showVeg &&
@@ -419,6 +423,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                                         .store
                                                                         .selfDeliverySystem ==
                                                                     0) {
+
                                                                   orderController.getDistanceInKM(
                                                                       LatLng(
                                                                           double.parse(_address
@@ -434,6 +439,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                                               .longitude)),
                                                                       "[]");
                                                                 }
+
+                                                                _addressController.text=_address.address ??
+                                                                    '';
                                                                 _streetNumberController
                                                                         .text =
                                                                     _address.streetNumber ??
@@ -464,7 +472,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                           EdgeInsets.symmetric(
                                                               vertical: 5),
                                                       decoration: BoxDecoration(
-                                                          color: Colors.transparent,
+                                                          color: Colors
+                                                              .transparent,
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(
@@ -584,8 +593,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                             BoxDecoration(
                                                           color: Colors.white,
                                                         ),
-                                                        child:
-                                                        InkWell(
+                                                        child: InkWell(
                                                           onTap: () {
                                                             if (Get.find<
                                                                     AuthController>()
@@ -608,6 +616,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                                         ),
                                                                         LatLng(double.parse(storeController.store.latitude), double.parse(storeController.store.longitude)),
                                                                         "[]");
+
+
                                                                   }
                                                                   /* orderController
                                                                   .setAddressIndex(
@@ -653,6 +663,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                                     index) {
                                                                   Final_index =
                                                                       index;
+                                                                  print("_address>>>"+Final_index.toString());
+
                                                                 },
                                                                 /*(AddressModel address) {
                                                                     widget.streetController.text =
@@ -669,9 +681,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                                       .tr);
                                                             }
                                                           },
-                                                          child:
-                                                          SizedBox(
-                                                              height: locationController.addressList!=null && locationController.addressList.length>0 ?80:0,
+                                                          child: SizedBox(
+                                                              height: locationController
+                                                                              .addressList !=
+                                                                          null &&
+                                                                      locationController
+                                                                              .addressList
+                                                                              .length >
+                                                                          0
+                                                                  ? 80
+                                                                  : 0,
                                                               /* width: context.width > Dimensions.WEB_MAX_WIDTH
                                                               ? Dimensions.WEB_MAX_WIDTH - 50
                                                               : context.width - 50,*/
@@ -681,16 +700,21 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                                     horizontal:
                                                                         Dimensions
                                                                             .PADDING_SIZE_SMALL),
-                                                                child:
-                                                                    (locationController.addressList!=null && locationController.addressList.length>0 ?
-                                                                    AddressWidget(
-                                                                  address:locationController.addressList!=null && locationController.addressList.length>0? locationController.addressList[Final_index]:null,
-                                                                  fromAddress:
-                                                                      false,
-                                                                  fromCheckout:
-                                                                      true,
-                                                                ):
-                                                                    SizedBox()),
+                                                                child: (locationController.addressList !=
+                                                                            null &&
+                                                                        locationController.addressList.length >
+                                                                            0
+                                                                    ? AddressWidget(
+                                                                        address: locationController.addressList != null &&
+                                                                                locationController.addressList.length > 0
+                                                                            ? locationController.addressList[Final_index]
+                                                                            : null,
+                                                                        fromAddress:
+                                                                            false,
+                                                                        fromCheckout:
+                                                                            true,
+                                                                      )
+                                                                    : SizedBox()),
                                                               )),
                                                         ),
                                                       ),
@@ -1575,7 +1599,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           ? null
           : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
       child: /*!orderController.isLoading ?*/
-      CustomButton(
+          CustomButton(
               buttonText: 'confirm_order'.tr,
               onPressed: () {
                 bool checkStoreIsOnlyFood = false;
@@ -1584,21 +1608,22 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ? Get.find<StoreController>().store.moduleId
                       : 0;
                   if (Get.find<SplashController>().moduleList != null) {
-                    Get.find<SplashController>().moduleList.forEach((storeCategory) => {
-                      if (storeCategory.id == moduleId)
-                        {
-                          if (storeCategory.moduleType == 'food' ||
-                              storeCategory.moduleType == 'Food')
-                            {checkStoreIsOnlyFood = true}
-                        }
-                    });
+                    Get.find<SplashController>()
+                        .moduleList
+                        .forEach((storeCategory) => {
+                              if (storeCategory.id == moduleId)
+                                {
+                                  if (storeCategory.moduleType == 'food' ||
+                                      storeCategory.moduleType == 'Food')
+                                    {checkStoreIsOnlyFood = true}
+                                }
+                            });
                   }
                 } catch (e) {}
 
                 bool _isAvailable = true;
                 DateTime _scheduleStartDate = DateTime.now();
                 DateTime _scheduleEndDate = DateTime.now();
-
 
                 if (orderController.timeSlots == null ||
                     orderController.timeSlots.length == 0) {
@@ -1642,18 +1667,21 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 } else if (orderAmount < storeController.store.minimumOrder) {
                   showCustomSnackBar(
                       '${'minimum_order_amount_is'.tr} ${storeController.store.minimumOrder}');
-                } else if (checkStoreIsOnlyFood && (orderController.selectedDateSlot == 0 &&
-                        todayClosed) ||
+                } else if (checkStoreIsOnlyFood &&
+                        (orderController.selectedDateSlot == 0 &&
+                            todayClosed) ||
                     (orderController.selectedDateSlot == 1 && tomorrowClosed)) {
                   showCustomSnackBar(Get.find<SplashController>()
                           .configModel
                           .moduleConfig
                           .module
                           .showRestaurantText
-                      ? 'restaurant_is_closed'.tr
+                      ? 'restaurant_is_closed123'.tr
                       : 'store_is_closed'.tr);
-                } else if ( checkStoreIsOnlyFood &&(orderController.timeSlots == null ||
-                    orderController.timeSlots.length == 0)) {
+                } else if (checkStoreIsOnlyFood &&
+                    (orderController.timeSlots == null ||
+                        orderController.timeSlots.length == 0)) {
+
                   if (storeController.store.scheduleOrder) {
                     showCustomSnackBar('select_a_time'.tr);
                   } else {
@@ -1662,7 +1690,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             .moduleConfig
                             .module
                             .showRestaurantText
-                        ? 'restaurant_is_closed'.tr
+                        ? 'restaurant_is_closed456'.tr
                         : 'store_is_closed'.tr);
                   }
                 } else if (checkStoreIsOnlyFood && !_isAvailable) {
@@ -1696,11 +1724,22 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ));
                   }
                   AddressModel _address;
-                  if(locationController.addressList!=null && locationController.addressList.length>0) {
-                    _address = orderController.addressIndex == -1
+                  if (locationController.addressList != null &&
+                      locationController.addressList.length > 0) {
+                   if(orderController.addressIndex == -1){
+                     if(Final_index==0){
+                     _address =Get.find<LocationController>().getUserAddress();}
+                     else {
+                       _address = locationController.addressList[Final_index];
+                     }
+                   }else {
+                     _address = locationController.addressList[orderController.addressIndex];
+                   }
+                   /* _address = orderController.addressIndex == -1
                         ? Get.find<LocationController>().getUserAddress()
-                        : locationController.addressList[orderController.addressIndex];
-
+                        : locationController
+                            .addressList[orderController.addressIndex];*/
+                    print("index>>" + _address.address.toString());
                     orderController.placeOrder(
                         PlaceOrderBody(
                           cart: carts,
@@ -1770,15 +1809,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           dmTips: _tipController.text.trim(),
                         ),
                         _callback);
-                  }else {
+                  } else {
                     showCustomSnackBar('Please Delivery Address !'.tr);
                   }
-
                 }
-              })
-          /*: Center(child: CircularProgressIndicator())*/,
+              }) /*: Center(child: CircularProgressIndicator())*/,
     );
   }
+
   void showCustomDialog(BuildContext context) {
     TextEditingController nameController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
@@ -1794,76 +1832,70 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       transitionDuration: Duration(milliseconds: 700),
       pageBuilder: (context, animation1, animation2) {
         return Center(
-            child: Container(
-              height: 600,
-              child: Card(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Container(
-                    child: Column(children: [
-
-                      Column(children: [
-                        Center(
-                            child: Text('receiver_information'.tr,
-                                style: robotoMedium)),
-                        SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-
-
-                      ]),
-                      Column(children: [
-                        Center(
-                            child: Text('destination_information'.tr,
-                                style: robotoMedium)),
-                        SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                        TextFieldShadow(
-                          child: MyTextField(
-                            hintText:
-                            "${'street_number'.tr} (${'optional'.tr})",
-                            inputType: TextInputType.streetAddress,
-                            focusNode: _streetNode,
-                            nextFocus: _houseNode,
-                            inputAction:TextInputAction.done,
-                            controller: streetController,
+          child: Container(
+            height: 600,
+            child: Card(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Container(
+                  child: Column(children: [
+                    Column(children: [
+                      Center(
+                          child: Text('receiver_information'.tr,
+                              style: robotoMedium)),
+                      SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                    ]),
+                    Column(children: [
+                      Center(
+                          child: Text('destination_information'.tr,
+                              style: robotoMedium)),
+                      SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                      TextFieldShadow(
+                        child: MyTextField(
+                          hintText: "${'street_number'.tr} (${'optional'.tr})",
+                          inputType: TextInputType.streetAddress,
+                          focusNode: _streetNode,
+                          nextFocus: _houseNode,
+                          inputAction: TextInputAction.done,
+                          controller: streetController,
+                        ),
+                      ),
+                      SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                      Row(children: [
+                        Expanded(
+                          child: TextFieldShadow(
+                            child: MyTextField(
+                              hintText: "${'house'.tr} (${'optional'.tr})",
+                              inputType: TextInputType.text,
+                              focusNode: _houseNode,
+                              nextFocus: _floorNode,
+                              inputAction: TextInputAction.done,
+                              controller: houseController,
+                            ),
                           ),
                         ),
-                        SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                        Row(children: [
-                          Expanded(
-                            child: TextFieldShadow(
-                              child: MyTextField(
-                                hintText: "${'house'.tr} (${'optional'.tr})",
-                                inputType: TextInputType.text,
-                                focusNode: _houseNode,
-                                nextFocus: _floorNode,
-                                inputAction:TextInputAction.done,
-                                controller: houseController,
-                              ),
+                        SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+                        Expanded(
+                          child: TextFieldShadow(
+                            child: MyTextField(
+                              hintText: "${'floor'.tr} (${'optional'.tr})",
+                              inputType: TextInputType.text,
+                              focusNode: _floorNode,
+                              inputAction: TextInputAction.done,
+                              controller: floorController,
                             ),
                           ),
-                          SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-                          Expanded(
-                            child: TextFieldShadow(
-                              child: MyTextField(
-                                hintText: "${'floor'.tr} (${'optional'.tr})",
-                                inputType: TextInputType.text,
-                                focusNode: _floorNode,
-                                inputAction: TextInputAction.done,
-                                controller: floorController,
-                              ),
-                            ),
-                          ),
-                        ]),
-                        SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                        ),
                       ]),
-
+                      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                     ]),
-                  ),
+                  ]),
                 ),
-                color: Color(0xFF303030),
               ),
+              color: Color(0xFF303030),
             ),
-          );
-
+          ),
+        );
       },
       transitionBuilder: (context, anim, __, widget) {
         Tween<Offset> tween;

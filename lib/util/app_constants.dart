@@ -119,7 +119,7 @@ class AppConstants {
       '/api/v1/customer/beneficiaries';
   static const String DELETE_BANK_ACCOUNT_URL =
       '/api/v1/customer/banks/account/delete?';
-  static int StoreID = 64;
+  static int StoreID = 60;
   static int ModelID = 1;
 
   static const String Store_ID = "store-id";

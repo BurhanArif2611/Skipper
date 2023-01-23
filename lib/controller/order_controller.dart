@@ -298,6 +298,7 @@ class OrderController extends GetxController implements GetxService {
   }
 
   void setAddressIndex(int index) {
+    print("addAddress>>>addAddress is working");
     _addressIndex = index;
     update();
   }

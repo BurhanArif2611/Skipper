@@ -270,7 +270,9 @@ class WalletController extends GetxController implements GetxService {
 
       if (response.body['status'] == 200) {
         showCustomSnackBar(response.body['message'].toString(), isError: false);
-        getWalletTransactionList('1',"", true, true);
+        getWalletTransactionList('1',"accepted", false, true);
+        getWalletPendingTransactionList('1',"pending", false, true);
+
       } else {
         showCustomSnackBar(response.body['message'].toString(), isError: true);
       }

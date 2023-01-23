@@ -223,6 +223,7 @@ class LocationController extends GetxController implements GetxService {
     update();
     Response response = await locationRepo.addAddress(addressModel);
     _isLoading = false;
+
     ResponseModel responseModel;
     if (response.statusCode == 200) {
       if(fromCheckout && !response.body['zone_ids'].contains(storeZoneId)) {
