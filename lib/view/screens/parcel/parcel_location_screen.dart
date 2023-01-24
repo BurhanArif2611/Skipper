@@ -279,7 +279,10 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen> with Ticker
               }
             },
           ):
-          Text("Please Add Receiver Information"));
+          Padding(
+              padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+              child: Text("Please Add Receiver Information"))
+          );
       }
     );
   }

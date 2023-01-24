@@ -69,7 +69,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           autofocus: false,
           obscureText: widget.isPassword ? _obscureText : false,
          // inputFormatters: widget.inputType == TextInputType.phone ? <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp('[0-9]'))] : null,
-          inputFormatters: widget.inputType == TextInputType.phone  ? <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp('[0-9+]'))] :widget.inputType == TextInputType.visiblePassword || widget.inputType == TextInputType.emailAddress? null: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9]"))],
+          inputFormatters: widget.inputType == TextInputType.multiline?null:widget.inputType == TextInputType.phone  ? <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp('[0-9+]'))] :widget.inputType == TextInputType.visiblePassword || widget.inputType == TextInputType.emailAddress? null: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9]"))],
 
           decoration:
           InputDecoration(

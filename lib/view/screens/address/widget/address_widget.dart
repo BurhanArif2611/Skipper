@@ -36,7 +36,7 @@ class AddressWidget extends StatelessWidget {
             Icon(
               address.addressType == 'home' ? Icons.home_filled : address.addressType == 'office'
                   ? Icons.work : Icons.location_on,
-              size: ResponsiveHelper.isDesktop(context) ? 50 : 40, color: Theme.of(context).primaryColor,
+              size: ResponsiveHelper.isDesktop(context) ? 50 : 25, color: Theme.of(context).primaryColor,
             ),
             SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
             Expanded(

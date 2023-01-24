@@ -1676,7 +1676,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           .moduleConfig
                           .module
                           .showRestaurantText
-                      ? 'restaurant_is_closed123'.tr
+                      ? 'restaurant_is_closed'.tr
                       : 'store_is_closed'.tr);
                 } else if (checkStoreIsOnlyFood &&
                     (orderController.timeSlots == null ||
@@ -1690,7 +1690,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             .moduleConfig
                             .module
                             .showRestaurantText
-                        ? 'restaurant_is_closed456'.tr
+                        ? 'restaurant_is_closed'.tr
                         : 'store_is_closed'.tr);
                   }
                 } else if (checkStoreIsOnlyFood && !_isAvailable) {

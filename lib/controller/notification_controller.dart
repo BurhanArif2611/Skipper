@@ -32,7 +32,9 @@ class NotificationController extends GetxController implements GetxService {
        /* List<dynamic> list = response.body;
         print("response>>>>>"+response.body.toString());
         if(list.length>0) {*/
-          _offset = int.parse(response.body['offset']);
+        try{
+          _offset = int.parse(response.body['offset']);}
+        catch(e){}
           response.body['products'].forEach((notification) =>
               _notificationList.add(NotificationModel.fromJson(notification)));
           _notificationList.sort((a, b) {
