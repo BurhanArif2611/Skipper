@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 ThemeData dark({Color color = const Color(0xFF796102)}) => ThemeData(
   fontFamily: 'Mulish',
   primaryColor: color,
-  secondaryHeaderColor: Color(0xFF796102),
-  disabledColor: Color(0xffa2a7ad),
+  secondaryHeaderColor: Color(0xFFAB8C02),
+  /*disabledColor: Color(0xffa2a7ad),*/
+  disabledColor: Color(0xFF303030),
   backgroundColor: Color(0xFF343636),
   errorColor: Color(0xFFdd3135),
   brightness: Brightness.dark,

@@ -209,8 +209,10 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                           null),
                           SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
                           if(Get.find<StoreController>().store !=null && Get.find<StoreController>().store.errand==1)
-                          InkWell(
-                            child: Container(
+                            InkWell(
+                            child:
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical:Dimensions.PADDING_SIZE_SMALL),
                               padding:
                                   EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                               decoration: BoxDecoration(

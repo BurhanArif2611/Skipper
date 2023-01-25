@@ -259,20 +259,27 @@ class _LocationView extends State<LocationView> {
                         child: Padding(
                             padding: EdgeInsets.all(10.0),
                             child: (anotherList.length == 0
-                                ? Column(children: [
+                                ?
+                            Container(
+                              color:Theme.of(context)
+                                  .disabledColor ,
+                                padding: EdgeInsets.all(
+                                    Dimensions.PADDING_SIZE_SMALL),
+                                child:
+                            Column(children: [
                                     Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text('Task 1',
                                             style: robotoMedium.copyWith(
                                                 fontSize:
-                                                    Dimensions.fontSizeLarge))),
+                                                    Dimensions.fontSizeLarge,color: Theme.of(context).primaryColor))),
                                     Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
                                             'Take the Picture of Product',
                                             style: robotoMedium.copyWith(
                                                 color: Theme.of(context)
-                                                    .disabledColor,
+                                                    .hintColor,
                                                 fontSize:
                                                     Dimensions.fontSizeLarge))),
                                     SizedBox(
@@ -332,7 +339,7 @@ class _LocationView extends State<LocationView> {
                                         style: robotoRegular.copyWith(
                                             fontSize: Dimensions.fontSizeSmall,
                                             color: Theme.of(context)
-                                                .disabledColor),
+                                                .hintColor),
                                       ),
                                     ),
                                     SizedBox(
@@ -354,7 +361,7 @@ class _LocationView extends State<LocationView> {
                                         style: robotoRegular.copyWith(
                                             fontSize: Dimensions.fontSizeSmall,
                                             color: Theme.of(context)
-                                                .disabledColor),
+                                                .hintColor),
                                       ),
                                     ),
                                     SizedBox(
@@ -368,7 +375,7 @@ class _LocationView extends State<LocationView> {
                                       controller: main_commentController,
                                       capitalization: TextCapitalization.words,
                                     ),
-                                  ])
+                                  ]))
                                 : null)),
                       ),
                     ]),
@@ -700,7 +707,7 @@ class _LocationView extends State<LocationView> {
                     alignment: Alignment.centerLeft,
                     child: Text("${'Task'} ${' ('}${position + 1}${')'}",
                         style: robotoMedium.copyWith(
-                            fontSize: Dimensions.fontSizeLarge))),
+                            fontSize: Dimensions.fontSizeLarge,color: Theme.of(context).hintColor))),
                 SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                 Expanded(child: SizedBox()),
                 InkWell(
@@ -717,9 +724,9 @@ class _LocationView extends State<LocationView> {
               ]),
               Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Take the Picture of Product',
+                  child: Text('Picture of Product',
                       style: robotoMedium.copyWith(
-                          color: Theme.of(context).disabledColor,
+                          color: Theme.of(context).hintColor,
                           fontSize: Dimensions.fontSizeLarge))),
               SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
               /* Align(
@@ -774,7 +781,7 @@ class _LocationView extends State<LocationView> {
                   'Ttile',
                   style: robotoRegular.copyWith(
                       fontSize: Dimensions.fontSizeSmall,
-                      color: Theme.of(context).disabledColor),
+                      color: Theme.of(context).hintColor),
                 ),
               ),
               SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -783,7 +790,7 @@ class _LocationView extends State<LocationView> {
                 child: Text(anotherList[position].task_title.toString(),
                     textAlign: TextAlign.start,
                     style: robotoMedium.copyWith(
-                        color: Colors.grey,
+                        color: Theme.of(context).hintColor,
                         fontSize: Dimensions.fontSizeDefault)),
               ),
               SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
@@ -793,7 +800,7 @@ class _LocationView extends State<LocationView> {
                   'Comment',
                   style: robotoRegular.copyWith(
                       fontSize: Dimensions.fontSizeSmall,
-                      color: Theme.of(context).disabledColor),
+                      color: Theme.of(context).hintColor),
                 ),
               ),
               SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -802,12 +809,12 @@ class _LocationView extends State<LocationView> {
                 child: Text(anotherList[position].task_description.toString(),
                     textAlign: TextAlign.start,
                     style: robotoMedium.copyWith(
-                        color: Colors.grey,
+                        color: Theme.of(context).hintColor,
                         fontSize: Dimensions.fontSizeDefault)),
               )
             ])),
           ),
-          color: Colors.white,
+          color: Theme.of(context).disabledColor,
         );
       },
       itemCount: anotherList.length,
