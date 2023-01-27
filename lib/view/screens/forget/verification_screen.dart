@@ -187,13 +187,15 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                   authController
                                       .forgetPassword(_number)
                                       .then((value) {
-                                    if (value.isSuccess) {
+                                    if (value.statusCode == 200) {
                                       _startTimer();
                                       showCustomSnackBar(
                                           'resend_code_successful'.tr,
                                           isError: false);
                                     } else {
-                                      showCustomSnackBar(value.message);
+                                      try{
+                                        showCustomSnackBar(value.body['message'].toString());}
+                                      catch (e){}
                                     }
                                   });
                                 }

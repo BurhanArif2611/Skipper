@@ -136,7 +136,7 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
-  Future<ResponseModel> forgetPassword(String email) async {
+  Future<Response> forgetPassword(String email) async {
     _isLoading = true;
     update();
     Response response = await authRepo.forgetPassword(email);
@@ -149,7 +149,7 @@ class AuthController extends GetxController implements GetxService {
     }
     _isLoading = false;
     update();
-    return responseModel;
+    return response;
   }
 
   Future<void> updateToken() async {

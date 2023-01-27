@@ -322,7 +322,7 @@ class OrderController extends GetxController implements GetxService {
       showCustomSnackBar(response.body['message'], isError: false);
     } else {
       print(response.statusText);
-      ApiChecker.checkApi(response);
+     // ApiChecker.checkApi(response);
     }
     update();
   }

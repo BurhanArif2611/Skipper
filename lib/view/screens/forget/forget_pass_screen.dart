@@ -129,10 +129,19 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
         Get.find<AuthController>().registerWithSocialMedia(widget.socialLogInBody);
       }else {
         Get.find<AuthController>().forgetPassword(_numberWithCountryCode).then((status) async {
-          if (status.isSuccess) {
-            Get.toNamed(RouteHelper.getVerificationRoute(_numberWithCountryCode, '', RouteHelper.forgotPassword, ''));
+          if (status.statusCode == 200) {
+            if (!status.body['status']) {
+              Get.toNamed(RouteHelper
+                  .getSignUpRoute(_numberController.text.toString()));
+            }
+            else {
+              Get.toNamed(RouteHelper.getVerificationRoute(
+                  _numberWithCountryCode, '', RouteHelper.forgotPassword, ''));
+            }
           }else {
-            showCustomSnackBar(status.message);
+            try{
+            showCustomSnackBar(status.body['message'].toString());}
+                catch (e){}
           }
         });
       }
