@@ -1,6 +1,4 @@
-
 class WalletModel {
-
   int totalSize;
   String limit;
   String offset;
@@ -33,7 +31,6 @@ class WalletModel {
 }
 
 class Transaction {
-
   int userId;
   String transactionId;
   double credit;
@@ -58,20 +55,22 @@ class Transaction {
     this.status,
   });
 
-
   Transaction.fromJson(Map<String, dynamic> json) {
     userId = json["user_id"];
     transactionId = json["transaction_id"];
-    credit = json["credit"].toDouble();
-    debit = json["debit"] !=null ?json["debit"].toDouble():0.0;
-    if(json["admin_bonus"] != null){
-      adminBonus = json["admin_bonus"]!=null?json["admin_bonus"].toDouble():0.0;
-    }
+    credit = json["credit"] != null && json["credit"] != ""? json["credit"].toDouble() : 0.0;
+    debit = json["debit"] != null ? json["debit"].toDouble() : 0.0;
+
+      adminBonus =
+          json["admin_bonus"] != null ? json["admin_bonus"].toDouble() : 0.0;
+
     balance = json["balance"].toDouble();
     status = json["status"];
     transactionType = json["transaction_type"];
-    createdAt = json["created_at"]!=null?DateTime.parse(json["created_at"]):null;
-    updatedAt = json["updated_at"]!=null?DateTime.parse(json["updated_at"]):null;
+    createdAt =
+        json["created_at"] != null ? DateTime.parse(json["created_at"]) : null;
+    updatedAt =
+        json["updated_at"] != null ? DateTime.parse(json["updated_at"]) : null;
   }
 
   Map<String, dynamic> toJson() {
