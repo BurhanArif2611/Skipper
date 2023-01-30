@@ -60,7 +60,7 @@ class ApiClient extends GetxService {
 
   void updateHeader(
       String token, List<int> zoneIDs, String languageCode, int moduleID) {
-
+      print("moduleID>>>"+moduleID.toString());
     if(moduleID != null){
       if(moduleID ==1){
         moduleID=AppConstants.ModelID;

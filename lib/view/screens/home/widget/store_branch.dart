@@ -56,6 +56,8 @@ class StoreBranch extends StatelessWidget {
                     if(module.id == _storeList.moduleId) {
                       // Get.find<SplashController>().setModule(module);
                       AppConstants.StoreID=_storeList.id;
+                      AppConstants.ModelID=_storeList.moduleId;
+
                       Get.find<SplashController>().setModuleWithCallStoreAPI(module,_storeList.id);
 
                       break;
@@ -102,12 +104,12 @@ class StoreBranch extends StatelessWidget {
                         bool _isWished = wishController.wishStoreIdList.contains(_storeList.id);
                         return InkWell(
                           onTap: () {
-                            /* if(Get.find<AuthController>().isLoggedIn()) {
-                                    _isWished ? wishController.removeFromWishList(_storeList[index].id, true)
-                                        : wishController.addToWishList(null, _storeList[index], true);
+                             if(Get.find<AuthController>().isLoggedIn()) {
+                                    _isWished ? wishController.removeFromWishList(_storeList.id, true)
+                                        : wishController.addToWishList(null, _storeList, true);
                                   }else {
                                     showCustomSnackBar('you_are_not_logged_in'.tr);
-                                  }*/
+                                  }
                           },
                           child: Container(
                             padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -165,7 +167,7 @@ class StoreBranch extends StatelessWidget {
             ),
           ),
           SizedBox(
-             height: 450,
+             height: 380,
             child:  _storeList.branches.length>0 ?
             ListView.builder(
               //controller: ScrollController(),
@@ -173,7 +175,7 @@ class StoreBranch extends StatelessWidget {
               physics: AlwaysScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
               //padding: EdgeInsets.only(left: Dimensions.PADDING_SIZE_SMALL),
-              itemCount: _storeList.branches.length > 10 ? 10 : _storeList.branches.length,
+              itemCount:  _storeList.branches.length,
               itemBuilder: (context, index){
                 return
                   Padding(
@@ -227,15 +229,16 @@ class StoreBranch extends StatelessWidget {
                             freeDelivery: _storeList[index].freeDelivery,
                           ),
                           branchStoreList.isOpenNow(_storeList[index]) ? SizedBox() : NotAvailableWidget(isStore: true),*/
-                         /* Positioned(
+                          Positioned(
                             top: Dimensions.PADDING_SIZE_EXTRA_SMALL, right: Dimensions.PADDING_SIZE_EXTRA_SMALL,
                             child: GetBuilder<WishListController>(builder: (wishController) {
                               bool _isWished = wishController.wishStoreIdList.contains(_storeList.branches[index].id);
                               return InkWell(
                                 onTap: () {
+                                  Store store=Store.fromJson(_storeList.branches[index].toJson());
                                   if(Get.find<AuthController>().isLoggedIn()) {
                                     _isWished ? wishController.removeFromWishList(_storeList.branches[index].id, true)
-                                        : wishController.addToWishList(null, _storeList, true);
+                                        : wishController.addToWishList(null, store, true);
                                   }else {
                                     showCustomSnackBar('you_are_not_logged_in'.tr);
                                   }
@@ -252,7 +255,7 @@ class StoreBranch extends StatelessWidget {
                                 ),
                               );
                             }),
-                          ),*/
+                          ),
                         ]),
 
                         Expanded(

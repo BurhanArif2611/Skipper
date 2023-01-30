@@ -695,7 +695,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                   'STANDARD DELIVERY (' +
                                       PriceConverter.convertPrice(p2) +
                                       ")",
-                                  style: robotoRegular.copyWith(color: Colors.white,
+                                  style: robotoRegular.copyWith(color: Theme.of(context).hintColor,
                                       fontSize: Dimensions.fontSizeDefault)),
                               SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                               Text(
@@ -732,7 +732,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                   'NORMAL DELIVERY (' +
                                       PriceConverter.convertPrice(p3) +
                                       ")",
-                                  style: robotoRegular.copyWith(color: Colors.white,
+                                  style: robotoRegular.copyWith(color: Theme.of(context).hintColor,
                                       fontSize: Dimensions.fontSizeDefault)),
                               SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                               Text(

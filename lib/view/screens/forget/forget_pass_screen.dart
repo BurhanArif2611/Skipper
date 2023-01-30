@@ -127,7 +127,8 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
       if(widget.fromSocialLogin) {
         widget.socialLogInBody.phone = _numberWithCountryCode;
         Get.find<AuthController>().registerWithSocialMedia(widget.socialLogInBody);
-      }else {
+      }
+      else {
         Get.find<AuthController>().forgetPassword(_numberWithCountryCode).then((status) async {
           if (status.statusCode == 200) {
             if (!status.body['status']) {

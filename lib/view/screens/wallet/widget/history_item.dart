@@ -16,10 +16,11 @@ class HistoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return
       Container(
-        padding: EdgeInsets.all(5),
+          padding: EdgeInsets.only(left: Dimensions.PADDING_SIZE_EXTRA_SMALL,right: Dimensions.PADDING_SIZE_EXTRA_SMALL,top: Dimensions.PADDING_SIZE_SMALL),
 
 
-    child:
+
+          child:
       Column(
           children: [
       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
