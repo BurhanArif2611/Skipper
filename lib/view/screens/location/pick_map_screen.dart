@@ -151,7 +151,7 @@ class _PickMapScreenState extends State<PickMapScreen> {
                           ),
                           debounceTime: 800,
                           // default 600 ms,
-                          countries: ["in", "fr"],
+                          countries: ["NGA","nga"],
                           // optional by default null is set
                           isLatLngRequired: true,
                           // if you required coordinates from place detail
