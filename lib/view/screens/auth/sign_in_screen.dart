@@ -396,6 +396,9 @@ class _SignInScreenState extends State<SignInScreen> {
     String _phone = _phoneController.text.trim();
     String _password = _passwordController.text.trim();
     String _numberWithCountryCode = countryDialCode + _phone;
+    AppConstants.StoreID=AppConstants.ParantStoreID;
+
+
     bool _isValid = GetPlatform.isWeb ? true : false;
     if (!GetPlatform.isWeb) {
       try {
@@ -418,9 +421,9 @@ class _SignInScreenState extends State<SignInScreen> {
       showCustomSnackBar('password_should_be'.tr);
     } else {
       authController
-          .login(_numberWithCountryCode, _password)
+          .new_login(_numberWithCountryCode, _password)
           .then((status) async {
-        if (status.isSuccess) {
+        if (status.statusCode == 200) {
           if (authController.isActiveRememberMe) {
             authController.saveUserNumberAndPassword(
                 _phone, _password, countryDialCode);
@@ -434,18 +437,23 @@ class _SignInScreenState extends State<SignInScreen> {
           } else {
             authController.clearUserNumberAndPassword();
           }
-          String _token = status.message.substring(1, status.message.length);
+
+         // String _token = status.message.substring(1, status.message.length);
+          String _token = status.body['token'];
+         print("object>>>"+status.body['is_phone_verified'].toString());
           if (Get.find<SplashController>().configModel.customerVerification &&
-              int.parse(status.message[0]) == 0) {
+              status.body['is_phone_verified']==0) {
             List<int> _encoded = utf8.encode(_password);
             String _data = base64Encode(_encoded);
+
             Get.toNamed(RouteHelper.getVerificationRoute(
                 _numberWithCountryCode, _token, RouteHelper.signUp, _data));
           } else {
             Get.toNamed(RouteHelper.getAccessLocationRoute('sign-in'));
           }
         } else {
-          showCustomSnackBar(status.message);
+         // showCustomSnackBar(status.message);
+          showCustomSnackBar(status.body["errors"]!=null?status.body["errors"][0]["message"].toString():status.statusText);
         }
       });
     }

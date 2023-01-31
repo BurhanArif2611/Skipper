@@ -65,7 +65,7 @@ class AuthController extends GetxController implements GetxService {
         await authRepo.updateToken();
       }
       responseModel = ResponseModel(true, '${response.body['is_phone_verified']}${response.body['token']}');
-     /* Get.back();*/
+      Get.back();
     } else {
       Get.back();
       responseModel = ResponseModel(false, response.statusText);
@@ -73,6 +73,31 @@ class AuthController extends GetxController implements GetxService {
     _isLoading = false;
     update();
     return responseModel;
+  }
+
+  Future<Response> new_login(String phone, String password) async {
+    _isLoading = true;
+    update();
+    Get.dialog(CustomLoader(), barrierDismissible: false);
+    Response response = await authRepo.login(phone: phone, password: password);
+    ResponseModel responseModel;
+    if (response.statusCode == 200) {
+      if(Get.find<SplashController>().configModel.customerVerification && response.body['is_phone_verified'] == 0) {
+
+
+      }else {
+        authRepo.saveUserToken(response.body['token']);
+        await authRepo.updateToken();
+      }
+      responseModel = ResponseModel(true, '${response.body['is_phone_verified']}${response.body['token']}');
+      Get.back();
+    } else {
+      Get.back();
+      responseModel = ResponseModel(false, response.statusText);
+    }
+    _isLoading = false;
+    update();
+    return response;
   }
 
   Future<Response> checkUserMobileNumber(String phone) async {

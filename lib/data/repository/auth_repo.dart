@@ -21,6 +21,7 @@ class AuthRepo {
   }
 
   Future<Response> login({String phone, String password}) async {
+    AppConstants.StoreID=AppConstants.ParantStoreID;
     return await apiClient.postData(AppConstants.LOGIN_URI, {"phone": phone, "password": password});
   }
   Future<Response> checkMobileNumber({String phone}) async {
