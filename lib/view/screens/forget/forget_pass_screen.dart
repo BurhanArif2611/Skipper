@@ -87,6 +87,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                   inputAction: TextInputAction.done,
                   hintText: 'phone'.tr,
                   maxLength: 11,
+                  isEnabled: (widget.number!=null && widget.number.toString()=="")?true:false,
                   onSubmit: (text) => GetPlatform.isWeb ? _forgetPass(_countryDialCode) : null,
                 )),
               ]),

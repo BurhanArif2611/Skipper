@@ -203,89 +203,107 @@ class _SignInScreenState extends State<SignInScreen> {
                                   focusNode: _phoneFocus,
                                   nextFocus: _passwordFocus,
                                   inputType: TextInputType.phone,
+                                  isEnabled: _showPassword ? false : true,
                                   divider: false,
                                   maxLength: 11,
                                 )),
                             Container(
                                 margin: EdgeInsets.only(
                                     right: Dimensions.PADDING_SIZE_SMALL),
-                                child: InkWell(
-                                    onTap: () async {
-                                      String _numberWithCountryCode =
-                                          _countryDialCode +
-                                              _phoneController.text.toString();
-                                      if (!GetPlatform.isWeb) {
-                                        try {
-                                          PhoneNumber phoneNumber =
-                                              await PhoneNumberUtil().parse(
-                                                  _numberWithCountryCode);
-                                          _numberWithCountryCode = '+' +
-                                              phoneNumber.countryCode +
-                                              phoneNumber.nationalNumber;
-                                        } catch (e) {}
-                                      }
-                                      authController
-                                          .checkUserMobileNumber(
-                                              _numberWithCountryCode)
-                                          .then((status) async {
-                                        if (status.statusCode == 200) {
-                                          if (status.body['status']) {
-                                            if (!status.body['flag']) {
-                                              _showPassword = true;
-                                            }
-                                            else {
-                                              /* Get.toNamed(RouteHelper
+                                child: !_showPassword
+                                    ? InkWell(
+                                        onTap: () async {
+                                          String _numberWithCountryCode =
+                                              _countryDialCode +
+                                                  _phoneController.text
+                                                      .toString();
+                                          if (!GetPlatform.isWeb) {
+                                            try {
+                                              PhoneNumber phoneNumber =
+                                                  await PhoneNumberUtil().parse(
+                                                      _numberWithCountryCode);
+                                              _numberWithCountryCode = '+' +
+                                                  phoneNumber.countryCode +
+                                                  phoneNumber.nationalNumber;
+                                            } catch (e) {}
+                                          }
+                                          authController
+                                              .checkUserMobileNumber(
+                                                  _numberWithCountryCode)
+                                              .then((status) async {
+                                            if (status.statusCode == 200) {
+                                              if (status.body['status']) {
+                                                if (!status.body['flag']) {
+                                                  _showPassword = true;
+                                                } else {
+                                                  /* Get.toNamed(RouteHelper
                                                         .getForgotPassRoute(
                                                         false, null,_phoneController.text));*/
-                                              authController
-                                                  .forgetPassword(
-                                                      _numberWithCountryCode)
-                                                  .then((status) async {
-                                                /*if (status.isSuccess) {
+                                                  authController
+                                                      .forgetPassword(
+                                                          _numberWithCountryCode)
+                                                      .then((status) async {
+                                                    /*if (status.isSuccess) {
                                                         Get.toNamed(RouteHelper.getVerificationRoute(_numberWithCountryCode.toString(), '', RouteHelper.signIn, ''));
                                                       }else {
                                                         showCustomSnackBar(status.message);
                                                       }*/
-                                                if (status.statusCode == 200) {
-                                                  if (!status.body['status']) {
-                                                    Get.toNamed(RouteHelper
-                                                        .getSignUpRoute(
-                                                            _numberWithCountryCode));
-                                                  } else {
-                                                    Get.toNamed(RouteHelper
-                                                        .getVerificationRoute(
-                                                            _numberWithCountryCode,
-                                                            '',
-                                                            RouteHelper.signIn,
-                                                            ''));
-                                                  }
-                                                } else {
-                                                  try {
-                                                    showCustomSnackBar(status
-                                                        .body['message']
-                                                        .toString());
-                                                  } catch (e) {}
+                                                    if (status.statusCode ==
+                                                        200) {
+                                                      if (!status
+                                                          .body['status']) {
+                                                        Get.toNamed(RouteHelper
+                                                            .getSignUpRoute(
+                                                                _numberWithCountryCode));
+                                                      } else {
+                                                        Get.toNamed(RouteHelper
+                                                            .getVerificationRoute(
+                                                                _numberWithCountryCode,
+                                                                '',
+                                                                RouteHelper
+                                                                    .signIn,
+                                                                ''));
+                                                      }
+                                                    } else {
+                                                      try {
+                                                        showCustomSnackBar(
+                                                            status
+                                                                .body['message']
+                                                                .toString());
+                                                      } catch (e) {}
+                                                    }
+                                                  });
                                                 }
-                                              });
+                                              } else {
+                                                print("else is working");
+                                                Get.toNamed(
+                                                    RouteHelper.getSignUpRoute(
+                                                        _phoneController.text));
+                                              }
+                                            } else {
+                                              Get.toNamed(
+                                                  RouteHelper.getSignUpRoute(
+                                                      _phoneController.text));
                                             }
-                                          } else {
-                                            print("else is working");
-                                            Get.toNamed(
-                                                RouteHelper.getSignUpRoute(
-                                                    _phoneController.text));
-                                          }
-                                        } else {
-                                          Get.toNamed(
-                                              RouteHelper.getSignUpRoute(
-                                                  _phoneController.text));
-                                        }
-                                      });
-                                    },
-                                    child: Image.asset(
-                                      Images.arrow_right,
-                                      height: 20,
-                                      color: Colors.white,
-                                    ))),
+                                          });
+                                        },
+                                        child: Image.asset(
+                                          Images.arrow_right,
+                                          height: 20,
+                                          color: Colors.white,
+                                        ))
+                                    : InkWell(
+                                        onTap: () {
+                                          _phoneController.text = "";
+                                          _showPassword = false;
+                                          print("_showPassword>>" +
+                                              _showPassword.toString());
+                                          setState(() {});
+                                        },
+                                        child: Icon(Icons.cancel_outlined,
+                                            color: Theme.of(context)
+                                                .hintColor
+                                                .withOpacity(0.3)))),
                           ]),
                           Padding(
                               padding: EdgeInsets.symmetric(
@@ -326,9 +344,14 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                           ),
                           TextButton(
-                            onPressed: () => Get.toNamed(
-                                RouteHelper.getForgotPassRoute(
-                                    false, null, "")),
+                            onPressed: () {
+                              if (_phoneController.text.isEmpty) {
+                                showCustomSnackBar('enter_phone_number'.tr);
+                              } else {
+                                Get.toNamed(RouteHelper.getForgotPassRoute(
+                                    false, null, _phoneController.text));
+                              }
+                            },
                             child: Text('${'forgot_password'.tr}?'),
                           ),
                         ]),
