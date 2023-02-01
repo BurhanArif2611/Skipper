@@ -358,7 +358,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         // Order type
                                         Text('delivery_option'.tr,
                                             style: robotoMedium),
-                                        storeController.store != null &&
+                                        storeController.store != null && storeController.store.delivery!=null &&
                                                 storeController.store.delivery
                                             ? DeliveryOptionButton(
                                                 value: 'delivery',
@@ -808,7 +808,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                             : SizedBox(),
 
                                         // Time Slot
-                                        storeController.store != null &&
+                                        storeController.store != null && storeController
+                                            .store.scheduleOrder !=null &&
                                                 storeController
                                                     .store.scheduleOrder
                                             ? Column(
