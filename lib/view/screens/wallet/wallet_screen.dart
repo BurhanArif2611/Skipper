@@ -18,6 +18,7 @@ import 'package:sixam_mart/view/base/not_logged_in_screen.dart';
 import 'package:sixam_mart/view/base/title_widget.dart';
 import 'package:sixam_mart/view/screens/wallet/widget/order_view.dart';
 import 'package:sixam_mart/view/screens/wallet/widget/pending_order_view.dart';
+import 'package:sixam_mart/view/screens/wallet/widget/requested_view.dart';
 
 import 'package:sixam_mart/view/screens/wallet/widget/wallet_bottom_sheet.dart';
 
@@ -44,10 +45,11 @@ class _WalletScreenState extends State<WalletScreen> with TickerProviderStateMix
   void initState() {
     super.initState();
     if (_isLoggedIn) {
-      _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
+      _tabController = TabController(length:widget.fromWallet ? 3: 2, initialIndex: 0, vsync: this);
       Get.find<UserController>().getUserInfo();
       Get.find<WalletController>().getWalletTransactionList('1',"accepted", false, widget.fromWallet);
       Get.find<WalletController>().getWalletPendingTransactionList('1',"pending", false, widget.fromWallet);
+      Get.find<WalletController>().getWalletRequestTransactionList('1',"pending", false, widget.fromWallet);
 
       Get.find<WalletController>().setOffset(1);
       Get.find<WalletController>().bankList();
@@ -193,7 +195,7 @@ class _WalletScreenState extends State<WalletScreen> with TickerProviderStateMix
                                                         .cardColor)),
                                             SizedBox(
                                                 height: Dimensions
-                                                    .PADDING_SIZE_SMALL),
+                                                    .PADDING_SIZE_EXTRA_SMALL),
                                             Text(
                                               PriceConverter.convertPrice(
                                                   userController
@@ -201,7 +203,36 @@ class _WalletScreenState extends State<WalletScreen> with TickerProviderStateMix
                                                       .walletBalance),
                                               style: robotoBold.copyWith(
                                                   fontSize: Dimensions
-                                                      .fontSizeOverLarge,
+                                                      .fontSizeExtraSingleLarge,
+                                                  color: Theme
+                                                      .of(
+                                                      context)
+                                                      .cardColor),
+                                            ),
+                                            SizedBox(
+                                                height: Dimensions
+                                                    .PADDING_SIZE_SMALL),
+                                            Text('Requested Amount'.tr,
+                                                style: robotoRegular.copyWith(
+                                                    fontSize: Dimensions
+                                                        .fontSizeSmall,
+                                                    color: Theme
+                                                        .of(
+                                                        context)
+                                                        .cardColor)),
+                                            SizedBox(
+                                                height: Dimensions
+                                                    .PADDING_SIZE_EXTRA_SMALL),
+                                            Text(userController
+                                                .userInfoModel
+                                                .requestedAmount!=null?
+                                              PriceConverter.convertPrice(
+                                                  userController
+                                                      .userInfoModel
+                                                      .requestedAmount):'0.0',
+                                              style: robotoBold.copyWith(
+                                                  fontSize: Dimensions
+                                                      .fontSizeExtraSingleLarge,
                                                   color: Theme
                                                       .of(
                                                       context)
@@ -443,7 +474,11 @@ class _WalletScreenState extends State<WalletScreen> with TickerProviderStateMix
                                   color: Theme
                                       .of(context)
                                       .primaryColor),
-                              tabs: [
+                              tabs:widget.fromWallet ?  [
+                                Tab(text: 'Success'.tr),
+                                Tab(text: 'Pending'.tr),
+                                Tab(text: 'Request'.tr),
+                              ]: [
                                 Tab(text: 'Success'.tr),
                                 Tab(text: 'Pending'.tr),
                               ],
@@ -524,7 +559,11 @@ class _WalletScreenState extends State<WalletScreen> with TickerProviderStateMix
 
               Expanded(child: TabBarView(
                 controller: _tabController,
-                children: [
+                children:widget.fromWallet ? [
+                  OrderView(isRunning: true),
+                  PendingOrderView(isRunning: false),
+                  RequestedView(isRunning: false),
+                ]:[
                   OrderView(isRunning: true),
                   PendingOrderView(isRunning: false),
                 ],
@@ -1085,6 +1124,26 @@ class _WalletScreenState extends State<WalletScreen> with TickerProviderStateMix
                           onPressed: () {
                             if (titleController.text.isEmpty) {
                               showCustomSnackBar('Enter Amount !');
+                            }else if (double.parse(titleController.text)>Get.find<UserController>().userInfoModel.walletBalance) {
+                              showDialog(
+                                context: Get.context,
+                                builder: (ctx) => AlertDialog(
+                                  title: const Text("Alert"),
+                                  content: const Text("Requested Amount is grater then wallet amount ! "),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(ctx).pop();
+                                      },
+                                      child: Container(
+                                        color: Theme.of(Get.context).disabledColor,
+                                        padding: const EdgeInsets.all(14),
+                                        child: const Text("okay"),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
                             } else {
                               Get.find<WalletController>()
                                   .withdrawFundToWallet(

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 class PriceConverter {
   static String convertPrice(double price, {double discount, String discountType}) {
+
     if(discount != null && discountType != null){
       if(discountType == 'amount') {
         price = price - discount;

@@ -11,6 +11,7 @@ import 'package:sixam_mart/view/base/custom_snackbar.dart';
 
 import '../helper/route_helper.dart';
 import '../util/images.dart';
+import '../view/base/custom_loader.dart';
 
 class WalletController extends GetxController implements GetxService {
   final WalletRepo walletRepo;
@@ -19,13 +20,17 @@ class WalletController extends GetxController implements GetxService {
 
   List<Transaction> _transactionList;
   List<Transaction> _pendingTransactionList;
+  List<Transaction> _requestTransactionList;
   List<String> _offsetList = [];
   int _offset = 1;
   int _pageSize;
   bool _isLoading = false;
 
   List<Transaction> get transactionList => _transactionList;
+
   List<Transaction> get pendingTransactionList => _pendingTransactionList;
+
+  List<Transaction> get requestTransactionList => _requestTransactionList;
 
   int get popularPageSize => _pageSize;
 
@@ -60,7 +65,7 @@ class WalletController extends GetxController implements GetxService {
   }
 
   Future<void> getWalletTransactionList(
-      String offset,String status, bool reload, bool isWallet) async {
+      String offset, String status, bool reload, bool isWallet) async {
     if (offset == '1' || reload) {
       _offsetList = [];
       _offset = 1;
@@ -73,7 +78,7 @@ class WalletController extends GetxController implements GetxService {
       _offsetList.add(offset);
       Response response;
       if (isWallet) {
-        response = await walletRepo.getWalletTransactionList(offset,status);
+        response = await walletRepo.getWalletTransactionList(offset, status);
       } else {
         response = await walletRepo.getLoyaltyTransactionList(offset);
       }
@@ -99,7 +104,7 @@ class WalletController extends GetxController implements GetxService {
   }
 
   Future<void> getWalletPendingTransactionList(
-      String offset,String status, bool reload, bool isWallet) async {
+      String offset, String status, bool reload, bool isWallet) async {
     if (offset == '1' || reload) {
       _offsetList = [];
       _offset = 1;
@@ -112,7 +117,7 @@ class WalletController extends GetxController implements GetxService {
       _offsetList.add(offset);
       Response response;
       if (isWallet) {
-        response = await walletRepo.getWalletTransactionList(offset,status);
+        response = await walletRepo.getWalletTransactionList(offset, status);
       } else {
         response = await walletRepo.getLoyaltyTransactionList(offset);
       }
@@ -121,7 +126,8 @@ class WalletController extends GetxController implements GetxService {
         if (offset == '1') {
           _pendingTransactionList = [];
         }
-        _pendingTransactionList.addAll(WalletModel.fromJson(response.body).data);
+        _pendingTransactionList
+            .addAll(WalletModel.fromJson(response.body).data);
         _pageSize = WalletModel.fromJson(response.body).totalSize;
 
         _isLoading = false;
@@ -143,7 +149,7 @@ class WalletController extends GetxController implements GetxService {
     Response response = await walletRepo.pointToWallet(point: point);
     if (response.statusCode == 200) {
       Get.back();
-      getWalletTransactionList('1',"", true, fromWallet);
+      getWalletTransactionList('1', "", true, fromWallet);
       Get.find<UserController>().getUserInfo();
       showCustomSnackBar('converted_successfully_transfer_to_your_wallet'.tr,
           isError: false);
@@ -268,10 +274,10 @@ class WalletController extends GetxController implements GetxService {
       Get.back();
       print("response>>" + response.bodyString);
 
-      if (response.body['status'] == 200) {
+      if (response.body['status'] == 'success') {
         showCustomSnackBar(response.body['message'].toString(), isError: false);
-        getWalletTransactionList('1',"accepted", false, true);
-        getWalletPendingTransactionList('1',"pending", false, true);
+        Get.find<UserController>().getUserInfo();
+        getWalletRequestTransactionList('1', "accepted", false, true);
 
       } else {
         showCustomSnackBar(response.body['message'].toString(), isError: true);
@@ -282,6 +288,27 @@ class WalletController extends GetxController implements GetxService {
               ? response.body["errors"]["message"].toString()
               : response.body['message'].toString(),
           isError: true);
+      showDialog(
+        context: Get.context,
+        builder: (ctx) => AlertDialog(
+          title: const Text("Alert"),
+          content:  Text(response.body["errors"]["message"] != null
+              ? response.body["errors"]["message"].toString()
+              : response.body['message'].toString()),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+              child: Container(
+                color: Theme.of(Get.context).disabledColor,
+                padding: const EdgeInsets.all(14),
+                child: const Text("okay"),
+              ),
+            ),
+          ],
+        ),
+      );
       // ApiChecker.checkApi(response);
     }
     _isLoading = false;
@@ -330,6 +357,69 @@ class WalletController extends GetxController implements GetxService {
       ApiChecker.checkApi(response);
     }
     _isLoading = false;
+    update();
+  }
+
+  Future<void> getWalletRequestTransactionList(
+      String offset, String status, bool reload, bool isWallet) async {
+    if (offset == '1' || reload) {
+      _offsetList = [];
+      _offset = 1;
+      _requestTransactionList = null;
+     /* if (reload) {
+        update();
+      }*/
+    }
+    if (!_offsetList.contains(offset)) {
+      _offsetList.add(offset);
+      Response response;
+      if (isWallet) {
+        response = await walletRepo.getWalletRequestList(offset, status);
+      }
+
+      if (response.statusCode == 200) {
+        if (offset == '1') {
+          _requestTransactionList = [];
+        }
+        _requestTransactionList
+            .addAll(WalletModel.fromJson(response.body).data);
+        _pageSize = WalletModel.fromJson(response.body).totalSize;
+
+        _isLoading = false;
+        update();
+      } else {
+        ApiChecker.checkApi(response);
+      }
+    } else {
+      if (isLoading) {
+        _isLoading = false;
+        update();
+      }
+    }
+  }
+
+  Future<void> CancelRequestToWallet(String request_id,int index) async {
+    update();
+    Get.dialog(CustomLoader(), barrierDismissible: false);
+    Response response = await walletRepo.CancelRequest(request_id);
+    if (response.statusCode == 200) {
+      Get.back();
+      print("response>>" + response.bodyString);
+
+      if (response.body['status'] == 'success') {
+        Get.find<UserController>().getUserInfo();
+        _isLoading = false;
+        getWalletRequestTransactionList('1',"pending", false, true);
+      } else {
+        showCustomSnackBar(response.body['message'].toString(), isError: true);
+        _isLoading = false;
+      }
+    } else {
+      Get.back();
+      showCustomSnackBar(response.body['message'].toString(), isError: true);
+      _isLoading = false;
+    }
+    //  _isLoading = false;
     update();
   }
 }

@@ -15,6 +15,7 @@ class AppConstants {
    //static const String BASE_URL = 'http://192.168.1.164:8000';
    // staging url
     static const String BASE_URL = 'http://52.17.19.170:5000';
+
   //local url
    //static const String BASE_URL = 'http://192.168.1.164:8000';
    // static const String BASE_URL = 'https://portal-dev.shapshap.com';
@@ -105,6 +106,8 @@ class AppConstants {
   static const String CUSTOMER_REMOVE = '/api/v1/customer/remove-account';
   static const String WALLET_TRANSACTION_URL =
       '/api/v1/customer/wallet/transactions';
+  static const String WALLET_REQUEST_WITHDRAW_URL =
+      '/api/v1/customer/withdraw/request/list';
   static const String BANK_LIST_URL = '/api/v1/banks/list';
   static const String LOYALTY_TRANSACTION_URL =
       '/api/v1/customer/loyalty-point/transactions';
@@ -112,9 +115,12 @@ class AppConstants {
       '/api/v1/customer/loyalty-point/point-transfer';
   static const String ADD_BANK_ACCOUNT_URL =
       '/api/v1/customer/banks/account/create';
+  /*static const String WITHDRAW_FUND_URL =
+      '/api/v1/customer/banks/account/withdraw';*/
   static const String WITHDRAW_FUND_URL =
-      '/api/v1/customer/banks/account/withdraw';
+      '/api/v1/customer/withdraw/request';
   static const String ADD_FUND_URL = '/api/v1/customer/banks/account/add_fund';
+  static const String WITHRAW_REQUEST_URL = '/api/v1/customer/withdraw/request/cancel';
   static const String GET_BANK_ACCOUNT_LIST_URL =
       '/api/v1/customer/beneficiaries';
   static const String DELETE_BANK_ACCOUNT_URL =

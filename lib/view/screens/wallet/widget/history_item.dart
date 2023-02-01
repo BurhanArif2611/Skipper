@@ -44,7 +44,7 @@ class HistoryItem extends StatelessWidget {
               )]),
             SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
 
-            Text(data[index].transactionType.tr,
+            Text(data[index].transactionType!=null?data[index].transactionType.tr:"",
                 style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall,color: Theme.of(context).disabledColor),
                 maxLines: 1, overflow: TextOverflow.ellipsis),
             SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),

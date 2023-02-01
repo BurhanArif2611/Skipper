@@ -9,6 +9,7 @@ class UserInfoModel {
   int orderCount;
   int memberSinceDays;
   double walletBalance;
+  double requestedAmount;
   int loyaltyPoint;
   String refCode;
 
@@ -23,6 +24,7 @@ class UserInfoModel {
         this.orderCount,
         this.memberSinceDays,
         this.walletBalance,
+        this.requestedAmount,
         this.loyaltyPoint,
         this.refCode});
 
@@ -37,6 +39,7 @@ class UserInfoModel {
     orderCount = json['order_count'];
     memberSinceDays = json['member_since_days'];
     walletBalance = json['wallet_balance'] !=null? json['wallet_balance'].toDouble():0.0;
+    requestedAmount = json['requested_amount'] !=null? json['requested_amount'].toDouble():0.0;
     loyaltyPoint = json['loyalty_point'];
     refCode = json['ref_code'];
   }
@@ -53,6 +56,7 @@ class UserInfoModel {
     data['order_count'] = this.orderCount;
     data['member_since_days'] = this.memberSinceDays;
     data['wallet_balance'] = this.walletBalance;
+    data['requested_amount'] = this.requestedAmount;
     data['loyalty_point'] = this.loyaltyPoint;
     data['ref_code'] = this.refCode;
     return data;

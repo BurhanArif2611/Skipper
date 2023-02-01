@@ -10,6 +10,9 @@ class WalletRepo {
   Future<Response> getWalletTransactionList(String offset,String status) async {
     return await apiClient.getData('${AppConstants.WALLET_TRANSACTION_URL}/$status?offset=$offset&limit=10');
   }
+  Future<Response> getWalletRequestList(String offset,String status) async {
+    return await apiClient.getData('${AppConstants.WALLET_REQUEST_WITHDRAW_URL}?offset=$offset&limit=10');
+  }
   Future<Response> getBankList() async {
     return await apiClient.getData('${AppConstants.BANK_LIST_URL}');
   }
@@ -36,6 +39,9 @@ class WalletRepo {
 
   Future<Response> addFund(String amount ) async {
     return await apiClient.postData(AppConstants.ADD_FUND_URL, {"amount": amount});
+  }
+  Future<Response> CancelRequest(String request_id ) async {
+    return await apiClient.getData('${AppConstants.WITHRAW_REQUEST_URL}?request_id=$request_id');
   }
 
   Future<Response> deleteAccount(String account_number ) async {
