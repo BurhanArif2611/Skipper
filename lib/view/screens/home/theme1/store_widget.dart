@@ -7,6 +7,7 @@ import 'package:sixam_mart/data/model/response/config_model.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
+import 'package:sixam_mart/util/app_constants.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/custom_image.dart';
@@ -30,6 +31,7 @@ class StoreWidget extends StatelessWidget {
     bool _desktop = ResponsiveHelper.isDesktop(context);
     return InkWell(
       onTap: () {
+        AppConstants.StoreID = store.id;
         if(store != null){
           Get.toNamed(
             RouteHelper.getStoreRoute(store.id, 'item'),

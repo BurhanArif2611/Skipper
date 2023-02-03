@@ -7,6 +7,8 @@ import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../view/base/custom_loader.dart';
+
 class WishListController extends GetxController implements GetxService {
   final WishListRepo wishListRepo;
   final ItemRepo itemRepo;
@@ -59,10 +61,13 @@ class WishListController extends GetxController implements GetxService {
     update();
   }
 
-  Future<void> getWishList() async {
+  Future<void> getWishList(bool refresh) async {
     _wishItemList = [];
     _wishStoreList = [];
     _wishStoreIdList = [];
+  //  update();
+    if(refresh){
+    Get.dialog(CustomLoader(), barrierDismissible: false);}
     Response response = await wishListRepo.getWishList();
     if (response.statusCode == 200) {
       update();
@@ -71,6 +76,7 @@ class WishListController extends GetxController implements GetxService {
         _wishItemList.add(_item);
         _wishItemIdList.add(_item.id);
       });
+
       response.body['store'].forEach((store) async {
         Store _store;
         try{
@@ -80,8 +86,15 @@ class WishListController extends GetxController implements GetxService {
         _wishStoreList.add(_store);
         _wishStoreIdList.add(_store.id);
       });
-    }else if (response.statusCode == 500) {}
+      if(refresh){
+      Get.back();}
+    }else if (response.statusCode == 500) {
+      if(refresh){
+        Get.back();}
+    }
     else {
+      if(refresh){
+        Get.back();}
       ApiChecker.checkApi(response);
     }
     update();

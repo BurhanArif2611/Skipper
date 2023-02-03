@@ -16,7 +16,7 @@ class FavItemView extends StatelessWidget {
       body: GetBuilder<WishListController>(builder: (wishController) {
         return RefreshIndicator(
           onRefresh: () async {
-            await wishController.getWishList();
+            await wishController.getWishList(true);
           },
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),

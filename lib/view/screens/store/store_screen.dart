@@ -22,6 +22,8 @@ import 'package:sixam_mart/view/screens/store/widget/store_description_view.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../util/app_constants.dart';
+
 
 class StoreScreen extends StatefulWidget {
   final Store store;
@@ -36,7 +38,6 @@ class StoreScreen extends StatefulWidget {
 class _StoreScreenState extends State<StoreScreen> {
   final ScrollController scrollController = ScrollController();
   final bool _ltr = Get.find<LocalizationController>().isLtr;
-
   @override
   void initState() {
     super.initState();

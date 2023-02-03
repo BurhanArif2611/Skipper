@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
       if (isSuccess) {
         if (Get.find<AuthController>().isLoggedIn()) {
           Get.find<AuthController>().updateToken();
-          await Get.find<WishListController>().getWishList();
+         // await Get.find<WishListController>().getWishList();
         }
       }
     });

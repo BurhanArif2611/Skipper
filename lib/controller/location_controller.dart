@@ -333,7 +333,7 @@ class LocationController extends GetxController implements GetxService {
     }
     await Get.find<LocationController>().saveUserAddress(address);
     if(Get.find<AuthController>().isLoggedIn()) {
-      await Get.find<WishListController>().getWishList();
+     // await Get.find<WishListController>().getWishList();
       Get.find<AuthController>().updateZone();
     }
     HomeScreen.loadData(true);
