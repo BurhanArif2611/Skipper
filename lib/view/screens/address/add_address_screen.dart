@@ -186,7 +186,11 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
                 ),
                 SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                SizedBox(height: 50, child: ListView.builder(
+                /*SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_LARGE,
+                    child:*/
+                Container(height: 50.0,
+                child:
+                    ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemCount: locationController.addressTypeList.length,
@@ -216,7 +220,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                       ]),
                     ),
                   ),
-                )),
+                )
+                  ,),
+               /* ),*/
                 SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
 
                 Text(
