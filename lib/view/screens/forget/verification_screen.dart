@@ -131,8 +131,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       animationType: AnimationType.slide,
                       pinTheme: PinTheme(
                         shape: PinCodeFieldShape.box,
-                        fieldHeight: 60,
-                        fieldWidth: 60,
+                        fieldHeight: 50.0,
+                        fieldWidth: 50.0,
                         borderWidth: 1,
                         borderRadius:
                             BorderRadius.circular(Dimensions.RADIUS_SMALL),

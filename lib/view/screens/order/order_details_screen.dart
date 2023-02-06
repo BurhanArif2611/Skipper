@@ -1797,8 +1797,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                                   physics:
                                                       NeverScrollableScrollPhysics(),
                                                   itemBuilder:
-                                                      (context, position) {
-                                                    return Container(
+                                                      (context, index) {
+                                                     return Container(
                                                         width: 60,
                                                         child: Stack(children: [
                                                           //Stack
@@ -1817,7 +1817,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                                                           ? CustomImage(
                                                                               image: '${Get.find<SplashController>().configModel.baseUrls.errandTaskImageUrl}'
                                                                                       '/' +
-                                                                                  _order.errand_tasks[position].errand_task_media[position].image,
+                                                                                  _order.errand_tasks[position].errand_task_media[index].image,
                                                                               height: 40,
                                                                               width: 40,
                                                                             )

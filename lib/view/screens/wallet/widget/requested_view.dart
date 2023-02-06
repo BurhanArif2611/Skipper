@@ -210,53 +210,47 @@ class RequestedView extends StatelessWidget {
                                                         )),
                                                       ],
                                                     )),
-                                                    if(orderController
-                                                        .requestTransactionList[
-                                                    index]
-                                                        .status=='pending')
-                                                    Column(children: [
-                                                      Align(
-                                                          alignment: Alignment
-                                                              .topRight,
-                                                          child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                CustomButton(
-
-                                                                  height: Dimensions
-                                                                      .PADDING_SIZE_EXTRA_LARGE,
-                                                                  width: 120,
-                                                                  fontSize:
-                                                                      Dimensions
-                                                                          .fontSizeDefault,
-                                                                  buttonText:
-                                                                      'Cancel Request',
-                                                                  onPressed: () =>
-                                              Get.dialog(
-                                              ConfirmationDialog(
-                                              icon: Images.warning,
-                                              title: 'Alert'.tr,
-                                              description:
-                                              'Are you sure? you want to cancel withdraw request.'.tr,
-                                              onYesPressed: (){
-                                                Get.back();
-                                                  Get.find<WalletController>()
-                                                  .CancelRequestToWallet(
-                                                  orderController
-                                                      .requestTransactionList[
-                                                  index]
-                                                      .id.toString(),index);},
-                                              ),
-                                              barrierDismissible: false),
-
-                                                                )
-                                                              ]))
-                                                    ]),
+                                                    if (orderController
+                                                            .requestTransactionList[
+                                                                index]
+                                                            .status ==
+                                                        'pending')
+                                                      Column(children: [
+                                                        Align(
+                                                            alignment: Alignment
+                                                                .topRight,
+                                                            child: Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  CustomButton(
+                                                                    height: Dimensions
+                                                                        .PADDING_SIZE_EXTRA_LARGE,
+                                                                    width: 120,
+                                                                    fontSize:
+                                                                        Dimensions
+                                                                            .fontSizeDefault,
+                                                                    buttonText:
+                                                                        'Cancel Request',
+                                                                    onPressed: () =>
+                                                                        Get.dialog(
+                                                                            ConfirmationDialog(
+                                                                              icon: Images.warning,
+                                                                              title: 'Alert'.tr,
+                                                                              description: 'Are you sure? you want to cancel withdraw request.'.tr,
+                                                                              onYesPressed: () {
+                                                                                Get.back();
+                                                                                Get.find<WalletController>().CancelRequestToWallet(orderController.requestTransactionList[index].id.toString(), index);
+                                                                              },
+                                                                            ),
+                                                                            barrierDismissible: false),
+                                                                  )
+                                                                ]))
+                                                      ]),
                                                     SizedBox(
                                                         height: Dimensions
                                                             .PADDING_SIZE_EXTRA_SMALL),

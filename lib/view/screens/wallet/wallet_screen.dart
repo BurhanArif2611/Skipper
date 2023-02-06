@@ -1124,6 +1124,8 @@ class _WalletScreenState extends State<WalletScreen> with TickerProviderStateMix
                           onPressed: () {
                             if (titleController.text.isEmpty) {
                               showCustomSnackBar('Enter Amount !');
+                            }else if (double.parse(titleController.text)<=0) {
+                              showCustomSnackBar('Enter Valid Amount !');
                             }else if (double.parse(titleController.text)>Get.find<UserController>().userInfoModel.walletBalance) {
                               showDialog(
                                 context: Get.context,

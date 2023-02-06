@@ -271,6 +271,7 @@ class WalletController extends GetxController implements GetxService {
     Response response =
         await walletRepo.withdrawFund(bank_name, account_number);
     if (response.statusCode == 200) {
+      _isLoading = false;
       Get.back();
       print("response>>" + response.bodyString);
 
@@ -283,17 +284,18 @@ class WalletController extends GetxController implements GetxService {
         showCustomSnackBar(response.body['message'].toString(), isError: true);
       }
     } else {
+      _isLoading = false;
       showCustomSnackBar(
-          response.body["errors"]["message"] != null
-              ? response.body["errors"]["message"].toString()
+          response.body["errors"][0]["message"] != null
+              ? response.body["errors"][0]["message"].toString()
               : response.body['message'].toString(),
           isError: true);
       showDialog(
         context: Get.context,
         builder: (ctx) => AlertDialog(
           title: const Text("Alert"),
-          content:  Text(response.body["errors"]["message"] != null
-              ? response.body["errors"]["message"].toString()
+          content:  Text(response.body["errors"][0]["message"] != null
+              ? response.body["errors"][0]["message"].toString()
               : response.body['message'].toString()),
           actions: <Widget>[
             TextButton(
