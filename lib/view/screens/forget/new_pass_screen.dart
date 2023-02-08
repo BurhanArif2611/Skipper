@@ -32,7 +32,11 @@ class _NewPassScreenState extends State<NewPassScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return
+      WillPopScope(
+        onWillPop: () => Get.offAllNamed(RouteHelper.getInitialRoute()),
+    child:
+      Scaffold(
       appBar: CustomAppBar(title: widget.fromPasswordChange ? 'change_password'.tr : 'reset_password'.tr),
       endDrawer: MenuDrawer(),
       body: SafeArea(child: Center(child: Scrollbar(child: SingleChildScrollView(
@@ -96,7 +100,7 @@ class _NewPassScreenState extends State<NewPassScreen> {
           ]),
         )),
       )))),
-    );
+    ),);
   }
 
   void _resetPassword() {
