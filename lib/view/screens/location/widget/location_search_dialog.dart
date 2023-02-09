@@ -12,6 +12,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../controller/splash_controller.dart';
 import '../../../../util/styles.dart';
+import '../../../base/custom_loader.dart';
 
 class LocationSearchDialog extends StatelessWidget {
   final GoogleMapController mapController;
@@ -58,9 +59,36 @@ class LocationSearchDialog extends StatelessWidget {
               if(isPickedUp == null) {
                 Get.find<LocationController>().setLocation(prediction.placeId, prediction.description, mapController);
               }else {
-                Get.find<ParcelController>().setLocationFromPlace(prediction.placeId, prediction.description, isPickedUp,context);
+                Get.find<ParcelController>().setLocationFromPlace(prediction.placeId, prediction.description, isPickedUp,context).then((response) async {
+                  if (response.isSuccess) {
+                    Get.back();
+                  } else {
+                    Get.back();
+
+                    showDialog(
+                      context: Get.context,
+                      builder: (ctx) => AlertDialog(
+                        title: const Text("Alert"),
+                        content: const Text("Service not available in this area"),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(ctx).pop();
+                            },
+                            child: Container(
+                              color: Theme.of(Get.context).disabledColor,
+                              padding: const EdgeInsets.all(14),
+                              child: const Text("OK"),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                });
+
               }
-              Get.back();
+            //  Get.back();
             },
             // this callback is called when isLatLngRequired is true
             itmClick: (Prediction prediction) {

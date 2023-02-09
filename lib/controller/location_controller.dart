@@ -25,6 +25,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sixam_mart/view/screens/location/widget/module_dialog.dart';
 import 'package:sixam_mart/view/screens/location/widget/permission_dialog.dart';
 
+import '../util/styles.dart';
+import '../view/base/custom_loader.dart';
+
 class LocationController extends GetxController implements GetxService {
   final LocationRepo locationRepo;
   LocationController({@required this.locationRepo});
@@ -113,32 +116,40 @@ class LocationController extends GetxController implements GetxService {
   }
 
   Future<ZoneResponseModel> getZone(String lat, String long, bool markerLoad) async {
-    if(markerLoad) {
-      _loading = true;
-    }else {
-      _isLoading = true;
-    }
-    update();
     ZoneResponseModel _responseModel;
-    Response response = await locationRepo.getZone(lat, long);
-    if(response.statusCode == 200) {
-      _inZone = true;
-      _zoneID = int.parse(jsonDecode(response.body['zone_id'])[0].toString());
-      List<int> _zoneIds = [];
-      jsonDecode(response.body['zone_id']).forEach((zoneId) {
-        _zoneIds.add(int.parse(zoneId.toString()));
-      });
-      _responseModel = ZoneResponseModel(true, '', _zoneIds);
-    }else {
-      _inZone = false;
-      _responseModel = ZoneResponseModel(false, response.statusText, []);
+    try{
+      if(markerLoad) {
+        _loading = true;
+      }else {
+        _isLoading = true;
+      }
+      Get.dialog(CustomLoader(), barrierDismissible: false);
+      update();
+
+      Response response = await locationRepo.getZone(lat, long);
+      if(response.statusCode == 200) {
+        Get.back();
+        _inZone = true;
+        _zoneID = int.parse(jsonDecode(response.body['zone_id'])[0].toString());
+        List<int> _zoneIds = [];
+        jsonDecode(response.body['zone_id']).forEach((zoneId) {
+          _zoneIds.add(int.parse(zoneId.toString()));
+        });
+        _responseModel = ZoneResponseModel(true, '', _zoneIds);
+      }else {
+        Get.back();
+        _inZone = false;
+        _responseModel = ZoneResponseModel(false, response.statusText, []);
+
+      }
+      if(markerLoad) {
+        _loading = false;
+      }else {
+        _isLoading = false;
+      }
+      update();}catch(e){
+      Get.back();
     }
-    if(markerLoad) {
-      _loading = false;
-    }else {
-      _isLoading = false;
-    }
-    update();
     return _responseModel;
   }
 
@@ -305,6 +316,26 @@ class LocationController extends GetxController implements GetxService {
       } else {
         Get.back();
         showCustomSnackBar(response.message);
+
+        showDialog(
+          context: Get.context,
+          builder: (ctx) => AlertDialog(
+            title: const Text("Alert"),
+            content: const Text("Service not available in this area"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: Container(
+                  color: Theme.of(Get.context).disabledColor,
+                  padding: const EdgeInsets.all(14),
+                  child: const Text("OK"),
+                ),
+              ),
+            ],
+          ),
+        );
       }
     });
   }

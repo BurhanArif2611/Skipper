@@ -196,8 +196,9 @@ class ParcelController extends GetxController implements GetxService {
     _anotherList.clear();
   }
 
-  void setLocationFromPlace(
+  Future<ZoneResponseModel> setLocationFromPlace(
       String placeID, String address, bool isPickedUp,BuildContext context) async {
+    ZoneResponseModel _response;
     Response response = await parcelRepo.getPlaceDetails(placeID);
     if (response.statusCode == 200) {
       PlaceDetailsModel _placeDetails =
@@ -215,7 +216,7 @@ class ParcelController extends GetxController implements GetxService {
               .contactPersonNumber,
         );
 
-        ZoneResponseModel _response = await Get.find<LocationController>()
+         _response = await Get.find<LocationController>()
             .getZone(_address.latitude, _address.longitude, false);
 
         /* print("Location>>1>"+Get.find<LocationController>()
@@ -264,6 +265,25 @@ class ParcelController extends GetxController implements GetxService {
           } else {
             showCustomSnackBar(
                 'your_selected_location_is_from_different_zone_store'.tr);
+            showDialog(
+              context: Get.context,
+              builder: (ctx) => AlertDialog(
+                title: const Text("Alert"),
+                content: const Text("Your selected location is out of coverage for this store"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                    },
+                    child: Container(
+                      color: Theme.of(Get.context).disabledColor,
+                      padding: const EdgeInsets.all(14),
+                      child: const Text("okay"),
+                    ),
+                  ),
+                ],
+              ),
+            );
           }
         } else {
           print("message>>>" + _response.message);
@@ -291,6 +311,7 @@ class ParcelController extends GetxController implements GetxService {
         }
       }
     }
+    return _response;
   }
 
   void setIsPickedUp(bool isPickedUp, bool notify) {

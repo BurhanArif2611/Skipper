@@ -42,7 +42,7 @@ class AddressDialog extends StatelessWidget {
                   // shrinkWrap: true,
                   itemCount: locationController.addressList.length,
                   itemBuilder: (context, index) {
-                    if(locationController.getUserAddress().zoneIds.contains(locationController.addressList[index].zoneId)) {
+                    if(locationController.getUserAddress().zoneIds!=null && locationController.getUserAddress().zoneIds.contains(locationController.addressList[index].zoneId)) {
                       return Center(child: SizedBox(width: 700, child: AddressWidget(
                         address: locationController.addressList[index],
                         fromAddress: false,
@@ -76,7 +76,8 @@ class AddressDialog extends StatelessWidget {
                         },
                       )));
                     }else {
-                      return SizedBox();
+                      return Center(child: NoDataScreen(text: 'no_saved_address_found'.tr));
+
                     }
                   },
                 ) : NoDataScreen(text: 'no_saved_address_found'.tr) : Padding(

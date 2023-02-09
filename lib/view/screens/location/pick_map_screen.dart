@@ -157,7 +157,7 @@ class _PickMapScreenState extends State<PickMapScreen> {
                           // if you required coordinates from place detail
                           getPlaceDetailWithLatLng: (Prediction prediction) {
                             // this method will return latlng with place detail
-                            print("placeDetails" + prediction.lng.toString());
+                            print("placeDetails1233" + prediction.lng.toString());
                             Get.find<LocationController>().setLocation(
                                 prediction.placeId,
                                 prediction.description,
