@@ -244,7 +244,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                               style: robotoRegular),
                                           Text(
                                               '(' +
-                                                  parcelController.parcelType +
+                                                  parcelController.selectedParcelType +
                                                   ')',
                                               style: robotoRegular.copyWith(
                                                   color: Theme.of(context)
@@ -607,7 +607,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                         .payerTypes[parcelController.payerIndex],
                     dmTips: _tipController.text.trim(),
                     receiver_addresses: parcelController.anotherList,
-                    delivery_type: parcelController.parcelType ==
+                    delivery_type: parcelController.selectedParcelType ==
                             "EXPRESS DELIVERY"
                         ? 'P1'
                         : parcelController.parcelType == "STANDARD DELIVERY"
@@ -746,8 +746,6 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                       color: Theme.of(context).disabledColor,
                                       fontSize: Dimensions.fontSizeLargeExtraSmall)),
                             ]),
-
-
                         value: "NORMAL DELIVERY",
                         groupValue: parcelController.parcelType,
                         onChanged: (value) {
@@ -761,8 +759,8 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                       CustomButton(
                           buttonText: 'Confirm'.tr,
                           onPressed: () {
-                            if (parcelController.parcelType ==
-                                "STANDARD DELIVERY") {
+                            parcelController.setSelectParcelType(parcelController.parcelType);
+                            if (parcelController.parcelType == "STANDARD DELIVERY") {
                               // Get.find<SplashController>().configModel.p2_delivery_charge
                               double total = parcelController.deliveryCharge -
                                   (parcelController.deliveryCharge *

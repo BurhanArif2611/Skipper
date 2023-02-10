@@ -36,6 +36,7 @@ class LocationController extends GetxController implements GetxService {
   Position _pickPosition = Position(longitude: 0, latitude: 0, timestamp: DateTime.now(), accuracy: 1, altitude: 1, heading: 1, speed: 1, speedAccuracy: 1);
   bool _loading = false;
   String _address = '';
+  String _hintAddress = '';
   String _pickAddress = '';
   List<Marker> _markers = <Marker>[];
   List<AddressModel> _addressList;
@@ -59,6 +60,7 @@ class LocationController extends GetxController implements GetxService {
   Position get pickPosition => _pickPosition;
   String get address => _address;
   String get pickAddress => _pickAddress;
+  String get hintAddress => _hintAddress;
   List<Marker> get markers => _markers;
   List<AddressModel> get addressList => _addressList;
   List<String> get addressTypeList => _addressTypeList;
@@ -123,12 +125,12 @@ class LocationController extends GetxController implements GetxService {
       }else {
         _isLoading = true;
       }
-      Get.dialog(CustomLoader(), barrierDismissible: false);
+      //Get.dialog(CustomLoader(), barrierDismissible: false);
       update();
 
       Response response = await locationRepo.getZone(lat, long);
       if(response.statusCode == 200) {
-        Get.back();
+        //     Get.back();
         _inZone = true;
         _zoneID = int.parse(jsonDecode(response.body['zone_id'])[0].toString());
         List<int> _zoneIds = [];
@@ -137,7 +139,7 @@ class LocationController extends GetxController implements GetxService {
         });
         _responseModel = ZoneResponseModel(true, '', _zoneIds);
       }else {
-        Get.back();
+        //   Get.back();
         _inZone = false;
         _responseModel = ZoneResponseModel(false, response.statusText, []);
 
@@ -152,7 +154,14 @@ class LocationController extends GetxController implements GetxService {
     }
     return _responseModel;
   }
-
+  void updateHintAddress(CameraPosition position) async {
+    String _addressFromGeocode = await getAddressFromGeocode(LatLng(position.target.latitude, position.target.longitude));
+    _hintAddress=_addressFromGeocode;
+    update();
+  } void updateHintAddressWithString(String _address)  {
+    _hintAddress=_address;
+    update();
+  }
   void updatePosition(CameraPosition position, bool fromAddress) async {
     if(_updateAddAddressData) {
       _loading = true;
@@ -278,7 +287,11 @@ class LocationController extends GetxController implements GetxService {
     AddressModel _addressModel;
     try {
       _addressModel = AddressModel.fromJson(jsonDecode(locationRepo.getUserAddress()));
-    }catch(e) {}
+      print("catch>>>"+_addressModel.zoneIds.toString());
+      print("catch>>>"+_addressModel.zoneId.toString());
+    }catch(e) {
+      print("catch>>>"+e.toString());
+    }
     return _addressModel;
   }
 
@@ -362,15 +375,16 @@ class LocationController extends GetxController implements GetxService {
         FirebaseMessaging.instance.subscribeToTopic('zone_${address.zoneId}_customer');
       }
     }
+    print("zoneIds>>>>"+address.zoneIds[0].toString());
     await Get.find<LocationController>().saveUserAddress(address);
     if(Get.find<AuthController>().isLoggedIn()) {
-     // await Get.find<WishListController>().getWishList();
+      // await Get.find<WishListController>().getWishList();
       Get.find<AuthController>().updateZone();
     }
     HomeScreen.loadData(true);
     Get.find<OrderController>().clearPrevData();
     if(fromSignUp) {
-    //  Get.offAllNamed(RouteHelper.getInterestRoute());
+      //  Get.offAllNamed(RouteHelper.getInterestRoute());
       Get.offAllNamed(RouteHelper.getInitialRoute());
     }else {
       if(route != null && canRoute) {

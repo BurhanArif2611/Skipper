@@ -41,6 +41,7 @@ class ParcelController extends GetxController implements GetxService {
   int _payerIndex = 0;
   int _paymentIndex = 0;
   String _parcelType = "EXPRESS DELIVERY";
+  String _selectedParcelType = "EXPRESS DELIVERY";
 
   List<ParcelCategoryModel> get parcelCategoryList => _parcelCategoryList;
 
@@ -68,6 +69,7 @@ class ParcelController extends GetxController implements GetxService {
   int get paymentIndex => _paymentIndex;
 
   String get parcelType => _parcelType;
+  String get selectedParcelType => _selectedParcelType;
 
   List<String> get payerTypes => _payerTypes;
 
@@ -202,7 +204,7 @@ class ParcelController extends GetxController implements GetxService {
     Response response = await parcelRepo.getPlaceDetails(placeID);
     if (response.statusCode == 200) {
       PlaceDetailsModel _placeDetails =
-          PlaceDetailsModel.fromJson(response.body);
+      PlaceDetailsModel.fromJson(response.body);
       if (_placeDetails.status == 'OK') {
         AddressModel _address = AddressModel(
           address: address,
@@ -210,13 +212,13 @@ class ParcelController extends GetxController implements GetxService {
           latitude: _placeDetails.result.geometry.location.lat.toString(),
           longitude: _placeDetails.result.geometry.location.lng.toString(),
           contactPersonName:
-              Get.find<LocationController>().getUserAddress().contactPersonName,
+          Get.find<LocationController>().getUserAddress().contactPersonName,
           contactPersonNumber: Get.find<LocationController>()
               .getUserAddress()
               .contactPersonNumber,
         );
 
-         _response = await Get.find<LocationController>()
+        _response = await Get.find<LocationController>()
             .getZone(_address.latitude, _address.longitude, false);
 
         /* print("Location>>1>"+Get.find<LocationController>()
@@ -243,8 +245,8 @@ class ParcelController extends GetxController implements GetxService {
           bool check = false;
           if (Get.find<StoreController>().store.zones != null) {
             for (int i = 0;
-                i < Get.find<StoreController>().store.zones.length;
-                i++) {
+            i < Get.find<StoreController>().store.zones.length;
+            i++) {
               if (Get.find<StoreController>().store.zones != null &&
                   Get.find<StoreController>().store.zones[i].zone_id ==
                       _response.zoneIds[0]) {
@@ -287,8 +289,8 @@ class ParcelController extends GetxController implements GetxService {
           }
         } else {
           print("message>>>" + _response.message);
-         // showCustomSnackBar(_response.message);
-            String msg=_response.message.toString();
+          // showCustomSnackBar(_response.message);
+          String msg=_response.message.toString();
           showDialog(
             context: Get.context,
             builder: (ctx) => AlertDialog(
@@ -388,21 +390,26 @@ class ParcelController extends GetxController implements GetxService {
   void setParcelType(String parcelType) {
     _parcelType = parcelType;
     try{
-     update();}catch(e){}
+      update();}catch(e){}
+  }
+  void setSelectParcelType(String parcelType) {
+    _selectedParcelType = parcelType;
+    try{
+      update();}catch(e){}
   }
 
   void setDeliveryCharge(double deliveryCharge) {
     _deliveryCharge = deliveryCharge;
     if (deliveryCharge> 0) {
       try{
-      update();}catch(e){}
+        update();}catch(e){}
     }
   }
   void setDeliveryFinalCharge(double deliveryCharge) {
     _deliveryFinalCharge = deliveryCharge;
     if (deliveryCharge> 0) {
       try{
-      update();}catch(e){}
+        update();}catch(e){}
     }
     print("setDeliveryFinalCharge>>>"+_deliveryFinalCharge.toString());
   }

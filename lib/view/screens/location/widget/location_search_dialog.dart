@@ -19,7 +19,9 @@ class LocationSearchDialog extends StatelessWidget {
   final bool isPickedUp;
 
   final BuildContext context;
-  LocationSearchDialog({@required this.mapController, this.isPickedUp,@required this.context});
+
+  LocationSearchDialog(
+      {@required this.mapController, this.isPickedUp, @required this.context});
 
   @override
   Widget build(BuildContext context) {
@@ -30,74 +32,78 @@ class LocationSearchDialog extends StatelessWidget {
       padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
       alignment: Alignment.topCenter,
       child: Material(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL)),
-        child: SizedBox(width: Dimensions.WEB_MAX_WIDTH, child:
-    Padding(
-    padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
-    child:
-        GooglePlaceAutoCompleteTextField(
-            textEditingController: _controller,
-            googleAPIKey:
-            Get.find<SplashController>().configModel.map_api_key,
-            inputDecoration: InputDecoration(
-              hintText: 'search_location'.tr,
-              hintStyle: robotoRegular.copyWith(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: Dimensions.fontSizeDefault),
-              border: InputBorder.none,
-            ),
-            debounceTime: 800,
-            // default 600 ms,
-            countries: [ "NGA","nga","in"],
-            // optional by default null is set
-            isLatLngRequired: true,
-            // if you required coordinates from place detail
-            getPlaceDetailWithLatLng: (Prediction prediction) {
-              // this method will return latlng with place detail
-              print("placeDetails" + prediction.lng.toString());
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL)),
+        child: SizedBox(
+          width: Dimensions.WEB_MAX_WIDTH,
+          child: Padding(
+              padding:
+              const EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
+              child: GooglePlaceAutoCompleteTextField(
+                  textEditingController: _controller,
+                  googleAPIKey:
+                  Get.find<SplashController>().configModel.map_api_key,
+                  inputDecoration: InputDecoration(
+                    hintText: 'search_location'.tr,
+                    hintStyle: robotoRegular.copyWith(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: Dimensions.fontSizeDefault),
+                    border: InputBorder.none,
+                  ),
+                  debounceTime: 600,
+                  // default 600 ms,
+                  countries: ["NGA", "nga"],
+                  // optional by default null is set
+                  isLatLngRequired: true,
+                  itmClick: (Prediction prediction) {
+                    _controller.text = prediction.description;
+                    _controller.selection = TextSelection.fromPosition(
+                        TextPosition(offset: prediction.description.length));
 
-              if(isPickedUp == null) {
-                Get.find<LocationController>().setLocation(prediction.placeId, prediction.description, mapController);
-              }else {
-                Get.find<ParcelController>().setLocationFromPlace(prediction.placeId, prediction.description, isPickedUp,context).then((response) async {
-                  if (response.isSuccess) {
-                    Get.back();
-                  } else {
-                    Get.back();
+                    if (isPickedUp == null) {
+                      Get.find<LocationController>().setLocation(
+                          prediction.placeId,
+                          prediction.description,
+                          mapController);
+                    } else {
+                      Get.dialog(CustomLoader(), barrierDismissible: false);
+                      Get.find<ParcelController>()
+                          .setLocationFromPlace(prediction.placeId,
+                          prediction.description, isPickedUp, context)
+                          .then((response) async {
+                        _controller.text = "";
+                        if (response.isSuccess) {
+                          Get.back();
+                          Get.back();
+                        } else {
+                          Get.back();
 
-                    showDialog(
-                      context: Get.context,
-                      builder: (ctx) => AlertDialog(
-                        title: const Text("Alert"),
-                        content: const Text("Service not available in this area"),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(ctx).pop();
-                            },
-                            child: Container(
-                              color: Theme.of(Get.context).disabledColor,
-                              padding: const EdgeInsets.all(14),
-                              child: const Text("OK"),
+                          showDialog(
+                            context: Get.context,
+                            builder: (ctx) => AlertDialog(
+                              title: const Text("Alert"),
+                              content: const Text(
+                                  "Service not available in this area"),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(ctx).pop();
+                                    Get.back();
+                                  },
+                                  child: Container(
+                                    color: Theme.of(Get.context).disabledColor,
+                                    padding: const EdgeInsets.all(14),
+                                    child: const Text("OK"),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                });
-
-              }
-            //  Get.back();
-            },
-            // this callback is called when isLatLngRequired is true
-            itmClick: (Prediction prediction) {
-              _controller.text = prediction.description;
-              _controller.selection = TextSelection.fromPosition(
-                  TextPosition(
-                      offset: prediction.description.length));
-            })),
-        /*TypeAheadField(
+                          );
+                        }
+                      });
+                    }
+                  })),
+          /*TypeAheadField(
           textFieldConfiguration:
           TextFieldConfiguration(
             controller: _controller,

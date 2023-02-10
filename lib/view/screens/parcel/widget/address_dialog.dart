@@ -8,6 +8,8 @@ import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/view/base/no_data_screen.dart';
 import 'package:sixam_mart/view/screens/address/widget/address_widget.dart';
 
+import '../../../../util/styles.dart';
+
 class AddressDialog extends StatelessWidget {
   final Function(AddressModel address) onTap;
   final Function(int index) index1;
@@ -24,8 +26,18 @@ class AddressDialog extends StatelessWidget {
         width: context.width * 0.8, height: context.height * 0.7,
         padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
         child: Column(children: [
-          Align(alignment: Alignment.topRight, child: IconButton(icon: Icon(Icons.clear), onPressed: () => Get.back())),
+        Row(children: [
+          Expanded(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
 
+              Text("Saved addresses from "+
+                Get.find<LocationController>().getUserAddress().address.tr+" regions",
+                style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
+              ),
+            ]),
+          ),
+          Align(alignment: Alignment.topRight, child: IconButton(icon: Icon(Icons.clear), onPressed: () => Get.back())),
+        ]),
           Expanded(
             child: Scrollbar(
               child: GetBuilder<LocationController>(builder: (locationController) {
@@ -37,7 +49,7 @@ class AddressDialog extends StatelessWidget {
                 //     }
                 //   }
                 // }
-                return Get.find<AuthController>().isLoggedIn() ? locationController.addressList != null ? locationController.addressList.length > 0 ? ListView.builder(
+                return Get.find<AuthController>().isLoggedIn() ? locationController.addressList != null ? locationController.addressList.length > 0 && locationController.getUserAddress().zoneIds!=null ? ListView.builder(
                   physics: AlwaysScrollableScrollPhysics(),
                   // shrinkWrap: true,
                   itemCount: locationController.addressList.length,
@@ -47,9 +59,6 @@ class AddressDialog extends StatelessWidget {
                         address: locationController.addressList[index],
                         fromAddress: false,
                         onTap: () {
-                          print("addressList>>>>>"+index.toString());
-                          print(locationController.addressList[index].toJson());
-
                           onTap(locationController.addressList[index]);
 
                           AddressModel _address = AddressModel(

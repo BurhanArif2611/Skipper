@@ -71,208 +71,208 @@ class _PickMapScreenState extends State<PickMapScreen> {
       body: SafeArea(
           child: Center(
               child: SizedBox(
-        width: Dimensions.WEB_MAX_WIDTH,
-        child: GetBuilder<LocationController>(builder: (locationController) {
-          /*print('--------------${'${locationController.pickPlaceMark.name ?? ''} '
+                width: Dimensions.WEB_MAX_WIDTH,
+                child: GetBuilder<LocationController>(builder: (locationController) {
+                  /*print('--------------${'${locationController.pickPlaceMark.name ?? ''} '
               '${locationController.pickPlaceMark.locality ?? ''} '
               '${locationController.pickPlaceMark.postalCode ?? ''} ${locationController.pickPlaceMark.country ?? ''}'}');*/
 
-          return Stack(children: [
-            GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: widget.fromAddAddress
-                    ? LatLng(locationController.position.latitude,
-                        locationController.position.longitude)
-                    : _initialPosition,
-                zoom: 16,
-              ),
-              minMaxZoomPreference: MinMaxZoomPreference(0, 16),
-              myLocationButtonEnabled: false,
-              onMapCreated: (GoogleMapController mapController) {
-                _mapController = mapController;
-                if (!widget.fromAddAddress) {
-                  Get.find<LocationController>()
-                      .getCurrentLocation(false, mapController: _mapController);
-                }
-              },
-              scrollGesturesEnabled: !Get.isDialogOpen,
-              zoomControlsEnabled: false,
-              onCameraMove: (CameraPosition cameraPosition) {
-                _cameraPosition = cameraPosition;
-              },
-              onCameraMoveStarted: () {
-                locationController.disableButton();
-              },
-              onCameraIdle: () {
-                Get.find<LocationController>()
-                    .updatePosition(_cameraPosition, false);
-              },
-            ),
-            Center(
-                child: !locationController.loading
-                    ? Image.asset(Images.pick_marker, height: 50, width: 50)
-                    : CircularProgressIndicator()),
-            Positioned(
-                top: Dimensions.PADDING_SIZE_LARGE,
-                left: Dimensions.PADDING_SIZE_SMALL,
-                right: Dimensions.PADDING_SIZE_SMALL,
-                //  child:SearchLocationWidget(mapController: _mapController, pickedAddress: locationController.pickAddress, isEnabled: null),
-                child: Container(
-                  height: 50,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: Dimensions.PADDING_SIZE_SMALL),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius:
-                          BorderRadius.circular(Dimensions.RADIUS_SMALL),
-                      border: Border.all(
-                        color: Theme.of(context).primaryColor,
-                        width: 2,
-                      )),
-                  child: Row(children: [
-                    Icon(
-                      Icons.location_on,
-                      size: 25,
-                      color: Theme.of(context).disabledColor,
+                  return Stack(children: [
+                    GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: widget.fromAddAddress
+                            ? LatLng(locationController.position.latitude,
+                            locationController.position.longitude)
+                            : _initialPosition,
+                        zoom: 16,
+                      ),
+                      minMaxZoomPreference: MinMaxZoomPreference(0, 16),
+                      myLocationButtonEnabled: false,
+                      onMapCreated: (GoogleMapController mapController) {
+                        print("njdjfjdhjfhdjhf>>>");
+                        _mapController = mapController;
+                        if (!widget.fromAddAddress) {
+                          Get.find<LocationController>()
+                              .getCurrentLocation(false, mapController: _mapController);
+                        }
+                      },
+                      scrollGesturesEnabled: !Get.isDialogOpen,
+                      zoomControlsEnabled: false,
+                      onCameraMove: (CameraPosition cameraPosition) {
+                        _cameraPosition = cameraPosition;
+                      },
+                      onCameraMoveStarted: () {
+                        locationController.disableButton();
+                      },
+                      onCameraIdle: () {
+                        Get.find<LocationController>()
+                            .updatePosition(_cameraPosition, false);
+                        locationController.updateHintAddress(_cameraPosition);
+                      },
                     ),
-                    SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                    Expanded(
-                      child:
-                      GooglePlaceAutoCompleteTextField(
-                          textEditingController: _controller,
-                          googleAPIKey:
-                          Get.find<SplashController>().configModel.map_api_key,
-                          inputDecoration: InputDecoration(
-                            hintText: 'Select Address'.tr,
-                            hintStyle: robotoRegular.copyWith(
+                    Center(
+                        child: !locationController.loading
+                            ? Image.asset(Images.pick_marker, height: 50, width: 50)
+                            : CircularProgressIndicator()),
+                    Positioned(
+                        top: Dimensions.PADDING_SIZE_LARGE,
+                        left: Dimensions.PADDING_SIZE_SMALL,
+                        right: Dimensions.PADDING_SIZE_SMALL,
+                        //  child:SearchLocationWidget(mapController: _mapController, pickedAddress: locationController.pickAddress, isEnabled: null),
+                        child: Container(
+                          height: 50,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: Dimensions.PADDING_SIZE_SMALL),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).cardColor,
+                              borderRadius:
+                              BorderRadius.circular(Dimensions.RADIUS_SMALL),
+                              border: Border.all(
                                 color: Theme.of(context).primaryColor,
-                                fontSize: Dimensions.fontSizeSmall),
-                            border: InputBorder.none,
-                          ),
-                          debounceTime: 800,
-                          // default 600 ms,
-                          countries: ["NGA","nga","in"],
-                          // optional by default null is set
-                          isLatLngRequired: true,
-                          // if you required coordinates from place detail
-                          getPlaceDetailWithLatLng: (Prediction prediction) {
-                            // this method will return latlng with place detail
-                            print("placeDetails1233" + prediction.lng.toString());
-                            Get.find<LocationController>().setLocation(
-                                prediction.placeId,
-                                prediction.description,
-                                _mapController);
-                          },
-                          // this callback is called when isLatLngRequired is true
-                          itmClick: (Prediction prediction) {
-                            _controller.text = prediction.description;
-                            _controller.selection = TextSelection.fromPosition(
+                                width: 2,
+                              )),
+                          child: Row(children: [
+                            Icon(
+                              Icons.location_on,
+                              size: 25,
+                              color: Theme.of(context).disabledColor,
+                            ),
+                            SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                            Expanded(
+                              child: GooglePlaceAutoCompleteTextField(
+                                  textEditingController: _controller,
+                                  googleAPIKey: Get.find<SplashController>()
+                                      .configModel
+                                      .map_api_key,
+                                  inputDecoration: InputDecoration(
+                                    hintText: locationController.hintAddress == ''
+                                        ? 'Select Address'.tr
+                                        : locationController.hintAddress,
+                                    hintStyle: robotoRegular.copyWith(
+                                        fontSize: Dimensions.fontSizeSmall),
+                                    border: InputBorder.none,
+                                  ),
+                                  debounceTime: 800,
+                                  // default 600 ms,
+                                  countries: ["NGA", "nga"],
+                                  isLatLngRequired: true,
+                                  // if you required coordinates from place detail
+                                  // this callback is called when isLatLngRequired is true
+                                  itmClick: (Prediction prediction) {
+                                    _controller.text = "";
+                                    locationController.updateHintAddressWithString(
+                                        prediction.description);
+                                    /* _controller.selection = TextSelection.fromPosition(
                                 TextPosition(
-                                    offset: prediction.description.length));
-                          }),
+                                    offset: prediction.description.length));*/
+                                    Get.find<LocationController>().setLocation(
+                                        prediction.placeId,
+                                        prediction.description,
+                                        _mapController);
+                                  }),
+                            ),
+                            SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+                            Icon(Icons.search,
+                                size: 25,
+                                color: Theme.of(context).textTheme.bodyText1.color),
+                          ]),
+                        )),
+                    Positioned(
+                      bottom: 80,
+                      right: Dimensions.PADDING_SIZE_SMALL,
+                      child: FloatingActionButton(
+                        child: Icon(Icons.my_location,
+                            color: Theme.of(context).primaryColor),
+                        mini: true,
+                        backgroundColor: Theme.of(context).cardColor,
+                        onPressed: () =>
+                            Get.find<LocationController>().checkPermission(() {
+                              Get.find<LocationController>()
+                                  .getCurrentLocation(false, mapController: _mapController);
+                            }),
+                      ),
                     ),
-                    SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-                    Icon(Icons.search,
-                        size: 25,
-                        color: Theme.of(context).textTheme.bodyText1.color),
-                  ]),
-                )),
-            Positioned(
-              bottom: 80,
-              right: Dimensions.PADDING_SIZE_SMALL,
-              child: FloatingActionButton(
-                child: Icon(Icons.my_location,
-                    color: Theme.of(context).primaryColor),
-                mini: true,
-                backgroundColor: Theme.of(context).cardColor,
-                onPressed: () =>
-                    Get.find<LocationController>().checkPermission(() {
-                  Get.find<LocationController>()
-                      .getCurrentLocation(false, mapController: _mapController);
-                }),
-              ),
-            ),
-            Positioned(
-              bottom: Dimensions.PADDING_SIZE_LARGE,
-              left: Dimensions.PADDING_SIZE_SMALL,
-              right: Dimensions.PADDING_SIZE_SMALL,
-              child: !locationController.isLoading
-                  ? CustomButton(
-                      buttonText: locationController.inZone
-                          ? widget.fromAddAddress
-                              ? 'pick_address'.tr
-                              : 'pick_location'.tr
-                          : 'service_not_available_in_this_area'.tr,
-                      onPressed: (locationController.buttonDisabled ||
-                              locationController.loading)
-                          ? null
-                          : () {
-                              if (locationController.pickPosition.latitude !=
-                                      0 &&
-                                  locationController.pickAddress.isNotEmpty) {
-                                if (widget.onPicked != null) {
-                                  AddressModel _address = AddressModel(
-                                    latitude: locationController
-                                        .pickPosition.latitude
-                                        .toString(),
-                                    longitude: locationController
-                                        .pickPosition.longitude
-                                        .toString(),
-                                    addressType: 'others',
-                                    address: locationController.pickAddress,
-                                    contactPersonName: locationController
-                                        .getUserAddress()
-                                        .contactPersonName,
-                                    contactPersonNumber: locationController
-                                        .getUserAddress()
-                                        .contactPersonNumber,
-                                  );
-                                  widget.onPicked(_address);
-                                  Get.back();
-                                } else if (widget.fromAddAddress) {
-                                  if (widget.googleMapController != null) {
-                                    widget.googleMapController.moveCamera(
-                                        CameraUpdate.newCameraPosition(
-                                            CameraPosition(
-                                                target: LatLng(
-                                                  locationController
-                                                      .pickPosition.latitude,
-                                                  locationController
-                                                      .pickPosition.longitude,
-                                                ),
-                                                zoom: 16)));
-                                    locationController.setAddAddressData();
-                                  }
-                                  Get.back();
-                                } else {
-                                  AddressModel _address = AddressModel(
-                                    latitude: locationController
-                                        .pickPosition.latitude
-                                        .toString(),
-                                    longitude: locationController
-                                        .pickPosition.longitude
-                                        .toString(),
-                                    addressType: 'others',
-                                    address: locationController.pickAddress,
-                                  );
-                                  locationController.saveAddressAndNavigate(
-                                    _address,
-                                    widget.fromSignUp,
-                                    widget.route,
-                                    widget.canRoute,
-                                    ResponsiveHelper.isDesktop(context),
-                                  );
-                                }
-                              } else {
-                                showCustomSnackBar('pick_an_address'.tr);
+                    Positioned(
+                      bottom: Dimensions.PADDING_SIZE_LARGE,
+                      left: Dimensions.PADDING_SIZE_SMALL,
+                      right: Dimensions.PADDING_SIZE_SMALL,
+                      child: !locationController.isLoading
+                          ? CustomButton(
+                        buttonText: locationController.inZone
+                            ? widget.fromAddAddress
+                            ? 'pick_address'.tr
+                            : 'pick_location'.tr
+                            : 'service_not_available_in_this_area'.tr,
+                        onPressed: (locationController.buttonDisabled ||
+                            locationController.loading)
+                            ? null
+                            : () {
+                          if (locationController.pickPosition.latitude !=
+                              0 &&
+                              locationController.pickAddress.isNotEmpty) {
+                            if (widget.onPicked != null) {
+                              AddressModel _address = AddressModel(
+                                latitude: locationController
+                                    .pickPosition.latitude
+                                    .toString(),
+                                longitude: locationController
+                                    .pickPosition.longitude
+                                    .toString(),
+                                addressType: 'others',
+                                address: locationController.pickAddress,
+                                contactPersonName: locationController
+                                    .getUserAddress()
+                                    .contactPersonName,
+                                contactPersonNumber: locationController
+                                    .getUserAddress()
+                                    .contactPersonNumber,
+                              );
+                              widget.onPicked(_address);
+                              Get.back();
+                            } else if (widget.fromAddAddress) {
+                              if (widget.googleMapController != null) {
+                                widget.googleMapController.moveCamera(
+                                    CameraUpdate.newCameraPosition(
+                                        CameraPosition(
+                                            target: LatLng(
+                                              locationController
+                                                  .pickPosition.latitude,
+                                              locationController
+                                                  .pickPosition.longitude,
+                                            ),
+                                            zoom: 16)));
+                                locationController.setAddAddressData();
                               }
-                            },
-                    )
-                  : Center(child: CircularProgressIndicator()),
-            ),
-          ]);
-        }),
-      ))),
+                              Get.back();
+                            } else {
+                              AddressModel _address = AddressModel(
+                                latitude: locationController
+                                    .pickPosition.latitude
+                                    .toString(),
+                                longitude: locationController
+                                    .pickPosition.longitude
+                                    .toString(),
+                                addressType: 'others',
+                                address: locationController.pickAddress,
+                              );
+                              locationController.saveAddressAndNavigate(
+                                _address,
+                                widget.fromSignUp,
+                                widget.route,
+                                widget.canRoute,
+                                ResponsiveHelper.isDesktop(context),
+                              );
+                            }
+                          } else {
+                            showCustomSnackBar('pick_an_address'.tr);
+                          }
+                        },
+                      )
+                          : Center(child: CircularProgressIndicator()),
+                    ),
+                  ]);
+                }),
+              ))),
     );
   }
 }
