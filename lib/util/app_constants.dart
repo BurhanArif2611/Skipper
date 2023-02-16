@@ -8,19 +8,19 @@ import '../controller/banner_controller.dart';
 
 class AppConstants {
   static const String APP_NAME = 'Night Rider';
-  static const double ANDROID_APP_VERSION = 10.0;
-  static const double IOS_APP_VERSION = 10.0;
+  static const double ANDROID_APP_VERSION = 1.0;
+  static const double IOS_APP_VERSION = 1.0;
 
   //dev url
    //static const String BASE_URL = 'http://192.168.1.164:8000';
    // staging url
-   // static const String BASE_URL = 'http://52.17.19.170:5000';
+    static const String BASE_URL = 'http://52.17.19.170:5000';
 
   //local url
    //static const String BASE_URL = 'http://192.168.1.164:8000';
    // static const String BASE_URL = 'https://portal-dev.shapshap.com';
   //live url
-   static const String BASE_URL = 'https://portal.shapshap.com';
+  // static const String BASE_URL = 'https://portal.shapshap.com';
   static const String CATEGORY_URI = '/api/v1/categories';
   static const String BANNER_URI = '/api/v1/banners';
   static const String BRANCG_URI = '/api/v1/stores';
@@ -125,8 +125,10 @@ class AppConstants {
       '/api/v1/customer/beneficiaries';
   static const String DELETE_BANK_ACCOUNT_URL =
       '/api/v1/customer/banks/account/delete?';
-  static int ParantStoreID = 1;
-  static int StoreID = 1;
+ /* static int ParantStoreID = 1;
+  static int StoreID = 1;*/
+  static int ParantStoreID = 60;
+  static int StoreID = 60;
   static int ModelID = 1;
 
   static const String Store_ID = "store-id";

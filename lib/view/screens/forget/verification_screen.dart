@@ -222,6 +222,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                               ? CustomButton(
                                   buttonText: 'verify'.tr,
                                   onPressed: () {
+
                                     if (widget.fromSignUp) {
                                       authController
                                           .verifyPhone(_number, widget.token)
@@ -270,6 +271,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                               dismissible: false);
                                           Future.delayed(Duration(seconds: 2),
                                               () {
+
                                             Get.offNamed(RouteHelper
                                                 .getAccessLocationRoute(
                                                     'verification'));
@@ -278,17 +280,25 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                           showCustomSnackBar(value.message);
                                         }
                                       });
-                                    } else {
+                                    }
+                                    else {
                                       authController
                                           .verifyToken(_number)
                                           .then((value) {
                                         if (value.isSuccess) {
-                                          Get.toNamed(
+                                          Navigator.of(context).pushNamed(RouteHelper.getResetPasswordRoute(
+                                              _number,
+                                              authController
+                                                  .verificationCode,
+                                              'reset-password')).then((value) {
+                                            Get.back();
+                                          });
+                                         /* Get.toNamed(
                                               RouteHelper.getResetPasswordRoute(
                                                   _number,
                                                   authController
                                                       .verificationCode,
-                                                  'reset-password'));
+                                                  'reset-password'));*/
                                         } else {
                                           showCustomSnackBar(value.message);
                                         }

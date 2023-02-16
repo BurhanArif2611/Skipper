@@ -87,7 +87,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                   inputAction: TextInputAction.done,
                   hintText: 'phone'.tr,
                   maxLength: 11,
-                  isEnabled: (widget.number!=null && widget.number.toString()=="")?true:false,
+                  isEnabled: (widget.number!=null && widget.number.toString()=="")?true:true,
                   onSubmit: (text) => GetPlatform.isWeb ? _forgetPass(_countryDialCode) : null,
                 )),
               ]),
@@ -142,7 +142,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
             }
           }else {
             try{
-            showCustomSnackBar(status.body['message'].toString());}
+            showCustomSnackBar(status.body['errors'][0]['message'].toString());}
                 catch (e){}
           }
         });
