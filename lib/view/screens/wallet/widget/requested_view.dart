@@ -195,7 +195,13 @@ class RequestedView extends StatelessWidget {
                                                                 height: Dimensions
                                                                     .PADDING_SIZE_EXTRA_SMALL),
                                                             Text(
-                                                                'Pending for approval',
+                                                                orderController
+                                                                    .requestTransactionList[
+                                                                index]
+                                                                    .status!=null&& orderController
+                                                                    .requestTransactionList[
+                                                                index]
+                                                                    .status=='pending'? 'Pending for approval':'',
                                                                 style: robotoRegular.copyWith(
                                                                     fontSize:
                                                                         Dimensions
@@ -259,7 +265,8 @@ class RequestedView extends StatelessWidget {
                                     padding: const EdgeInsets.only(top: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                                     child: Divider(color: Theme.of(context).disabledColor),
                                   ),*/
-                                                  ]));
+                                                  ]
+                                                  ));
                                             },
                                           )
                                         : NoDataScreen(text: 'no_data_found'.tr)

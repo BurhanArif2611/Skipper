@@ -14,6 +14,8 @@ import 'package:sixam_mart/helper/network_info.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 
+import '../util/app_constants.dart';
+
 class UserController extends GetxController implements GetxService {
   final UserRepo userRepo;
   UserController({@required this.userRepo});
@@ -108,6 +110,7 @@ class UserController extends GetxController implements GetxService {
       Get.find<AuthController>().clearSharedData();
       Get.find<CartController>().clearCartList();
       Get.find<WishListController>().removeWishes();
+      AppConstants.StoreID=AppConstants.ParantStoreID;
       Get.offAllNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
 
     }else{

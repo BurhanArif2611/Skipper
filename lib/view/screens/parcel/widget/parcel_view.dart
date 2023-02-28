@@ -322,8 +322,12 @@ class _ParcelViewState extends State<ParcelView> {
           if (parcelController.destinationAddress != null && parcelController.destinationAddress.address!=null) {
             addressModel_ = parcelController.destinationAddress;
           }
-          return Center(
-            child: Container(
+          return
+            Center(
+            child:
+              SingleChildScrollView(
+              child:
+            Container(
               height: 600,
               child: Card(
 
@@ -567,7 +571,7 @@ class _ParcelViewState extends State<ParcelView> {
                 ),
                 color:Color(0xFF303030) ,
               ),
-            ),
+            )),
           );
         });
       },

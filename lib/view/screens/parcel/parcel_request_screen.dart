@@ -66,7 +66,8 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
       Get.find<OrderController>().updateTips(-1, notify: false);
 
       Get.find<ParcelController>().setParcelType("EXPRESS DELIVERY");
-      Get.find<ParcelController>().setDeliveryFinalCharge(0);
+      Get.find<ParcelController>().clearFinalCharge(0);
+
     }
   }
 

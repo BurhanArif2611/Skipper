@@ -56,7 +56,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
               ? CustomAppBar(
                   title: 'notification'.tr,
                   backButton: ResponsiveHelper.isDesktop(context))
-              : CustomAppBar(title: 'notification'.tr, backButton: true),
+              : Get.find<StoreController>().store != null && Get.find<StoreController>().store.ecommerce == null
+                  ? CustomAppBar(
+                      title: 'notification'.tr,
+                      backButton: ResponsiveHelper.isDesktop(context))
+                  : CustomAppBar(title: 'notification'.tr, backButton: true),
       endDrawer: MenuDrawer(),
       body: Get.find<AuthController>().isLoggedIn()
           ? GetBuilder<NotificationController>(
@@ -73,158 +77,165 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             await notificationController.getNotificationList(
                                 1, true);
                           },
-                          child: NotificationListener<OverscrollIndicatorNotification>(
-                            onNotification: (OverscrollIndicatorNotification overscroll) {
-                              overscroll.disallowGlow();
-                              return;
-                            },
-                            child:
-                          Scrollbar(
-                              child: SingleChildScrollView(
-                            controller: scrollController,
-                            physics: AlwaysScrollableScrollPhysics(),
-                            child: FooterView(
-                              child: SizedBox(
-                                  width: Dimensions.WEB_MAX_WIDTH,
-                                  child: PaginatedListView(
-                                      scrollController: scrollController,
-                                      onPaginate: (int offset) {
-                                        print("offset..." + offset.toString());
-                                        Get.find<NotificationController>()
-                                            .getNotificationList(offset, true);
-                                      },
-                                      totalSize: notificationController
-                                          .notificationList.length,
-                                      offset: notificationController.offset,
-                                      itemView: ListView.builder(
-                                        itemCount: notificationController
-                                            .notificationList.length,
-                                        padding: EdgeInsets.all(
-                                            Dimensions.PADDING_SIZE_SMALL),
-                                        physics: NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemBuilder: (context, index) {
-                                          DateTime _originalDateTime =
-                                              DateConverter
-                                                  .dateTimeStringToDate(
-                                                      notificationController
-                                                          .notificationList[
-                                                              index]
-                                                          .createdAt);
-                                          DateTime _convertedDate = DateTime(
-                                              _originalDateTime.year,
-                                              _originalDateTime.month,
-                                              _originalDateTime.day);
-                                          bool _addTitle = false;
-                                          if (!_dateTimeList
-                                              .contains(_convertedDate)) {
-                                            _addTitle = true;
-                                            _dateTimeList.add(_convertedDate);
-                                          }
-                                          return Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                _addTitle
-                                                    ? Padding(
-                                                        padding: EdgeInsets.only(
-                                                            bottom: Dimensions
+                          child: NotificationListener<
+                                  OverscrollIndicatorNotification>(
+                              onNotification:
+                                  (OverscrollIndicatorNotification overscroll) {
+                                overscroll.disallowGlow();
+                                return;
+                              },
+                              child: Scrollbar(
+                                  child: SingleChildScrollView(
+                                controller: scrollController,
+                                physics: AlwaysScrollableScrollPhysics(),
+                                child: FooterView(
+                                  child: SizedBox(
+                                      width: Dimensions.WEB_MAX_WIDTH,
+                                      child: PaginatedListView(
+                                          scrollController: scrollController,
+                                          onPaginate: (int offset) {
+                                            print("offset..." +
+                                                offset.toString());
+                                            Get.find<NotificationController>()
+                                                .getNotificationList(
+                                                    offset, true);
+                                          },
+                                          totalSize: notificationController
+                                              .notificationList.length,
+                                          offset: notificationController.offset,
+                                          itemView: ListView.builder(
+                                            itemCount: notificationController
+                                                .notificationList.length,
+                                            padding: EdgeInsets.all(
+                                                Dimensions.PADDING_SIZE_SMALL),
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            itemBuilder: (context, index) {
+                                              DateTime _originalDateTime =
+                                                  DateConverter
+                                                      .dateTimeStringToDate(
+                                                          notificationController
+                                                              .notificationList[
+                                                                  index]
+                                                              .createdAt);
+                                              DateTime _convertedDate =
+                                                  DateTime(
+                                                      _originalDateTime.year,
+                                                      _originalDateTime.month,
+                                                      _originalDateTime.day);
+                                              bool _addTitle = false;
+                                              if (!_dateTimeList
+                                                  .contains(_convertedDate)) {
+                                                _addTitle = true;
+                                                _dateTimeList
+                                                    .add(_convertedDate);
+                                              }
+                                              return Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    _addTitle
+                                                        ? Padding(
+                                                            padding: EdgeInsets.only(
+                                                                bottom: Dimensions
+                                                                    .PADDING_SIZE_EXTRA_SMALL),
+                                                            child: Text(DateConverter
+                                                                .dateTimeStringToDateOnly(
+                                                                    notificationController
+                                                                        .notificationList[
+                                                                            index]
+                                                                        .createdAt)),
+                                                          )
+                                                        : SizedBox(),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return NotificationDialog(
+                                                                  notificationModel:
+                                                                      notificationController
+                                                                              .notificationList[
+                                                                          index]);
+                                                            });
+                                                      },
+                                                      child: Padding(
+                                                        padding: EdgeInsets.symmetric(
+                                                            vertical: Dimensions
                                                                 .PADDING_SIZE_EXTRA_SMALL),
-                                                        child: Text(DateConverter
-                                                            .dateTimeStringToDateOnly(
-                                                                notificationController
-                                                                    .notificationList[
-                                                                        index]
-                                                                    .createdAt)),
-                                                      )
-                                                    : SizedBox(),
-                                                InkWell(
-                                                  onTap: () {
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return NotificationDialog(
-                                                              notificationModel:
+                                                        child: Row(children: [
+                                                          ClipOval(
+                                                              child:
+                                                                  CustomImage(
+                                                            height: 40,
+                                                            width: 40,
+                                                            fit: BoxFit.cover,
+                                                            image:
+                                                                '${Get.find<SplashController>().configModel.baseUrls.notificationImageUrl}'
+                                                                '/${notificationController.notificationList[index].data.image}',
+                                                          )),
+                                                          SizedBox(
+                                                              width: Dimensions
+                                                                  .PADDING_SIZE_SMALL),
+                                                          Expanded(
+                                                              child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                Text(
                                                                   notificationController
                                                                           .notificationList[
-                                                                      index]);
-                                                        });
-                                                  },
-                                                  child: Padding(
-                                                    padding: EdgeInsets.symmetric(
-                                                        vertical: Dimensions
-                                                            .PADDING_SIZE_EXTRA_SMALL),
-                                                    child: Row(children: [
-                                                      ClipOval(
-                                                          child: CustomImage(
-                                                        height: 40,
-                                                        width: 40,
-                                                        fit: BoxFit.cover,
-                                                        image:
-                                                            '${Get.find<SplashController>().configModel.baseUrls.notificationImageUrl}'
-                                                            '/${notificationController.notificationList[index].data.image}',
-                                                      )),
-                                                      SizedBox(
-                                                          width: Dimensions
-                                                              .PADDING_SIZE_SMALL),
-                                                      Expanded(
-                                                          child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                            Text(
-                                                              notificationController
-                                                                      .notificationList[
-                                                                          index]
-                                                                      .data
-                                                                      .title ??
-                                                                  '',
-                                                              maxLines: 1,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              style: robotoMedium
-                                                                  .copyWith(
-                                                                      fontSize:
-                                                                          Dimensions
-                                                                              .fontSizeSmall),
-                                                            ),
-                                                            Text(
-                                                              notificationController
-                                                                      .notificationList[
-                                                                          index]
-                                                                      .data
-                                                                      .description ??
-                                                                  '',
-                                                              maxLines: 1,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              style: robotoRegular
-                                                                  .copyWith(
-                                                                      fontSize:
-                                                                          Dimensions
-                                                                              .fontSizeSmall),
-                                                            ),
-                                                          ])),
-                                                    ]),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      EdgeInsets.only(left: 50),
-                                                  child: Divider(
-                                                      color: Theme.of(context)
-                                                          .disabledColor,
-                                                      thickness: 1),
-                                                ),
-                                              ]);
-                                        },
-                                      ))),
-                            ),
-                          ))),
+                                                                              index]
+                                                                          .data
+                                                                          .title ??
+                                                                      '',
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  style: robotoMedium
+                                                                      .copyWith(
+                                                                          fontSize:
+                                                                              Dimensions.fontSizeSmall),
+                                                                ),
+                                                                Text(
+                                                                  notificationController
+                                                                          .notificationList[
+                                                                              index]
+                                                                          .data
+                                                                          .description ??
+                                                                      '',
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  style: robotoRegular
+                                                                      .copyWith(
+                                                                          fontSize:
+                                                                              Dimensions.fontSizeSmall),
+                                                                ),
+                                                              ])),
+                                                        ]),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 50),
+                                                      child: Divider(
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .disabledColor,
+                                                          thickness: 1),
+                                                    ),
+                                                  ]);
+                                            },
+                                          ))),
+                                ),
+                              ))),
                         )
                       : NoDataScreen(
                           text: 'no_notification_found'.tr, showFooter: true)

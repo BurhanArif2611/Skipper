@@ -15,7 +15,7 @@ class WishListController extends GetxController implements GetxService {
   WishListController({@required this.wishListRepo, @required this.itemRepo});
 
   List<Item> _wishItemList;
-  List<Store> _wishStoreList;
+  List<Store> _wishStoreList=[];
   List<int> _wishItemIdList = [];
   List<int> _wishStoreIdList = [];
 
@@ -25,6 +25,7 @@ class WishListController extends GetxController implements GetxService {
   List<int> get wishStoreIdList => _wishStoreIdList;
 
   void addToWishList(Item product, Store store, bool isStore) async {
+
     Response response = await wishListRepo.addWishList(isStore ? store.id : product.id, isStore);
     if (response.statusCode == 200) {
       if(isStore) {

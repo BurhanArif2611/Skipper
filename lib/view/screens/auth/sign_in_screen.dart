@@ -427,20 +427,14 @@ class _SignInScreenState extends State<SignInScreen> {
           if (authController.isActiveRememberMe) {
             authController.saveUserNumberAndPassword(
                 _phone, _password, countryDialCode);
-            Get.find<BannerController>().getBranchList(true);
 
-            Get.find<StoreController>()
-                .getStoreDetails(Store(id: AppConstants.StoreID), true);
-
-            Get.find<StoreController>()
-                .getStoreItemList(AppConstants.StoreID, 1, 'all', false);
           } else {
             authController.clearUserNumberAndPassword();
           }
 
          // String _token = status.message.substring(1, status.message.length);
           String _token = status.body['token'];
-         print("object>>>"+status.body['is_phone_verified'].toString());
+
           if (Get.find<SplashController>().configModel.customerVerification &&
               status.body['is_phone_verified']==0) {
             List<int> _encoded = utf8.encode(_password);
@@ -449,6 +443,13 @@ class _SignInScreenState extends State<SignInScreen> {
             Get.toNamed(RouteHelper.getVerificationRoute(
                 _numberWithCountryCode, _token, RouteHelper.signUp, _data));
           } else {
+            Get.find<BannerController>().getBranchList(true);
+
+            Get.find<StoreController>()
+                .getStoreDetails(Store(id: AppConstants.StoreID), true);
+
+            Get.find<StoreController>()
+                .getStoreItemList(AppConstants.StoreID, 1, 'all', false);
             Get.toNamed(RouteHelper.getAccessLocationRoute('sign-in'));
           }
         } else {

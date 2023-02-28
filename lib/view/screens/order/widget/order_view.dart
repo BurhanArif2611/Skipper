@@ -91,10 +91,10 @@ class OrderView extends StatelessWidget {
                               Stack(children: [
                                 Container(
                                   height: 60, width: 60, alignment: Alignment.center,
-                                  decoration: _isParcel ? BoxDecoration(
+                                  decoration: /*_isParcel ?*/ BoxDecoration(
                                     borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
                                     color: Theme.of(context).primaryColor.withOpacity(0.2),
-                                  ) : null,
+                                  ) /*: null*/,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
                                     child: CustomImage(
@@ -160,7 +160,8 @@ class OrderView extends StatelessWidget {
                                 ),
                                 SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                                 isRunning ? InkWell(
-                                  onTap: () => Get.toNamed(RouteHelper.getOrderTrackingRoute(paginatedOrderModel.orders[index].id)),
+                                  onTap: () =>
+                                      Get.toNamed(RouteHelper.getOrderTrackingRoute(paginatedOrderModel.orders[index].id)),
                                   child: Container(
                                     padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL, vertical: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                                     decoration: BoxDecoration(
@@ -170,7 +171,7 @@ class OrderView extends StatelessWidget {
                                     child: Row(children: [
                                       Image.asset(Images.tracking, height: 15, width: 15, color: Theme.of(context).primaryColor),
                                       SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                      Text(_isParcel ? 'track_delivery'.tr : 'track_order'.tr, style: robotoMedium.copyWith(
+                                      Text(_isParcel ? 'track_delivery'.tr : 'track_order12'.tr, style: robotoMedium.copyWith(
                                         fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).primaryColor,
                                       )),
                                     ]),

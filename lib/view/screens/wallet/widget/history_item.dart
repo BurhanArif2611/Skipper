@@ -16,10 +16,23 @@ class HistoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return
       Container(
-          padding: EdgeInsets.only(left: Dimensions.PADDING_SIZE_EXTRA_SMALL,right: Dimensions.PADDING_SIZE_EXTRA_SMALL,top: Dimensions.PADDING_SIZE_SMALL),
-
-
-
+          margin: EdgeInsets.all(Dimensions
+              .PADDING_SIZE_EXTRA_SMALL),
+          padding: EdgeInsets.only(
+              left: Dimensions
+                  .PADDING_SIZE_EXTRA_SMALL,
+              right: Dimensions
+                  .PADDING_SIZE_EXTRA_SMALL,
+              top: Dimensions
+                  .PADDING_SIZE_SMALL),
+          decoration: BoxDecoration(
+          color: Theme.of(context)
+              .cardColor,
+          borderRadius:
+          BorderRadius.circular(
+              Dimensions
+                  .RADIUS_SMALL),
+        ),
           child:
       Column(
           children: [
@@ -71,10 +84,10 @@ class HistoryItem extends StatelessWidget {
 
         ],),
 
-      Padding(
+      /*Padding(
         padding: const EdgeInsets.only(top: Dimensions.PADDING_SIZE_EXTRA_SMALL),
         child: Divider(color: Theme.of(context).disabledColor),
-      ),
+      ),*/
     ]));
   }
 }

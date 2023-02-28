@@ -413,6 +413,11 @@ class ParcelController extends GetxController implements GetxService {
     }
     print("setDeliveryFinalCharge>>>"+_deliveryFinalCharge.toString());
   }
+  void clearFinalCharge(double deliveryCharge) {
+    _deliveryFinalCharge = deliveryCharge;
+    update();
+
+  }
 
   void setPaymentIndex(int index, bool notify) {
     _paymentIndex = index;

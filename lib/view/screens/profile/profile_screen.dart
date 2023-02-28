@@ -174,7 +174,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height: _isLoggedIn
                                   ? Dimensions.PADDING_SIZE_SMALL
                                   : 0),
-                          _isLoggedIn
+                          _isLoggedIn && (AppConstants.ParantStoreID.toString()==AppConstants.StoreID.toString())
                               ? ProfileButton(
                                   icon: Icons.lock,
                                   title: 'change_password'.tr,
@@ -188,18 +188,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height: _isLoggedIn
                                   ? Dimensions.PADDING_SIZE_SMALL
                                   : 0),
+                          _isLoggedIn && (AppConstants.ParantStoreID.toString()==AppConstants.StoreID.toString())?
                           ProfileButton(
                               icon: Icons.edit,
                               title: 'edit_profile'.tr,
                               onTap: () {
                                 Get.toNamed(
                                     RouteHelper.getUpdateProfileRoute());
-                              }),
+                              }): SizedBox(),
                           SizedBox(
                               height: _isLoggedIn
                                   ? Dimensions.PADDING_SIZE_SMALL
                                   : Dimensions.PADDING_SIZE_LARGE),
-                          _isLoggedIn
+                          _isLoggedIn && (AppConstants.ParantStoreID.toString()==AppConstants.StoreID.toString())
                               ? ProfileButton(
                                   icon: Icons.delete,
                                   title: 'delete_account'.tr,

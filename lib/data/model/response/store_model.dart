@@ -347,7 +347,6 @@ class Zones {
     data['id'] = this.id;
     data['store_id'] = this.store_id;
     data['zone_id'] = this.zone_id;
-
     return data;
   }
 }

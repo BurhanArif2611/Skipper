@@ -17,6 +17,7 @@ import 'package:sixam_mart/view/base/confirmation_dialog.dart';
 import '../../controller/order_controller.dart';
 import '../../controller/parcel_controller.dart';
 import '../../controller/store_controller.dart';
+import '../../util/app_constants.dart';
 
 class MenuDrawer extends StatefulWidget {
   const MenuDrawer({Key key}) : super(key: key);
@@ -91,6 +92,7 @@ class _MenuDrawerState extends State<MenuDrawer> with SingleTickerProviderStateM
           Get.find<LocationController>().clear();
           Get.find<StoreController>().clear();
           //Get.reset();
+          AppConstants.StoreID=AppConstants.ParantStoreID;
           Get.offAllNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
          /**/
 

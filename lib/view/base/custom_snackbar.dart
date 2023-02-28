@@ -37,7 +37,10 @@ void showCustomSnackBar(String message, {bool isError = true}) {
                   child: Container(
                     color: Theme.of(Get.context).disabledColor,
                     padding: const EdgeInsets.all(14),
-                    child: const Text("okay"),
+                    child:  Text("okay",style:robotoRegular.copyWith(
+                        fontSize: Dimensions.fontSizeSmall,
+                        color: Theme.of(Get.context).primaryColor),
+                        textAlign: TextAlign.center),
                   ),
                 ),
               ],
