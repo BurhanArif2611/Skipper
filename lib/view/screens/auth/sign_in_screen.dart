@@ -216,6 +216,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                           if (_phoneController.text.isEmpty) {
                                             showCustomSnackBar(
                                                 'enter_phone_number'.tr);
+                                          }else if (_phoneController.text.length<=9 ) {
+                                            showCustomSnackBar(
+                                                'Enter valid phone number'.tr);
                                           } else {
                                             String _numberWithCountryCode =
                                                 _countryDialCode +

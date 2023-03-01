@@ -171,7 +171,7 @@ class OrderView extends StatelessWidget {
                                     child: Row(children: [
                                       Image.asset(Images.tracking, height: 15, width: 15, color: Theme.of(context).primaryColor),
                                       SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                      Text(_isParcel ? 'track_delivery'.tr : 'track_order12'.tr, style: robotoMedium.copyWith(
+                                      Text(_isParcel ? 'track_delivery'.tr : 'track_order'.tr, style: robotoMedium.copyWith(
                                         fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).primaryColor,
                                       )),
                                     ]),

@@ -217,10 +217,13 @@ class WalletController extends GetxController implements GetxService {
     _isLoading = true;
     update();
     Response response = await walletRepo.getBankList();
-    if (response.statusCode == 200 && response.body['status'] == 'success') {
-      _predictionList = [];
-      response.body['data'].forEach(
-          (prediction) => _predictionList.add(BankList.fromJson(prediction)));
+    if (response.statusCode == 200 ) {
+      if(response.body['status'] == 'success') {
+        _predictionList = [];
+        response.body['data'].forEach(
+                (prediction) =>
+                _predictionList.add(BankList.fromJson(prediction)));
+      }
     } else {
       showCustomSnackBar(response.body['error_message']);
     }
