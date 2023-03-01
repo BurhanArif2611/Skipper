@@ -316,7 +316,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               focusNode: _passwordFocus,
                               inputAction: TextInputAction.done,
                               inputType: TextInputType.visiblePassword,
-                              prefixIcon: Images.lock,
+                              prefixIcon: 'lock',
                               isPassword: true,
                               onSubmit: (text) => (GetPlatform.isWeb &&
                                       authController.acceptTerms)
@@ -451,6 +451,7 @@ class _SignInScreenState extends State<SignInScreen> {
             Get.find<StoreController>()
                 .getStoreItemList(AppConstants.StoreID, 1, 'all', false);
             Get.toNamed(RouteHelper.getAccessLocationRoute('sign-in'));
+
           }
         } else {
          // showCustomSnackBar(status.message);

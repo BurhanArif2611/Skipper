@@ -1102,18 +1102,13 @@ class _WalletScreenState extends State<WalletScreen> with TickerProviderStateMix
                       SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Container(
-                            height: 40,
-                            child: DottedBorder(
-                                color: Colors.black,
-                                strokeWidth: 0.2,
-                                child: MyTextField(
+                        child: MyTextField(
                                     hintText: 'Enter Amount',
                                     inputType: TextInputType.number,
                                     controller: titleController,
                                     capitalization: TextCapitalization.words,
                                     inputAction: TextInputAction.done
-                                ))),
+                                ),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                       GetBuilder<WalletController>(builder: (orderController) {

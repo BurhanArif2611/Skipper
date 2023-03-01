@@ -330,25 +330,8 @@ class LocationController extends GetxController implements GetxService {
         Get.back();
         showCustomSnackBar(response.message);
 
-        showDialog(
-          context: Get.context,
-          builder: (ctx) => AlertDialog(
-            title: const Text("Alert"),
-            content: const Text("Service not available in this area"),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                },
-                child: Container(
-                  color: Theme.of(Get.context).disabledColor,
-                  padding: const EdgeInsets.all(14),
-                  child: const Text("OK"),
-                ),
-              ),
-            ],
-          ),
-        );
+
+
       }
     });
   }

@@ -58,7 +58,7 @@ class Item {
   String unitType;
   int stock;
   String availableDateStarts;
-
+  Category category;
   Item(
       {this.id,
         this.name,
@@ -86,6 +86,7 @@ class Item {
         this.moduleId,
         this.unitType,
         this.stock,
+        this.category,
       });
 
   Item.fromJson(Map<String, dynamic> json) {
@@ -136,6 +137,9 @@ class Item {
     stock = json['stock'];
     unitType = json['unit_type'];
     availableDateStarts = json['available_date_starts'];
+    category = json['category'] != null
+        ? new Category.fromJson(json['category'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -176,6 +180,8 @@ class Item {
     data['stock'] = this.stock;
     data['unit_type'] = this.unitType;
     data['available_date_starts'] = this.availableDateStarts;
+    data['category'] = this.category;
+
     return data;
   }
 }
@@ -192,6 +198,23 @@ class CategoryIds {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    return data;
+  }
+}class Category {
+  String name;
+  String parent_id;
+
+  Category({this.name,this.parent_id});
+
+  Category.fromJson(Map<String, dynamic> json) {
+    name = json['name'].toString();
+    parent_id = json['parent_id'].toString();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['parent_id'] = this.parent_id;
     return data;
   }
 }

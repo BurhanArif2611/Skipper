@@ -153,7 +153,10 @@ class ItemWidget extends StatelessWidget {
                     ) : SizedBox(),
 
                   ]),
-
+                  (item.category!=null && item.category.parent_id!=null?
+                  Text(item.category!=null && item.category.parent_id!=null? "Sub cat:"+item.category.name.toString():'',
+                    style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
+                  ):SizedBox()),
                 ]),
               ),
 

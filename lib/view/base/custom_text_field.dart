@@ -85,7 +85,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
             filled: true,
             prefixIcon: widget.prefixIcon != null ? Padding(
               padding: EdgeInsets.symmetric(horizontal: widget.prefixSize),
-              child: Image.asset(widget.prefixIcon, height: 20, width: 20),
+              child: widget.prefixIcon.toString() == "lock" ?
+              Icon(Icons.lock_clock_outlined , color: Theme.of(context).hintColor):
+              Image.asset(widget.prefixIcon, height: 20, width: 20,color: Colors.white),
             ) : null,
             suffixIcon: widget.isPassword ? IconButton(
               hoverColor: Colors.transparent,

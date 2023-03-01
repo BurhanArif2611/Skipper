@@ -414,9 +414,9 @@ class ParcelController extends GetxController implements GetxService {
     print("setDeliveryFinalCharge>>>"+_deliveryFinalCharge.toString());
   }
   void clearFinalCharge(double deliveryCharge) {
-    _deliveryFinalCharge = deliveryCharge;
-    update();
-
+    try{
+      _deliveryFinalCharge = deliveryCharge;
+      update();}catch(e){}
   }
 
   void setPaymentIndex(int index, bool notify) {
