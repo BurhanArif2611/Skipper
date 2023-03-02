@@ -153,10 +153,32 @@ class ItemWidget extends StatelessWidget {
                     ) : SizedBox(),
 
                   ]),
-                  (item.category!=null && item.category.parent_id!=null?
-                  Text(item.category!=null && item.category.parent_id!=null? "Sub cat:"+item.category.name.toString():'',
-                    style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
-                  ):SizedBox()),
+                  (item!=null && item.category!=null && item.category.parent_id!=null?
+                  Container(
+                      padding: EdgeInsets.only(top:Dimensions.PADDING_SIZE_EXTRA_SMALL,left:Dimensions.PADDING_SIZE_SMALL,right:Dimensions.PADDING_SIZE_SMALL,bottom:Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                      margin: EdgeInsets.only(top:Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                      decoration:  BoxDecoration(
+                        borderRadius: BorderRadius
+                            .horizontal(
+                          left: Radius.circular(
+                            Dimensions
+                                .RADIUS_EXTRA_LARGE
+                            ,
+                          ),
+                          right: Radius.circular(
+                            Dimensions
+                                .RADIUS_EXTRA_LARGE
+                            ,
+                          ),
+                        ),
+                        color: Theme.of(context)
+                            .primaryColor
+                            .withOpacity(0.1),
+                      ),
+
+                      child: Text(item.category!=null && item.category.parent_id!=null? item.category.name.toString():'',
+                        style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
+                      )):SizedBox()),
                 ]),
               ),
 

@@ -54,7 +54,7 @@ class ItemsView extends StatelessWidget {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisSpacing: Dimensions.PADDING_SIZE_LARGE,
           mainAxisSpacing: ResponsiveHelper.isDesktop(context) ? Dimensions.PADDING_SIZE_LARGE : 0.01,
-          childAspectRatio: ResponsiveHelper.isDesktop(context) ? 4 : showTheme1Store ? 1.9 : 3.6,
+          childAspectRatio: ResponsiveHelper.isDesktop(context) ? 4 : showTheme1Store ? 1.9 : 3.3,
           crossAxisCount: ResponsiveHelper.isMobile(context) ? 1 : 2,
         ),
         physics: isScrollable ? BouncingScrollPhysics() : NeverScrollableScrollPhysics(),
