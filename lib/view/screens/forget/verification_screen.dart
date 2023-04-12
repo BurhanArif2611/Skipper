@@ -40,7 +40,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
   @override
   void initState() {
     super.initState();
-
+    try {
+      Get.find<AuthController>().clearVerificationCode();
+    }catch(e){}
     _number = widget.number.startsWith('+')
         ? widget.number
         : '+' + widget.number.substring(1, widget.number.length);
@@ -174,11 +176,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             TextButton(
                               onPressed: _seconds < 1
                                   ? () {
-                                      if (authController.verificationCode
+                                      /*if (authController.verificationCode
                                               .toString() ==
                                           '') {
                                         showCustomSnackBar('Enter OTP'.tr);
-                                      } else {
+                                      } else {*/
                                         if (widget.fromSignUp) {
                                           authController
                                               .login(_number, widget.password)
@@ -192,7 +194,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                               showCustomSnackBar(value.message);
                                             }
                                           });
-                                        } else {
+                                        }
+                                        else {
                                           authController
                                               .forgetPassword(_number)
                                               .then((value) {
@@ -210,14 +213,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                             }
                                           });
                                         }
-                                      }
+                                     /* }*/
                                     }
                                   : null,
                               child: Text(
                                   '${'resend'.tr}${_seconds > 0 ? ' ($_seconds)' : ''}'),
                             ),
                           ]) /*: SizedBox()*/,
-                      authController.verificationCode.length == 4
+                      authController.verificationCode!=null && authController.verificationCode.length == 4 &&   authController.verificationCode!=''
                           ? !authController.isLoading
                               ? CustomButton(
                                   buttonText: 'verify'.tr,

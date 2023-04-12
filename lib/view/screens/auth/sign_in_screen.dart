@@ -46,7 +46,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _passwordController = TextEditingController();
   String _countryDialCode;
   bool _canExit = GetPlatform.isWeb ? true : false;
-  bool _showPassword = false;
+  bool _showPassword = true;
 
   @override
   void initState() {
@@ -203,15 +203,16 @@ class _SignInScreenState extends State<SignInScreen> {
                                   focusNode: _phoneFocus,
                                   nextFocus: _passwordFocus,
                                   inputType: TextInputType.phone,
-                                  isEnabled: _showPassword ? false : true,
+                                /*  isEnabled: _showPassword ? false : true,*/
                                   divider: false,
                                   maxLength: 11,
                                 )),
-                            Container(
+                          /*  Container(
                                 margin: EdgeInsets.only(
                                     right: Dimensions.PADDING_SIZE_SMALL),
                                 child: !_showPassword
-                                    ? InkWell(
+                                    ?
+                                InkWell(
                                         onTap: () async {
                                           if (_phoneController.text.isEmpty) {
                                             showCustomSnackBar(
@@ -243,18 +244,22 @@ class _SignInScreenState extends State<SignInScreen> {
                                                   if (!status.body['flag']) {
                                                     _showPassword = true;
                                                   } else {
-                                                    /* Get.toNamed(RouteHelper
+                                                    */
+                            /* Get.toNamed(RouteHelper
                                                         .getForgotPassRoute(
                                                         false, null,_phoneController.text));*/
+                            /*
                                                     authController
                                                         .forgetPassword(
                                                             _numberWithCountryCode)
                                                         .then((status) async {
-                                                      /*if (status.isSuccess) {
+                                                      */
+                            /*if (status.isSuccess) {
                                                         Get.toNamed(RouteHelper.getVerificationRoute(_numberWithCountryCode.toString(), '', RouteHelper.signIn, ''));
                                                       }else {
                                                         showCustomSnackBar(status.message);
                                                       }*/
+                            /*
                                                       if (status.statusCode ==
                                                           200) {
                                                         if (!status
@@ -312,7 +317,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                         child: Icon(Icons.cancel_outlined,
                                             color: Theme.of(context)
                                                 .hintColor
-                                                .withOpacity(0.3)))),
+                                                .withOpacity(0.3)))),*/
                           ]),
                           Padding(
                               padding: EdgeInsets.symmetric(
@@ -354,12 +359,12 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                           TextButton(
                             onPressed: () {
-                              if (_phoneController.text.isEmpty) {
+                             /* if (_phoneController.text.isEmpty) {
                                 showCustomSnackBar('enter_phone_number'.tr);
-                              } else {
+                              } else {*/
                                 Get.toNamed(RouteHelper.getForgotPassRoute(
                                     false, null, _phoneController.text));
-                              }
+                              /*}*/
                             },
                             child: Text('${'forgot_password'.tr}?'),
                           ),

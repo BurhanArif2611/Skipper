@@ -27,6 +27,7 @@ import 'package:sixam_mart/view/screens/checkout/widget/payment_button.dart';
 import 'package:sixam_mart/view/screens/parcel/widget/card_widget.dart';
 import 'package:sixam_mart/view/screens/parcel/widget/details_widget.dart';
 import 'package:universal_html/html.dart' as html;
+import '../../base/web_menu_bar.dart';
 import '../checkout/widget/tips_widget.dart';
 
 class ParcelRequestScreen extends StatefulWidget {
@@ -36,8 +37,8 @@ class ParcelRequestScreen extends StatefulWidget {
 
   const ParcelRequestScreen(
       {@required this.parcelCategory,
-      @required this.pickedUpAddress,
-      @required this.destinationAddress});
+        @required this.pickedUpAddress,
+        @required this.destinationAddress});
 
   @override
   State<ParcelRequestScreen> createState() => _ParcelRequestScreenState();
@@ -67,14 +68,13 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
 
       Get.find<ParcelController>().setParcelType("EXPRESS DELIVERY");
       Get.find<ParcelController>().clearFinalCharge(0);
-
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'parcel_request'.tr),
+      appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : CustomAppBar(title: 'parcel_request'.tr),
       endDrawer: MenuDrawer(),
       body: GetBuilder<ParcelController>(builder: (parcelController) {
         double _charge = -1;
@@ -107,303 +107,310 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
 
         return _isLoggedIn
             ? Column(children: [
-                Expanded(
-                    child: SingleChildScrollView(
-                  padding: ResponsiveHelper.isDesktop(context)
-                      ? null
-                      : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                  child: FooterView(
-                      child: SizedBox(
-                          width: Dimensions.WEB_MAX_WIDTH,
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CardWidget(
-                                    child: Row(children: [
-                                  Container(
-                                    height: 50,
-                                    width: 50,
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.all(
-                                        Dimensions.PADDING_SIZE_SMALL),
-                                    decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .primaryColor
-                                            .withOpacity(0.3),
-                                        shape: BoxShape.circle),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                          Dimensions.RADIUS_SMALL),
-                                      child: CustomImage(
-                                        image:
-                                            '${Get.find<SplashController>().configModel.baseUrls.parcelCategoryImageUrl}'
-                                            '/${widget.parcelCategory.image}',
-                                        height: 40,
-                                        width: 40,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                      width: Dimensions.PADDING_SIZE_SMALL),
-                                  Expanded(
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                        Text(widget.parcelCategory.name,
-                                            style: robotoMedium.copyWith(
-                                                color: Theme.of(context)
-                                                    .primaryColor)),
-                                        Text(
-                                          widget.parcelCategory.description,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: robotoRegular.copyWith(
-                                              color: Theme.of(context)
-                                                  .disabledColor),
+          Expanded(
+              child: SingleChildScrollView(
+                padding: ResponsiveHelper.isDesktop(context)
+                    ? null
+                    : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                child: FooterView(
+                    child: SizedBox(
+                        width: Dimensions.WEB_MAX_WIDTH,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CardWidget(
+                                  child: Row(children: [
+                                    Container(
+                                      height: 50,
+                                      width: 50,
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.all(
+                                          Dimensions.PADDING_SIZE_SMALL),
+                                      decoration: BoxDecoration(
+                                          color: Theme.of(context)
+                                              .primaryColor
+                                              .withOpacity(0.3),
+                                          shape: BoxShape.circle),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                            Dimensions.RADIUS_SMALL),
+                                        child: CustomImage(
+                                          image:
+                                          '${Get.find<SplashController>().configModel.baseUrls.parcelCategoryImageUrl}'
+                                              '/${widget.parcelCategory.image}',
+                                          height: 40,
+                                          width: 40,
                                         ),
-                                      ])),
-                                ])),
-                                SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                                CardWidget(
-                                    child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                      DetailsWidget(
-                                          title: 'sender_details'.tr,
-                                          address: widget.pickedUpAddress),
-                                      SizedBox(
-                                          height:
-                                              Dimensions.PADDING_SIZE_LARGE),
-                                      if (parcelController.anotherList.length ==
-                                          0)
-                                        DetailsWidget(
-                                            title: 'receiver_details'.tr,
-                                            address: widget.destinationAddress),
-                                      if (parcelController.anotherList.length >
-                                          0)
-                                        Text('receiver_details'.tr,
-                                            style: robotoMedium),
-                                      if (parcelController.anotherList.length >
-                                          0)
-                                        SizedBox(
-                                            height: Dimensions
-                                                .PADDING_SIZE_EXTRA_SMALL),
-                                      if (parcelController.anotherList.length >
-                                          0)
-                                        ListView.builder(
-                                            shrinkWrap: true,
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            itemCount: parcelController
-                                                .anotherList.length,
-                                            padding: EdgeInsets.zero,
-                                            itemBuilder: (context, index) {
-                                              return DetailsWidget(
-                                                  title: '',
-                                                  address: parcelController
-                                                      .anotherList[index]);
-                                            }),
-                                    ])),
-                                SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                                CardWidget(
-                                    child: Row(children: [
-                                  Expanded(
-                                      child: Row(children: [
-                                    Image.asset(Images.distance,
-                                        height: 30, width: 30),
-                                    SizedBox(
-                                        width: Dimensions.PADDING_SIZE_SMALL),
-                                    Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text('distance'.tr,
-                                              style: robotoRegular),
-                                          Text(
-                                            parcelController.distance == -1
-                                                ? 'calculating'.tr
-                                                : '${parcelController.distance.toStringAsFixed(2)} ${'km'.tr}',
-                                            style: robotoBold.copyWith(
-                                                color: Theme.of(context)
-                                                    .primaryColor),
-                                          ),
-                                        ]),
-                                  ])),
-                                  Expanded(
-                                      child: Row(children: [
-                                    Image.asset(Images.delivery,
-                                        height: 30, width: 30),
-                                    SizedBox(
-                                        width: Dimensions.PADDING_SIZE_SMALL),
-                                    Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text('delivery_fee'.tr,
-                                              style: robotoRegular),
-                                          Text(
-                                              '(' +
-                                                  parcelController.selectedParcelType +
-                                                  ')',
-                                              style: robotoRegular.copyWith(
-                                                  color: Theme.of(context)
-                                                      .disabledColor,
-                                                  fontSize: Dimensions
-                                                      .fontSizeLargeExtraSmall)),
-                                          Text(
-                                            parcelController.distance == -1
-                                                ? 'calculating'.tr
-                                                :
-                                                //  PriceConverter.convertPrice(_charge)
-                                                PriceConverter.convertPrice(
-                                                    parcelController
-                                                        .deliveryFinalCharge),
-                                            style: robotoBold.copyWith(
-                                                color: Theme.of(context)
-                                                    .primaryColor),
-                                          ),
-                                        ]),
-                                    SizedBox(
-                                        width: Dimensions
-                                            .PADDING_SIZE_EXTRA_SMALL),
-                                    InkWell(
-                                      child: Icon(
-                                        Icons.chevron_right,
-                                        size: 25,
-                                        color: Colors.grey,
                                       ),
-                                      onTap: () {
-                                        setState(
-                                            () => {showCustomDialog(context)});
-                                      },
                                     ),
-                                  ]))
-                                ])),
-                                SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                                (Get.find<SplashController>()
-                                            .configModel
-                                            .dmTipsStatus ==
-                                        1)
-                                    ? GetBuilder<OrderController>(
-                                        builder: (orderController) {
-                                        return Container(
-                                          color: Theme.of(context).cardColor,
-                                          padding: EdgeInsets.symmetric(
-                                              vertical:
-                                                  Dimensions.PADDING_SIZE_LARGE,
-                                              horizontal: Dimensions
-                                                  .PADDING_SIZE_SMALL),
-                                          child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text('delivery_man_tips'.tr,
-                                                    style: robotoMedium),
-                                                SizedBox(
-                                                    height: Dimensions
-                                                        .PADDING_SIZE_SMALL),
-                                                Container(
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
+                                    SizedBox(
+                                        width: Dimensions.PADDING_SIZE_SMALL),
+                                    Expanded(
+                                        child: Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              Text(widget.parcelCategory.name,
+                                                  style: robotoMedium.copyWith(
+                                                      color: Theme.of(context)
+                                                          .primaryColor)),
+                                              Text(
+                                                widget.parcelCategory.description,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: robotoRegular.copyWith(
                                                     color: Theme.of(context)
-                                                        .cardColor,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            Dimensions
-                                                                .RADIUS_SMALL),
-                                                    border: Border.all(
-                                                        color: Theme.of(context)
-                                                            .primaryColor),
-                                                  ),
-                                                  child: TextField(
-                                                    controller: _tipController,
-                                                    onChanged: (String value) {
-                                                      if (value.isNotEmpty) {
-                                                        orderController.addTips(
-                                                            double.parse(
-                                                                value));
-                                                      } else {
-                                                        orderController
-                                                            .addTips(0.0);
-                                                      }
-                                                    },
-                                                    maxLength: 10,
-                                                    keyboardType:
-                                                        TextInputType.number,
-                                                    inputFormatters: [
-                                                      FilteringTextInputFormatter
-                                                          .allow(
-                                                              RegExp(r'[0-9.]'))
-                                                    ],
-                                                    decoration: InputDecoration(
-                                                      hintText:
-                                                          'enter_amount'.tr,
-                                                      counterText: '',
-                                                      border:
-                                                          OutlineInputBorder(
-                                                        borderRadius: BorderRadius
-                                                            .circular(Dimensions
-                                                                .RADIUS_SMALL),
-                                                        borderSide:
-                                                            BorderSide.none,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                    height: Dimensions
-                                                        .PADDING_SIZE_DEFAULT),
-                                                SizedBox(
-                                                  height: 55,
-                                                  child: ListView.builder(
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    shrinkWrap: true,
-                                                    physics:
-                                                        BouncingScrollPhysics(),
-                                                    itemCount: AppConstants
-                                                        .tips.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      return TipsWidget(
-                                                        title: AppConstants
-                                                            .tips[index]
-                                                            .toString(),
-                                                        isSelected: orderController
-                                                                .selectedTips ==
-                                                            index,
-                                                        onTap: () {
-                                                          orderController
-                                                              .updateTips(
-                                                                  index);
-                                                          orderController.addTips(
-                                                              AppConstants
-                                                                  .tips[index]
-                                                                  .toDouble());
-                                                          _tipController.text =
-                                                              orderController
-                                                                  .tips
-                                                                  .toString();
-                                                        },
-                                                      );
-                                                    },
-                                                  ),
+                                                        .disabledColor),
+                                              ),
+                                            ])),
+                                  ])),
+                              SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                              CardWidget(
+                                  child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                      children: [
+                                        DetailsWidget(
+                                            title: 'sender_details'.tr,
+                                            address: widget.pickedUpAddress),
+                                        SizedBox(
+                                            height:
+                                            Dimensions.PADDING_SIZE_LARGE),
+                                        if (parcelController.anotherList.length ==
+                                            0)
+                                          DetailsWidget(
+                                              title: 'receiver_details'.tr,
+                                              address: widget.destinationAddress),
+                                        if (parcelController.anotherList.length >
+                                            0)
+                                          Text('receiver_details'.tr,
+                                              style: robotoMedium),
+                                        if (parcelController.anotherList.length >
+                                            0)
+                                          SizedBox(
+                                              height: Dimensions
+                                                  .PADDING_SIZE_EXTRA_SMALL),
+                                        if (parcelController.anotherList.length >
+                                            0)
+                                          ListView.builder(
+                                              shrinkWrap: true,
+                                              physics:
+                                              NeverScrollableScrollPhysics(),
+                                              itemCount: parcelController
+                                                  .anotherList.length,
+                                              padding: EdgeInsets.zero,
+                                              itemBuilder: (context, index) {
+                                                return DetailsWidget(
+                                                    title: '',
+                                                    address: parcelController
+                                                        .anotherList[index]);
+                                              }),
+                                      ])),
+                              SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                              CardWidget(
+                                  child: Row(children: [
+                                    Expanded(
+                                        flex: 5,
+                                        child: Row(children: [
+                                          Image.asset(Images.distance,
+                                              height: 30, width: 30),
+                                          SizedBox(
+                                              width: Dimensions.PADDING_SIZE_SMALL),
+                                          Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Text('distance'.tr,
+                                                    style: robotoRegular),
+                                                Text(
+                                                  parcelController.distance == -1
+                                                      ? 'calculating'.tr
+                                                      : '${parcelController.distance.toStringAsFixed(2)} ${'km'.tr}',
+                                                  style: robotoBold.copyWith(
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
                                                 ),
                                               ]),
-                                        );
-                                      })
-                                    : SizedBox.shrink(),
-                                SizedBox(
-                                    height: (Get.find<SplashController>()
-                                                .configModel
-                                                .dmTipsStatus ==
-                                            1)
-                                        ? Dimensions.PADDING_SIZE_EXTRA_SMALL
-                                        : 0),
-                                Text('charge_pay_by'.tr, style: robotoMedium),
-                               /* SizedBox(
+                                        ])),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Row(children: [
+                                          Image.asset(Images.delivery,
+                                              height: 30, width: 30),
+                                          SizedBox(
+                                              width: Dimensions.PADDING_SIZE_SMALL),
+                                          Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Text('delivery_fee'.tr,
+                                                    style: robotoRegular),
+                                                Text(
+                                                    '(' +
+                                                        parcelController
+                                                            .selectedParcelType +
+                                                        ')',
+                                                    style: robotoRegular.copyWith(
+                                                        color: Theme.of(context)
+                                                            .disabledColor,
+                                                        fontSize: Dimensions
+                                                            .fontSizeLargeExtraSmall)),
+                                                Text(
+                                                  parcelController.distance == -1
+                                                      ? 'calculating'.tr
+                                                      :
+                                                  //  PriceConverter.convertPrice(_charge)
+                                                  PriceConverter.convertPrice(
+                                                      parcelController
+                                                          .deliveryFinalCharge),
+                                                  style: robotoBold.copyWith(
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                ),
+                                              ]),
+                                          SizedBox(
+                                              width: Dimensions
+                                                  .PADDING_SIZE_EXTRA_LARGE_SMALL),
+                                          InkWell(
+                                            child: Icon(
+                                              Icons.chevron_right,
+                                              size: 25,
+                                              color: Colors.grey,
+                                            ),
+                                            onTap: () {
+                                              setState(
+                                                      () => {showCustomDialog(context)});
+                                            },
+                                          ),
+                                        ]))
+
+                                  ])),
+                              SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                              (Get.find<SplashController>()
+                                  .configModel
+                                  .dmTipsStatus ==
+                                  1)
+                                  ? GetBuilder<OrderController>(
+                                  builder: (orderController) {
+                                    return Container(
+                                      color: Theme.of(context).cardColor,
+                                      padding: EdgeInsets.symmetric(
+                                          vertical:
+                                          Dimensions.PADDING_SIZE_LARGE,
+                                          horizontal: Dimensions
+                                              .PADDING_SIZE_SMALL),
+                                      child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Text('delivery_man_tips'.tr,
+                                                style: robotoMedium),
+                                            SizedBox(
+                                                height: Dimensions
+                                                    .PADDING_SIZE_SMALL),
+                                            Container(
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .cardColor,
+                                                borderRadius:
+                                                BorderRadius.circular(
+                                                    Dimensions
+                                                        .RADIUS_SMALL),
+                                                border: Border.all(
+                                                    color: Theme.of(context)
+                                                        .primaryColor),
+                                              ),
+                                              child: TextField(
+                                                controller: _tipController,
+                                                onChanged: (String value) {
+                                                  if (value.isNotEmpty) {
+                                                    orderController.addTips(
+                                                        double.parse(
+                                                            value));
+                                                  } else {
+                                                    orderController
+                                                        .addTips(0.0);
+                                                  }
+                                                },
+                                                maxLength: 10,
+                                                keyboardType:
+                                                TextInputType.number,
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter
+                                                      .allow(
+                                                      RegExp(r'[0-9.]'))
+                                                ],
+                                                decoration: InputDecoration(
+                                                  hintText:
+                                                  'enter_amount'.tr,
+                                                  counterText: '',
+                                                  border:
+                                                  OutlineInputBorder(
+                                                    borderRadius: BorderRadius
+                                                        .circular(Dimensions
+                                                        .RADIUS_SMALL),
+                                                    borderSide:
+                                                    BorderSide.none,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                                height: Dimensions
+                                                    .PADDING_SIZE_DEFAULT),
+                                            SizedBox(
+                                              height: 55,
+                                              child: ListView.builder(
+                                                scrollDirection:
+                                                Axis.horizontal,
+                                                shrinkWrap: true,
+                                                physics:
+                                                BouncingScrollPhysics(),
+                                                itemCount: AppConstants
+                                                    .tips.length,
+                                                itemBuilder:
+                                                    (context, index) {
+                                                  return TipsWidget(
+                                                    title: AppConstants
+                                                        .tips[index]
+                                                        .toString(),
+                                                    isSelected: orderController
+                                                        .selectedTips ==
+                                                        index,
+                                                    onTap: () {
+                                                      orderController
+                                                          .updateTips(
+                                                          index);
+                                                      orderController.addTips(
+                                                          AppConstants
+                                                              .tips[index]
+                                                              .toDouble());
+                                                      setState(() {
+                                                        _tipController
+                                                            .text =
+                                                            orderController
+                                                                .tips
+                                                                .toString();
+                                                      });
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          ]),
+                                    );
+                                  })
+                                  : SizedBox.shrink(),
+                              SizedBox(
+                                  height: (Get.find<SplashController>()
+                                      .configModel
+                                      .dmTipsStatus ==
+                                      1)
+                                      ? Dimensions.PADDING_SIZE_EXTRA_SMALL
+                                      : 0),
+                              Text('charge_pay_by'.tr, style: robotoMedium),
+                              /* SizedBox(
                                     height:
                                         Dimensions.PADDING_SIZE_EXTRA_SMALL),
                                 Row(children: [
@@ -454,26 +461,26 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                         ))
                                       : SizedBox(),
                                 ]),*/
-                                SizedBox(
-                                    height:
-                                        Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                Get.find<SplashController>()
-                                                .configModel
-                                                .customerWalletStatus ==
-                                            1 &&
-                                        parcelController.payerIndex == 0
-                                    ? PaymentButton(
-                                        icon: Images.wallet,
-                                        title: 'wallet_payment'.tr,
-                                        subtitle:
-                                            'pay_from_your_existing_balance'.tr,
-                                        isSelected:
-                                            parcelController.paymentIndex == 2,
-                                        onTap: () => parcelController
-                                            .setPaymentIndex(2, true),
-                                      )
-                                    : SizedBox(),
-                                SizedBox(
+                              SizedBox(
+                                  height:
+                                  Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                              Get.find<SplashController>()
+                                  .configModel
+                                  .customerWalletStatus ==
+                                  1 &&
+                                  parcelController.payerIndex == 0
+                                  ? PaymentButton(
+                                icon: Images.wallet,
+                                title: 'wallet_payment'.tr,
+                                subtitle:
+                                'pay_from_your_existing_balance'.tr,
+                                isSelected:
+                                parcelController.paymentIndex == 2,
+                                onTap: () => parcelController
+                                    .setPaymentIndex(2, true),
+                              )
+                                  : SizedBox(),
+                              /* SizedBox(
                                     height:
                                         Dimensions.PADDING_SIZE_EXTRA_SMALL),
                                 Get.find<SplashController>()
@@ -490,34 +497,128 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                         onTap: () => parcelController
                                             .setPaymentIndex(0, true),
                                       )
-                                    : SizedBox(),
-                                (Get.find<SplashController>()
-                                            .configModel
-                                            .digitalPayment &&
-                                        parcelController.payerIndex == 0)
-                                    ? PaymentButton(
-                                        icon: Images.digital_payment,
-                                        title: 'digital_payment'.tr,
-                                        subtitle: 'faster_and_safe_way'.tr,
-                                        isSelected:
-                                            parcelController.paymentIndex == 1,
-                                        onTap: () => parcelController
-                                            .setPaymentIndex(1, true),
-                                      )
-                                    : SizedBox(),
-                                SizedBox(
-                                    height: ResponsiveHelper.isDesktop(context)
-                                        ? Dimensions.PADDING_SIZE_LARGE
-                                        : 0),
-                                ResponsiveHelper.isDesktop(context)
-                                    ? _bottomButton(parcelController, _charge)
-                                    : SizedBox(),
-                              ]))),
-                )),
-                ResponsiveHelper.isDesktop(context)
-                    ? SizedBox()
-                    : _bottomButton(parcelController, _charge),
-              ])
+                                    : SizedBox(),*/
+                              (Get.find<SplashController>()
+                                  .configModel
+                                  .digitalPayment &&
+                                  parcelController.payerIndex == 0)
+                                  ? PaymentButton(
+                                icon: Images.digital_payment,
+                                title: 'digital_payment'.tr,
+                                subtitle: 'faster_and_safe_way'.tr,
+                                isSelected:
+                                parcelController.paymentIndex == 1,
+                                onTap: () => parcelController
+                                    .setPaymentIndex(1, true),
+                              )
+                                  : SizedBox(),
+
+                              /******************************/
+                              Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('subtotal'.tr, style: robotoMedium),
+                                    Text(
+                                        PriceConverter.convertPrice(
+                                            parcelController
+                                                .deliveryFinalCharge),
+                                        style: robotoMedium),
+                                  ]),
+                              SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                              (_tipController.text != null &&
+                                  !_tipController.text.isEmpty &&
+                                  Get.find<SplashController>()
+                                      .configModel
+                                      .dmTipsStatus ==
+                                      1)
+                                  ? Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('delivery_man_tips'.tr,
+                                      style: robotoRegular),
+                                  Text(
+                                      '(+) ${PriceConverter.convertPrice(double.parse(_tipController.text))}',
+                                      style: robotoRegular),
+                                ],
+                              )
+                                  : SizedBox.shrink(),
+                              SizedBox(
+                                  height: Get.find<SplashController>()
+                                      .configModel
+                                      .dmTipsStatus ==
+                                      1
+                                      ? Dimensions.PADDING_SIZE_SMALL
+                                      : 0.0),
+                              Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('delivery_fee'.tr,
+                                        style: robotoRegular),
+                                    parcelController.deliveryFinalCharge == 0
+                                        ? Text(
+                                      'calculating'.tr,
+                                      style: robotoRegular.copyWith(
+                                          color: Colors.red),
+                                    )
+                                        : Text(
+                                      '(+) ${PriceConverter.convertPrice(parcelController.deliveryFinalCharge)}',
+                                      style: robotoRegular,
+                                    ),
+                                  ]),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: Dimensions.PADDING_SIZE_SMALL),
+                                child: Divider(
+                                    thickness: 1,
+                                    color: Theme.of(context)
+                                        .hintColor
+                                        .withOpacity(0.5)),
+                              ),
+                              Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'total_amount'.tr,
+                                      style: robotoMedium.copyWith(
+                                          fontSize: Dimensions.fontSizeLarge,
+                                          color:
+                                          Theme.of(context).primaryColor),
+                                    ),
+                                    Text(
+                                      _tipController.text.isEmpty
+                                          ? PriceConverter.convertPrice(
+                                          parcelController
+                                              .deliveryFinalCharge)
+                                          : PriceConverter.convertPrice(
+                                          parcelController
+                                              .deliveryFinalCharge +
+                                              double.parse(
+                                                  _tipController.text)),
+                                      style: robotoMedium.copyWith(
+                                          fontSize: Dimensions.fontSizeLarge,
+                                          color:
+                                          Theme.of(context).primaryColor),
+                                    ),
+                                  ]),
+
+                              /******************************/
+                              SizedBox(
+                                  height: ResponsiveHelper.isDesktop(context)
+                                      ? Dimensions.PADDING_SIZE_LARGE
+                                      : 0),
+                              ResponsiveHelper.isDesktop(context)
+                                  ? _bottomButton(parcelController, _charge)
+                                  : SizedBox(),
+                            ]))),
+              )),
+          ResponsiveHelper.isDesktop(context)
+              ? SizedBox()
+              : _bottomButton(parcelController, _charge),
+        ])
             : NotLoggedInScreen();
       }),
     );
@@ -557,74 +658,80 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
   Widget _bottomButton(ParcelController parcelController, double charge) {
     String payment_type = "";
     return /*!parcelController.isLoading ? */
-        CustomButton(
-      buttonText: parcelController.distance == -1
-          ? 'calculating'.tr
-          : 'confirm_parcel_request'.tr,
-      margin: ResponsiveHelper.isDesktop(context)
-          ? null
-          : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-      onPressed: () {
-        if (parcelController.distance == -1) {
-          showCustomSnackBar('delivery_fee_not_set_yet'.tr);
-        } else {
-          if (parcelController.anotherList.length > 0) {
-            if (parcelController.paymentIndex == 0) {
-              payment_type = 'cash_on_delivery';
-            } else if (parcelController.paymentIndex == 1) {
-              payment_type = 'digital_payment';
-            } else if (parcelController.paymentIndex == 2) {
-              payment_type = 'wallet';
-            }
-            Get.find<ParcelController>().startLoader(true);
-            Get.find<OrderController>().placeOrder(
-                PlaceOrderBody(
-                    cart: [],
-                    couponDiscountAmount: null,
-                    distance: parcelController.distance,
-                    scheduleAt: null,
-                    orderAmount: parcelController.deliveryFinalCharge == 0 ? charge: parcelController.deliveryFinalCharge,
-                    orderNote: '',
-                    orderType: 'parcel',
-                    receiverDetails: widget.pickedUpAddress,
-                    paymentMethod: payment_type,
-                    couponCode: null,
-                    storeId: null,
-                    address: widget.pickedUpAddress.address,
-                    latitude: widget.pickedUpAddress.latitude,
-                    longitude: widget.pickedUpAddress.longitude,
-                    addressType: widget.pickedUpAddress.addressType,
-                    contactPersonName:
+      CustomButton(
+        buttonText: parcelController.distance == -1
+            ? 'calculating'.tr
+            : 'confirm_parcel_request'.tr,
+        margin: ResponsiveHelper.isDesktop(context)
+            ? null
+            : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+        onPressed: () {
+          if (parcelController.paymentIndex != 0) {
+            if (parcelController.distance == -1) {
+              showCustomSnackBar('delivery_fee_not_set_yet'.tr);
+            } else {
+              if (parcelController.anotherList.length > 0) {
+                if (parcelController.paymentIndex == 0) {
+                  payment_type = 'cash_on_delivery';
+                } else if (parcelController.paymentIndex == 1) {
+                  payment_type = 'digital_payment';
+                } else if (parcelController.paymentIndex == 2) {
+                  payment_type = 'wallet';
+                }
+                Get.find<ParcelController>().startLoader(true);
+                Get.find<OrderController>().placeOrder(
+                    PlaceOrderBody(
+                        cart: [],
+                        couponDiscountAmount: null,
+                        /* distance: parcelController.distance, */
+                        scheduleAt: null,
+                        orderAmount: parcelController.deliveryFinalCharge == 0
+                            ? charge
+                            : parcelController.deliveryFinalCharge,
+                        orderNote: '',
+                        orderType: 'parcel',
+                        receiverDetails: widget.pickedUpAddress,
+                        paymentMethod: payment_type,
+                        couponCode: null,
+                        storeId: null,
+                        address: widget.pickedUpAddress.address,
+                        latitude: widget.pickedUpAddress.latitude,
+                        longitude: widget.pickedUpAddress.longitude,
+                        addressType: widget.pickedUpAddress.addressType,
+                        contactPersonName:
                         widget.pickedUpAddress.contactPersonName ?? '',
-                    contactPersonNumber:
+                        contactPersonNumber:
                         widget.pickedUpAddress.contactPersonNumber ?? '',
-                    streetNumber: widget.pickedUpAddress.streetNumber ?? '',
-                    house: widget.pickedUpAddress.house ?? '',
-                    floor: widget.pickedUpAddress.floor ?? '',
-                    discountAmount: 0,
-                    taxAmount: 0,
-                    parcelCategoryId: widget.parcelCategory.id.toString(),
-                    chargePayer: parcelController
-                        .payerTypes[parcelController.payerIndex],
-                    dmTips: _tipController.text.trim(),
-                    receiver_addresses: parcelController.anotherList,
-                    delivery_type: parcelController.selectedParcelType ==
+                        streetNumber: widget.pickedUpAddress.streetNumber ?? '',
+                        house: widget.pickedUpAddress.house ?? '',
+                        floor: widget.pickedUpAddress.floor ?? '',
+                        discountAmount: 0,
+                        taxAmount: 0,
+                        parcelCategoryId: widget.parcelCategory.id.toString(),
+                        chargePayer: parcelController
+                            .payerTypes[parcelController.payerIndex],
+                        dmTips: _tipController.text.trim(),
+                        receiver_addresses: parcelController.anotherList,
+                        delivery_type: parcelController.selectedParcelType ==
                             "EXPRESS DELIVERY"
-                        ? 'P1'
-                        : parcelController.parcelType == "STANDARD DELIVERY"
+                            ? 'P1'
+                            : parcelController.parcelType == "STANDARD DELIVERY"
                             ? 'P2'
                             : parcelController.parcelType == "NORMAL DELIVERY"
-                                ? 'P3'
-                                : 'P1'),
-                orderCallback);
+                            ? 'P3'
+                            : 'P1'),
+                    orderCallback);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Please select drop locations !"),
+                ));
+              }
+            }
           } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("Please select drop locations !"),
-            ));
+            showCustomSnackBar('choose_payment_method'.tr);
           }
-        }
-      },
-    ) /*: Center(child: CircularProgressIndicator())*/;
+        },
+      ) /*: Center(child: CircularProgressIndicator())*/;
   }
 
   void showCustomDialog(BuildContext context) {
@@ -674,7 +781,8 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                             "EXPRESS DELIVERY (" +
                                 PriceConverter.convertPrice(p1) +
                                 ")",
-                            style: robotoRegular.copyWith(color: Colors.white,
+                            style: robotoRegular.copyWith(
+                                color: Theme.of(context).hintColor,
                                 fontSize: Dimensions.fontSizeDefault)),
                         value: "EXPRESS DELIVERY",
                         groupValue: parcelController.parcelType,
@@ -689,16 +797,17 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                         /* title: Text('STANDARD DELIVERY ( less than '+ (Get.find<SplashController>().configModel.p2_delivery_charge.toString())+'%)',style: robotoRegular.copyWith(
                         fontSize: Dimensions.fontSizeDefault)),*/
                         title: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.stretch,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Text(
                                   'STANDARD DELIVERY (' +
                                       PriceConverter.convertPrice(p2) +
                                       ")",
-                                  style: robotoRegular.copyWith(color: Theme.of(context).hintColor,
+                                  style: robotoRegular.copyWith(
+                                      color: Theme.of(context).hintColor,
                                       fontSize: Dimensions.fontSizeDefault)),
-                              SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                              SizedBox(
+                                  height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                               Text(
                                   '(Charges Slash by' +
                                       Get.find<SplashController>()
@@ -708,11 +817,9 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                       '% than Express Delivery)',
                                   style: robotoRegular.copyWith(
                                       color: Theme.of(context).disabledColor,
-                                      fontSize: Dimensions.fontSizeLargeExtraSmall)),
+                                      fontSize:
+                                      Dimensions.fontSizeLargeExtraSmall)),
                             ]),
-
-
-
                         value: "STANDARD DELIVERY",
                         groupValue: parcelController.parcelType,
                         onChanged: (value) {
@@ -721,21 +828,21 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                           });
                         },
                       ),
-
                       RadioListTile(
                         /*title: Text('NORMAL DELIVERY ( less than '+ (Get.find<SplashController>().configModel.p3_delivery_charge.toString())+'%)',style: robotoRegular.copyWith(
                             fontSize: Dimensions.fontSizeDefault)),*/
-                        title:Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.stretch,
+                        title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Text(
                                   'NORMAL DELIVERY (' +
                                       PriceConverter.convertPrice(p3) +
                                       ")",
-                                  style: robotoRegular.copyWith(color: Theme.of(context).hintColor,
+                                  style: robotoRegular.copyWith(
+                                      color: Theme.of(context).hintColor,
                                       fontSize: Dimensions.fontSizeDefault)),
-                              SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                              SizedBox(
+                                  height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                               Text(
                                   '(Charges Slash by' +
                                       Get.find<SplashController>()
@@ -745,7 +852,8 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                       '% than Express Delivery)',
                                   style: robotoRegular.copyWith(
                                       color: Theme.of(context).disabledColor,
-                                      fontSize: Dimensions.fontSizeLargeExtraSmall)),
+                                      fontSize:
+                                      Dimensions.fontSizeLargeExtraSmall)),
                             ]),
                         value: "NORMAL DELIVERY",
                         groupValue: parcelController.parcelType,
@@ -755,13 +863,14 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                           });
                         },
                       ),
-
                       SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                       CustomButton(
                           buttonText: 'Confirm'.tr,
                           onPressed: () {
-                            parcelController.setSelectParcelType(parcelController.parcelType);
-                            if (parcelController.parcelType == "STANDARD DELIVERY") {
+                            parcelController.setSelectParcelType(
+                                parcelController.parcelType);
+                            if (parcelController.parcelType ==
+                                "STANDARD DELIVERY") {
                               // Get.find<SplashController>().configModel.p2_delivery_charge
                               double total = parcelController.deliveryCharge -
                                   (parcelController.deliveryCharge *
@@ -790,7 +899,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                     ]),
                   ),
                 ),
-                color: Color(0xFF303030),
+                color: Theme.of(context).backgroundColor,
               ),
             ),
           );

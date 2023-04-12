@@ -55,6 +55,12 @@ class AuthController extends GetxController implements GetxService {
     update();
     return responseModel;
   }
+  void clearVerificationCode() {
+    try {
+      _verificationCode = null;
+      // update();
+    } catch (e) {}
+  }
 
   Future<ResponseModel> login(String phone, String password) async {
     _isLoading = true;
