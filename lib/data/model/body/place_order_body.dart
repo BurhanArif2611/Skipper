@@ -17,7 +17,7 @@ class PlaceOrderBody {
   String _orderNote;
   String _couponCode;
   int _storeId;
-  double _distance;
+ /* double _distance;*/
   String _scheduleAt;
   double _discountAmount;
   double _taxAmount;
@@ -46,7 +46,7 @@ class PlaceOrderBody {
     @required String orderType,
     @required String paymentMethod,
     @required int storeId,
-    @required double distance,
+   /* @required double distance,*/
     @required String scheduleAt,
     @required double discountAmount,
     @required double taxAmount,
@@ -77,7 +77,7 @@ class PlaceOrderBody {
     this._orderNote = orderNote;
     this._couponCode = couponCode;
     this._storeId = storeId;
-    this._distance = distance;
+  /*  this._distance = distance;*/
     this._scheduleAt = scheduleAt;
     this._discountAmount = discountAmount;
     this._taxAmount = taxAmount;
@@ -116,7 +116,7 @@ class PlaceOrderBody {
 
   int get storeId => _storeId;
 
-  double get distance => _distance;
+ /* double get distance => _distance;*/
 
   String get scheduleAt => _scheduleAt;
 
@@ -171,7 +171,7 @@ class PlaceOrderBody {
     _orderNote = json['order_note'];
     _couponCode = json['coupon_code'];
     _storeId = json['store_id'];
-    _distance = json['distance'] != null ? json['distance'] : 0;
+  //  _distance = json['distance'] != null ? json['distance'] : 0;
     _scheduleAt = json['schedule_at'];
     _discountAmount =
         json['discount_amount'] != null ? json['discount_amount'] : 0;
@@ -229,7 +229,7 @@ class PlaceOrderBody {
     if (this._storeId != null) {
       data['store_id'] = this._storeId.toString();
     }
-    data['distance'] = this._distance.toString();
+   // data['distance'] = this._distance.toString();
     if (this._scheduleAt != null) {
       data['schedule_at'] = this._scheduleAt;
     }

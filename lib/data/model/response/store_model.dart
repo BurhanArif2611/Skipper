@@ -65,6 +65,9 @@ class Store {
   int errand;
   int ecommerce;
   int orderPlaceToScheduleInterval;
+  int cod_payment;
+  int digital_payment;
+  int wallet_payment;
   Discount discount;
   List<Schedules> schedules;
   List<Zones> zones;
@@ -116,6 +119,9 @@ class Store {
         this.app_color,
         this.primary_color,
         this.secondary_color,
+        this.cod_payment,
+        this.digital_payment,
+        this.wallet_payment,
       });
 
   Store.fromJson(Map<String, dynamic> json) {
@@ -151,6 +157,9 @@ class Store {
     parcel = json['parcel'];
     nonVeg = json['non_veg'];
     secondary_color = json['secondary_color'];
+    cod_payment = json['cod_payment'];
+    digital_payment = json['digital_payment'];
+    wallet_payment = json['wallet_payment'];
     primary_color = json['primary_color'];
     app_color = json['app_color'];
     moduleId = json['module_id']!=null?json['module_id']:-1;
@@ -226,6 +235,9 @@ class Store {
     if (this.branches != null) {
       data['branches'] = this.branches.map((v) => v.toJson()).toList();
     }
+    data['wallet_payment'] = this.wallet_payment;
+    data['digital_payment'] = this.digital_payment;
+    data['cod_payment'] = this.cod_payment;
     return data;
   }
 }

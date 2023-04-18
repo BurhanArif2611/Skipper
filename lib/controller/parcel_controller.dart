@@ -39,7 +39,7 @@ class ParcelController extends GetxController implements GetxService {
   double _deliveryFinalCharge = 0;
   List<String> _payerTypes = ['sender', 'receiver'];
   int _payerIndex = 0;
-  int _paymentIndex = 0;
+  int _paymentIndex = -1;
   String _parcelType = "EXPRESS DELIVERY";
   String _selectedParcelType = "EXPRESS DELIVERY";
 
@@ -339,16 +339,16 @@ class ParcelController extends GetxController implements GetxService {
         if (multidrop_array == "") {
           multidrop_array = multidrop_array +
               "[" +
-              addressmodel.latitude +
+              addressmodel.latitude.toString() +
               "," +
-              addressmodel.longitude +
+              addressmodel.longitude.toString() +
               "]";
         } else {
           multidrop_array = multidrop_array +
               ",[" +
-              addressmodel.latitude +
+              addressmodel.latitude.toString() +
               "," +
-              addressmodel.longitude +
+              addressmodel.longitude.toString() +
               "]";
         }
       });
@@ -356,9 +356,9 @@ class ParcelController extends GetxController implements GetxService {
     multidrop_array = "[" + multidrop_array + "]";
     print("multidrop_array<><>" + multidrop_array);
     print("multidrop_array<><>" +
-        destinationAddress.latitude +
+        destinationAddress.latitude.toString() +
         "<><>" +
-        destinationAddress.longitude);
+        destinationAddress.longitude.toString());
     if (multidrop_array == "") {
       _distance = await Get.find<OrderController>().getDistanceInKM(
           LatLng(double.parse(pickedUpAddress.latitude),

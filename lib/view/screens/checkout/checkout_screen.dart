@@ -1748,7 +1748,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           Get
                               .find<CouponController>()
                               .discount,
-                          distance: orderController.distance,
+                         /* distance: orderController.distance,*/
                           scheduleAt: !storeController.store.scheduleOrder
                               ? null
                               : (orderController.selectedDateSlot == 0 &&

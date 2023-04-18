@@ -55,7 +55,7 @@ class OrderController extends GetxController implements GetxService {
   Uint8List _rawAttachment;
   double _tips = 0.0;
   int _selectedTips = -1;
-  int _paymentIndex = 0;
+  int _paymentIndex = -1;
 
   int get paymentIndex => _paymentIndex;
   PaginatedOrderModel get runningOrderModel => _runningOrderModel;
@@ -479,12 +479,13 @@ class OrderController extends GetxController implements GetxService {
 
   Future<double> getDistanceInKM(LatLng originLatLng, LatLng destinationLatLng,
       String multiDroplocation) async {
-    _distance = -1;
-    print("getDistanceInKM>>" + originLatLng.latitude.toString());
+   // _distance = -1;
+    _distance = 0;
+   /* print("getDistanceInKM>>" + originLatLng.latitude.toString());
     print("getDistanceInKM>>" + originLatLng.longitude.toString());
     print("getDistanceInKM>>" + destinationLatLng.longitude.toString());
     print("getDistanceInKM>>" + destinationLatLng.latitude.toString());
-    print("getDistanceInKM>>" + multiDroplocation.toString());
+    print("getDistanceInKM>>" + multiDroplocation.toString());*/
     Response response = await orderRepo.getDistanceInMeter(
         originLatLng, destinationLatLng, multiDroplocation);
     try {

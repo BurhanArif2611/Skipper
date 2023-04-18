@@ -319,7 +319,7 @@ class LocationController extends GetxController implements GetxService {
   }
 
   void _setZoneData(AddressModel address, bool fromSignUp, String route, bool canRoute, bool isDesktop) {
-    Get.find<LocationController>().getZone(address.latitude, address.longitude, false).then((response) async {
+    Get.find<LocationController>().getZone(address.latitude.toString(), address.longitude.toString(), false).then((response) async {
       if (response.isSuccess) {
         Get.find<CartController>().clearCartList();
         address.zoneId = response.zoneIds[0];

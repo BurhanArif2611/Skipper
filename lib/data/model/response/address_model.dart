@@ -37,8 +37,8 @@ class AddressModel {
     contactPersonNumber = json['contact_person_number'] !=null? json['contact_person_number']:"";
     address = json['address'];
     additionalAddress = json['additional_address'];
-    latitude = json['latitude'];
-    longitude = json['longitude'];
+    latitude = json['latitude']!=null?json['latitude']:"";
+    longitude = json['longitude']!=null?json['longitude']:"";
     zoneId = json['zone_id']!= null ? json['zone_id'] == ""? 0: json['zone_id']  : 0;
     zoneIds = json['zone_ids'] != null ?json['zone_ids'] =="" ? []: json['zone_ids'].cast<int>() : null;
     method = json['_method'];

@@ -31,6 +31,7 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../controller/parcel_controller.dart';
+import '../../../controller/store_controller.dart';
 import '../../../controller/user_controller.dart';
 import '../../../util/app_constants.dart';
 import '../checkout/widget/payment_button.dart';
@@ -1487,6 +1488,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                                     SizedBox(
                                                         height: Dimensions
                                                             .PADDING_SIZE_SMALL),
+                                                   if( Get.find<StoreController>()
+                                                       .store.cod_payment==1 ||  Get.find<StoreController>()
+                                                       .store.digital_payment==1 ||  Get.find<StoreController>()
+                                                       .store.wallet_payment==1)
                                                     if (_order
                                                             .errand_bids[index]
                                                             .status ==
@@ -1523,7 +1528,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                                             .errand_bids[index]
                                                             .status ==
                                                         'pending'&& _order.orderStatus !=AppConstants.Canceled)
-                                                      Get.find<SplashController>()
+                                                      Get.find<StoreController>()
+                                                          .store.cod_payment==1 &&  Get.find<SplashController>()
                                                               .configModel
                                                               .cashOnDelivery
                                                           ? PaymentButton(
@@ -1549,7 +1555,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                                             .errand_bids[index]
                                                             .status ==
                                                         'pending'&& _order.orderStatus !=AppConstants.Canceled)
-                                                      Get.find<SplashController>()
+                                                      Get.find<StoreController>()
+                                                          .store.digital_payment==1 &&  Get.find<SplashController>()
                                                               .configModel
                                                               .digitalPayment
                                                           ? PaymentButton(
@@ -1575,7 +1582,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                                             .errand_bids[index]
                                                             .status ==
                                                         'pending'&& _order.orderStatus !=AppConstants.Canceled)
-                                                      Get.find<SplashController>()
+                                                      Get.find<StoreController>()
+                                                          .store.wallet_payment ==1 && Get.find<SplashController>()
                                                                   .configModel
                                                                   .customerWalletStatus ==
                                                               1

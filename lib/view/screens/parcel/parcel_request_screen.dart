@@ -5,6 +5,7 @@ import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/order_controller.dart';
 import 'package:sixam_mart/controller/parcel_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
+import 'package:sixam_mart/controller/store_controller.dart';
 import 'package:sixam_mart/controller/user_controller.dart';
 import 'package:sixam_mart/data/model/body/place_order_body.dart';
 import 'package:sixam_mart/data/model/response/address_model.dart';
@@ -57,10 +58,12 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
     if (_isLoggedIn) {
       Get.find<ParcelController>()
           .getDistance(widget.pickedUpAddress, widget.destinationAddress);
-      Get.find<ParcelController>().setPayerIndex(0, false);
-      Get.find<ParcelController>().setPaymentIndex(
+     // Get.find<ParcelController>().setPayerIndex(0, false);
+      Get.find<ParcelController>().setPayerIndex(-1, false);
+      /*Get.find<ParcelController>().setPaymentIndex(
           Get.find<SplashController>().configModel.cashOnDelivery ? 0 : 1,
-          false);
+          false);*/
+      Get.find<ParcelController>().setPaymentIndex(-1,false);
       if (Get.find<UserController>().userInfoModel == null) {
         Get.find<UserController>().getUserInfo();
       }
@@ -309,7 +312,6 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                                 height: Dimensions
                                                     .PADDING_SIZE_SMALL),
                                             Container(
-                                              height: 50,
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .cardColor,
@@ -409,62 +411,14 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                       1)
                                       ? Dimensions.PADDING_SIZE_EXTRA_SMALL
                                       : 0),
-                              Text('charge_pay_by'.tr, style: robotoMedium),
-                              /* SizedBox(
-                                    height:
-                                        Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                Row(children: [
-                                  Expanded(
-                                      child: InkWell(
-                                    onTap: () =>
-                                        parcelController.setPayerIndex(0, true),
-                                    child: Row(children: [
-                                      Radio<String>(
-                                        value: parcelController.payerTypes[0],
-                                        groupValue: parcelController.payerTypes[
-                                            parcelController.payerIndex],
-                                        activeColor:
-                                            Theme.of(context).primaryColor,
-                                        onChanged: (String payerType) =>
-                                            parcelController.setPayerIndex(
-                                                0, true),
-                                      ),
-                                      Text(parcelController.payerTypes[0].tr,
-                                          style: robotoRegular),
-                                    ]),
-                                  )),
-                                   Get.find<SplashController>()
-                                          .configModel
-                                          .cashOnDelivery
-                                      ? Expanded(
-                                          child: InkWell(
-                                          onTap: () => parcelController
-                                              .setPayerIndex(1, true),
-                                          child: Row(children: [
-                                            Radio<String>(
-                                              value: parcelController
-                                                  .payerTypes[1],
-                                              groupValue: parcelController
-                                                      .payerTypes[
-                                                  parcelController.payerIndex],
-                                              activeColor: Theme.of(context)
-                                                  .primaryColor,
-                                              onChanged: (String payerType) =>
-                                                  parcelController
-                                                      .setPayerIndex(1, true),
-                                            ),
-                                            Text(
-                                                parcelController
-                                                    .payerTypes[1].tr,
-                                                style: robotoRegular),
-                                          ]),
-                                        ))
-                                      : SizedBox(),
-                                ]),*/
+
+
+
                               SizedBox(
                                   height:
                                   Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                              Get.find<SplashController>()
+                              Get.find<StoreController>()
+                                  .store.wallet_payment==1 && Get.find<SplashController>()
                                   .configModel
                                   .customerWalletStatus ==
                                   1 &&
@@ -480,10 +434,11 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                     .setPaymentIndex(2, true),
                               )
                                   : SizedBox(),
-                              /* SizedBox(
+                               SizedBox(
                                     height:
                                         Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                Get.find<SplashController>()
+                              Get.find<StoreController>()
+                                  .store.cod_payment==1 &&  Get.find<SplashController>()
                                         .configModel
                                         .cashOnDelivery
                                     ? PaymentButton(
@@ -497,8 +452,9 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                         onTap: () => parcelController
                                             .setPaymentIndex(0, true),
                                       )
-                                    : SizedBox(),*/
-                              (Get.find<SplashController>()
+                                    : SizedBox(),
+                              (  Get.find<StoreController>()
+                                  .store.digital_payment==1 && Get.find<SplashController>()
                                   .configModel
                                   .digitalPayment &&
                                   parcelController.payerIndex == 0)
@@ -666,14 +622,16 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
             ? null
             : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
         onPressed: () {
-          if (parcelController.paymentIndex != 0) {
+          if (parcelController.paymentIndex != -1) {
             if (parcelController.distance == -1) {
               showCustomSnackBar('delivery_fee_not_set_yet'.tr);
-            } else {
+            }
+            else {
               if (parcelController.anotherList.length > 0) {
                 if (parcelController.paymentIndex == 0) {
                   payment_type = 'cash_on_delivery';
-                } else if (parcelController.paymentIndex == 1) {
+                }
+                else if (parcelController.paymentIndex == 1) {
                   payment_type = 'digital_payment';
                 } else if (parcelController.paymentIndex == 2) {
                   payment_type = 'wallet';
@@ -728,7 +686,14 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
               }
             }
           } else {
-            showCustomSnackBar('choose_payment_method'.tr);
+            if(Get.find<StoreController>()
+                .store.digital_payment==0 && Get.find<StoreController>()
+                .store.cod_payment==0 && Get.find<StoreController>()
+                .store.wallet_payment==0){
+              showCustomSnackBar('Payment option is not Enable by Store admin.'.tr);
+            }
+            else {
+            showCustomSnackBar('choose_payment_method'.tr);}
           }
         },
       ) /*: Center(child: CircularProgressIndicator())*/;

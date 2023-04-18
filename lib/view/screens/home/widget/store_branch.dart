@@ -229,7 +229,7 @@ class StoreBranch extends StatelessWidget {
                             freeDelivery: _storeList[index].freeDelivery,
                           ),
                           branchStoreList.isOpenNow(_storeList[index]) ? SizedBox() : NotAvailableWidget(isStore: true),*/
-                          Positioned(
+                         /* Positioned(
                             top: Dimensions.PADDING_SIZE_EXTRA_SMALL, right: Dimensions.PADDING_SIZE_EXTRA_SMALL,
                             child: GetBuilder<WishListController>(builder: (wishController) {
                               bool _isWished = wishController.wishStoreIdList.contains(_storeList.branches[index].id);
@@ -255,7 +255,7 @@ class StoreBranch extends StatelessWidget {
                                 ),
                               );
                             }),
-                          ),
+                          ),*/
                         ]),
 
                         Expanded(

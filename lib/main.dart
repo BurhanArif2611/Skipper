@@ -89,7 +89,7 @@ class MyApp extends StatelessWidget {
         return GetBuilder<SplashController>(builder: (splashController) {
           return (GetPlatform.isWeb && splashController.configModel == null) ? SizedBox() : GetMaterialApp(
             title: AppConstants.APP_NAME,
-            debugShowCheckedModeBanner: false,
+            debugShowCheckedModeBanner: true,
             navigatorKey: Get.key,
             scrollBehavior: MaterialScrollBehavior().copyWith(
               dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch},
