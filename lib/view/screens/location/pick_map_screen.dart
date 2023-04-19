@@ -86,10 +86,9 @@ class _PickMapScreenState extends State<PickMapScreen> {
                             : _initialPosition,
                         zoom: 16,
                       ),
-                      minMaxZoomPreference: MinMaxZoomPreference(0, 16),
+                      minMaxZoomPreference: MinMaxZoomPreference(0, 20),
                       myLocationButtonEnabled: false,
                       onMapCreated: (GoogleMapController mapController) {
-                        print("njdjfjdhjfhdjhf>>>");
                         _mapController = mapController;
                         if (!widget.fromAddAddress) {
                           Get.find<LocationController>()
