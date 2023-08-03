@@ -117,7 +117,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                     text: 'enter_the_verification_sent_to'.tr,
                                     style: robotoRegular.copyWith(
                                         color:
-                                            Theme.of(context).disabledColor)),
+                                            Theme.of(context).dividerColor)),
                                 TextSpan(
                                     text: ' $_number',
                                     style: robotoMedium.copyWith(
@@ -225,8 +225,62 @@ class _VerificationScreenState extends State<VerificationScreen> {
                               ? CustomButton(
                                   buttonText: 'verify'.tr,
                                   onPressed: () {
+                                    showAnimatedDialog(
+                                        context,
+                                        Center(
+                                          child: Container(
+                                            width: 300,
+                                            padding: EdgeInsets.all(Dimensions
+                                                .PADDING_SIZE_EXTRA_LARGE),
+                                            decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .cardColor,
+                                                borderRadius: BorderRadius
+                                                    .circular(Dimensions
+                                                    .RADIUS_EXTRA_LARGE)),
+                                            child: Column(
+                                                mainAxisSize:
+                                                MainAxisSize.min,
+                                                children: [
+                                                  Image.asset(
+                                                      Images.checked,
+                                                      width: 100,
+                                                      height: 100),
+                                                  SizedBox(
+                                                      height: Dimensions
+                                                          .PADDING_SIZE_LARGE),
+                                                  Text('verified'.tr,
+                                                      style: robotoBold
+                                                          .copyWith(
+                                                        fontSize: 30,
+                                                        color: Theme.of(
+                                                            context)
+                                                            .textTheme
+                                                            .bodyText1
+                                                            .color,
+                                                        decoration:
+                                                        TextDecoration
+                                                            .none,
+                                                      )),
+                                                ]),
+                                          ),
+                                        ),
+                                        dismissible: false);
+                                    Future.delayed(Duration(seconds: 2),
+                                            () {
 
-                                    if (widget.fromSignUp) {
+                                        /*  Get.offNamed(RouteHelper
+                                              .getAccessLocationRoute(
+                                              'verification'));*/
+                                              Navigator.of(context).pushNamed(RouteHelper.getResetPasswordRoute(
+                                                  _number,
+                                                  authController
+                                                      .verificationCode,
+                                                  'reset-password')).then((value) {
+                                                Get.back();
+                                              });
+                                        });
+                                  /*  if (widget.fromSignUp) {
                                       authController
                                           .verifyPhone(_number, widget.token)
                                           .then((value) {
@@ -296,17 +350,17 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                               'reset-password')).then((value) {
                                             Get.back();
                                           });
-                                         /* Get.toNamed(
+                                         *//* Get.toNamed(
                                               RouteHelper.getResetPasswordRoute(
                                                   _number,
                                                   authController
                                                       .verificationCode,
-                                                  'reset-password'));*/
+                                                  'reset-password'));*//*
                                         } else {
                                           showCustomSnackBar(value.message);
                                         }
                                       });
-                                    }
+                                    }*/
                                   },
                                 )
                               : Center(child: CircularProgressIndicator())

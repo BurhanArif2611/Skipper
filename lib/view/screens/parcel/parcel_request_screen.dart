@@ -666,8 +666,10 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                         discountAmount: 0,
                         taxAmount: 0,
                         parcelCategoryId: widget.parcelCategory.id.toString(),
+                       /* chargePayer: parcelController
+                            .payerTypes[parcelController.payerIndex],*/
                         chargePayer: parcelController
-                            .payerTypes[parcelController.payerIndex],
+                            .payerTypes[0],
                         dmTips: _tipController.text.trim(),
                         receiver_addresses: parcelController.anotherList,
                         delivery_type: parcelController.selectedParcelType ==

@@ -1,4 +1,4 @@
-package app.shapshap
+package app.abujaeye
 
 import io.flutter.embedding.android.FlutterActivity
 

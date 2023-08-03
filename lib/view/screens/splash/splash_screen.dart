@@ -23,6 +23,7 @@ import '../../../controller/store_controller.dart';
 import '../../../controller/theme_controller.dart';
 import '../../../data/model/response/module_model.dart';
 import '../../../data/model/response/store_model.dart';
+import '../../../util/styles.dart';
 
 class SplashScreen extends StatefulWidget {
   final String orderID;
@@ -72,7 +73,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
 
     Get.find<CartController>().getCartData();
-    //Get.find<ThemeController>().toggleTheme();
+   // Get.find<ThemeController>().toggleTheme();
     _route();
   }
 
@@ -128,26 +129,25 @@ class _SplashScreenState extends State<SplashScreen> {
                   }
                 } else {
                   if (Get.find<SplashController>().showIntro()) {
-                    if (AppConstants.languages.length > 1) {
+                    /*if (AppConstants.languages.length > 1) {
                       //  Get.offNamed(RouteHelper.getLanguageRoute('splash'));
                       Get.find<LocalizationController>().setLanguage(Locale(
                         AppConstants.languages[0].languageCode,
                         AppConstants.languages[0].countryCode,
                       ));
                       Get.find<LocalizationController>().setSelectIndex(0);
-                      Get.offNamed(
-                          RouteHelper.getSignInRoute(RouteHelper.splash));
-                    } else {
+                       Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
+                    } else {*/
                       Get.offNamed(RouteHelper.getOnBoardingRoute());
-                    }
+                  /*  }*/
                   } else {
-                    Get.offNamed(
-                        RouteHelper.getSignInRoute(RouteHelper.splash));
+                      Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
                   }
                 }
               }
             }
-          } else if (GetPlatform.isIOS) {
+          }
+          else if (GetPlatform.isIOS) {
             if (AppConstants.IOS_APP_VERSION < _minimumVersion ||
                 Get.find<SplashController>().configModel.maintenanceMode) {
               Get.offNamed(RouteHelper.getUpdateRoute(
@@ -241,18 +241,26 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       key: _globalKey,
       body: GetBuilder<SplashController>(builder: (splashController) {
-        return Center(
-          child: splashController.hasConnection
-              ? Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset(Images.logo, width: 300),
-                    SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                    // Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: 25)),
-                  ],
-                )
-              : NoInternetScreen(child: SplashScreen(orderID: widget.orderID)),
-        );
+        return Container(
+            height: double.infinity,
+            color: Theme.of(context).primaryColor,
+            child: Center(
+              child: splashController.hasConnection
+                  ? Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(AppConstants.APP_NAME,
+                            style: robotoBold.copyWith(
+                                fontSize: Dimensions.fontSizeOverLarge,
+                                color: Theme.of(context).cardColor)),
+                        /* Image.asset(Images.logo, width: 300),*/
+                        SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                        // Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: 25)),
+                      ],
+                    )
+                  : NoInternetScreen(
+                      child: SplashScreen(orderID: widget.orderID)),
+            ));
       }),
     );
   }

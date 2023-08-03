@@ -1529,9 +1529,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                                             .status ==
                                                         'pending'&& _order.orderStatus !=AppConstants.Canceled)
                                                       Get.find<StoreController>()
-                                                          .store.cod_payment==1 &&  Get.find<SplashController>()
+                                                          .store.cod_payment==1 /*&&  Get.find<SplashController>()
                                                               .configModel
-                                                              .cashOnDelivery
+                                                              .cashOnDelivery*/
                                                           ? PaymentButton(
                                                               icon: Images
                                                                   .cash_on_delivery,
@@ -1556,9 +1556,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                                             .status ==
                                                         'pending'&& _order.orderStatus !=AppConstants.Canceled)
                                                       Get.find<StoreController>()
-                                                          .store.digital_payment==1 &&  Get.find<SplashController>()
+                                                          .store.digital_payment==1 /*&&  Get.find<SplashController>()
                                                               .configModel
-                                                              .digitalPayment
+                                                              .digitalPayment*/
                                                           ? PaymentButton(
                                                               icon: Images
                                                                   .digital_payment,
@@ -1583,10 +1583,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                                             .status ==
                                                         'pending'&& _order.orderStatus !=AppConstants.Canceled)
                                                       Get.find<StoreController>()
-                                                          .store.wallet_payment ==1 && Get.find<SplashController>()
+                                                          .store.wallet_payment ==1 /*&& Get.find<SplashController>()
                                                                   .configModel
-                                                                  .customerWalletStatus ==
-                                                              1
+                                                                  .customerWalletStatus == 1*/
                                                           ? PaymentButton(
                                                               icon:
                                                                   Images.wallet,

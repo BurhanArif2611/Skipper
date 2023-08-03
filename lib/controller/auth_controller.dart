@@ -29,6 +29,14 @@ class AuthController extends GetxController implements GetxService {
 
   bool get acceptTerms => _acceptTerms;
 
+  bool _forUser = true;
+  bool get forUser => _forUser;
+  void changeLogin() {
+    try {
+      _forUser = !_forUser;
+       update();
+    } catch (e) {}
+  }
   Future<ResponseModel> registration(SignUpBody signUpBody) async {
     _isLoading = true;
     update();

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="app.shapshap">
+    package="app.abujaeye">
 <!--    com.sixamtech.sixam_mart-->
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -30,7 +30,8 @@
         android:debuggable="false"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round">
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA4MCm4CF6tFKf5sikNakUv66147SMTDno"/>
 

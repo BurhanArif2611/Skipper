@@ -63,7 +63,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   : CustomAppBar(title: 'notification'.tr, backButton: true),
       endDrawer: MenuDrawer(),
       body: Get.find<AuthController>().isLoggedIn()
-          ? GetBuilder<NotificationController>(
+          ?
+      GetBuilder<NotificationController>(
               builder: (notificationController) {
               if (notificationController.notificationList != null) {
                 notificationController.saveSeenNotificationCount(

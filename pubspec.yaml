@@ -48,6 +48,7 @@ dependencies:
   share_plus: ^6.3.0
   firebase_crashlytics: ^3.0.10
   google_places_flutter: ^2.0.5
+  flutter_svg: ^1.1.6
 
 
 

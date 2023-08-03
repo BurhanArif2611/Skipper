@@ -62,12 +62,19 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
             ),
 
             Container(
-              decoration: BoxDecoration(
+             /* decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
                 color: Theme.of(context).cardColor,
-              ),
+              ),*/
               child: Row(children: [
-                CodePickerWidget(
+              Container(
+              decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(
+                  25.0),
+              color: Theme.of(context).cardColor,
+            ),
+            child:
+            CodePickerWidget(
                   onChanged: (CountryCode countryCode) {
                     _countryDialCode = countryCode.dialCode;
                   },
@@ -80,12 +87,14 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                   textStyle: robotoRegular.copyWith(
                     fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).textTheme.bodyText1.color,
                   ),
-                ),
+                )),
+                SizedBox(width: Dimensions.RADIUS_SMALL),
                 Expanded(child: CustomTextField(
                   controller: _numberController,
                   inputType: TextInputType.phone,
                   inputAction: TextInputAction.done,
                   hintText: 'phone'.tr,
+                  prefixIcon: Images.call,
                   maxLength: 11,
                  // isEnabled: (widget.number!=null && widget.number.toString()=="")?true:true,
                   onSubmit: (text) => GetPlatform.isWeb ? _forgetPass(_countryDialCode) : null,
@@ -130,7 +139,9 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
         Get.find<AuthController>().registerWithSocialMedia(widget.socialLogInBody);
       }
       else {
-        Get.find<AuthController>().forgetPassword(_numberWithCountryCode).then((status) async {
+        Get.toNamed(RouteHelper.getVerificationRoute(
+            _numberWithCountryCode, '', RouteHelper.forgotPassword, ''));
+       /* Get.find<AuthController>().forgetPassword(_numberWithCountryCode).then((status) async {
           if (status.statusCode == 200) {
             if (!status.body['status']) {
               Get.toNamed(RouteHelper
@@ -145,7 +156,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
             showCustomSnackBar(status.body['errors'][0]['message'].toString());}
                 catch (e){}
           }
-        });
+        });*/
       }
     }
   }

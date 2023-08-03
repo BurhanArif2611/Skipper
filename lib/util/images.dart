@@ -82,5 +82,24 @@ class Images {
   static const String parcel_marker = 'assets/image/parcel_marker.png';
   static const String task_marker = 'assets/image/task_marker.png';
   static const String arrow_right = 'assets/image/arrow-right.png';
+
+
+  static const String apple = 'assets/image/apple.png';
+  static const String line = 'assets/image/line.png';
+  static const String home = 'assets/image/home.png';
+  static const String incidences = 'assets/image/incidences.png';
+  static const String latests_news = 'assets/image/latests_news.png';
+  static const String more = 'assets/image/more.png';
+  static const String arrow_right_normal = 'assets/image/arrow_right.png';
+  static const String circle_arrow_back = 'assets/image/circle_arrow_back.png';
   static const String nextArrow = 'assets/image/next-arrow-forward-svgrepo-com.svg';
+  static const String complaint = 'assets/image/complaint.svg';
+  static const String change_email = 'assets/image/change_email.svg';
+  static const String change_password = 'assets/image/change_password.svg';
+  static const String logout = 'assets/image/logout.svg';
+  static const String logout_popup = 'assets/image/logout_popup.svg';
+  static const String logout_popup_background = 'assets/image/logout_popup_background.png';
+  static const String button_bg = 'assets/image/button_bg.png';
+  static const String change_personal_profile = 'assets/image/change_personal_profile.svg';
+  static const String plus = 'assets/image/plus.svg';
 }

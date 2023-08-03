@@ -7,7 +7,7 @@ import 'package:sixam_mart/util/images.dart';
 import '../controller/banner_controller.dart';
 
 class AppConstants {
-  static const String APP_NAME = 'Night Rider';
+  static const String APP_NAME = 'Abuja Eye';
   static const double ANDROID_APP_VERSION = 1.0;
   static const double IOS_APP_VERSION = 1.0;
 

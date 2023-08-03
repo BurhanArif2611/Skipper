@@ -37,7 +37,7 @@ class _NewPassScreenState extends State<NewPassScreen> {
         onWillPop: () => Get.offAllNamed(RouteHelper.getInitialRoute()),
     child:
       Scaffold(
-      appBar: CustomAppBar(title: widget.fromPasswordChange ? 'change_password'.tr : 'reset_password'.tr),
+      appBar: CustomAppBar(title: widget.fromPasswordChange ? 'change_password'.tr : 'Create New Password'.tr),
       endDrawer: MenuDrawer(),
       body: SafeArea(child: Center(child: Scrollbar(child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -55,11 +55,11 @@ class _NewPassScreenState extends State<NewPassScreen> {
             SizedBox(height: 50),
 
             Container(
-              decoration: BoxDecoration(
+              /*decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
                 color: Theme.of(context).cardColor,
                 boxShadow: [BoxShadow(color: Colors.grey[Get.isDarkMode ? 800 : 200], spreadRadius: 1, blurRadius: 5)],
-              ),
+              ),*/
               child: Column(children: [
 
                 CustomTextField(
@@ -70,8 +70,9 @@ class _NewPassScreenState extends State<NewPassScreen> {
                   inputType: TextInputType.visiblePassword,
                   prefixIcon: Images.lock,
                   isPassword: true,
-                  divider: true,
+                  divider: false,
                 ),
+                SizedBox(height: Dimensions.RADIUS_EXTRA_LARGE),
 
                 CustomTextField(
                   hintText: 'confirm_password'.tr,

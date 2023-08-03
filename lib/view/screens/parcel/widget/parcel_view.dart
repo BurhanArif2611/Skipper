@@ -384,11 +384,17 @@ class _ParcelViewState extends State<ParcelView> {
           }
           return Center(
             child: SingleChildScrollView(
+                reverse: true,
                 child: Container(padding:  EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                   child: Card(
                     child: Padding(
                       padding: EdgeInsets.all(16.0),
-                      child: Container(
+                      child: Padding(
+          padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom),
+          child:
+
+                      Container(
                         child: Column(children: [
                           SearchLocationWidget(
                             mapController: null,
@@ -675,7 +681,7 @@ class _ParcelViewState extends State<ParcelView> {
                           ),
 
                         ]),
-                      ),
+                      )),
                     ),
                     color: Theme.of(context).backgroundColor,
                   ),

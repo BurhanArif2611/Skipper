@@ -94,10 +94,10 @@ class MyApp extends StatelessWidget {
             scrollBehavior: MaterialScrollBehavior().copyWith(
               dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch},
             ),
-            /*theme: themeController.darkTheme ? themeController.darkColor == null ? dark() : dark(color
+           /* theme: themeController.darkTheme ? themeController.darkColor == null ? dark() : dark(color
                 : themeController.darkColor) : themeController.lightColor == null ? light()
                 : light(color: themeController.lightColor),*/
-            theme:dark(),
+            theme:light(),
             locale: localizeController.locale,
             translations: Messages(languages: languages),
             fallbackLocale: Locale(AppConstants.languages[0].languageCode, AppConstants.languages[0].countryCode),

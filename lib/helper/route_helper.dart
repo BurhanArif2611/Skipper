@@ -63,6 +63,11 @@ import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/wallet/wallet_screen.dart';
 
 import '../view/screens/favourite/favourite_screen.dart';
+import '../view/screens/home/add_contact_screen.dart';
+import '../view/screens/home/sos_contact_screen.dart';
+import '../view/screens/myprofile/changepassword_screen.dart';
+import '../view/screens/myprofile/emailaddress_screen.dart';
+import '../view/screens/myprofile/personal_profile_screen.dart';
 
 class RouteHelper {
   static const String initial = '/';
@@ -76,6 +81,7 @@ class RouteHelper {
   static const String pickMap = '/pick-map';
   static const String interest = '/interest';
   static const String main = '/main';
+  static const String dashboard = '/dashboard';
   static const String forgotPassword = '/forgot-password';
   static const String resetPassword = '/reset-password';
   static const String search = '/search';
@@ -116,8 +122,19 @@ class RouteHelper {
   static const String wallet = '/wallet';
   static const String referAndEarn = '/refer-and-earn';
   static const String favouritescreen = '/favourite_screen';
+  static const String personalprofilescreen = '/personal_profile_screen';
+  static const String changepasswordscreen = '/change_password_screen';
+  static const String changeemailscreen = '/change_email_screen';
+  static const String soscontactscreen = '/sos_contact_screen';
+  static const String addcontactscreen = '/add_contact_screen';
 
   static String getInitialRoute() => '$initial';
+  static String getPersonalProfileRoute() => '$personalprofilescreen';
+  static String getChangePasswordRoute() => '$changepasswordscreen';
+  static String getChangeEmailRoute() => '$changeemailscreen';
+  static String getSOSCOntactRoute() => '$soscontactscreen';
+  static String getAddContactRoute() => '$addcontactscreen';
+  static String getDashboardRoute() => '$dashboard';
   static String getFavoriteScreen() => '$favouritescreen';
   static String getSplashRoute(int orderID) => '$splash?id=$orderID';
   static String getLanguageRoute(String page) => '$language?page=$page';
@@ -210,6 +227,12 @@ class RouteHelper {
 
   static List<GetPage> routes = [
     GetPage(name: initial, page: () => getRoute(DashboardScreen(pageIndex: 0))),
+    GetPage(name: personalprofilescreen, page: () => getRoute(PersonalProfileScreen())),
+    GetPage(name: changepasswordscreen, page: () => getRoute(ChangePasswordScreen())),
+    GetPage(name: changeemailscreen, page: () => getRoute(EmailAddressScreen())),
+    GetPage(name: addcontactscreen, page: () => getRoute(AddContactScreen())),
+    GetPage(name: soscontactscreen, page: () => getRoute(SOSContactScreen())),
+    GetPage(name: dashboard, page: () => getRoute(DashboardScreen(pageIndex: 0))),
     GetPage(name: favouritescreen, page: () => getRoute(FavouriteScreen())),
     GetPage(name: splash, page: () => SplashScreen(orderID: Get.parameters['id'] == 'null' ? null : Get.parameters['id'])),
     GetPage(name: language, page: () => ChooseLanguageScreen(fromMenu: Get.parameters['page'] == 'menu')),
@@ -349,6 +372,6 @@ class RouteHelper {
     return AppConstants.ANDROID_APP_VERSION < _minimumVersion ? UpdateScreen(isUpdate: true)
         : Get.find<SplashController>().configModel.maintenanceMode ? UpdateScreen(isUpdate: false)
         : Get.find<LocationController>().getUserAddress() == null
-        ? AccessLocationScreen(fromSignUp: false, fromHome: false, route: Get.currentRoute) : navigateTo;
+        ? /*AccessLocationScreen(fromSignUp: false, fromHome: false, route: Get.currentRoute)*/navigateTo : navigateTo;
   }
 }

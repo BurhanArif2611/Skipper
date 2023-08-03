@@ -1554,7 +1554,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         Get.find<CartController>().clearCartList();
       }
       Get.find<OrderController>().stopLoader();
-      HomeScreen.loadData(true);
       if (_isCashOnDeliveryActive &&
           Get.find<OrderController>().paymentMethodIndex == 1) {
         if (GetPlatform.isWeb) {

@@ -46,6 +46,8 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 
+import '../controller/dashboard_controller.dart';
+
 Future<Map<String, Map<String, String>>> init() async {
   // Core
   final sharedPreferences = await SharedPreferences.getInstance();
@@ -84,6 +86,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => BannerController(bannerRepo: Get.find()));
   Get.lazyPut(() => CategoryController(categoryRepo: Get.find()));
   Get.lazyPut(() => ItemController(itemRepo: Get.find()));
+  Get.lazyPut(() => DashboardController());
   Get.lazyPut(() => CartController(cartRepo: Get.find()));
   Get.lazyPut(() => StoreController(storeRepo: Get.find()));
   Get.lazyPut(() => WishListController(wishListRepo: Get.find(), itemRepo: Get.find()));

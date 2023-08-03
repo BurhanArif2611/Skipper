@@ -22,9 +22,9 @@ class SplashRepo {
 
   Future<ModuleModel> initSharedData() async {
     sharedPreferences.setBool(AppConstants.THEME, true);
-   /* if(!sharedPreferences.containsKey(AppConstants.THEME)) {
+    if(!sharedPreferences.containsKey(AppConstants.THEME)) {
       sharedPreferences.setBool(AppConstants.THEME, false);
-    }*/
+    }
     if(!sharedPreferences.containsKey(AppConstants.COUNTRY_CODE)) {
       sharedPreferences.setString(AppConstants.COUNTRY_CODE, AppConstants.languages[0].countryCode);
     }

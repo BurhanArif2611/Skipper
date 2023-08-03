@@ -7,9 +7,10 @@ class OnBoardingRepo {
   Future<Response> getOnBoardingList() async {
     try {
       List<OnBoardingModel> onBoardingList = [
-        OnBoardingModel(Images.onboard_1, 'on_boarding_1_title'.tr, 'on_boarding_1_description'.tr),
-        OnBoardingModel(Images.onboard_2, 'on_boarding_2_title'.tr, 'on_boarding_2_description'.tr),
-        OnBoardingModel(Images.onboard_3, 'on_boarding_3_title'.tr, 'on_boarding_3_description'.tr),
+        OnBoardingModel(Images.onboard_1, 'Quick and easy monitoring'.tr, 'Detalled and easy accessible information that facilitates quick and easy monitoring.'.tr),
+        OnBoardingModel(Images.onboard_2, 'Information on the go'.tr, 'Secured and real time feedback on election process from observers.'.tr),
+        OnBoardingModel(Images.onboard_2, 'Information on the go'.tr, 'Secured and real time feedback on election process from observers.'.tr),
+        OnBoardingModel(Images.onboard_3, 'Information on the go'.tr, 'Secured and real time feedback on election process from observers.'.tr),
       ];
 
       Response response = Response(body: onBoardingList, statusCode: 200);

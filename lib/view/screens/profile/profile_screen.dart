@@ -50,7 +50,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: GetBuilder<UserController>(builder: (userController) {
         return (_isLoggedIn && userController.userInfoModel == null)
             ? Center(child: CircularProgressIndicator())
-            : ProfileBgWidget(
+            :
+        ProfileBgWidget(
                 backButton: true,
                 circularImage: Container(
                   decoration: BoxDecoration(
