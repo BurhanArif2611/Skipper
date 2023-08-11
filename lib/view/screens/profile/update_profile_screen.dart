@@ -183,12 +183,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       showCustomSnackBar('enter_a_valid_phone_number'.tr);
     } else {
       UserInfoModel _updatedUser = UserInfoModel(fName: _firstName, lName: _lastName, email: _email, phone: _phoneNumber);
-      ResponseModel _responseModel = await userController.updateUserInfo(_updatedUser, Get.find<AuthController>().getUserToken());
+      /*ResponseModel _responseModel = await userController.updateUserInfo(_updatedUser, Get.find<AuthController>().getUserToken());
       if(_responseModel.isSuccess) {
         showCustomSnackBar('profile_updated_successfully'.tr, isError: false);
       }else {
         showCustomSnackBar(_responseModel.message);
-      }
+      }*/
     }
   }
 }

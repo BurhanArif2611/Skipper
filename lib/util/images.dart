@@ -102,4 +102,24 @@ class Images {
   static const String button_bg = 'assets/image/button_bg.png';
   static const String change_personal_profile = 'assets/image/change_personal_profile.svg';
   static const String plus = 'assets/image/plus.svg';
+  static const String calendar = 'assets/image/calendar.svg';
+  static const String clock = 'assets/image/clock.svg';
+  static const String my_profile = 'assets/image/my_profile.svg';
+  static const String latest_news = 'assets/image/latest_news.svg';
+  static const String incidence_icon = 'assets/image/incidence_icon.svg';
+  static const String survay_icon = 'assets/image/survay_icon.svg';
+  static const String resource_center = 'assets/image/resource_center.svg';
+  static const String sos_icon = 'assets/image/sos_icon.svg';
+  static const String contact_center = 'assets/image/contact_center.svg';
+  static const String homepagetopslider = 'assets/image/homepagetopslider.png';
+  static const String add_photo = 'assets/image/add_photo.png';
+  static const String bottom_sheet_line = 'assets/image/bottom_sheet_line.svg';
+  static const String gallery_image = 'assets/image/gallery_image.svg';
+  static const String take_photo = 'assets/image/take_photo.svg';
+  static const String voice_record = 'assets/image/voice_record.svg';
+  static const String left_previous = 'assets/image/left_previous.svg';
+  static const String right_previous = 'assets/image/right_previous.svg';
+  static const String defult_user = 'assets/image/defult_user.svg';
+  static const String phone_call = 'assets/image/phone_call.svg';
+  static const String circle_cancel = 'assets/image/circle_cancel.svg';
 }

@@ -14,6 +14,7 @@ import 'package:sixam_mart/helper/network_info.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 
+import '../data/model/response/user_detail_model.dart';
 import '../util/app_constants.dart';
 
 class UserController extends GetxController implements GetxService {
@@ -30,13 +31,17 @@ class UserController extends GetxController implements GetxService {
   Uint8List get rawFile => _rawFile;
   bool get isLoading => _isLoading;
 
+
+  UserDetailModel _userDetailModel;
+  UserDetailModel get userDetailModel => _userDetailModel;
+
   Future<ResponseModel> getUserInfo() async {
     _pickedFile = null;
     _rawFile = null;
     ResponseModel _responseModel;
     Response response = await userRepo.getUserInfo();
     if (response.statusCode == 200) {
-      _userInfoModel = UserInfoModel.fromJson(response.body);
+      _userDetailModel = UserDetailModel.fromJson(response.body);
       _responseModel = ResponseModel(true, 'successful');
     } else {
       _responseModel = ResponseModel(false, response.statusText);
@@ -46,14 +51,14 @@ class UserController extends GetxController implements GetxService {
     return _responseModel;
   }
 
-  Future<ResponseModel> updateUserInfo(UserInfoModel updateUserModel, String token) async {
+  Future<ResponseModel> updateUserInfo(String firstName,String lastName,String phone,String anonymous,String email, String token) async {
     _isLoading = true;
     update();
     ResponseModel _responseModel;
-    Response response = await userRepo.updateProfile(updateUserModel, _pickedFile, token);
-    _isLoading = false;
+    Response response = await userRepo.updateProfileDetails(firstName,lastName,phone,anonymous,email);
+
     if (response.statusCode == 200) {
-      _userInfoModel = updateUserModel;
+    //  _userInfoModel = updateUserModel;
       _responseModel = ResponseModel(true, response.bodyString);
       _pickedFile = null;
       _rawFile = null;
@@ -63,15 +68,17 @@ class UserController extends GetxController implements GetxService {
       _responseModel = ResponseModel(false, response.statusText);
       print(response.statusText);
     }
+
+    _isLoading = false;
     update();
     return _responseModel;
   }
 
-  Future<ResponseModel> changePassword(UserInfoModel updatedUserModel) async {
+  Future<ResponseModel> changePassword(String currentPassword,String newPassword,String confirmPassword) async {
     _isLoading = true;
     update();
     ResponseModel _responseModel;
-    Response response = await userRepo.changePassword(updatedUserModel);
+    Response response = await userRepo.changePassword( currentPassword,newPassword,confirmPassword);
     _isLoading = false;
     if (response.statusCode == 200) {
       String message = response.body["message"];

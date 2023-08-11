@@ -22,8 +22,10 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+/*
 import 'package:sixam_mart/view/screens/location/widget/module_dialog.dart';
 import 'package:sixam_mart/view/screens/location/widget/permission_dialog.dart';
+*/
 
 import '../util/styles.dart';
 import '../view/base/custom_loader.dart';
@@ -341,10 +343,10 @@ class LocationController extends GetxController implements GetxService {
       if (Get.isDialogOpen) {
         Get.back();
       }
-      Get.dialog(ModuleDialog(callback: () {
+      /*Get.dialog(ModuleDialog(callback: () {
         saveData(address, fromSignUp, route, canRoute, isDesktop);
       }), barrierDismissible: false, barrierColor: Colors.black.withOpacity(0.7));
-    } else {
+   */ } else {
       saveData(address, fromSignUp, route, canRoute, isDesktop);
     }
   }
@@ -479,7 +481,7 @@ class LocationController extends GetxController implements GetxService {
     if(permission == LocationPermission.denied) {
       showCustomSnackBar('you_have_to_allow'.tr);
     }else if(permission == LocationPermission.deniedForever) {
-      Get.dialog(PermissionDialog());
+    //  Get.dialog(PermissionDialog());
     }else {
       onTap();
     }

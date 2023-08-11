@@ -41,6 +41,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final FocusNode _passwordFocus = FocusNode();
   final FocusNode _confirmPasswordFocus = FocusNode();
   final FocusNode _referCodeFocus = FocusNode();
+  final FocusNode _annoymousNameFocus = FocusNode();
 
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -49,16 +50,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final TextEditingController _referCodeController = TextEditingController();
+  final TextEditingController _anonymousController = TextEditingController();
   String _countryDialCode;
 
   @override
   void initState() {
     super.initState();
     _phoneController.text = widget.number.toString();
+    if(Get.find<SplashController>().configModel!=null && Get.find<SplashController>().configModel.country!=null){
     _countryDialCode = CountryCode.fromCountryCode(
             Get.find<SplashController>().configModel.country)
-        .dialCode;
+        .dialCode;}
+
   }
 
   @override
@@ -226,18 +229,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   onChanged: (CountryCode countryCode) {
                                     _countryDialCode = countryCode.dialCode;
                                   },
-                                  initialSelection: CountryCode.fromCountryCode(
+                                  /*initialSelection: CountryCode.fromCountryCode(
                                           Get.find<SplashController>()
                                               .configModel
-                                              .country)
-                                      .code,
-                                  favorite: [
+                                              .country).code,*/
+                                    initialSelection:"+234",
+                                  /*favorite: [
                                     CountryCode.fromCountryCode(
                                             Get.find<SplashController>()
                                                 .configModel
                                                 .country)
                                         .code
-                                  ],
+                                  ],*/
                                   showDropDownButton: true,
                                   padding: EdgeInsets.zero,
                                   showFlagMain: true,
@@ -284,18 +287,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         hintText: 'confirm_password'.tr,
                         controller: _confirmPasswordController,
                         focusNode: _confirmPasswordFocus,
-                        nextFocus: Get.find<SplashController>()
-                                    .configModel
-                                    .refEarningStatus ==
-                                1
-                            ? _referCodeFocus
-                            : null,
-                        inputAction: Get.find<SplashController>()
-                                    .configModel
-                                    .refEarningStatus ==
-                                1
-                            ? TextInputAction.next
-                            : TextInputAction.done,
+                        nextFocus: _annoymousNameFocus,
+                        inputAction:TextInputAction.next,
                         inputType: TextInputType.visiblePassword,
                         prefixIcon: 'lock',
                         isPassword: true,
@@ -307,12 +300,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                       CustomTextField(
                         hintText: 'Anonymous Name'.tr,
-                       /* controller: _firstNameController,*/
-                        focusNode: _firstNameFocus,
-                        nextFocus: _lastNameFocus,
+                        controller: _anonymousController,
+                        focusNode: _annoymousNameFocus,
                         inputType: TextInputType.name,
                         capitalization: TextCapitalization.words,
                         prefixIcon: Images.user,
+                        inputAction:TextInputAction.done,
                         divider: false,
                       ),
                     ]),
@@ -386,19 +379,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     String _number = _phoneController.text.trim();
     String _password = _passwordController.text.trim();
     String _confirmPassword = _confirmPasswordController.text.trim();
-    String _referCode = _referCodeController.text.trim();
+    String _anonymous = _anonymousController.text.trim();
 
-    String _numberWithCountryCode = countryCode + _number;
-    bool _isValid = GetPlatform.isWeb ? true : false;
-    if (!GetPlatform.isWeb) {
-      try {
-        PhoneNumber phoneNumber =
-            await PhoneNumberUtil().parse(_numberWithCountryCode);
-        _numberWithCountryCode =
-            '+' + phoneNumber.countryCode + phoneNumber.nationalNumber;
-        _isValid = true;
-      } catch (e) {}
-    }
 
     if (_firstName.isEmpty) {
       showCustomSnackBar('enter_your_first_name'.tr);
@@ -420,32 +402,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
       showCustomSnackBar('password_should_be'.tr);
     } else if (_password != _confirmPassword) {
       showCustomSnackBar('confirm_password_does_not_matched'.tr);
-    } else if (_referCode.isNotEmpty && _referCode.length != 10) {
-      showCustomSnackBar('invalid_refer_code'.tr);
+    } else if (_anonymous.isEmpty ) {
+      showCustomSnackBar('Enter valid anonymous'.tr);
     } else {
-      Get.offAllNamed(RouteHelper.getInitialRoute());
-     /* SignUpBody signUpBody = SignUpBody(
+      SignUpBody signUpBody = SignUpBody(
         fName: _firstName,
         lName: _lastName,
         email: _email,
-        phone: _numberWithCountryCode,
+        phone: _number,
         password: _password,
-        refCode: _referCode,
+        refCode: _anonymous,
       );
       authController.registration(signUpBody).then((status) async {
-        if (status.isSuccess) {
-          if (Get.find<SplashController>().configModel.customerVerification) {
-            List<int> _encoded = utf8.encode(_password);
-            String _data = base64Encode(_encoded);
-            Get.toNamed(RouteHelper.getVerificationRoute(_numberWithCountryCode,
-                status.message, RouteHelper.signUp, _data));
-          } else {
-            Get.toNamed(RouteHelper.getAccessLocationRoute(RouteHelper.signUp));
-          }
+        if (status.statusCode == 200) {
+          Get.toNamed(
+              RouteHelper.getSignInRoute(RouteHelper.signUp));
         } else {
-          showCustomSnackBar(status.message);
+          showCustomSnackBar(status.body["message"]);
         }
-      });*/
+      });
     }
   }
 }

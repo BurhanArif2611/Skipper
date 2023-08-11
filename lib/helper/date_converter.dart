@@ -112,5 +112,27 @@ class DateConverter {
     }
     return '$_firstValue-$_secondValue ${_type.tr}';
   }
+  String timeAgo(DateTime dateTime) {
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+
+    if (difference.inDays >= 365) {
+      return DateFormat.yMMMMd().format(dateTime); // If more than a year, display the full date
+    } else if (difference.inDays >= 2) {
+      return DateFormat.MMMEd().format(dateTime); // If more than a day, display month and day
+    } else if (difference.inDays >= 1) {
+      return 'Yesterday';
+    } else if (difference.inHours >= 2) {
+      return '${difference.inHours} hours ago';
+    } else if (difference.inHours >= 1) {
+      return 'An hour ago';
+    } else if (difference.inMinutes >= 2) {
+      return '${difference.inMinutes} minutes ago';
+    } else if (difference.inMinutes >= 1) {
+      return 'A minute ago';
+    } else {
+      return 'Just now';
+    }
+  }
 
 }

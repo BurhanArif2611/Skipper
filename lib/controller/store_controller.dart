@@ -25,7 +25,7 @@ class StoreController extends GetxController implements GetxService {
   final StoreRepo storeRepo;
   StoreController({@required this.storeRepo});
    SharedPreferences sharedPreferences;
-  StoreModel _storeModel;
+
   List<Store> _popularStoreList;
   List<Store> _latestStoreList;
   List<Store> _featuredStoreList;
@@ -40,7 +40,7 @@ class StoreController extends GetxController implements GetxService {
   String _type = 'all';
   String _searchType = 'all';
   String _searchText = '';
-
+  StoreModel _storeModel;
   StoreModel get storeModel => _storeModel;
   List<Store> get popularStoreList => _popularStoreList;
   List<Store> get latestStoreList => _latestStoreList;

@@ -47,6 +47,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 
 import '../controller/dashboard_controller.dart';
+import '../controller/home_controller.dart';
 
 Future<Map<String, Map<String, String>>> init() async {
   // Core
@@ -97,6 +98,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => CampaignController(campaignRepo: Get.find()));
   Get.lazyPut(() => ParcelController(parcelRepo: Get.find()));
   Get.lazyPut(() => WalletController(walletRepo: Get.find()));
+  Get.lazyPut(() => HomeController(authRepo: Get.find()));
 
   // Retrieving localized data
   Map<String, Map<String, String>> _languages = Map();

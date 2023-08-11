@@ -37,7 +37,7 @@ class AuthController extends GetxController implements GetxService {
        update();
     } catch (e) {}
   }
-  Future<ResponseModel> registration(SignUpBody signUpBody) async {
+  Future<Response> registration(SignUpBody signUpBody) async {
     _isLoading = true;
     update();
     Get.dialog(CustomLoader(), barrierDismissible: false);
@@ -45,23 +45,23 @@ class AuthController extends GetxController implements GetxService {
     Response response = await authRepo.registration(signUpBody);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
-      if (!Get.find<SplashController>().configModel.customerVerification) {
+     /* if (!Get.find<SplashController>().configModel.customerVerification) {
         authRepo.saveUserToken(response.body["token"]);
         await authRepo.updateToken();
-      }
-      responseModel = ResponseModel(true, response.body["token"]);
-      /*  Get.back();*/
+      }*/
+     // responseModel = ResponseModel(true, response.body);
+        Get.back();
     } else {
       Get.back();
       responseModel = ResponseModel(
           false,
-          response.body["errors"] != null
-              ? response.body["errors"]["message"].toString()
+          response.body["message"] != null
+              ? response.body["message"].toString()
               : response.statusText);
     }
     _isLoading = false;
     update();
-    return responseModel;
+    return response;
   }
   void clearVerificationCode() {
     try {
@@ -101,15 +101,13 @@ class AuthController extends GetxController implements GetxService {
     Get.dialog(CustomLoader(), barrierDismissible: false);
     Response response = await authRepo.login(phone: phone, password: password);
     ResponseModel responseModel;
+
     if (response.statusCode == 200) {
-      if (Get.find<SplashController>().configModel.customerVerification &&
-          response.body['is_phone_verified'] == 0) {
-      } else {
-        authRepo.saveUserToken(response.body['token']);
+
+        authRepo.saveUserToken(response.body['data']['token']['accessToken']);
         await authRepo.updateToken();
-      }
-      responseModel = ResponseModel(true,
-          '${response.body['is_phone_verified']}${response.body['token']}');
+
+      responseModel = ResponseModel(true,response.body['data']['token']['accessToken']);
       Get.back();
     } else {
       Get.back();
@@ -191,12 +189,12 @@ class AuthController extends GetxController implements GetxService {
     update();
     Response response = await authRepo.forgetPassword(email);
 
-    ResponseModel responseModel;
+   /* ResponseModel responseModel;
     if (response.statusCode == 200) {
       responseModel = ResponseModel(true, response.body["message"]);
     } else {
       responseModel = ResponseModel(false, response.statusText);
-    }
+    }*/
     _isLoading = false;
     update();
     return response;

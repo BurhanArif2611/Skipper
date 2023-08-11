@@ -29,7 +29,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     return Scaffold(
       appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : null,
       body: GetBuilder<OnBoardingController>(
-        builder: (onBoardingController) => onBoardingController.onBoardingList.length > 0 ? SafeArea(
+        builder: (onBoardingController) =>
+        onBoardingController.onBoardingList.length > 0 ? SafeArea(
           child: Center(child: SizedBox(width: Dimensions.WEB_MAX_WIDTH, child: Column(children: [
             Row(mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -45,7 +46,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             ],
           ),
 
-            Expanded(child: PageView.builder(
+            Expanded(child:
+            PageView.builder(
               itemCount: onBoardingController.onBoardingList.length,
               controller: _pageController,
               physics: BouncingScrollPhysics(),

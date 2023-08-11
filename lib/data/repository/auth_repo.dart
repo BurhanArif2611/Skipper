@@ -21,9 +21,13 @@ class AuthRepo {
   }
 
   Future<Response> login({String phone, String password}) async {
-    AppConstants.StoreID=AppConstants.ParantStoreID;
-    return await apiClient.postData(AppConstants.LOGIN_URI, {"phone": phone, "password": password});
+    return await apiClient.postData(AppConstants.LOGIN_URI, {"username": phone, "password": password, "grant_type": 'password', "scope": "2"});
   }
+
+  Future<Response> addSOSContact({String name, String relation,String phone}) async {
+    return await apiClient.postData(AppConstants.ADD_SOS_CONTACT_URI, {"name": name, "relation": relation, "number": phone});
+  }
+
   Future<Response> checkMobileNumber({String phone}) async {
     return await apiClient.postData(AppConstants.CHECK_PHONE_URI, {"phone": phone});
   }
@@ -55,7 +59,8 @@ class AuthRepo {
     if(!GetPlatform.isWeb) {
       FirebaseMessaging.instance.subscribeToTopic(AppConstants.TOPIC);
     }
-    return await apiClient.postData(AppConstants.TOKEN_URI, {"_method": "put", "cm_firebase_token": _deviceToken});
+  //  return await apiClient.postData(AppConstants.TOKEN_URI, {"_method": "put", "cm_firebase_token": _deviceToken});
+    return null;
   }
 
   Future<String> _saveDeviceToken() async {
@@ -72,7 +77,7 @@ class AuthRepo {
   }
 
   Future<Response> forgetPassword(String phone) async {
-    return await apiClient.postData(AppConstants.FORGET_PASSWORD_URI, {"phone": phone});
+    return await apiClient.postData(AppConstants.FORGET_PASSWORD_URI, {"email": phone});
   }
 
   Future<Response> verifyToken(String phone, String token) async {
@@ -96,6 +101,25 @@ class AuthRepo {
 
   Future<Response> updateZone() async {
     return await apiClient.getData(AppConstants.UPDATE_ZONE_URL);
+  }
+
+  Future<Response> getIncidents() async {
+    return await apiClient.getData(AppConstants.Incidents_URL);
+  }
+  Future<Response> getNewsList() async {
+    return await apiClient.getData(AppConstants.News_URL);
+  } Future<Response> getCategoryList() async {
+    return await apiClient.getData(AppConstants.Categories_URL);
+  }
+  Future<Response> getSurveyList() async {
+    return await apiClient.getData(AppConstants.Surveys_URL);
+  }
+
+  Future<Response> getSurveyDetail(String id) async {
+    return await apiClient.getData('${AppConstants.Surveys_URL}/$id');
+  }
+  Future<Response> getSOSContactList() async {
+    return await apiClient.getData('${AppConstants.ADD_SOS_CONTACT_URI}');
   }
 
   Future<Response> verifyPhone(String phone, String otp) async {
@@ -123,7 +147,7 @@ class AuthRepo {
   bool clearSharedData() {
     if(!GetPlatform.isWeb) {
       FirebaseMessaging.instance.unsubscribeFromTopic(AppConstants.TOPIC);
-      apiClient.postData(AppConstants.TOKEN_URI, {"_method": "put", "cm_firebase_token": '@'});
+     // apiClient.postData(AppConstants.TOKEN_URI, {"_method": "put", "cm_firebase_token": '@'});
     }
     sharedPreferences.remove(AppConstants.TOKEN);
     sharedPreferences.setStringList(AppConstants.CART_LIST, []);

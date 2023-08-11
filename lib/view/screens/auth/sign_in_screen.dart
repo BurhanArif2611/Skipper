@@ -41,7 +41,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final FocusNode _phoneFocus = FocusNode();
+  final FocusNode _emailFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -53,12 +53,12 @@ class _SignInScreenState extends State<SignInScreen> {
   void initState() {
     super.initState();
 
-    _countryDialCode =
+   /* _countryDialCode =
         Get.find<AuthController>().getUserCountryCode().isNotEmpty
             ? Get.find<AuthController>().getUserCountryCode()
             : CountryCode.fromCountryCode(
                     Get.find<SplashController>().configModel.country)
-                .dialCode;
+                .dialCode;*/
     _emailController.text = Get.find<AuthController>().getUserNumber() ?? '';
     _passwordController.text =
         Get.find<AuthController>().getUserPassword() ?? '';
@@ -232,15 +232,13 @@ class _SignInScreenState extends State<SignInScreen> {
                                 CustomTextField(
                                   hintText: 'Enter your email'.tr,
                                   controller: _emailController,
-                                  focusNode: _passwordFocus,
+                                  focusNode: _emailFocus,
+                                  nextFocus: _passwordFocus,
                                   inputAction: TextInputAction.next,
                                   inputType: TextInputType.emailAddress,
                                   prefixIcon: 'email',
                                   isPassword: false,
-                                  onSubmit: (text) => (GetPlatform.isWeb &&
-                                          authController.acceptTerms)
-                                      ? _login(authController, _countryDialCode)
-                                      : null,
+
                                 ),
                                 SizedBox(height: 10),
                                 if (_showPassword)
@@ -252,11 +250,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                     inputType: TextInputType.visiblePassword,
                                     prefixIcon: 'lock',
                                     isPassword: true,
-                                    onSubmit: (text) => (GetPlatform.isWeb &&
-                                            authController.acceptTerms)
-                                        ? _login(
-                                            authController, _countryDialCode)
-                                        : null,
+
                                   ),
                               ]),
                             ),
@@ -297,10 +291,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                 Expanded(
                                     child: CustomButton(
                                   buttonText: 'sign_in'.tr,
-                                  onPressed: authController.acceptTerms
-                                      ? () => _login(
+                                  onPressed: () => _login(
                                           authController, _countryDialCode)
-                                      : null,
+                                      ,
                                 )),
                               ]) /*: Center(child: CircularProgressIndicator())*/,
                             SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
@@ -482,71 +475,34 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void _login(AuthController authController, String countryDialCode) async {
-    String _phone = _emailController.text.trim();
+    String _email = _emailController.text.trim();
     String _password = _passwordController.text.trim();
-    String _numberWithCountryCode = countryDialCode + _phone;
-    AppConstants.StoreID = AppConstants.ParantStoreID;
 
-    bool _isValid = GetPlatform.isWeb ? true : false;
-    /*if (!GetPlatform.isWeb) {
-      try {
-        PhoneNumber phoneNumber =
-            await PhoneNumberUtil().parse(_numberWithCountryCode);
-        _numberWithCountryCode =
-            '+' + phoneNumber.countryCode + phoneNumber.nationalNumber;
-        _isValid = true;
-      } catch (e) {}
-    }*/
-    if (_phone.isEmpty) {
+    if (_email.isEmpty) {
       showCustomSnackBar('Enter Email Address'.tr);
     }
-    /*else if (!_isValid) {
-      showCustomSnackBar('invalid_phone_number'.tr);
-    }*/
     else if (_password.isEmpty) {
       showCustomSnackBar('enter_password'.tr);
-    } else if (_password.length < 6) {
+    } else if (_password.length < 5) {
       showCustomSnackBar('password_should_be'.tr);
     } else {
-     /* authController
-          .new_login(_numberWithCountryCode, _password)
+      authController
+          .new_login(_email, _password)
           .then((status) async {
         if (status.statusCode == 200) {
-          if (authController.isActiveRememberMe) {
-            authController.saveUserNumberAndPassword(
-                _phone, _password, countryDialCode);
-          } else {
-            authController.clearUserNumberAndPassword();
-          }
-
           // String _token = status.message.substring(1, status.message.length);
-          String _token = status.body['token'];
+          String _token = status.body['data']['token']['accessToken'];
+          print("_token>>>>> ${_token}");
+          Get.offAllNamed(RouteHelper.getInitialRoute());
 
-          if (Get.find<SplashController>().configModel.customerVerification &&
-              status.body['is_phone_verified'] == 0) {
-            List<int> _encoded = utf8.encode(_password);
-            String _data = base64Encode(_encoded);
-
-            Get.toNamed(RouteHelper.getVerificationRoute(
-                _numberWithCountryCode, _token, RouteHelper.signUp, _data));
-          } else {
-            Get.find<BannerController>().getBranchList(true);
-
-            Get.find<StoreController>()
-                .getStoreDetails(Store(id: AppConstants.StoreID), true);
-
-            Get.find<StoreController>()
-                .getStoreItemList(AppConstants.StoreID, 1, 'all', false);
-            Get.toNamed(RouteHelper.getAccessLocationRoute('sign-in'));
-          }
         } else {
           // showCustomSnackBar(status.message);
           showCustomSnackBar(status.body["errors"] != null
               ? status.body["errors"][0]["message"].toString()
               : status.statusText);
         }
-      });*/
-      Get.offAllNamed(RouteHelper.getInitialRoute());
+      });
+    //
     }
   }
 }

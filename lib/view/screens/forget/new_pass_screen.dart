@@ -117,13 +117,13 @@ class _NewPassScreenState extends State<NewPassScreen> {
       if(widget.fromPasswordChange) {
         UserInfoModel _user = Get.find<UserController>().userInfoModel;
         _user.password = _password;
-        Get.find<UserController>().changePassword(_user).then((response) {
+        /*Get.find<UserController>().changePassword(_user).then((response) {
           if(response.isSuccess) {
             showCustomSnackBar('password_updated_successfully'.tr, isError: false);
           }else {
             showCustomSnackBar(response.message);
           }
-        });
+        });*/
       }else {
         Get.find<AuthController>().resetPassword(widget.resetToken, '+'+widget.number.trim(), _password, _confirmPassword).then((value) {
           if (value.isSuccess) {

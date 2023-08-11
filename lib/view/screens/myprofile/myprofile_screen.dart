@@ -18,6 +18,7 @@ import 'package:get/get.dart';
 
 import '../../../controller/banner_controller.dart';
 import '../../../controller/store_controller.dart';
+import '../../../controller/user_controller.dart';
 import '../../../data/model/response/order_model.dart';
 import '../../../helper/responsive_helper.dart';
 import '../../../helper/route_helper.dart';
@@ -35,20 +36,15 @@ class MyProfileScreen extends StatefulWidget {
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
   void _loadData() async {
-    Get.find<NotificationController>().clearNotification();
-    if (Get.find<SplashController>().configModel == null) {
-      await Get.find<SplashController>().getConfigData();
-    }
-    if (Get.find<AuthController>().isLoggedIn()) {
-      Get.find<NotificationController>().getNotificationList(1, true);
-    }
+    Get.find<UserController>().getUserInfo();
+
   }
 
   @override
   void initState() {
     super.initState();
 
-    //  _loadData();
+      _loadData();
   }
 
   @override
@@ -59,13 +55,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           title: 'My profile'.tr,
           leadingIcon: Images.circle_arrow_back,
           backButton: !ResponsiveHelper.isDesktop(context),
-          onBackPressed: () {
-            print("skldksjd");
-            Get.find<DashboardController>().changeIndex(0);
-          }),
+          ),
       endDrawer: MenuDrawer(),
-      body: !Get.find<AuthController>().isLoggedIn()
-          ? Scrollbar(
+      body: Get.find<AuthController>().isLoggedIn()
+          ? GetBuilder<UserController>(builder: (userController) {
+           return !userController.isLoading && userController.userDetailModel!=null?
+           Scrollbar(
               child: SingleChildScrollView(
                   controller: scrollController,
                   physics: AlwaysScrollableScrollPhysics(),
@@ -85,7 +80,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                           height: Dimensions.RADIUS_LARGE,
                         ),
                         Text(
-                          "William ",
+                          userController.userDetailModel.name.first+" "+userController.userDetailModel.name.last,
                           style: robotoBold.copyWith(
                               color: Theme.of(context).hintColor,
                               fontSize: Dimensions.fontSizeLarge),
@@ -93,7 +88,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                         SizedBox(
                           height: Dimensions.RADIUS_SMALL,
                         ),
-                        Text("William245@email.com"),
+                        Text(userController.userDetailModel.email),
                         SizedBox(
                           height: Dimensions.RADIUS_LARGE,
                         ),
@@ -265,9 +260,15 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                         description:
                                             'Are you sure? you want to logout.'
                                                 .tr,
-                                        isLogOut: true,
-                                        onYesPressed: () => () {}
-                                        /* userController.removeUser(),*/
+                                        isLogOut: false,
+                                        onYesPressed: () {
+                                          print("sdjsndjsnd");
+                                          userController.removeUser();
+                                          Get.find<AuthController>().clearSharedData();
+                                          Get.find<UserController>().initData();
+                                          Get.offAllNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
+
+                                        }
                                         ),
                                     useSafeArea: false);
                               },
@@ -292,7 +293,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                         ),
                       ]),
                     ),
-                  )))
+                  ))): Center(child: CircularProgressIndicator());
+   })
+
           : NotLoggedInScreen(),
     );
   }

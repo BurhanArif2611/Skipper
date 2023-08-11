@@ -18,12 +18,15 @@ import 'package:get/get.dart';
 
 import '../../../controller/banner_controller.dart';
 import '../../../controller/store_controller.dart';
+import '../../../controller/user_controller.dart';
 import '../../../data/model/response/order_model.dart';
+import '../../../data/model/response/response_model.dart';
 import '../../../helper/responsive_helper.dart';
 import '../../../helper/route_helper.dart';
 import '../../../util/images.dart';
 import '../../base/confirmation_dialog.dart';
 import '../../base/custom_button.dart';
+import '../../base/custom_snackbar.dart';
 import '../../base/custom_text_field.dart';
 import '../../base/inner_custom_app_bar.dart';
 import '../../base/logout_confirmation.dart';
@@ -36,6 +39,14 @@ class ChangePasswordScreen extends StatefulWidget {
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+  final TextEditingController _currentPasswordController = TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  final FocusNode _currentPasswordFocus = FocusNode();
+  final FocusNode _newPasswordFocus = FocusNode();
+  final FocusNode _confirmPasswordFocus = FocusNode();
+
+
   void _loadData() async {
     Get.find<NotificationController>().clearNotification();
     if (Get.find<SplashController>().configModel == null) {
@@ -63,8 +74,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           backButton: !ResponsiveHelper.isDesktop(context),
           ),
       endDrawer: MenuDrawer(),
-      body: !Get.find<AuthController>().isLoggedIn()
-          ? Scrollbar(
+      body: Get.find<AuthController>().isLoggedIn()
+           ?GetBuilder<UserController>(builder: (userController) {
+    return !userController.isLoading &&
+    userController.userDetailModel != null
+    ?
+              Scrollbar(
           child: SingleChildScrollView(
               controller: scrollController,
               physics: AlwaysScrollableScrollPhysics(),
@@ -79,9 +94,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     ),
 
                     CustomTextField(
-                      hintText: 'Enter new password'.tr,
-                      /*controller: _passwordController,
-                      focusNode: _passwordFocus,*/
+                      hintText: 'Enter old password'.tr,
+                      controller: _currentPasswordController,
+                      focusNode: _currentPasswordFocus,
+                      nextFocus: _newPasswordFocus,
                       inputAction: TextInputAction.done,
                       inputType: TextInputType.visiblePassword,
                       prefixIcon: 'lock',
@@ -90,8 +106,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                     CustomTextField(
                       hintText: 'Enter new password'.tr,
-                      /*controller: _passwordController,
-                      focusNode: _passwordFocus,*/
+                      controller: _newPasswordController,
+                      focusNode: _newPasswordFocus,
+                      nextFocus: _confirmPasswordFocus,
                       inputAction: TextInputAction.done,
                       inputType: TextInputType.visiblePassword,
                       prefixIcon: 'lock',
@@ -100,8 +117,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                     CustomTextField(
                       hintText: 'Confirm password'.tr,
-                      /*controller: _passwordController,
-                      focusNode: _passwordFocus,*/
+                      controller: _confirmPasswordController,
+                      focusNode: _confirmPasswordFocus,
                       inputAction: TextInputAction.done,
                       inputType: TextInputType.visiblePassword,
                       prefixIcon: 'lock',
@@ -115,7 +132,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         child: CustomButton(
                           buttonText: ' Save Changes'.tr,
 
-                          onPressed: () => (){},
+                          onPressed: () {
+                            _updateProfile(userController);
+                          },
                         ),
                       ),
                     ),
@@ -127,8 +146,32 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
                   ]),
                 ),
-              )))
+              ))) : Center(child: CircularProgressIndicator())
+        ;
+        })
           : NotLoggedInScreen(),
     );
+  }
+
+  void _updateProfile(UserController userController) async {
+    String _currentPassword = _currentPasswordController.text.toString();
+    String _newPassword = _newPasswordController.text.toString();
+    String _confirmPassword = _confirmPasswordController.text.toString();
+
+     if (_currentPassword.isEmpty) {
+      showCustomSnackBar('Enter current password'.tr);
+    }else if (_newPassword.isEmpty) {
+      showCustomSnackBar('Enter new password'.tr);
+    }else if (_confirmPassword.isEmpty) {
+      showCustomSnackBar('Enter confirm password'.tr);
+    }else {
+      ResponseModel _responseModel = await userController.changePassword(
+          _currentPassword,_newPassword,_confirmPassword);
+      if (_responseModel.isSuccess) {
+        showCustomSnackBar('Password changed successfully'.tr, isError: false);
+      } else {
+        showCustomSnackBar(_responseModel.message);
+      }
+    }
   }
 }

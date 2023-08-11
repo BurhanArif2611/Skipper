@@ -12,9 +12,9 @@ class AppConstants {
   static const double IOS_APP_VERSION = 1.0;
 
   //dev url
-   //static const String BASE_URL = 'http://192.168.1.164:8000';
+  // static const String BASE_URL = 'http://192.168.1.42:5400';
    // staging url
-    static const String BASE_URL = 'http://52.17.19.170:5000';
+    static const String BASE_URL = 'http://54.72.135.72:5400';
 
   //local url
    //static const String BASE_URL = 'http://192.168.1.164:8000';
@@ -37,14 +37,15 @@ class AppConstants {
   static const String TRACK_URI = '/api/v1/customer/order/track?order_id=';
   static const String MESSAGE_URI = '/api/v1/customer/message/get';
   static const String SEND_MESSAGE_URI = '/api/v1/customer/message/send';
-  static const String FORGET_PASSWORD_URI = '/api/v1/auth/forgot-password';
+  static const String FORGET_PASSWORD_URI = '/forget-password/';
   static const String VERIFY_TOKEN_URI = '/api/v1/auth/verify-token';
   static const String RESET_PASSWORD_URI = '/api/v1/auth/reset-password';
   static const String VERIFY_PHONE_URI = '/api/v1/auth/verify-phone';
   static const String CHECK_EMAIL_URI = '/api/v1/auth/check-email';
   static const String VERIFY_EMAIL_URI = '/api/v1/auth/verify-email';
-  static const String REGISTER_URI = '/api/v1/auth/sign-up';
-  static const String LOGIN_URI = '/api/v1/auth/login';
+  static const String REGISTER_URI = '/signup';
+  static const String LOGIN_URI = '/login';
+  static const String ADD_SOS_CONTACT_URI = '/user/sos';
   static const String CHECK_PHONE_URI = '/api/v1/auth/check_phone';
   static const String TOKEN_URI = '/api/v1/customer/cm-firebase-token';
   static const String PLACE_ORDER_URI = '/api/v1/customer/order/place';
@@ -55,7 +56,8 @@ class AppConstants {
   static const String ADD_ADDRESS_URI = '/api/v1/customer/address/add';
   static const String UPDATE_ADDRESS_URI = '/api/v1/customer/address/update/';
   static const String SET_MENU_URI = '/api/v1/items/set-menu';
-  static const String CUSTOMER_INFO_URI = '/api/v1/customer/info';
+  static const String CUSTOMER_INFO_URI = '/user/profile';
+  static const String CHANGE_PASSWORD_URI = '/user/changePassword';
   static const String COUPON_URI = '/api/v1/coupon/list';
   static const String COUPON_APPLY_URI = '/api/v1/coupon/apply?code=';
   static const String RUNNING_ORDER_LIST_URI =
@@ -97,6 +99,12 @@ class AppConstants {
   static const String SOCIAL_LOGIN_URL = '/api/v1/auth/social-login';
   static const String SOCIAL_REGISTER_URL = '/api/v1/auth/social-register';
   static const String UPDATE_ZONE_URL = '/api/v1/customer/update-zone';
+  static const String Incidents_URL = '/incidents';
+  static const String News_URL = '/news';
+  static const String Categories_URL = '/categories';
+  static const String Surveys_URL = '/surveys';
+
+
   static const String MODULES_URI = '/api/v1/module';
   static const String PARCEL_CATEGORY_URI = '/api/v1/parcel-category';
   static const String ABOUT_US_URI = '/about-us';

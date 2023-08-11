@@ -15,7 +15,6 @@ import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:sixam_mart/view/base/item_bottom_sheet.dart';
 import 'package:sixam_mart/view/screens/dashboard/dashboard_screen.dart';
-import 'package:sixam_mart/view/screens/item/item_details_screen.dart';
 
 class DashboardController extends GetxController implements GetxService {
   DashboardController();

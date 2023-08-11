@@ -13,39 +13,19 @@ import 'package:sixam_mart/util/app_constants.dart';
 import 'package:sixam_mart/util/html_type.dart';
 import 'package:sixam_mart/view/base/image_viewer_screen.dart';
 import 'package:sixam_mart/view/base/not_found.dart';
-import 'package:sixam_mart/view/screens/address/add_address_screen.dart';
-import 'package:sixam_mart/view/screens/address/address_screen.dart';
+
 import 'package:sixam_mart/view/screens/auth/sign_in_screen.dart';
 import 'package:sixam_mart/view/screens/auth/sign_up_screen.dart';
-import 'package:sixam_mart/view/screens/cart/cart_screen.dart';
-import 'package:sixam_mart/view/screens/category/category_item_screen.dart';
-import 'package:sixam_mart/view/screens/category/category_screen.dart';
-import 'package:sixam_mart/view/screens/checkout/checkout_screen.dart';
-import 'package:sixam_mart/view/screens/checkout/order_successful_screen.dart';
-import 'package:sixam_mart/view/screens/checkout/payment_screen.dart';
-import 'package:sixam_mart/view/screens/coupon/coupon_screen.dart';
+
 import 'package:sixam_mart/view/screens/dashboard/dashboard_screen.dart';
-import 'package:sixam_mart/view/screens/errand/errand_main_screen.dart';
-import 'package:sixam_mart/view/screens/item/item_campaign_screen.dart';
-import 'package:sixam_mart/view/screens/item/item_details_screen.dart';
-import 'package:sixam_mart/view/screens/item/popular_item_screen.dart';
 import 'package:sixam_mart/view/screens/forget/forget_pass_screen.dart';
 import 'package:sixam_mart/view/screens/forget/new_pass_screen.dart';
 import 'package:sixam_mart/view/screens/forget/verification_screen.dart';
 import 'package:sixam_mart/view/screens/html/html_viewer_screen.dart';
-import 'package:sixam_mart/view/screens/interest/interest_screen.dart';
-import 'package:sixam_mart/view/screens/language/language_screen.dart';
-import 'package:sixam_mart/view/screens/location/access_location_screen.dart';
-import 'package:sixam_mart/view/screens/location/map_screen.dart';
-import 'package:sixam_mart/view/screens/location/pick_map_screen.dart';
+import 'package:sixam_mart/view/screens/latestnews/news_detail_screen.dart';
+import 'package:sixam_mart/view/screens/myprofile/myprofile_screen.dart';
 import 'package:sixam_mart/view/screens/notification/notification_screen.dart';
 import 'package:sixam_mart/view/screens/onboard/onboarding_screen.dart';
-import 'package:sixam_mart/view/screens/order/order_details_screen.dart';
-import 'package:sixam_mart/view/screens/order/order_screen.dart';
-import 'package:sixam_mart/view/screens/order/order_tracking_screen.dart';
-import 'package:sixam_mart/view/screens/parcel/parcel_category_screen.dart';
-import 'package:sixam_mart/view/screens/parcel/parcel_location_screen.dart';
-import 'package:sixam_mart/view/screens/parcel/parcel_request_screen.dart';
 import 'package:sixam_mart/view/screens/profile/profile_screen.dart';
 import 'package:sixam_mart/view/screens/profile/update_profile_screen.dart';
 import 'package:sixam_mart/view/screens/refer_and_earn/refer_and_earn_screen.dart';
@@ -62,12 +42,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/wallet/wallet_screen.dart';
 
-import '../view/screens/favourite/favourite_screen.dart';
+import '../data/model/response/survey_list_model.dart';
 import '../view/screens/home/add_contact_screen.dart';
 import '../view/screens/home/sos_contact_screen.dart';
+import '../view/screens/incidences/incidences_detail_screen.dart';
+import '../view/screens/incidences/report_incidence_screen.dart';
+import '../view/screens/latestnews/top_news.dart';
 import '../view/screens/myprofile/changepassword_screen.dart';
 import '../view/screens/myprofile/emailaddress_screen.dart';
 import '../view/screens/myprofile/personal_profile_screen.dart';
+import '../view/screens/survey/survey_questions_screen.dart';
+import '../view/screens/survey/survey_start_screen.dart';
+import '../view/screens/survey/surveys_screen.dart';
 
 class RouteHelper {
   static const String initial = '/';
@@ -127,6 +113,14 @@ class RouteHelper {
   static const String changeemailscreen = '/change_email_screen';
   static const String soscontactscreen = '/sos_contact_screen';
   static const String addcontactscreen = '/add_contact_screen';
+  static const String myprofilescreen = '/myprofile_screen';
+  static const String topnewsscreen = '/top_news_screen';
+  static const String surveyscreen = '/survey_screen';
+  static const String newsdetailscreen = '/news_detail_screen';
+  static const String incidencedetailscreen = '/incidence_detail_screen';
+  static const String reportincidencescreen = '/report_incidence_screen';
+  static const String surveystartscreen = '/survey_start_screen';
+  static const String surveyquestionscreen = '/survey_question_screen';
 
   static String getInitialRoute() => '$initial';
   static String getPersonalProfileRoute() => '$personalprofilescreen';
@@ -136,6 +130,12 @@ class RouteHelper {
   static String getAddContactRoute() => '$addcontactscreen';
   static String getDashboardRoute() => '$dashboard';
   static String getFavoriteScreen() => '$favouritescreen';
+  static String getMyprofileScreen() => '$myprofilescreen';
+  static String getSurveyScreen() => '$surveyscreen';
+  static String getReportIncidenceScreen() => '$reportincidencescreen';
+  static String getIncidenceDetailScreen() => '$incidencedetailscreen';
+  static String getNewsDetailScreen() => '$newsdetailscreen';
+  static String getTopNewsScreen() => '$topnewsscreen';
   static String getSplashRoute(int orderID) => '$splash?id=$orderID';
   static String getLanguageRoute(String page) => '$language?page=$page';
   static String getOnBoardingRoute() => '$onBoarding';
@@ -181,6 +181,15 @@ class RouteHelper {
     String _data = base64Encode(utf8.encode(jsonEncode(basicCampaignModel.toJson())));
     return '$basicCampaign?data=$_data';
   }
+  static String getSurveyStartScreen(PendingSurvey basicCampaignModel) {
+    String _data = base64Encode(utf8.encode(jsonEncode(basicCampaignModel.toJson())));
+    return '$surveystartscreen?data=$_data';
+  }
+  static String getSurveyQuestionScreen(PendingSurvey basicCampaignModel) {
+    String _data = base64Encode(utf8.encode(jsonEncode(basicCampaignModel.toJson())));
+    return '$surveyquestionscreen?data=$_data';
+  }
+
   static String getHtmlRoute(String page) => '$html?page=$page';
   static String getCategoryRoute() => '$categories';
   static String getCategoryItemRoute(int id, String name) {
@@ -233,9 +242,15 @@ class RouteHelper {
     GetPage(name: addcontactscreen, page: () => getRoute(AddContactScreen())),
     GetPage(name: soscontactscreen, page: () => getRoute(SOSContactScreen())),
     GetPage(name: dashboard, page: () => getRoute(DashboardScreen(pageIndex: 0))),
-    GetPage(name: favouritescreen, page: () => getRoute(FavouriteScreen())),
+  //  GetPage(name: favouritescreen, page: () => getRoute(FavouriteScreen())),
+    GetPage(name: myprofilescreen, page: () => getRoute(MyProfileScreen())),
+    GetPage(name: surveyscreen, page: () => getRoute(SurveyScreen())),
+    GetPage(name: reportincidencescreen, page: () => getRoute(ReportIncidenceScreen())),
+    GetPage(name: incidencedetailscreen, page: () => getRoute(IncidenceDetailScreen())),
+    GetPage(name: newsdetailscreen, page: () => getRoute(NewsDetailScreen())),
+    GetPage(name: topnewsscreen, page: () => getRoute(TopNewsScreen())),
     GetPage(name: splash, page: () => SplashScreen(orderID: Get.parameters['id'] == 'null' ? null : Get.parameters['id'])),
-    GetPage(name: language, page: () => ChooseLanguageScreen(fromMenu: Get.parameters['page'] == 'menu')),
+  //  GetPage(name: language, page: () => ChooseLanguageScreen(fromMenu: Get.parameters['page'] == 'menu')),
     GetPage(name: onBoarding, page: () => OnBoardingScreen()),
     GetPage(name: signIn, page: () => SignInScreen(
       exitFromApp: Get.parameters['page'] == signUp || Get.parameters['page'] == splash || Get.parameters['page'] == onBoarding,
@@ -249,10 +264,10 @@ class RouteHelper {
         password: _data,
       );
     }),
-    GetPage(name: accessLocation, page: () => AccessLocationScreen(
+   /* GetPage(name: accessLocation, page: () => AccessLocationScreen(
       fromSignUp: Get.parameters['page'] == signUp, fromHome: Get.parameters['page'] == 'home', route: null,
-    )),
-    GetPage(name: pickMap, page: () {
+    )),*/
+    /*GetPage(name: pickMap, page: () {
       PickMapScreen _pickMapScreen = Get.arguments;
       bool _fromAddress = Get.parameters['page'] == 'add-address';
       return ((Get.parameters['page'] == 'parcel' && _pickMapScreen == null) || (_fromAddress && _pickMapScreen == null))
@@ -260,8 +275,8 @@ class RouteHelper {
         fromSignUp: Get.parameters['page'] == signUp, fromAddAddress: _fromAddress, route: Get.parameters['page'],
         canRoute: Get.parameters['route'] == 'true',
       );
-    }),
-    GetPage(name: interest, page: () => InterestScreen()),
+    }),*/
+   /* GetPage(name: interest, page: () => InterestScreen()),*/
     GetPage(name: main, page: () => getRoute(DashboardScreen(
       pageIndex: Get.parameters['page'] == 'home' ? 0 : Get.parameters['page'] == 'favourite' ? 1
           : Get.parameters['page'] == 'cart' ? 2 : Get.parameters['page'] == 'order' ? 3 : Get.parameters['page'] == 'menu' ? 4 : 0,
@@ -277,6 +292,21 @@ class RouteHelper {
     GetPage(name: resetPassword, page: () => NewPassScreen(
       resetToken: Get.parameters['token'], number: Get.parameters['phone'], fromPasswordChange: Get.parameters['page'] == 'password-change',
     )),
+   /* GetPage(name: surveystartscreen, page: () => getRoute(SurveyStartScreen(
+      data:*//*PendingSurvey()*//*Get.parameters['data']=='',
+    ))),*/
+
+    GetPage(name: surveystartscreen, page: () {
+      PendingSurvey _data = PendingSurvey.fromJson(jsonDecode(utf8.decode(base64Decode(Get.parameters['data'].replaceAll(' ', '+')))));
+      return getRoute(SurveyStartScreen(data: _data));
+    }),
+
+    GetPage(name: surveyquestionscreen, page: () {
+      PendingSurvey _data = PendingSurvey.fromJson(jsonDecode(utf8.decode(base64Decode(Get.parameters['data'].replaceAll(' ', '+')))));
+      return getRoute(SurveyQuestionsScreen(data: _data));
+    }),
+
+
     GetPage(name: search, page: () => getRoute(SearchScreen(queryText: Get.parameters['query']))),
     GetPage(name: store, page: () {
       return getRoute(Get.arguments != null ? Get.arguments : StoreScreen(
@@ -284,24 +314,24 @@ class RouteHelper {
         fromModule: Get.parameters['page'] == 'module',
       ));
     }),
-    GetPage(name: orderDetails, page: () {
+  /*  GetPage(name: orderDetails, page: () {
       return getRoute(Get.arguments != null ? Get.arguments : OrderDetailsScreen(orderId: int.parse(Get.parameters['id'] ?? '0'), orderModel: null));
-    }),
+    }),*/
     GetPage(name: profile, page: () => getRoute(ProfileScreen())),
     GetPage(name: updateProfile, page: () => getRoute(UpdateProfileScreen())),
-    GetPage(name: coupon, page: () => getRoute(CouponScreen())),
-    GetPage(name: notification, page: () => getRoute(NotificationScreen())),
-    GetPage(name: map, page: () {
+   /* GetPage(name: coupon, page: () => getRoute(CouponScreen())),
+   */ GetPage(name: notification, page: () => getRoute(NotificationScreen())),
+    /*GetPage(name: map, page: () {
       List<int> _decode = base64Decode(Get.parameters['address'].replaceAll(' ', '+'));
       AddressModel _data = AddressModel.fromJson(jsonDecode(utf8.decode(_decode)));
       return getRoute(MapScreen(fromStore: Get.parameters['page'] == 'store', address: _data));
-    }),
-    GetPage(name: address, page: () => getRoute(AddressScreen())),
+    }),*/
+   /* GetPage(name: address, page: () => getRoute(AddressScreen())),
     GetPage(name: orderSuccess, page: () => getRoute(OrderSuccessfulScreen(orderID: Get.parameters['id']))),
     GetPage(name: payment, page: () => getRoute(PaymentScreen(orderModel: OrderModel(
         id: int.parse(Get.parameters['id']), orderType: Get.parameters['type'], userId: int.parse(Get.parameters['user'],
-    ))))),
-    GetPage(name: checkout, page: () {
+    ))))),*/
+   /* GetPage(name: checkout, page: () {
       CheckoutScreen _checkoutScreen = Get.arguments;
       bool _fromCart = Get.parameters['page'] == 'cart';
       return getRoute(_checkoutScreen != null ? _checkoutScreen : !_fromCart ? NotFound() : CheckoutScreen(
@@ -309,7 +339,7 @@ class RouteHelper {
       ));
     }),
     GetPage(name: orderTracking, page: () => getRoute(OrderTrackingScreen(orderID: Get.parameters['id']))),
-    GetPage(name: basicCampaign, page: () {
+  */  GetPage(name: basicCampaign, page: () {
       BasicCampaignModel _data = BasicCampaignModel.fromJson(jsonDecode(utf8.decode(base64Decode(Get.parameters['data'].replaceAll(' ', '+')))));
       return getRoute(CampaignScreen(campaign: _data));
     }),
@@ -317,24 +347,24 @@ class RouteHelper {
       htmlType: Get.parameters['page'] == 'terms-and-condition' ? HtmlType.TERMS_AND_CONDITION
           : Get.parameters['page'] == 'privacy-policy' ? HtmlType.PRIVACY_POLICY : HtmlType.ABOUT_US,
     )),
-    GetPage(name: categories, page: () => getRoute(CategoryScreen())),
+    /*GetPage(name: categories, page: () => getRoute(CategoryScreen())),
     GetPage(name: categoryItem, page: () {
       List<int> _decode = base64Decode(Get.parameters['name'].replaceAll(' ', '+'));
       String _data = utf8.decode(_decode);
       return getRoute(CategoryItemScreen(categoryID: Get.parameters['id'], categoryName: _data));
-    }),
-    GetPage(name: popularItems, page: () => getRoute(PopularItemScreen(isPopular: Get.parameters['page'] == 'popular'))),
+    }),*/
+   /* GetPage(name: popularItems, page: () => getRoute(PopularItemScreen(isPopular: Get.parameters['page'] == 'popular'))),
     GetPage(name: itemCampaign, page: () => getRoute(ItemCampaignScreen())),
-    GetPage(name: support, page: () => getRoute(SupportScreen())),
+   */ GetPage(name: support, page: () => getRoute(SupportScreen())),
     GetPage(name: update, page: () => UpdateScreen(isUpdate: Get.parameters['update'] == 'true')),
-    GetPage(name: cart, page: () => getRoute(CartScreen(fromNav: false))),
+   /* GetPage(name: cart, page: () => getRoute(CartScreen(fromNav: false))),
     GetPage(name: addAddress, page: () => getRoute(AddAddressScreen(
       fromCheckout: Get.parameters['page'] == 'checkout', zoneId: int.parse(Get.parameters['zone_id']),
-    ))),
-    GetPage(name: editAddress, page: () => getRoute(AddAddressScreen(
+    ))),*/
+   /* GetPage(name: editAddress, page: () => getRoute(AddAddressScreen(
       fromCheckout: false,
       address: AddressModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['data'].replaceAll(' ', '+'))))),
-    ))),
+    ))),*/
     GetPage(name: rateReview, page: () => getRoute(Get.arguments != null ? Get.arguments : NotFound())),
     GetPage(name: storeReview, page: () => getRoute(ReviewScreen(storeID: Get.parameters['id']))),
     GetPage(name: allStores, page: () => getRoute(AllStoreScreen(
@@ -343,7 +373,7 @@ class RouteHelper {
     GetPage(name: itemImages, page: () => getRoute(ImageViewerScreen(
       item: Item.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['item'].replaceAll(' ', '+'))))),
     ))),
-    GetPage(name: parcelCategory, page: () => getRoute(ParcelCategoryScreen())),
+    /*GetPage(name: parcelCategory, page: () => getRoute(ParcelCategoryScreen())),
     GetPage(name: parcelLocation, page: () => getRoute(ParcelLocationScreen(
       category: ParcelCategoryModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['data'].replaceAll(' ', '+'))))),
     ))),
@@ -354,16 +384,16 @@ class RouteHelper {
       parcelCategory: ParcelCategoryModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['category'].replaceAll(' ', '+'))))),
       pickedUpAddress: AddressModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['picked'].replaceAll(' ', '+'))))),
       destinationAddress: AddressModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['destination'].replaceAll(' ', '+'))))),
-    ))),
+    ))),*/
     GetPage(name: searchStoreItem, page: () => getRoute(StoreItemSearchScreen(storeID: Get.parameters['id']))),
-    GetPage(name: order, page: () => getRoute(OrderScreen())),
-    GetPage(name: itemDetails, page: () => getRoute(Get.arguments != null ? Get.arguments : ItemDetailsScreen(item: Item(id: int.parse(Get.parameters['id'])), inStorePage: Get.parameters['page'] == 'restaurant'))),
-    GetPage(name: wallet, page: () => getRoute(WalletScreen(fromWallet: Get.parameters['page'] == 'wallet'))),
+   /* GetPage(name: order, page: () => getRoute(OrderScreen())),
+  */ /* GetPage(name: itemDetails, page: () => getRoute(Get.arguments != null ? Get.arguments : ItemDetailsScreen(item: Item(id: int.parse(Get.parameters['id'])), inStorePage: Get.parameters['page'] == 'restaurant'))),
+    */GetPage(name: wallet, page: () => getRoute(WalletScreen(fromWallet: Get.parameters['page'] == 'wallet'))),
     GetPage(name: referAndEarn, page: () => getRoute(ReferAndEarnScreen())),
   ];
 
   static getRoute(Widget navigateTo) {
-    int _minimumVersion = 0;
+    /*int _minimumVersion = 0;
     if(GetPlatform.isAndroid) {
       _minimumVersion = Get.find<SplashController>().configModel.appMinimumVersionAndroid;
     }else if(GetPlatform.isIOS) {
@@ -372,6 +402,9 @@ class RouteHelper {
     return AppConstants.ANDROID_APP_VERSION < _minimumVersion ? UpdateScreen(isUpdate: true)
         : Get.find<SplashController>().configModel.maintenanceMode ? UpdateScreen(isUpdate: false)
         : Get.find<LocationController>().getUserAddress() == null
-        ? /*AccessLocationScreen(fromSignUp: false, fromHome: false, route: Get.currentRoute)*/navigateTo : navigateTo;
+        ? *//*AccessLocationScreen(fromSignUp: false, fromHome: false, route: Get.currentRoute)*//*navigateTo : navigateTo;*/
+    return navigateTo;
+
+
   }
 }

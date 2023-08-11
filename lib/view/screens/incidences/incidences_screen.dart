@@ -1,3 +1,4 @@
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/notification_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
@@ -16,12 +17,15 @@ import 'package:get/get.dart';
 
 import '../../../controller/banner_controller.dart';
 import '../../../controller/dashboard_controller.dart';
+import '../../../controller/home_controller.dart';
 import '../../../controller/store_controller.dart';
 import '../../../data/model/response/order_model.dart';
 import '../../../helper/responsive_helper.dart';
+import '../../../helper/route_helper.dart';
 import '../../../util/images.dart';
 import '../../base/inner_custom_app_bar.dart';
 import '../../base/paginated_list_view.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class IncidencesScreen extends StatefulWidget {
   @override
@@ -43,11 +47,12 @@ class _IncidencesScreenState extends State<IncidencesScreen> {
   void initState() {
     super.initState();
 
-    _loadData();
+   // _loadData();
   }
 
   @override
   Widget build(BuildContext context) {
+    timeago.setLocaleMessages('en', timeago.EnMessages());
     final ScrollController scrollController = ScrollController();
     return Scaffold(
       appBar:  InnerCustomAppBar(
@@ -59,186 +64,145 @@ class _IncidencesScreenState extends State<IncidencesScreen> {
           }),
       endDrawer: MenuDrawer(),
       body: Get.find<AuthController>().isLoggedIn()
-          ?
-      GetBuilder<NotificationController>(
-          builder: (notificationController) {
-            if (notificationController.notificationList != null) {
-              notificationController.saveSeenNotificationCount(
-                  notificationController.notificationList.length);
-            }
-            List<DateTime> _dateTimeList = [];
-            return notificationController.notificationList != null
-                ? notificationController.notificationList.length > 0
-                ? RefreshIndicator(
-              onRefresh: () async {
-                await notificationController.getNotificationList(
-                    1, true);
-              },
-              child: NotificationListener<
-                  OverscrollIndicatorNotification>(
-                  onNotification:
-                      (OverscrollIndicatorNotification overscroll) {
-                    overscroll.disallowGlow();
-                    return;
-                  },
-                  child: Scrollbar(
-                      child: SingleChildScrollView(
-                        controller: scrollController,
-                        physics: AlwaysScrollableScrollPhysics(),
-                        child: FooterView(
-                          child: SizedBox(
-                              width: Dimensions.WEB_MAX_WIDTH,
-                              child: PaginatedListView(
-                                  scrollController: scrollController,
-                                  onPaginate: (int offset) {
-                                    print("offset..." +
-                                        offset.toString());
-                                    Get.find<NotificationController>()
-                                        .getNotificationList(
-                                        offset, true);
-                                  },
-                                  totalSize: notificationController
-                                      .notificationList.length,
-                                  offset: notificationController.offset,
-                                  itemView: ListView.builder(
-                                    itemCount: notificationController
-                                        .notificationList.length,
-                                    padding: EdgeInsets.all(
-                                        Dimensions.PADDING_SIZE_SMALL),
-                                    physics:
-                                    NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) {
-                                      DateTime _originalDateTime =
-                                      DateConverter
-                                          .dateTimeStringToDate(
-                                          notificationController
-                                              .notificationList[
-                                          index]
-                                              .createdAt);
-                                      DateTime _convertedDate =
-                                      DateTime(
-                                          _originalDateTime.year,
-                                          _originalDateTime.month,
-                                          _originalDateTime.day);
-                                      bool _addTitle = false;
-                                      if (!_dateTimeList
-                                          .contains(_convertedDate)) {
-                                        _addTitle = true;
-                                        _dateTimeList
-                                            .add(_convertedDate);
-                                      }
-                                      return Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            _addTitle
-                                                ? Padding(
-                                              padding: EdgeInsets.only(
-                                                  bottom: Dimensions
-                                                      .PADDING_SIZE_EXTRA_SMALL),
-                                              child: Text(DateConverter
-                                                  .dateTimeStringToDateOnly(
-                                                  notificationController
-                                                      .notificationList[
-                                                  index]
-                                                      .createdAt)),
-                                            )
-                                                : SizedBox(),
-                                            InkWell(
-                                              onTap: () {
-                                                showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext
-                                                    context) {
-                                                      return NotificationDialog(
-                                                          notificationModel:
-                                                          notificationController
-                                                              .notificationList[
-                                                          index]);
-                                                    });
-                                              },
-                                              child: Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: Dimensions
-                                                        .PADDING_SIZE_EXTRA_SMALL),
-                                                child: Row(children: [
-                                                  ClipOval(
-                                                      child:
-                                                      CustomImage(
-                                                        height: 40,
-                                                        width: 40,
-                                                        fit: BoxFit.cover,
-                                                        image:
-                                                        '${Get.find<SplashController>().configModel.baseUrls.notificationImageUrl}'
-                                                            '/${notificationController.notificationList[index].data.image}',
-                                                      )),
-                                                  SizedBox(
-                                                      width: Dimensions
-                                                          .PADDING_SIZE_SMALL),
-                                                  Expanded(
-                                                      child: Column(
-                                                          crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                          children: [
-                                                            Text(
-                                                              notificationController
-                                                                  .notificationList[
-                                                              index]
-                                                                  .data
-                                                                  .title ??
-                                                                  '',
-                                                              maxLines: 1,
-                                                              overflow:
-                                                              TextOverflow
-                                                                  .ellipsis,
-                                                              style: robotoMedium
-                                                                  .copyWith(
-                                                                  fontSize:
-                                                                  Dimensions.fontSizeSmall),
-                                                            ),
-                                                            Text(
-                                                              notificationController
-                                                                  .notificationList[
-                                                              index]
-                                                                  .data
-                                                                  .description ??
-                                                                  '',
-                                                              maxLines: 1,
-                                                              overflow:
-                                                              TextOverflow
-                                                                  .ellipsis,
-                                                              style: robotoRegular
-                                                                  .copyWith(
-                                                                  fontSize:
-                                                                  Dimensions.fontSizeSmall),
-                                                            ),
-                                                          ])),
-                                                ]),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 50),
-                                              child: Divider(
-                                                  color: Theme.of(
-                                                      context)
-                                                      .disabledColor,
-                                                  thickness: 1),
-                                            ),
-                                          ]);
-                                    },
-                                  ))),
-                        ),
-                      ))),
-            )
-                : NoDataScreen(
-                text: 'no_notification_found'.tr, showFooter: true)
-                : Center(child: CircularProgressIndicator());
-          })
+          ? GetBuilder<HomeController>(
+          builder: (onBoardingController) =>
+          onBoardingController.incidenceListModel!=null &&  onBoardingController.incidenceListModel.docs!=null &&  onBoardingController.incidenceListModel.docs.length>0 ?
+          Container(child: ListView.builder(
+             itemCount: onBoardingController.incidenceListModel.docs.length,
+             padding: EdgeInsets.only(
+                 left: Dimensions.PADDING_SIZE_SMALL),
+             /* physics: BouncingScrollPhysics(),*/
+             scrollDirection: Axis.vertical,
+             itemBuilder: (context, index) {
+               return
+                 InkWell(
+                   onTap: () { Get.toNamed(RouteHelper.getIncidenceDetailScreen());},
+               child:
+                 Container(
+                   padding: EdgeInsets.all(
+                       Dimensions.PADDING_SIZE_DEFAULT),
+                   margin: EdgeInsets.all(
+                      Dimensions
+                           .PADDING_SIZE_EXTRA_SMALL),
+                   decoration: BoxDecoration(
+                     borderRadius: BorderRadius.circular(5.0),
+                     border: Border.all(
+                         width: 1,
+                         color:
+                         Theme.of(context).disabledColor),
+                   ),
+                   child: Column(
+                       mainAxisAlignment:
+                       MainAxisAlignment.start,
+                       mainAxisSize: MainAxisSize.min,
+                       children: [
+                         /*Image.asset(
+                           Images.homepagetopslider,
+                           height:
+                           150 *//*context.height * 0.3*//*,
+                           width: MediaQuery.of(context)
+                               .size
+                               .width,
+                           fit: BoxFit.fill,
+                         ),*/
+                         CustomImage(
+                           fit: BoxFit.cover,
+                           height:
+                           150,
+                           image: onBoardingController.incidenceListModel.docs[index].images[0],
+                         ),
+                         SizedBox(
+                             height: Dimensions
+                                 .PADDING_SIZE_EXTRA_SMALL),
+                         Align(
+                           alignment: Alignment.centerLeft,
+                           child: Text(onBoardingController.incidenceListModel.docs[index].incidentType!=null?
+                             onBoardingController.incidenceListModel.docs[index].incidentType.name:"",
+                             style: robotoBold.copyWith(
+                                 fontSize: Dimensions
+                                     .fontSizeDefault /*context.height*0.022*/),
+                             textAlign: TextAlign.start,
+                           ),
+                         ),
+                         SizedBox(
+                             height: Dimensions
+                                 .PADDING_SIZE_EXTRA_SMALL),
+                   Align(
+                       alignment: Alignment.centerLeft,
+                       child: Text(
+                           onBoardingController.incidenceListModel.docs[index].shortDescription,
+                           style: robotoRegular.copyWith(
+                               fontSize: Dimensions
+                                   .fontSizeDefault /*context.height*0.015*/,
+                               color: Theme.of(context)
+                                   .hintColor),
+                           textAlign: TextAlign.start,
+                         )),
+                         SizedBox(
+                             height: Dimensions
+                                 .PADDING_SIZE_EXTRA_SMALL),
+                         Row(
+                           children: [
+                             Expanded(
+                               flex: 2,
+                               child: Row(children: [
+                                 Text("By :",
+                                     style: robotoMedium.copyWith(
+                                         color:
+                                         Theme.of(context)
+                                             .hintColor,
+                                         fontSize: Dimensions
+                                             .fontSizeDefault)),
+                                 Text(onBoardingController.incidenceListModel.docs[index].user.name.first,
+                                     style: robotoBold.copyWith(
+                                         color:
+                                         Theme.of(context)
+                                             .hintColor,
+                                         fontSize: Dimensions
+                                             .fontSizeDefault))
+                               ]),
+                             ),
+                             Expanded(
+                                 flex: 1,
+                                 child: Text(
+                                   timeago.format(DateTime.parse(onBoardingController.incidenceListModel.docs[index].createdAt), locale: 'en'),
+                                   textAlign: TextAlign.right,
+                                 )),
+                           ],
+                         ),
+                       ]),
+                 ));
+             },
+           ),):SizedBox()
+
+
+      )
           : NotLoggedInScreen(),
+
+      floatingActionButton: Container(
+          width: MediaQuery.of(context).size.width, // Set the desired width here
+          height: 45,
+          margin: EdgeInsets.only(left:Dimensions.PADDING_SIZE_EXTRA_LARGE),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(35.0),
+            border: Border.all(
+                width: 1,
+                color: Theme.of(context).disabledColor),
+            color: Theme.of(context).primaryColor,
+          ),
+          alignment: Alignment.center,// Set the desired height here
+          child:
+    InkWell(
+    onTap: () { Get.toNamed(RouteHelper.getReportIncidenceScreen());},
+    child:
+          Row(mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+            SvgPicture.asset(Images.plus,color: Theme.of(context).cardColor,),
+            SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL,),
+            Text("Report Incidence",style: robotoBold.copyWith(color: Theme.of(context).cardColor))
+          ],)),
+
+      ),
     );
   }
 }

@@ -58,8 +58,7 @@ class ApiClient extends GetxService {
     );
   }
 
-  void updateHeader(
-      String token, List<int> zoneIDs, String languageCode, int moduleID) {
+  void updateHeader(String token, List<int> zoneIDs, String languageCode, int moduleID) {
       print("moduleID>>>"+moduleID.toString());
     if(moduleID != null){
       if(moduleID ==1){
@@ -68,36 +67,10 @@ class ApiClient extends GetxService {
     }
       Map<String, String> _header;
      _header = {
-        'Content-Type': 'application/json; charset=UTF-8',
-        AppConstants.MODULE_ID: moduleID != null
-            ? moduleID.toString()
-            : AppConstants.ModelID.toString(),
-        AppConstants.ZONE_ID: zoneIDs != null ? jsonEncode(zoneIDs) : null,
-        AppConstants.LOCALIZATION_KEY:
-            languageCode ?? AppConstants.languages[0].languageCode,
-        AppConstants.Store_ID: AppConstants.StoreID.toString(),
-        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Authorization': ' ${token!=null?'Bearer ' +token:'Basic REVNTzpERU1PMTIz'}',
       };
-    /*} else {
-      _header = {
-        'Content-Type': 'application/json; charset=UTF-8',
-        AppConstants.ZONE_ID: zoneIDs != null ? jsonEncode(zoneIDs) : null,
-        AppConstants.LOCALIZATION_KEY:
-            languageCode ?? AppConstants.languages[0].languageCode,
-        AppConstants.Store_ID: AppConstants.StoreID.toString(),
-        'Authorization': 'Bearer $token',
-      };
-    }*/
-    _header.addAll({AppConstants.Store_ID: AppConstants.StoreID.toString()});
-    if (moduleID != null) {
-      _header.addAll({AppConstants.MODULE_ID: moduleID.toString()});
-    }
-   /* else {
-      _header.addAll({
-        AppConstants.MODULE_ID:
-            sharedPreferences.getString(AppConstants.ModelID)
-      });
-    }*/
+
     _mainHeaders = _header;
   }
 
@@ -123,11 +96,18 @@ class ApiClient extends GetxService {
     try {
       if (Foundation.kDebugMode) {
         print('====> API Call: $uri\nHeader: $_mainHeaders');
-        print('====> API Body: $body');
+      /*  print('====> API Body: $body');*/
+        print('====> API Body: $appBaseUrl$uri');
       }
+
+     /* final body = {
+        'grant_type': 'password',
+        'age': '87',
+      };*/
+      print('====> API Body: $body');
       Http.Response _response = await Http.post(
         Uri.parse(appBaseUrl + uri),
-        body: jsonEncode(body),
+        body:Uri(queryParameters: body).query,
         headers: headers ?? _mainHeaders,
       ).timeout(Duration(seconds: timeoutInSeconds));
       return handleResponse(_response, uri);
@@ -181,7 +161,7 @@ class ApiClient extends GetxService {
       }
       Http.Response _response = await Http.put(
         Uri.parse(appBaseUrl + uri),
-        body: jsonEncode(body),
+        body: Uri(queryParameters: body).query,
         headers: headers ?? _mainHeaders,
       ).timeout(Duration(seconds: timeoutInSeconds));
       return handleResponse(_response, uri);

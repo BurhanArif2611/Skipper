@@ -29,12 +29,12 @@ class ForgetPassScreen extends StatefulWidget {
 
 class _ForgetPassScreenState extends State<ForgetPassScreen> {
   final TextEditingController _numberController = TextEditingController();
-  String _countryDialCode = CountryCode.fromCountryCode(Get.find<SplashController>().configModel.country).dialCode;
+  //String _countryDialCode = CountryCode.fromCountryCode(Get.find<SplashController>().configModel.country).dialCode;
 
   @override
   void initState() {
     super.initState();
-    _numberController.text=widget.number.toString();
+   // _numberController.text=widget.number.toString();
   }
 
   @override
@@ -67,7 +67,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                 color: Theme.of(context).cardColor,
               ),*/
               child: Row(children: [
-              Container(
+             /* Container(
               decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(
                   25.0),
@@ -88,16 +88,16 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                     fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).textTheme.bodyText1.color,
                   ),
                 )),
-                SizedBox(width: Dimensions.RADIUS_SMALL),
+                SizedBox(width: Dimensions.RADIUS_SMALL),*/
                 Expanded(child: CustomTextField(
                   controller: _numberController,
-                  inputType: TextInputType.phone,
+                  inputType: TextInputType.emailAddress,
                   inputAction: TextInputAction.done,
-                  hintText: 'phone'.tr,
-                  prefixIcon: Images.call,
-                  maxLength: 11,
+                  hintText: 'email'.tr,
+                  prefixIcon: Images.mail,
+
                  // isEnabled: (widget.number!=null && widget.number.toString()=="")?true:true,
-                  onSubmit: (text) => GetPlatform.isWeb ? _forgetPass(_countryDialCode) : null,
+                 /* onSubmit: (text) => GetPlatform.isWeb ? _forgetPass(_countryDialCode) : null,*/
                 )),
               ]),
             ),
@@ -106,7 +106,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
             GetBuilder<AuthController>(builder: (authController) {
               return !authController.isLoading ? CustomButton(
                 buttonText: 'next'.tr,
-                onPressed: () => _forgetPass(_countryDialCode),
+                onPressed: () => _forgetPass(),
               ) : Center(child: CircularProgressIndicator());
             }),
 
@@ -116,48 +116,37 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
     );
   }
 
-  void _forgetPass(String countryCode) async {
-    String _phone = _numberController.text.trim();
+  void _forgetPass() async {
+    String _email = _numberController.text.trim();
 
-    String _numberWithCountryCode = countryCode+_phone;
-    bool _isValid = GetPlatform.isWeb ? true : false;
-    if(!GetPlatform.isWeb) {
-      try {
-        PhoneNumber phoneNumber = await PhoneNumberUtil().parse(_numberWithCountryCode);
-        _numberWithCountryCode = '+' + phoneNumber.countryCode + phoneNumber.nationalNumber;
-        _isValid = true;
-      } catch (e) {}
+
+     if (_email.isEmpty) {
+    showCustomSnackBar('enter_email_address'.tr);
+    } else if (!GetUtils.isEmail(_email)) {
+    showCustomSnackBar('enter_a_valid_email_address'.tr);
     }
 
-    if (_phone.isEmpty) {
-      showCustomSnackBar('enter_phone_number'.tr);
-    }/*else if (!_isValid) {
-      showCustomSnackBar('invalid_phone_number'.tr);
-    }*/else {
-      if(widget.fromSocialLogin) {
-        widget.socialLogInBody.phone = _numberWithCountryCode;
-        Get.find<AuthController>().registerWithSocialMedia(widget.socialLogInBody);
-      }
-      else {
-        Get.toNamed(RouteHelper.getVerificationRoute(
-            _numberWithCountryCode, '', RouteHelper.forgotPassword, ''));
-       /* Get.find<AuthController>().forgetPassword(_numberWithCountryCode).then((status) async {
+   else {
+
+       /* Get.toNamed(RouteHelper.getVerificationRoute(
+            _numberWithCountryCode, '', RouteHelper.forgotPassword, ''));*/
+        Get.find<AuthController>().forgetPassword(_email).then((status) async {
+          showCustomSnackBar("check your email for your new password");
           if (status.statusCode == 200) {
-            if (!status.body['status']) {
-              Get.toNamed(RouteHelper
-                  .getSignUpRoute(_numberController.text.toString()));
-            }
-            else {
-              Get.toNamed(RouteHelper.getVerificationRoute(
-                  _numberWithCountryCode, '', RouteHelper.forgotPassword, ''));
-            }
+            Navigator.of(context).pushNamed(RouteHelper.getResetPasswordRoute(
+                "", "", 'reset-password')).then((value) {
+              Get.back();
+            });
+
           }else {
             try{
-            showCustomSnackBar(status.body['errors'][0]['message'].toString());}
+            showCustomSnackBar(status.body['errors'][0]['message'].toString());
+
+            }
                 catch (e){}
           }
-        });*/
+        });
       }
-    }
+
   }
 }

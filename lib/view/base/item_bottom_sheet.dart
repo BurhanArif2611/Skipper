@@ -19,7 +19,6 @@ import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:sixam_mart/view/base/discount_tag.dart';
 import 'package:sixam_mart/view/base/quantity_button.dart';
 import 'package:sixam_mart/view/base/rating_bar.dart';
-import 'package:sixam_mart/view/screens/checkout/checkout_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -846,13 +845,13 @@ try{
                                       : () {
                                           Get.back();
                                           if (widget.isCampaign) {
-                                            Get.toNamed(
+                                           /* Get.toNamed(
                                                 RouteHelper.getCheckoutRoute(
                                                     'campaign'),
                                                 arguments: CheckoutScreen(
                                                   fromCart: false,
                                                   cartList: [_cartModel],
-                                                ));
+                                                ));*/
                                           } else {
                                             if (Get.find<CartController>()
                                                 .existAnotherStoreItem(

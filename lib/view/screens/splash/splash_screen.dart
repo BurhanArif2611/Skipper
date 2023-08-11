@@ -41,12 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    if (Get.find<AuthController>().isLoggedIn()) {
-      if (Get.find<SplashController>().module == null) {
-        Get.find<SplashController>().getModules();
-      }
-      Get.find<BannerController>().getBranchList(true);
-    }
+
     bool _firstTime = true;
     _onConnectivityChanged = Connectivity()
         .onConnectivityChanged
@@ -73,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
 
     Get.find<CartController>().getCartData();
-   // Get.find<ThemeController>().toggleTheme();
+    // Get.find<ThemeController>().toggleTheme();
     _route();
   }
 
@@ -85,51 +80,47 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _route() {
-    Get.find<SplashController>().getConfigData().then((isSuccess) {
-      if (isSuccess) {
-        Timer(Duration(seconds: 1), () async {
-          int _minimumVersion = 0;
-          if (GetPlatform.isAndroid) {
-            _minimumVersion = Get.find<SplashController>()
-                .configModel
-                .appMinimumVersionAndroid;
-          } else if (GetPlatform.isIOS) {
-            _minimumVersion =
-                Get.find<SplashController>().configModel.appMinimumVersionIos;
-          }
+    Timer(Duration(seconds: 1), () async {
+      print("_route>>>>>");
+      if (Get.find<AuthController>().isLoggedIn()) {
+        Get.offNamed(RouteHelper.getInitialRoute());
+      } else {
+        if (Get.find<SplashController>().showIntro()) {
+          Get.offNamed(RouteHelper.getOnBoardingRoute());
+        } else {
+          Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
+        }
+      }
 
-          // Get.offNamed(RouteHelper.getStoreRoute(0,  'store'));
-          if (GetPlatform.isAndroid) {
-            if (AppConstants.ANDROID_APP_VERSION < _minimumVersion ||
-                Get.find<SplashController>().configModel.maintenanceMode) {
-              Get.offNamed(RouteHelper.getUpdateRoute(
-                  AppConstants.ANDROID_APP_VERSION < _minimumVersion));
-            } else {
-              if (widget.orderID != null) {
-                Get.offNamed(RouteHelper.getOrderDetailsRoute(
-                    int.parse(widget.orderID)));
-              } else {
-                if (Get.find<AuthController>().isLoggedIn()) {
-                  Get.find<AuthController>().updateToken();
-                  // await Get.find<WishListController>().getWishList();
-                  try {
-                    await Firebase.initializeApp();
-                    FlutterError.onError =
-                        FirebaseCrashlytics.instance.recordFlutterFatalError;
-                  } catch (e) {}
-                  if (Get.find<AuthController>().isLoggedIn()) {
-                    if (Get.find<LocationController>().getUserAddress() !=
-                        null) {
-                      //Get.offNamed(RouteHelper.getInitialRoute());
-                      getBranchList();
-                    } else {
-                      Get.offNamed(
-                          RouteHelper.getAccessLocationRoute('splash'));
-                    }
-                  }
+      // Get.offNamed(RouteHelper.getStoreRoute(0,  'store'));
+     /* if (GetPlatform.isAndroid) {
+        if (AppConstants.ANDROID_APP_VERSION < _minimumVersion ||
+            Get.find<SplashController>().configModel.maintenanceMode) {
+          Get.offNamed(RouteHelper.getUpdateRoute(
+              AppConstants.ANDROID_APP_VERSION < _minimumVersion));
+        } else {
+          if (widget.orderID != null) {
+            Get.offNamed(
+                RouteHelper.getOrderDetailsRoute(int.parse(widget.orderID)));
+          } else {
+            if (Get.find<AuthController>().isLoggedIn()) {
+              Get.find<AuthController>().updateToken();
+              // await Get.find<WishListController>().getWishList();
+              try {
+                await Firebase.initializeApp();
+                FlutterError.onError =
+                    FirebaseCrashlytics.instance.recordFlutterFatalError;
+              } catch (e) {}
+              if (Get.find<AuthController>().isLoggedIn()) {
+                if (Get.find<LocationController>().getUserAddress() != null) {
+                  Get.offNamed(RouteHelper.getInitialRoute());
                 } else {
-                  if (Get.find<SplashController>().showIntro()) {
-                    /*if (AppConstants.languages.length > 1) {
+                  Get.offNamed(RouteHelper.getAccessLocationRoute('splash'));
+                }
+              }
+            } else {
+              if (Get.find<SplashController>().showIntro()) {
+                *//*if (AppConstants.languages.length > 1) {
                       //  Get.offNamed(RouteHelper.getLanguageRoute('splash'));
                       Get.find<LocalizationController>().setLanguage(Locale(
                         AppConstants.languages[0].languageCode,
@@ -137,101 +128,62 @@ class _SplashScreenState extends State<SplashScreen> {
                       ));
                       Get.find<LocalizationController>().setSelectIndex(0);
                        Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
-                    } else {*/
-                      Get.offNamed(RouteHelper.getOnBoardingRoute());
-                  /*  }*/
-                  } else {
-                      Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
-                  }
-                }
-              }
-            }
-          }
-          else if (GetPlatform.isIOS) {
-            if (AppConstants.IOS_APP_VERSION < _minimumVersion ||
-                Get.find<SplashController>().configModel.maintenanceMode) {
-              Get.offNamed(RouteHelper.getUpdateRoute(
-                  AppConstants.IOS_APP_VERSION < _minimumVersion));
-            } else {
-              if (widget.orderID != null) {
-                Get.offNamed(RouteHelper.getOrderDetailsRoute(
-                    int.parse(widget.orderID)));
+                    } else {*//*
+                Get.offNamed(RouteHelper.getOnBoardingRoute());
+                *//*  }*//*
               } else {
-                if (Get.find<AuthController>().isLoggedIn()) {
-                  Get.find<AuthController>().updateToken();
-                  //  await Get.find<WishListController>().getWishList();
-                  try {
-                    await Firebase.initializeApp();
-                    FlutterError.onError =
-                        FirebaseCrashlytics.instance.recordFlutterFatalError;
-                  } catch (e) {}
-                  if (Get.find<AuthController>().isLoggedIn()) {
-                    if (Get.find<LocationController>().getUserAddress() !=
-                        null) {
-                      //Get.offNamed(RouteHelper.getInitialRoute());
-                      getBranchList();
-                    } else {
-                      Get.offNamed(
-                          RouteHelper.getAccessLocationRoute('splash'));
-                    }
-                  }
-                } else {
-                  if (Get.find<SplashController>().showIntro()) {
-                    if (AppConstants.languages.length > 1) {
-                      //  Get.offNamed(RouteHelper.getLanguageRoute('splash'));
-                      Get.find<LocalizationController>().setLanguage(Locale(
-                        AppConstants.languages[0].languageCode,
-                        AppConstants.languages[0].countryCode,
-                      ));
-                      Get.find<LocalizationController>().setSelectIndex(0);
-                      Get.offNamed(
-                          RouteHelper.getSignInRoute(RouteHelper.splash));
-                    } else {
-                      Get.offNamed(RouteHelper.getOnBoardingRoute());
-                    }
-                  } else {
-                    Get.offNamed(
-                        RouteHelper.getSignInRoute(RouteHelper.splash));
-                  }
-                }
+                Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
               }
             }
-          }
-        });
-      }
-    });
-  }
-
-  void getBranchList() {
-    if (Get.find<BannerController>().branchStoreList != null &&
-        Get.find<BannerController>().branchStoreList.branches.length > 0) {
-      Get.offNamed(RouteHelper.getInitialRoute());
-    } else {
-      AppConstants.ModelID =
-          Get.find<BannerController>().branchStoreList != null &&
-                  Get.find<BannerController>().branchStoreList.moduleId != null
-              ? Get.find<BannerController>().branchStoreList.moduleId
-              : 0;
-      Get.find<StoreController>()
-          .getStoreDetails(Store(id: AppConstants.StoreID), true);
-
-      Get.find<StoreController>()
-          .getStoreItemList(AppConstants.StoreID, 1, 'all', false);
-      /*if(Get.find<CategoryController>().categoryList == null) {*/
-      Get.find<CategoryController>().getCategoryList(true);
-
-      if (Get.find<SplashController>().moduleList != null) {
-        for (ModuleModel module in Get.find<SplashController>().moduleList) {
-          // if(module.id == _storeList[index].moduleId)
-
-          if (module.id == 1) {
-            Get.find<SplashController>().setModule(module);
-            Get.offNamed(RouteHelper.getInitialRoute());
-            break;
           }
         }
       }
-    }
+      else if (GetPlatform.isIOS) {
+        if (AppConstants.IOS_APP_VERSION < _minimumVersion ||
+            Get.find<SplashController>().configModel.maintenanceMode) {
+          Get.offNamed(RouteHelper.getUpdateRoute(
+              AppConstants.IOS_APP_VERSION < _minimumVersion));
+        } else {
+          if (widget.orderID != null) {
+            Get.offNamed(
+                RouteHelper.getOrderDetailsRoute(int.parse(widget.orderID)));
+          } else {
+            if (Get.find<AuthController>().isLoggedIn()) {
+              Get.find<AuthController>().updateToken();
+              //  await Get.find<WishListController>().getWishList();
+              try {
+                await Firebase.initializeApp();
+                FlutterError.onError =
+                    FirebaseCrashlytics.instance.recordFlutterFatalError;
+              } catch (e) {}
+              if (Get.find<AuthController>().isLoggedIn()) {
+                if (Get.find<LocationController>().getUserAddress() != null) {
+                  Get.offNamed(RouteHelper.getInitialRoute());
+                } else {
+                  Get.offNamed(RouteHelper.getAccessLocationRoute('splash'));
+                }
+              }
+            } else {
+              if (Get.find<SplashController>().showIntro()) {
+                if (AppConstants.languages.length > 1) {
+                  //  Get.offNamed(RouteHelper.getLanguageRoute('splash'));
+                  Get.find<LocalizationController>().setLanguage(Locale(
+                    AppConstants.languages[0].languageCode,
+                    AppConstants.languages[0].countryCode,
+                  ));
+                  Get.find<LocalizationController>().setSelectIndex(0);
+                  Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
+                } else {
+                  Get.offNamed(RouteHelper.getOnBoardingRoute());
+                }
+              } else {
+                Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
+              }
+            }
+          }
+        }
+      }*/
+    });
   }
 
   @override

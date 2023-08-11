@@ -6,13 +6,9 @@ import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/view/base/cart_widget.dart';
-import 'package:sixam_mart/view/screens/cart/cart_screen.dart';
 import 'package:sixam_mart/view/screens/dashboard/widget/bottom_nav_item.dart';
-import 'package:sixam_mart/view/screens/favourite/favourite_screen.dart';
 import 'package:sixam_mart/view/screens/home/home_screen.dart';
-import 'package:sixam_mart/view/screens/menu/menu_screen.dart';
 import 'package:sixam_mart/view/screens/notification/notification_screen.dart';
-import 'package:sixam_mart/view/screens/order/order_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,8 +20,8 @@ import '../../../util/app_constants.dart';
 import '../../../util/images.dart';
 import '../incidences/incidences_screen.dart';
 import '../latestnews/latestnews_screen.dart';
+import '../more/more_main_screen.dart';
 import '../myprofile/myprofile_screen.dart';
-import '../parcel/parcel_category_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   final int pageIndex;
@@ -64,10 +60,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     _screens = [
       HomeScreen(),
-      (eccorance ? CartScreen(fromNav: true) : NotificationScreen()),
-      /* FavouriteScreen(),*/
-      ParcelCategoryScreen(),
-      OrderScreen(),
+      IncidencesScreen(),
+      LatestNewsScreen(),
+      MoreMainScreen(),
       Container(),
     ];
 
@@ -87,7 +82,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         HomeScreen(),
         IncidencesScreen(),
         LatestNewsScreen(),
-        MyProfileScreen(),
+        MoreMainScreen(),
+       // MyProfileScreen(),
       ];
     } else {
       eccorance = false;
@@ -95,7 +91,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         HomeScreen(),
         IncidencesScreen(),
         LatestNewsScreen(),
-        MyProfileScreen(),
+        MoreMainScreen(),
+       // MyProfileScreen(),
       ];
     }
 

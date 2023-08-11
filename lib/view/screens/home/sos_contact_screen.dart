@@ -1,6 +1,7 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/dashboard_controller.dart';
+import 'package:sixam_mart/controller/home_controller.dart';
 import 'package:sixam_mart/controller/notification_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/helper/date_converter.dart';
@@ -37,20 +38,14 @@ class SOSContactScreen extends StatefulWidget {
 
 class _SOSContactScreenState extends State<SOSContactScreen> {
   void _loadData() async {
-    Get.find<NotificationController>().clearNotification();
-    if (Get.find<SplashController>().configModel == null) {
-      await Get.find<SplashController>().getConfigData();
-    }
-    if (Get.find<AuthController>().isLoggedIn()) {
-      Get.find<NotificationController>().getNotificationList(1, true);
-    }
+    Get.find<HomeController>().getSOSContactList();
   }
 
   @override
   void initState() {
     super.initState();
 
-    // _loadData();
+    _loadData();
   }
 
   @override
@@ -63,7 +58,7 @@ class _SOSContactScreenState extends State<SOSContactScreen> {
         backButton: !ResponsiveHelper.isDesktop(context),
       ),
       endDrawer: MenuDrawer(),
-      body: !Get.find<AuthController>().isLoggedIn()
+      body: Get.find<AuthController>().isLoggedIn()
           ? /*Scrollbar(
           child:*/
           /* SingleChildScrollView(
@@ -89,8 +84,133 @@ class _SOSContactScreenState extends State<SOSContactScreen> {
                             fontSize: Dimensions.fontSizeLarge),
                       )),
                   SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                  Spacer(),
-                  Expanded(
+                 /* Spacer(),*/
+                  GetBuilder<HomeController>(
+                      builder: (onBoardingController) =>
+                          onBoardingController.sosContactListModel != null
+                              ? Container(
+                                  height: 500,
+                                  /*color: Colors.red,*/
+                                  child: ListView.builder(
+                                    /*controller: _scrollController,*/
+                                    itemCount: onBoardingController
+                                        .sosContactListModel.data.length,
+                                    padding: EdgeInsets.all(
+                                        Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                                    physics: ScrollPhysics(),
+                                    scrollDirection: Axis.vertical,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        margin: EdgeInsets.only(
+                                            top: Dimensions.PADDING_SIZE_SMALL),
+                                        padding: EdgeInsets.all(
+                                           Dimensions.PADDING_SIZE_SMALL),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          border: Border.all(
+                                              width: 1,
+                                              color: Theme.of(context)
+                                                  .disabledColor),
+                                          color: Colors.white,
+                                        ),
+                                        child: Row(children: [
+                                          Expanded(flex: 5, child:
+                                          Column(children: [
+                                            SizedBox(
+                                                height: Dimensions
+                                                    .PADDING_SIZE_EXTRA_SMALL),
+                                              Row(children: [
+                                                SvgPicture.asset(Images.defult_user),
+                                                SizedBox(
+                                                    width: Dimensions
+                                                        .PADDING_SIZE_EXTRA_SMALL),
+                                            Align(
+                                                alignment:
+                                                Alignment
+                                                    .centerLeft,
+                                                child: Text(
+                                                  onBoardingController
+                                                      .sosContactListModel
+                                                      .data
+                                                      [
+                                                  index]
+                                                      .name,
+                                                  style: robotoBold.copyWith(
+                                                      fontSize:
+                                                      Dimensions
+                                                          .fontSizeLarge /*context.height*0.015*/,
+                                                      color: Theme.of(context)
+                                                          .hintColor),
+                                                  textAlign:
+                                                  TextAlign
+                                                      .start,
+                                                )),
+                                            ]),
+
+                                            SizedBox(
+                                                height: Dimensions
+                                                    .PADDING_SIZE_DEFAULT),
+                                              Row(children: [
+                                                SvgPicture.asset(Images.phone_call),
+                                                SizedBox(
+                                                    width: Dimensions
+                                                        .PADDING_SIZE_EXTRA_SMALL),
+                                            Align(
+                                                alignment:
+                                                Alignment
+                                                    .centerLeft,
+                                                child:
+                                                Text(
+                                                  onBoardingController
+                                                      .sosContactListModel
+                                                      .data
+                                                  [
+                                                  index]
+                                                      .number,
+                                                  style: robotoRegular.copyWith(
+                                                      fontSize:
+                                                      Dimensions
+                                                          .fontSizeDefault /*context.height*0.015*/,
+                                                      color: Theme.of(context)
+                                                          .hintColor),
+                                                  textAlign:
+                                                  TextAlign
+                                                      .start,
+                                                )),
+                                                SizedBox(
+                                                    width: Dimensions
+                                                        .PADDING_SIZE_DEFAULT),
+
+                                                Text(" (${
+                                                  onBoardingController
+                                                      .sosContactListModel
+                                                      .data
+                                                  [
+                                                  index]
+                                                      .relation} )",
+                                                  style: robotoRegular.copyWith(
+                                                      fontSize:
+                                                      Dimensions
+                                                          .fontSizeDefault /*context.height*0.015*/,
+                                                      color: Theme.of(context)
+                                                          .hintColor),
+                                                  textAlign:
+                                                  TextAlign
+                                                      .start,
+                                                )
+                                                ]),
+                                          ],)),
+                                          Expanded(flex: 1, child: SvgPicture.asset(Images.circle_cancel,color: Colors.grey,),),
+                                        ]),
+                                      );
+                                    },
+                                  ))
+                              : SizedBox()),
+                GetBuilder<HomeController>(
+                    builder: (onBoardingController) =>
+                    onBoardingController.sosContactListModel != null &&  onBoardingController.sosContactListModel.data.length< 3
+                        ?   Expanded(
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
@@ -125,7 +245,7 @@ class _SOSContactScreenState extends State<SOSContactScreen> {
                                 ))), // Your other content here, if any
                       ),
                     ),
-                  ),
+                  ):SizedBox()),
                 ]),
               ),
             ) /*)*/ /*)*/
