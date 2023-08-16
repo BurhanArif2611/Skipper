@@ -63,7 +63,8 @@ class _HtmlViewerScreenState extends State<HtmlViewerScreen> {
                   onTapUrl: (String url) {
                     return launchUrlString(url, mode: LaunchMode.externalApplication);
                   },
-                ) : SelectableHtml(
+                ) :
+                SelectableHtml(
                   data: splashController.htmlText, shrinkWrap: true,
                   onLinkTap: (String url, RenderContext context, Map<String, String> attributes, element) {
                     if(url.startsWith('www.')) {

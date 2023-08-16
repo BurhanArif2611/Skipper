@@ -1,5 +1,6 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
+import 'package:sixam_mart/controller/home_controller.dart';
 import 'package:sixam_mart/controller/notification_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/helper/date_converter.dart';
@@ -27,12 +28,21 @@ class ReportIncidenceScreen extends StatefulWidget {
 }
 
 class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
-  final List<String> items = ['Thugs', 'Flight', 'Ballot Snatching', 'Others'];
-  String selectedItem = 'Item 1';
+ // FlutterSound flutterSound = new FlutterSound();
+
+  List<String> items = <String>[
+    'Thugs',
+    'Flight',
+    'Ballot Snatching',
+    'Others'
+  ];
+  String selectedItem = 'Thugs';
 
   void _loadData() async {
     Get.find<NotificationController>().clearNotification();
-    if (Get.find<SplashController>().configModel == null) {
+    if (Get
+        .find<SplashController>()
+        .configModel == null) {
       await Get.find<SplashController>().getConfigData();
     }
     if (Get.find<AuthController>().isLoggedIn()) {
@@ -50,7 +60,7 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
   @override
   Widget build(BuildContext context) {
     final ScrollController scrollController = ScrollController();
-    return GetBuilder<SplashController>(builder: (splashController) {
+    return GetBuilder<HomeController>(builder: (homecroller) {
       return Scaffold(
         appBar: InnerCustomAppBar(
           title: 'Report Incidence'.tr,
@@ -63,46 +73,67 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
             physics: AlwaysScrollableScrollPhysics(),
             child: Container(
               margin: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
-              padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
+              padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                   Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
                     padding:
-                        EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                    EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(35)),
                         border: Border.all(
-                            width: 0.4, color: Theme.of(context).hintColor),
-                        color: Theme.of(context).cardColor),
+                            width: 0.4, color: Theme
+                            .of(context)
+                            .hintColor),
+                        color: Theme
+                            .of(context)
+                            .cardColor),
                     child: DropdownButton<String>(
-                      value: selectedItem,
+                      value: selectedItem != null ? selectedItem : "",
                       items: items.map((item) {
                         return DropdownMenuItem<String>(
                           value: item,
                           child: Container(
-                              width: MediaQuery.of(context).size.width * 0.8,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.8,
                               margin: EdgeInsets.only(right: 5),
                               padding: EdgeInsets.all(
                                   Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                              child: Text(
-                                item,
-                                style: robotoMedium.copyWith(
-                                    color: Theme.of(context).hintColor),
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    left: Dimensions.PADDING_SIZE_SMALL),
+                                child: Text(
+                                  item,
+                                  style: robotoMedium.copyWith(
+                                      color: Theme
+                                          .of(context)
+                                          .hintColor),
+                                ),
                               )),
                         );
                       }).toList(),
-                      dropdownColor: Theme.of(context).cardColor,
+                      dropdownColor: Theme
+                          .of(context)
+                          .cardColor,
                       icon: Icon(Icons.keyboard_arrow_down),
                       elevation: 0,
                       iconSize: 30,
                       underline: SizedBox(),
                       onChanged: (index) {
                         print("selected length>>>${index}");
-                        selectedItem = index;
+
+                        setState(() {
+                          selectedItem = index;
+                        });
                         // localizationController.setLanguage(Locale(AppConstants.languages[index].languageCode, AppConstants.languages[index].countryCode));
                       },
                     ),
@@ -113,171 +144,93 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                     child: Text(
                       "Upload Images or Videos",
                       style: robotoRegular.copyWith(
-                          color: Theme.of(context).hintColor,
+                          color: Theme
+                              .of(context)
+                              .hintColor,
                           fontSize: Dimensions.fontSizeLarge),
                       textAlign: TextAlign.start,
                     ),
                   ),
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-              InkWell(
-                onTap: () {
+                  InkWell(
+                      onTap: () {
+                        openSelectImage(homecroller);
+                      },
+                      child: Image.asset(
+                        Images.add_photo,
+                        fit: BoxFit.fill,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
+                      )),
+                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                  (homecroller.raw_arrayList != null &&
+                      homecroller.raw_arrayList.length > 0 ?
+                  Container(
+                      height: 120,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
+                      child: ListView.builder(
+                        itemCount: homecroller.raw_arrayList.length,
+                        padding: EdgeInsets.all(
+                            Dimensions.PADDING_SIZE_EXTRA_LARGE_SMALL),
+                        physics: ScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return
+                              Container(
+                                margin: EdgeInsets.all(
+                                    Dimensions.PADDING_SIZE_EXTRA_SMALL),
 
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Container(
-                        height: 320,
-                          padding: EdgeInsets.all(
-                             Dimensions.RADIUS_SMALL,
-                              ),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20)),
-                              border: Border.all(
-                                  width: 1,
-                                  color: Theme.of(context).cardColor),
-                              color: Theme.of(context).cardColor),
-                         // Set the desired height of the bottom sheet
-                        child: Column(children: [
-                          SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                         Center(child: SvgPicture.asset(Images.bottom_sheet_line),),
-                          SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                          Align(alignment: Alignment.topLeft,
-                            child:
-                          Text('Choose For Attach File '.tr,
-                              textAlign: TextAlign.center,
-                              style: robotoBold.copyWith(
-                                color:  Theme.of(context).hintColor,
-                                fontSize: Dimensions.fontSizeExtraLarge,
-                              )),),
-                          SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.only(
-                                left: Dimensions.RADIUS_SMALL,
-                                right: Dimensions.RADIUS_SMALL),
-                            margin: EdgeInsets.all(
-                               Dimensions.RADIUS_SMALL,
+                                child: Stack(children: [
+                                Container(
+                                margin: EdgeInsets.all(
+                                Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  border: Border.all(
+                                      width: 1,
+                                      color: Theme
+                                          .of(context)
+                                          .disabledColor),
+                                  color: Colors.white,
                                 ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(
-                                  width: 1,
-                                  color: Theme.of(context).disabledColor),
-                              color: Colors.transparent,
-                            ),
-                            child: Row(children: [
-                              SizedBox(width: 10),
-                              SvgPicture.asset(Images.gallery_image),
-                              Expanded(
-                                  child: TextButton(
-                                    onPressed: () => {
-                                     // authController.changeLogin(),
-                                    },
-                                    child: Text('Choose picture of gallery'.tr,
-                                        textAlign: TextAlign.center,
-                                        style: robotoBold.copyWith(
-                                          color:  Theme.of(context).hintColor,
-                                          fontSize: Dimensions.fontSizeLarge,
-                                        )),
-                                  )),
-                              Image.asset(Images.arrow_right_normal,
-                                  height: 10, fit: BoxFit.contain),
-                              SizedBox(width: 10),
-                            ]),
-                          ),
-                          SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT), Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.only(
-                                left: Dimensions.RADIUS_SMALL,
-                                right: Dimensions.RADIUS_SMALL),
-                            margin: EdgeInsets.all(
-                               Dimensions.RADIUS_SMALL,
-                                ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(
-                                  width: 1,
-                                  color: Theme.of(context).disabledColor),
-                              color: Colors.transparent,
-                            ),
-                            child: Row(children: [
-                              SizedBox(width: 10),
-                              SvgPicture.asset(Images.take_photo),
-                              Expanded(
-                                  child: TextButton(
-                                    onPressed: () => {
-                                     // authController.changeLogin(),
-                                    },
-                                    child: Text('Take a photo'.tr,
-                                        textAlign: TextAlign.center,
-                                        style: robotoBold.copyWith(
-                                          color:  Theme.of(context).hintColor,
-                                          fontSize: Dimensions.fontSizeLarge,
-                                        )),
-                                  )),
-                              Image.asset(Images.arrow_right_normal,
-                                  height: 10, fit: BoxFit.contain),
-                              SizedBox(width: 10),
-                            ]),
-                          ),
-                          SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.only(
-                                left: Dimensions.RADIUS_SMALL,
-                                right: Dimensions.RADIUS_SMALL),
-                            margin: EdgeInsets.all(
-                               Dimensions.RADIUS_SMALL,
-                                ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(
-                                  width: 1,
-                                  color: Theme.of(context).disabledColor),
-                              color: Colors.transparent,
-                            ),
-                            child: Row(children: [
-                              SizedBox(width: 10),
-                              SvgPicture.asset(Images.voice_record),
-                              Expanded(
-                                  child: TextButton(
-                                    onPressed: () => {
-                                     // authController.changeLogin(),
-                                    },
-                                    child: Text('Voice Record'.tr,
-                                        textAlign: TextAlign.center,
-                                        style: robotoBold.copyWith(
-                                          color:  Theme.of(context).hintColor,
-                                          fontSize: Dimensions.fontSizeLarge,
-                                        )),
-                                  )),
-                              Image.asset(Images.arrow_right_normal,
-                                  height: 10, fit: BoxFit.contain),
-                              SizedBox(width: 10),
-                            ]),
-                          ),
-                          SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                        ],)
-                      );
-                    },
-                    backgroundColor: Colors.transparent
-                  );
-                  },
-                child:
-                  Image.asset(
-                    Images.add_photo,
-                    fit: BoxFit.fill,
-                    width: MediaQuery.of(context).size.width,
-                  )),
+                               child: Image.memory(
+                                homecroller.raw_arrayList[index],
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                )),
+
+                                Positioned(
+                                  top: 0,
+                                    right: 0,
+                                    child:
+                                InkWell(
+                                  onTap: () {
+                                    print("ksndksndsdsd");
+                                    homecroller.removeSelectedImage(index);
+                                    print("ksndksndsdsd${ homecroller.raw_arrayList.length}");
+                                  },
+                                  child: SvgPicture.asset(
+                                      Images.circle_cancel,height: 20,width: 20,),))
+                                  ],)
+                                ,
+                              );
+                        },
+                      )) : SizedBox()),
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
                       "About Incidence",
                       style: robotoRegular.copyWith(
-                          color: Theme.of(context).hintColor,
+                          color: Theme
+                              .of(context)
+                              .hintColor,
                           fontSize: Dimensions.fontSizeLarge),
                       textAlign: TextAlign.start,
                     ),
@@ -289,35 +242,43 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                         borderRadius: BorderRadius.circular(5.0),
                         borderSide: BorderSide.none,
                       ),
-                      enabledBorder:  OutlineInputBorder(
+                      enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15.0),
-                        borderSide:  BorderSide(color: Theme.of(context).hintColor, width: 0.4),
+                        borderSide: BorderSide(
+                            color: Theme
+                                .of(context)
+                                .hintColor, width: 0.4),
                       ),
                       counterText: "",
                       isDense: true,
                       hintText: "Enter description",
-                      fillColor: Theme.of(context).cardColor,
-                      hintStyle: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge, color: Color(0xFFA1A8B0)),
+                      fillColor: Theme
+                          .of(context)
+                          .cardColor,
+                      hintStyle: robotoRegular.copyWith(
+                          fontSize: Dimensions.fontSizeLarge,
+                          color: Color(0xFFA1A8B0)),
                       filled: true,
                     ),
                     maxLines: 5,
-
                   ),
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-              Row(mainAxisSize: MainAxisSize.max,
-                  children: [
-                Checkbox(
-                  activeColor: Theme.of(context).primaryColor,
-                  value: true,
-                  onChanged: (bool isChecked) =>(){} /*authController.toggleTerms()*/,
-                ),
-                Text('Post as anonymous'.tr, style: robotoRegular),
-
-              ]),
+                  Row(mainAxisSize: MainAxisSize.max, children: [
+                    Checkbox(
+                      activeColor: Theme
+                          .of(context)
+                          .primaryColor,
+                      value: true,
+                      onChanged: (bool isChecked) =>
+                          () {} /*authController.toggleTerms()*/,
+                    ),
+                    Text('Post as anonymous'.tr, style: robotoRegular),
+                  ]),
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                   CustomButton(
                     buttonText: 'Submit Report'.tr,
-                    onPressed: () =>(){} /*_login(
+                    onPressed: () =>
+                        () {} /*_login(
                         authController, _countryDialCode)*/
                     ,
                   )
@@ -326,5 +287,188 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
             )),
       );
     });
+  }
+
+  void openSelectImage(HomeController homeController) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+              height: 340,
+              padding: EdgeInsets.all(
+                Dimensions.RADIUS_SMALL,
+              ),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20)),
+                  border:
+                  Border.all(width: 1, color: Theme
+                      .of(context)
+                      .cardColor),
+                  color: Theme
+                      .of(context)
+                      .cardColor),
+              // Set the desired height of the bottom sheet
+              child: Column(
+                children: [
+                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                  Center(
+                    child: SvgPicture.asset(Images.bottom_sheet_line),
+                  ),
+                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text('Choose For Attach File '.tr,
+                        textAlign: TextAlign.center,
+                        style: robotoBold.copyWith(
+                          color: Theme
+                              .of(context)
+                              .hintColor,
+                          fontSize: Dimensions.fontSizeExtraLarge,
+                        )),
+                  ),
+                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(
+                        Dimensions.PADDING_SIZE_DEFAULT),
+                    margin: EdgeInsets.all(
+                      Dimensions.RADIUS_SMALL,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(
+                          width: 1, color: Theme
+                          .of(context)
+                          .disabledColor),
+                      color: Colors.transparent,
+                    ),
+                    child: InkWell(
+                        onTap: () {
+                          homeController.pickImage();
+                          Get.back();
+                        },
+                        child: Row(children: [
+                          SizedBox(width: 10),
+                          SvgPicture.asset(Images.gallery_image),
+                          Expanded(
+                            child: Text('Choose picture of gallery'.tr,
+                                textAlign: TextAlign.center,
+                                style: robotoBold.copyWith(
+                                  color: Theme
+                                      .of(context)
+                                      .hintColor,
+                                  fontSize: Dimensions.fontSizeLarge,
+                                )),
+                          ),
+                          Image.asset(Images.arrow_right_normal,
+                              height: 10, fit: BoxFit.contain),
+                          SizedBox(width: 10),
+                        ])),
+                  ),
+                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(
+                       Dimensions.PADDING_SIZE_DEFAULT),
+                    margin: EdgeInsets.all(
+                      Dimensions.RADIUS_SMALL,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(
+                          width: 1, color: Theme
+                          .of(context)
+                          .disabledColor),
+                      color: Colors.transparent,
+                    ),
+                    child:InkWell(
+                      onTap: () {
+                        homeController.pickCameraImage();
+                        Get.back();
+                      },
+                      child:
+                    Row(children: [
+                      SizedBox(width: 10),
+                      SvgPicture.asset(Images.take_photo),
+                      Expanded(
+                        child:
+                            Text('Take a photo'.tr,
+                                textAlign: TextAlign.center,
+                                style: robotoBold.copyWith(
+                                  color: Theme
+                                      .of(context)
+                                      .hintColor,
+                                  fontSize: Dimensions.fontSizeLarge,
+                                )),
+                          ),
+                      Image.asset(Images.arrow_right_normal,
+                          height: 10, fit: BoxFit.contain),
+                      SizedBox(width: 10),
+                    ]))
+                    ,
+                  ),
+                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all( Dimensions.PADDING_SIZE_DEFAULT),
+                    margin: EdgeInsets.all(
+                      Dimensions.RADIUS_SMALL,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(
+                          width: 1, color: Theme
+                          .of(context)
+                          .disabledColor),
+                      color: Colors.transparent,
+                    ),
+                    child:InkWell(
+                      onTap: () {
+                        startRecording();
+                        Get.back();
+                      },
+                      child:
+                    Row(children: [
+                      SizedBox(width: 10),
+                      SvgPicture.asset(Images.voice_record),
+                      Expanded(
+                          child:
+                            Text('Voice Record'.tr,
+                                textAlign: TextAlign.center,
+                                style: robotoBold.copyWith(
+                                  color: Theme
+                                      .of(context)
+                                      .hintColor,
+                                  fontSize: Dimensions.fontSizeLarge,
+                                )),
+                          ),
+                      Image.asset(Images.arrow_right_normal,
+                          height: 10, fit: BoxFit.contain),
+                      SizedBox(width: 10),
+                    ])),
+                  ),
+                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                ],
+              ));
+        },
+        backgroundColor: Colors.transparent);
+  }
+  Future<void> startRecording() async {
+
+    /*String path =  flutterSound.thePlayer.startPlayer() as String ;
+    print("path>>>>>>>>>${path}");
+    var _playerSubscription = flutterSound.thePlayer.onProgress.listen((e) {
+      if (e != null) {
+        print("path>>>>ee>>>>>${e.toString()}");
+      //  DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.toString());
+        //String txt = DateFormat(‘mm:ss:SS’, ‘en_US’).format(date);
+      *//* setState(() {
+          this._isPlaying = true;
+          this._playerTxt = txt.substring(0, 8);
+        });*//*
+      }
+    });*/
   }
 }

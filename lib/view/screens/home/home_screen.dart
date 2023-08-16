@@ -57,8 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     timeago.setLocaleMessages('en', timeago.EnMessages());
-    return GetBuilder<SplashController>(builder: (splashController) {
-      return Scaffold(
+
+      return
+        Scaffold(
         appBar: InnerCustomAppBar(
             title: 'Home'.tr,
             leadingIcon: Images.circle_arrow_back,
@@ -67,11 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Get.find<DashboardController>().changeIndex(0);
             }),
         endDrawer: MenuDrawer(),
-        backgroundColor: ResponsiveHelper.isDesktop(context)
-            ? Theme.of(context).cardColor
-            : splashController.module == null
-                ? Theme.of(context).backgroundColor
-                : null,
+
         body: /*Scrollbar(
           child: */
             SingleChildScrollView(
@@ -680,7 +677,7 @@ class _HomeScreenState extends State<HomeScreen> {
               // Set the FAB's background color
             )),
       );
-    });
+
   }
 
   List<Widget> _pageIndicators(
