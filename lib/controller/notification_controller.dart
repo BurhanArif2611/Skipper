@@ -14,8 +14,9 @@ class NotificationController extends GetxController implements GetxService {
   NotificationController({@required this.notificationRepo});
 
   List<NotificationModel> _notificationList;
-  bool _hasNotification = false;
   List<NotificationModel> get notificationList => _notificationList;
+  bool _hasNotification = false;
+
   bool get hasNotification => _hasNotification;
   int _offset=1;
   int get offset => _offset;

@@ -36,7 +36,7 @@ class SOSContactScreen extends StatefulWidget {
   State<SOSContactScreen> createState() => _SOSContactScreenState();
 }
 
-class _SOSContactScreenState extends State<SOSContactScreen> {
+class _SOSContactScreenState extends State<SOSContactScreen> with WidgetsBindingObserver {
   void _loadData() async {
     Get.find<HomeController>().getSOSContactList();
   }
@@ -44,8 +44,22 @@ class _SOSContactScreenState extends State<SOSContactScreen> {
   @override
   void initState() {
     super.initState();
-
+    WidgetsBinding.instance.addObserver(this);
     _loadData();
+  }
+  @override
+  void dispose() {
+    // Remove the observer in the dispose method
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print('App paused>>>>${state.toString()} ');
+    if (state == AppLifecycleState.paused) {
+      // Implement your onPause logic here
+      print('App paused');
+    }
   }
 
   @override
@@ -59,12 +73,7 @@ class _SOSContactScreenState extends State<SOSContactScreen> {
       ),
       endDrawer: MenuDrawer(),
       body: Get.find<AuthController>().isLoggedIn()
-          ? /*Scrollbar(
-          child:*/
-          /* SingleChildScrollView(
-              controller: scrollController,
-              physics: AlwaysScrollableScrollPhysics(),
-              child: */
+          ? !Get.find<AuthController>().isLoading?
           Container(
               height: MediaQuery.of(context).size.height,
               padding: EdgeInsets.all(Dimensions.RADIUS_DEFAULT),
@@ -84,171 +93,177 @@ class _SOSContactScreenState extends State<SOSContactScreen> {
                             fontSize: Dimensions.fontSizeLarge),
                       )),
                   SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                 /* Spacer(),*/
+                  /* Spacer(),*/
                   GetBuilder<HomeController>(
-                      builder: (onBoardingController) =>
-                          onBoardingController.sosContactListModel != null
-                              ? Container(
-                                  height: 500,
-                                  /*color: Colors.red,*/
-                                  child: ListView.builder(
-                                    /*controller: _scrollController,*/
-                                    itemCount: onBoardingController
-                                        .sosContactListModel.data.length,
+                      builder: (onBoardingController) => onBoardingController
+                                  .sosContactListModel !=
+                              null
+                          ? Container(
+                              height: 500,
+                              /*color: Colors.red,*/
+                              child: ListView.builder(
+                                /*controller: _scrollController,*/
+                                itemCount: onBoardingController
+                                    .sosContactListModel.data.length,
+                                padding: EdgeInsets.all(
+                                    Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                                physics: ScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    margin: EdgeInsets.only(
+                                        top: Dimensions.PADDING_SIZE_SMALL),
                                     padding: EdgeInsets.all(
-                                        Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                    physics: ScrollPhysics(),
-                                    scrollDirection: Axis.vertical,
-                                    itemBuilder: (context, index) {
-                                      return Container(
-                                        margin: EdgeInsets.only(
-                                            top: Dimensions.PADDING_SIZE_SMALL),
-                                        padding: EdgeInsets.all(
-                                           Dimensions.PADDING_SIZE_SMALL),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          border: Border.all(
-                                              width: 1,
-                                              color: Theme.of(context)
-                                                  .disabledColor),
-                                          color: Colors.white,
-                                        ),
-                                        child: Row(children: [
-                                          Expanded(flex: 5, child:
-                                          Column(children: [
-                                            SizedBox(
-                                                height: Dimensions
-                                                    .PADDING_SIZE_EXTRA_SMALL),
+                                        Dimensions.PADDING_SIZE_SMALL),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      border: Border.all(
+                                          width: 1,
+                                          color:
+                                              Theme.of(context).disabledColor),
+                                      color: Colors.white,
+                                    ),
+                                    child: Row(children: [
+                                      Expanded(
+                                          flex: 5,
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                  height: Dimensions
+                                                      .PADDING_SIZE_EXTRA_SMALL),
                                               Row(children: [
-                                                SvgPicture.asset(Images.defult_user),
+                                                SvgPicture.asset(
+                                                    Images.defult_user),
                                                 SizedBox(
                                                     width: Dimensions
                                                         .PADDING_SIZE_EXTRA_SMALL),
-                                            Align(
-                                                alignment:
-                                                Alignment
-                                                    .centerLeft,
-                                                child: Text(
-                                                  onBoardingController
-                                                      .sosContactListModel
-                                                      .data
-                                                      [
-                                                  index]
-                                                      .name,
-                                                  style: robotoBold.copyWith(
-                                                      fontSize:
-                                                      Dimensions
-                                                          .fontSizeLarge /*context.height*0.015*/,
-                                                      color: Theme.of(context)
-                                                          .hintColor),
-                                                  textAlign:
-                                                  TextAlign
-                                                      .start,
-                                                )),
-                                            ]),
-
-                                            SizedBox(
-                                                height: Dimensions
-                                                    .PADDING_SIZE_DEFAULT),
+                                                Align(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      onBoardingController
+                                                          .sosContactListModel
+                                                          .data[index]
+                                                          .name,
+                                                      style: robotoBold.copyWith(
+                                                          fontSize: Dimensions
+                                                              .fontSizeLarge /*context.height*0.015*/,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .hintColor),
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                    )),
+                                              ]),
+                                              SizedBox(
+                                                  height: Dimensions
+                                                      .PADDING_SIZE_DEFAULT),
                                               Row(children: [
-                                                SvgPicture.asset(Images.phone_call),
+                                                SvgPicture.asset(
+                                                    Images.phone_call),
                                                 SizedBox(
                                                     width: Dimensions
                                                         .PADDING_SIZE_EXTRA_SMALL),
-                                            Align(
-                                                alignment:
-                                                Alignment
-                                                    .centerLeft,
-                                                child:
-                                                Text(
-                                                  onBoardingController
-                                                      .sosContactListModel
-                                                      .data
-                                                  [
-                                                  index]
-                                                      .number,
-                                                  style: robotoRegular.copyWith(
-                                                      fontSize:
-                                                      Dimensions
-                                                          .fontSizeDefault /*context.height*0.015*/,
-                                                      color: Theme.of(context)
-                                                          .hintColor),
-                                                  textAlign:
-                                                  TextAlign
-                                                      .start,
-                                                )),
+                                                Align(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      onBoardingController
+                                                          .sosContactListModel
+                                                          .data[index]
+                                                          .number,
+                                                      style: robotoRegular.copyWith(
+                                                          fontSize: Dimensions
+                                                              .fontSizeDefault /*context.height*0.015*/,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .hintColor),
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                    )),
                                                 SizedBox(
                                                     width: Dimensions
                                                         .PADDING_SIZE_DEFAULT),
-
-                                                Text(" (${
-                                                  onBoardingController
-                                                      .sosContactListModel
-                                                      .data
-                                                  [
-                                                  index]
-                                                      .relation} )",
+                                                Text(
+                                                  " (${onBoardingController.sosContactListModel.data[index].relation} )",
                                                   style: robotoRegular.copyWith(
-                                                      fontSize:
-                                                      Dimensions
+                                                      fontSize: Dimensions
                                                           .fontSizeDefault /*context.height*0.015*/,
                                                       color: Theme.of(context)
                                                           .hintColor),
-                                                  textAlign:
-                                                  TextAlign
-                                                      .start,
+                                                  textAlign: TextAlign.start,
                                                 )
-                                                ]),
-                                          ],)),
-                                          Expanded(flex: 1, child: SvgPicture.asset(Images.circle_cancel,color: Colors.grey,),),
-                                        ]),
-                                      );
-                                    },
-                                  ))
-                              : SizedBox()),
-                GetBuilder<HomeController>(
-                    builder: (onBoardingController) =>
-                    onBoardingController.sosContactListModel != null &&  onBoardingController.sosContactListModel.data.length< 3
-                        ?   Expanded(
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(Images.button_bg),
-                          ),
-                        ),
-                        child: InkWell(
-                            onTap: () {
-                              Get.toNamed(RouteHelper.getAddContactRoute());
-                            },
-                            child: Align(
-                                alignment: Alignment.center,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(Images.plus),
-                                    SizedBox(
-                                      width: 10,
+                                              ]),
+                                            ],
+                                          )),
+                                      Expanded(
+                                        flex: 1,
+                                        child: InkWell(
+                                          onTap: () {
+
+                                            onBoardingController.deleteSOSContact(onBoardingController.sosContactListModel.data[index].sId);
+                                          },
+                                          child:
+                                        SvgPicture.asset(
+                                          Images.circle_cancel,
+                                          color: Colors.grey,
+                                        )),
+                                      ),
+                                    ]),
+                                  );
+                                },
+                              ))
+                          : SizedBox()),
+                  GetBuilder<HomeController>(
+                      builder: (onBoardingController) => onBoardingController
+                                      .sosContactListModel !=
+                                  null &&
+                              onBoardingController
+                                      .sosContactListModel.data.length <
+                                  3
+                          ? Expanded(
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(Images.button_bg),
                                     ),
-                                    Text(
-                                      "Add Number",
-                                      textAlign: TextAlign.center,
-                                      style: robotoMedium.copyWith(
-                                          color: Theme.of(context).hintColor),
-                                    ),
-                                  ],
-                                ))), // Your other content here, if any
-                      ),
-                    ),
-                  ):SizedBox()),
+                                  ),
+                                  child: InkWell(
+                                      onTap: () {
+                                        Get.toNamed(
+                                            RouteHelper.getAddContactRoute());
+                                      },
+                                      child: Align(
+                                          alignment: Alignment.center,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(Images.plus),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                "Add Number",
+                                                textAlign: TextAlign.center,
+                                                style: robotoMedium.copyWith(
+                                                    color: Theme.of(context)
+                                                        .hintColor),
+                                              ),
+                                            ],
+                                          ))), // Your other content here, if any
+                                ),
+                              ),
+                            )
+                          : SizedBox()),
                 ]),
               ),
-            ) /*)*/ /*)*/
+            ):Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,)) /*)*/ /*)*/
           : NotLoggedInScreen(),
     );
   }

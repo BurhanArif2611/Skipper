@@ -48,18 +48,20 @@ import 'package:get/get.dart';
 
 import '../controller/dashboard_controller.dart';
 import '../controller/home_controller.dart';
+import '../data/api/uploads3file.dart';
 
 Future<Map<String, Map<String, String>>> init() async {
   // Core
   final sharedPreferences = await SharedPreferences.getInstance();
   Get.lazyPut(() => sharedPreferences);
   Get.lazyPut(() => ApiClient(appBaseUrl: AppConstants.BASE_URL, sharedPreferences: Get.find()));
+  Get.lazyPut(() => UploadS3File(appBaseUrl: AppConstants.BASE_URL, sharedPreferences: Get.find()));
 
   // Repository
   Get.lazyPut(() => SplashRepo(sharedPreferences: Get.find(), apiClient: Get.find()));
   Get.lazyPut(() => LanguageRepo());
   Get.lazyPut(() => OnBoardingRepo());
-  Get.lazyPut(() => AuthRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
+  Get.lazyPut(() => AuthRepo(apiClient: Get.find(),apiClientother: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => LocationRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => UserRepo(apiClient: Get.find()));
   Get.lazyPut(() => BannerRepo(apiClient: Get.find()));

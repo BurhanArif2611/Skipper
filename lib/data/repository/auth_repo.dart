@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
@@ -11,10 +12,14 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../api/uploads3file.dart';
+import '../model/body/report_incidence_body.dart';
+
 class AuthRepo {
   final ApiClient apiClient;
+  final UploadS3File apiClientother;
   final SharedPreferences sharedPreferences;
-  AuthRepo({@required this.apiClient, @required this.sharedPreferences});
+  AuthRepo({@required this.apiClient,@required this.apiClientother, @required this.sharedPreferences});
 
   Future<Response> registration(SignUpBody signUpBody) async {
     return await apiClient.postData(AppConstants.REGISTER_URI, signUpBody.toJson());
@@ -27,6 +32,14 @@ class AuthRepo {
   Future<Response> addSOSContact({String name, String relation,String phone}) async {
     return await apiClient.postData(AppConstants.ADD_SOS_CONTACT_URI, {"name": name, "relation": relation, "number": phone});
   }
+  Future<Response> deleteSOSContact({String id}) async {
+    return await apiClient.deleteData('${AppConstants.ADD_SOS_CONTACT_URI}/'+id );
+  }
+
+
+  Future<Response> uploadfile({String id}) async {
+    return await apiClient.deleteData('${AppConstants.ADD_SOS_CONTACT_URI}/'+id );
+  }
 
   Future<Response> checkMobileNumber({String phone}) async {
     return await apiClient.postData(AppConstants.CHECK_PHONE_URI, {"phone": phone});
@@ -38,6 +51,10 @@ class AuthRepo {
 
   Future<Response> registerWithSocialMedia(SocialLogInBody socialLogInBody) async {
     return await apiClient.postData(AppConstants.SOCIAL_REGISTER_URL, socialLogInBody.toJson());
+  }
+
+  Future<Response> sendFile(File file) async {
+    return await apiClientother.sendFile("https://abujaeyemedia.s3.eu-west-1.amazonaws.com/", file);
   }
 
   Future<Response> updateToken() async {
@@ -108,13 +125,28 @@ class AuthRepo {
   }
   Future<Response> getNewsList() async {
     return await apiClient.getData(AppConstants.News_URL);
-  } Future<Response> getCategoryList() async {
+  }
+  Future<Response> getCategoryList() async {
     return await apiClient.getData(AppConstants.Categories_URL);
+  }
+  Future<Response> getStateList() async {
+    return await apiClient.getData(AppConstants.StateList_URL);
+  }
+  Future<Response> getIncidentTypesList() async {
+    return await apiClient.getData(AppConstants.IncidentTypes_URL);
+  }
+  Future<Response> getLgaList(String state_id) async {
+    return await apiClient.getData('${AppConstants.LgaList_URL}?state_id=$state_id');
+  }
+  Future<Response> getWardList(String state_id) async {
+    return await apiClient.getData('${AppConstants.WardList_URL}?lga_id=$state_id');
   }
   Future<Response> getSurveyList() async {
     return await apiClient.getData(AppConstants.Surveys_URL);
   }
-
+  Future<Response> addReport(ReportIncidenceBody signUpBody) async {
+    return await apiClient.postData(AppConstants.Incidents_URI, signUpBody.toJson());
+  }
   Future<Response> getSurveyDetail(String id) async {
     return await apiClient.getData('${AppConstants.Surveys_URL}/$id');
   }

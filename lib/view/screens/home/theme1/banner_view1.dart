@@ -99,7 +99,8 @@ class BannerView1 extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: bannerList.map((bnr) {
                 int index = bannerList.indexOf(bnr);
-                return TabPageSelectorIndicator(
+                return
+                  TabPageSelectorIndicator(
                   backgroundColor: index == bannerController.currentIndex ? Theme.of(context).primaryColor
                       : Theme.of(context).primaryColor.withOpacity(0.5),
                   borderColor: Theme.of(context).backgroundColor,

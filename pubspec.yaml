@@ -50,6 +50,11 @@ dependencies:
   google_places_flutter: ^2.0.5
   flutter_svg: ^1.1.6
   timeago: ^3.3.0
+  aws_common: ^0.4.2+5
+  aws_s3_upload: ^1.5.0
+  dio: ^4.0.6
+  aws_s3: ^0.1.1+hotfix.5
+
 
 
 

@@ -45,6 +45,7 @@ class AppConstants {
   static const String VERIFY_EMAIL_URI = '/api/v1/auth/verify-email';
   static const String REGISTER_URI = '/signup';
   static const String LOGIN_URI = '/login';
+  static const String Incidents_URI = '/incidents';
   static const String ADD_SOS_CONTACT_URI = '/user/sos';
   static const String CHECK_PHONE_URI = '/api/v1/auth/check_phone';
   static const String TOKEN_URI = '/api/v1/customer/cm-firebase-token';
@@ -103,6 +104,10 @@ class AppConstants {
   static const String News_URL = '/news';
   static const String Categories_URL = '/categories';
   static const String Surveys_URL = '/surveys';
+  static const String StateList_URL = '/admin/states';
+  static const String LgaList_URL = '/admin/lgas';
+  static const String WardList_URL = '/admin/wards';
+  static const String IncidentTypes_URL = '/incident-types';
 
 
   static const String MODULES_URI = '/api/v1/module';

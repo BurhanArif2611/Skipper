@@ -107,6 +107,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
                         inputAction:TextInputAction.done,
                       prefixIcon: Images.call,
                       divider: false,
+                      maxLength: 10,
                     ),
                     SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
 
@@ -152,7 +153,9 @@ class _AddContactScreenState extends State<AddContactScreen> {
      else {
       await Get.find<HomeController>().addSOSContact(_firstName,_relation,_number).then((status) async {
         if (status.statusCode == 200) {
+          Get.back();
           showCustomSnackBar("Contact Added Successfully");
+
         } else {
           showCustomSnackBar(status.body["message"]);
         }

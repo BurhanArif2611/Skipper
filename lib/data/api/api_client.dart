@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:get/get_connect/http/src/request/request.dart';
 
@@ -104,7 +105,7 @@ class ApiClient extends GetxService {
         'grant_type': 'password',
         'age': '87',
       };*/
-      print('====> API Body: $body');
+      print('====> API Body<:>  $body');
       Http.Response _response = await Http.post(
         Uri.parse(appBaseUrl + uri),
         body:Uri(queryParameters: body).query,
@@ -226,6 +227,8 @@ class ApiClient extends GetxService {
     }
     return _response;
   }
+
+
 }
 
 class MultipartBody {

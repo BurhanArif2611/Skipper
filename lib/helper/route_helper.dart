@@ -51,6 +51,7 @@ import '../view/screens/latestnews/top_news.dart';
 import '../view/screens/myprofile/changepassword_screen.dart';
 import '../view/screens/myprofile/emailaddress_screen.dart';
 import '../view/screens/myprofile/personal_profile_screen.dart';
+import '../view/screens/selectcountry/select_country_screen.dart';
 import '../view/screens/survey/survey_questions_screen.dart';
 import '../view/screens/survey/survey_start_screen.dart';
 import '../view/screens/survey/surveys_screen.dart';
@@ -121,6 +122,7 @@ class RouteHelper {
   static const String reportincidencescreen = '/report_incidence_screen';
   static const String surveystartscreen = '/survey_start_screen';
   static const String surveyquestionscreen = '/survey_question_screen';
+  static const String selectcountryscreen = '/select_country_screen';
 
   static String getInitialRoute() => '$initial';
   static String getPersonalProfileRoute() => '$personalprofilescreen';
@@ -141,6 +143,7 @@ class RouteHelper {
   static String getOnBoardingRoute() => '$onBoarding';
   static String getSignInRoute(String page) => '$signIn?page=$page';
   static String getSignUpRoute(String number) => '$signUp?number=$number';
+  static String getSelectCountryRoute(String number) => '$selectcountryscreen?state_id=$number';
   static String getVerificationRoute(String number, String token, String page, String pass) {
     return '$verification?page=$page&number=$number&token=$token&pass=$pass';
   }
@@ -256,6 +259,9 @@ class RouteHelper {
       exitFromApp: Get.parameters['page'] == signUp || Get.parameters['page'] == splash || Get.parameters['page'] == onBoarding,
     )),
     GetPage(name: signUp, page: () => SignUpScreen(number: Get.parameters['number'])),
+    GetPage(name: selectcountryscreen, page: () => SelectCountryScreen(state_id: Get.parameters['state_id'])),
+
+
     GetPage(name: verification, page: () {
       List<int> _decode = base64Decode(Get.parameters['pass'].replaceAll(' ', '+'));
       String _data = utf8.decode(_decode);

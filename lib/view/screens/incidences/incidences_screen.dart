@@ -105,12 +105,17 @@ class _IncidencesScreenState extends State<IncidencesScreen> {
                                .width,
                            fit: BoxFit.fill,
                          ),*/
+
+                         (onBoardingController.incidenceListModel.docs[index].images!=null && onBoardingController.incidenceListModel.docs[index].images.length>0?
                          CustomImage(
                            fit: BoxFit.cover,
                            height:
                            150,
                            image: onBoardingController.incidenceListModel.docs[index].images[0],
-                         ),
+                         ):Image.asset(
+                           Images.no_data_found,
+                           width: MediaQuery.of(context).size.height*0.15, height: 150,
+                         )),
                          SizedBox(
                              height: Dimensions
                                  .PADDING_SIZE_EXTRA_SMALL),
