@@ -43,14 +43,19 @@ import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/wallet/wallet_screen.dart';
 
 import '../data/model/response/survey_list_model.dart';
+import '../view/screens/complaint/add_complaint_screen.dart';
+import '../view/screens/complaint/list_complaint_screen.dart';
+import '../view/screens/contact_center/contact_center_screen.dart';
 import '../view/screens/home/add_contact_screen.dart';
 import '../view/screens/home/sos_contact_screen.dart';
 import '../view/screens/incidences/incidences_detail_screen.dart';
 import '../view/screens/incidences/report_incidence_screen.dart';
+import '../view/screens/incidences/security_officer_chat_screen.dart';
 import '../view/screens/latestnews/top_news.dart';
 import '../view/screens/myprofile/changepassword_screen.dart';
 import '../view/screens/myprofile/emailaddress_screen.dart';
 import '../view/screens/myprofile/personal_profile_screen.dart';
+import '../view/screens/resource_center/resource_center_screen.dart';
 import '../view/screens/selectcountry/select_country_screen.dart';
 import '../view/screens/survey/survey_questions_screen.dart';
 import '../view/screens/survey/survey_start_screen.dart';
@@ -123,6 +128,11 @@ class RouteHelper {
   static const String surveystartscreen = '/survey_start_screen';
   static const String surveyquestionscreen = '/survey_question_screen';
   static const String selectcountryscreen = '/select_country_screen';
+  static const String addcomplaintscreen = '/add_complaint_screen';
+  static const String listcomplaintscreen = '/list_complaint_screen';
+  static const String contactcenterscreen = '/contact_center_screen';
+  static const String resourcecenterscreen = '/resource_center_screen';
+  static const String securityofficerchatscreen = '/security_officer_chat_screen';
 
   static String getInitialRoute() => '$initial';
   static String getPersonalProfileRoute() => '$personalprofilescreen';
@@ -135,7 +145,7 @@ class RouteHelper {
   static String getMyprofileScreen() => '$myprofilescreen';
   static String getSurveyScreen() => '$surveyscreen';
   static String getReportIncidenceScreen() => '$reportincidencescreen';
-  static String getIncidenceDetailScreen() => '$incidencedetailscreen';
+  static String getIncidenceDetailScreen(String incidence_id) => '$incidencedetailscreen?incidence_id=$incidence_id';
   static String getNewsDetailScreen() => '$newsdetailscreen';
   static String getTopNewsScreen() => '$topnewsscreen';
   static String getSplashRoute(int orderID) => '$splash?id=$orderID';
@@ -144,6 +154,11 @@ class RouteHelper {
   static String getSignInRoute(String page) => '$signIn?page=$page';
   static String getSignUpRoute(String number) => '$signUp?number=$number';
   static String getSelectCountryRoute(String number) => '$selectcountryscreen?state_id=$number';
+  static String getSecurityOfficerCHatScreenRoute(String incidence_id) => '$securityofficerchatscreen?incidence_id=$incidence_id';
+  static String getAddComplaintRoute() => '$addcomplaintscreen';
+  static String getListComplaintRoute() => '$listcomplaintscreen';
+  static String getContactCenterRoute() => '$contactcenterscreen';
+  static String getResourceCenterRoute() => '$resourcecenterscreen';
   static String getVerificationRoute(String number, String token, String page, String pass) {
     return '$verification?page=$page&number=$number&token=$token&pass=$pass';
   }
@@ -249,7 +264,7 @@ class RouteHelper {
     GetPage(name: myprofilescreen, page: () => getRoute(MyProfileScreen())),
     GetPage(name: surveyscreen, page: () => getRoute(SurveyScreen())),
     GetPage(name: reportincidencescreen, page: () => getRoute(ReportIncidenceScreen())),
-    GetPage(name: incidencedetailscreen, page: () => getRoute(IncidenceDetailScreen())),
+    GetPage(name: incidencedetailscreen, page: () => getRoute(IncidenceDetailScreen(incidence_id:Get.parameters['incidence_id']))),
     GetPage(name: newsdetailscreen, page: () => getRoute(NewsDetailScreen())),
     GetPage(name: topnewsscreen, page: () => getRoute(TopNewsScreen())),
     GetPage(name: splash, page: () => SplashScreen(orderID: Get.parameters['id'] == 'null' ? null : Get.parameters['id'])),
@@ -259,7 +274,12 @@ class RouteHelper {
       exitFromApp: Get.parameters['page'] == signUp || Get.parameters['page'] == splash || Get.parameters['page'] == onBoarding,
     )),
     GetPage(name: signUp, page: () => SignUpScreen(number: Get.parameters['number'])),
+    GetPage(name: securityofficerchatscreen, page: () => SecurityOfficerChatScreen(incidence_id: Get.parameters['incidence_id'])),
     GetPage(name: selectcountryscreen, page: () => SelectCountryScreen(state_id: Get.parameters['state_id'])),
+    GetPage(name: addcomplaintscreen, page: () => AddComplaintScreen()),
+    GetPage(name: listcomplaintscreen, page: () => ListComplaintScreen()),
+    GetPage(name: contactcenterscreen, page: () => ContactCenterScreen()),
+    GetPage(name: resourcecenterscreen, page: () => ResourceCenterScreen()),
 
 
     GetPage(name: verification, page: () {

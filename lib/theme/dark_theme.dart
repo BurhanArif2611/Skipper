@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-ThemeData dark({Color color = const Color(0xFF796102)}) => ThemeData(
+ThemeData dark({Color color = const Color(0xFFAE2B89)}) => ThemeData(
   fontFamily: 'Mulish',
   primaryColor: color,
-  secondaryHeaderColor: Color(0xFFAB8C02),
+  secondaryHeaderColor: Color(0xFFAE2B89),
   /*disabledColor: Color(0xffa2a7ad),*/
-  disabledColor: Color(0xFF303030),
-  backgroundColor: Color(0xFF343636),
-  errorColor: Color(0xFFdd3135),
-  brightness: Brightness.dark,
-  hintColor: Color(0xFFbebebe),
-  cardColor: Colors.black,
-  colorScheme: ColorScheme.dark(primary: color, secondary: color),
+  disabledColor: Color(0xFFE5E7EB),
+  backgroundColor: Color(0xFFF3F3F3),
+  errorColor: Color(0xFFE84D4F),
+  brightness: Brightness.light,
+  hintColor: Color(0xFF222222),
+  cardColor: Colors.white,
+  colorScheme: ColorScheme.light(primary: color, secondary: color),
   textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(primary: color)),
 );

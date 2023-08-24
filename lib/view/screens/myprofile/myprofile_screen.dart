@@ -35,16 +35,17 @@ class MyProfileScreen extends StatefulWidget {
 }
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
+  bool securityOfficer = false;
   void _loadData() async {
     Get.find<UserController>().getUserInfo();
-
+    securityOfficer = Get.find<SplashController>().isSecurityOfficer;
+    print("securityOfficer ${securityOfficer}");
   }
 
   @override
   void initState() {
     super.initState();
-
-      _loadData();
+    _loadData();
   }
 
   @override
@@ -122,7 +123,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             child:
                           Row(children: [
                             SizedBox(width: 10),
-                            SvgPicture.asset(Images.change_personal_profile),
+                            SvgPicture.asset(Images.change_personal_profile,color: Theme.of(context).primaryColor),
                             SizedBox(width: 10),
                             Expanded(
                               child: Text('Change Personal Profile'.tr,
@@ -135,9 +136,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             Image.asset(Images.arrow_right_normal, height: 20),
                           ])),
                         ),
-                        SizedBox(
+                        !securityOfficer?SizedBox(
                           height: Dimensions.RADIUS_EXTRA_LARGE,
-                        ),
+                        ):SizedBox(),
+                        !securityOfficer?
                         Container(
                           width: double.infinity,
                           padding: EdgeInsets.all(Dimensions.RADIUS_DEFAULT),
@@ -151,11 +153,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                           child: InkWell(
                             onTap: () {
                               Get.toNamed(
-                                  RouteHelper.getPersonalProfileRoute());
+                                  RouteHelper.getListComplaintRoute());
                             },
                             child: Row(children: [
                               SizedBox(width: 10),
-                              SvgPicture.asset(Images.complaint),
+                              SvgPicture.asset(Images.complaint,color: Theme.of(context).primaryColor),
                               SizedBox(width: 10),
                               Expanded(
                                 child: Text('Complaint'.tr,
@@ -169,7 +171,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                   height: 20),
                             ]),
                           ),
-                        ),
+                        ):SizedBox(),
+
                         SizedBox(
                           height: Dimensions.RADIUS_EXTRA_LARGE,
                         ),
@@ -191,7 +194,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             child:
                           Row(children: [
                             SizedBox(width: 10),
-                            SvgPicture.asset(Images.change_email),
+                            SvgPicture.asset(Images.change_email,color: Theme.of(context).primaryColor),
                             SizedBox(width: 10),
                             Expanded(
                               child: Text('Change Email Address'.tr,
@@ -225,7 +228,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             child:
                           Row(children: [
                             SizedBox(width: 10),
-                            SvgPicture.asset(Images.change_password),
+                            SvgPicture.asset(Images.change_password,color: Theme.of(context).primaryColor),
                             SizedBox(width: 10),
                             Expanded(
                               child: Text('Change Password'.tr,
@@ -263,9 +266,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                         isLogOut: false,
                                         onYesPressed: () {
                                           print("sdjsndjsnd");
-                                          userController.removeUser();
+                                         // userController.removeUser();
                                           Get.find<AuthController>().clearSharedData();
                                           Get.find<UserController>().initData();
+                                          Get.find<AuthController>().changeLogin(false);
                                           Get.offAllNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
 
                                         }
@@ -274,7 +278,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               },
                               child: Row(children: [
                                 SizedBox(width: 10),
-                                SvgPicture.asset(Images.logout),
+                                SvgPicture.asset(Images.logout,color: Theme.of(context).primaryColor),
                                 SizedBox(width: 10),
                                 Expanded(
                                   child: Text('Logout'.tr,

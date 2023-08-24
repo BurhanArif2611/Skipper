@@ -76,7 +76,7 @@ class _IncidencesScreenState extends State<IncidencesScreen> {
              itemBuilder: (context, index) {
                return
                  InkWell(
-                   onTap: () { Get.toNamed(RouteHelper.getIncidenceDetailScreen());},
+                   onTap: () { Get.toNamed(RouteHelper.getIncidenceDetailScreen(onBoardingController.incidenceListModel.docs[index].sId));},
                child:
                  Container(
                    padding: EdgeInsets.all(
@@ -105,17 +105,20 @@ class _IncidencesScreenState extends State<IncidencesScreen> {
                                .width,
                            fit: BoxFit.fill,
                          ),*/
-
+                       Container(
+                       height: 150,
+                       width: MediaQuery.of(context).size.width,
+                       child:
                          (onBoardingController.incidenceListModel.docs[index].images!=null && onBoardingController.incidenceListModel.docs[index].images.length>0?
                          CustomImage(
-                           fit: BoxFit.cover,
+                           fit: BoxFit.fitWidth,
                            height:
                            150,
                            image: onBoardingController.incidenceListModel.docs[index].images[0],
                          ):Image.asset(
                            Images.no_data_found,
                            width: MediaQuery.of(context).size.height*0.15, height: 150,
-                         )),
+                         ))),
                          SizedBox(
                              height: Dimensions
                                  .PADDING_SIZE_EXTRA_SMALL),
@@ -148,6 +151,7 @@ class _IncidencesScreenState extends State<IncidencesScreen> {
                                  .PADDING_SIZE_EXTRA_SMALL),
                          Row(
                            children: [
+                             (onBoardingController.incidenceListModel.docs[index].user!=null && onBoardingController.incidenceListModel.docs[index].user.name!=null?
                              Expanded(
                                flex: 2,
                                child: Row(children: [
@@ -166,7 +170,7 @@ class _IncidencesScreenState extends State<IncidencesScreen> {
                                          fontSize: Dimensions
                                              .fontSizeDefault))
                                ]),
-                             ),
+                             ):SizedBox()),
                              Expanded(
                                  flex: 1,
                                  child: Text(

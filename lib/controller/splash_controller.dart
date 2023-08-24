@@ -18,10 +18,13 @@ import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:sixam_mart/view/screens/home/home_screen.dart';
 
 import '../data/model/response/store_model.dart';
+import '../data/repository/auth_repo.dart';
 import '../util/app_constants.dart';
 
 class SplashController extends GetxController implements GetxService {
   final SplashRepo splashRepo;
+ /* final AuthRepo authRepo;*/
+
   SplashController({@required this.splashRepo});
 
   ConfigModel _configModel;
@@ -43,6 +46,10 @@ class SplashController extends GetxController implements GetxService {
   List<ModuleModel> get moduleList => _moduleList;
   String get htmlText => _htmlText;
   bool get isLoading => _isLoading;
+
+  bool _isSecurityOfficer = false;
+  bool get isSecurityOfficer => _isSecurityOfficer;
+
 
   Future<bool> getConfigData() async {
     _hasConnection = true;
@@ -78,7 +85,14 @@ class SplashController extends GetxController implements GetxService {
     }
     await setModule(_module, notify: false);
   }
+  bool isSecuryOfficer() {
+    _isSecurityOfficer=splashRepo.isSecuryOfficer();
+    print("check it ${splashRepo.isSecuryOfficer()}");
+    update();
+    return splashRepo.isSecuryOfficer();
 
+
+  }
   bool showIntro() {
     return splashRepo.showIntro();
   }

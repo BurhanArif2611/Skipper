@@ -19,7 +19,9 @@ class SplashRepo {
   Future<Response> getConfigData() async {
     return await apiClient.getData(AppConstants.CONFIG_URI);
   }
-
+  bool isSecuryOfficer() {
+    return sharedPreferences.getBool(AppConstants.ROLE);
+  }
   Future<ModuleModel> initSharedData() async {
     sharedPreferences.setBool(AppConstants.THEME, true);
     if(!sharedPreferences.containsKey(AppConstants.THEME)) {

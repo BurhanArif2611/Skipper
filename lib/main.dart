@@ -26,6 +26,7 @@ import 'helper/get_di.dart' as di;
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 Future<void> main() async {
+
   if(ResponsiveHelper.isMobilePhone()) {
     HttpOverrides.global = new MyHttpOverrides();
   }
@@ -54,6 +55,9 @@ Future<void> main() async {
   //     version: "v9.0",
   //   );
   // }
+  try{
+  Get.find<SplashController>().isSecuryOfficer();}
+  catch(e){}
   runApp(MyApp(languages: _languages, orderID: _orderID));
 }
 
@@ -87,6 +91,7 @@ class MyApp extends StatelessWidget {
     return GetBuilder<ThemeController>(builder: (themeController) {
       return GetBuilder<LocalizationController>(builder: (localizeController) {
         return GetBuilder<SplashController>(builder: (splashController) {
+          print("splashController.isSecuryOfficer>>>${splashController.isSecurityOfficer}");
           return (GetPlatform.isWeb && splashController.configModel == null) ? SizedBox() : GetMaterialApp(
             title: AppConstants.APP_NAME,
             debugShowCheckedModeBanner: true,
@@ -97,7 +102,8 @@ class MyApp extends StatelessWidget {
            /* theme: themeController.darkTheme ? themeController.darkColor == null ? dark() : dark(color
                 : themeController.darkColor) : themeController.lightColor == null ? light()
                 : light(color: themeController.lightColor),*/
-            theme:light(),
+           theme: splashController.isSecurityOfficer != null && splashController.isSecurityOfficer ?  dark() : light(),
+            /*theme:light(),*/
             locale: localizeController.locale,
             translations: Messages(languages: languages),
             fallbackLocale: Locale(AppConstants.languages[0].languageCode, AppConstants.languages[0].countryCode),

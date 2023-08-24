@@ -45,6 +45,7 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
   String selectedItem = 'Thugs';
 
   void _loadData() async {
+    Get.find<HomeController>().clearAllData();
     Get.find<HomeController>().getIncidenceCategoryList();
 
   }
@@ -316,6 +317,42 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
+                      "Short Description",
+                      style: robotoRegular.copyWith(
+                          color: Theme.of(context).hintColor,
+                          fontSize: Dimensions.fontSizeLarge),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                  TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).hintColor, width: 0.4),
+                      ),
+                      counterText: "",
+                      isDense: true,
+                      hintText: "Enter short description",
+                      fillColor: Theme.of(context).cardColor,
+                      hintStyle: robotoRegular.copyWith(
+                          fontSize: Dimensions.fontSizeLarge,
+                          color: Color(0xFFA1A8B0)),
+                      filled: true,
+                    ),
+                    controller: _shortController,
+                    maxLines: 1,
+                  ),
+
+                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
                       "About Incidence",
                       style: robotoRegular.copyWith(
                           color: Theme.of(context).hintColor,
@@ -347,6 +384,7 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                     controller: _longController,
                     maxLines: 5,
                   ),
+
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                   Row(mainAxisSize: MainAxisSize.max, children: [
                     Checkbox(
@@ -543,8 +581,11 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
 
   void _addReport(bool isAnonymous,HomeController homeController) async {
     String _firstName = _longController.text.trim();
+    String _shortdescription = _shortController.text.trim();
 
-    if (_firstName.isEmpty) {
+    if (_shortdescription.isEmpty) {
+      showCustomSnackBar('Enter short description'.tr);
+    }else if (_firstName.isEmpty) {
       showCustomSnackBar('Enter description'.tr);
     } else if (!isAnonymous) {
       showCustomSnackBar('Select Anonymous'.tr);
@@ -565,11 +606,11 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
         state: homeController.state_id,
         lga: homeController.lga_id,
         ward: homeController.ward_id,
-        image: null,
-        video: null,
-        audio: null,
+        image: homeController.uploadedURL,
+        video: homeController.uploadedURL,
+        audio: homeController.uploadedURL,
         description: _firstName,
-        shortDescription: "klklk",
+        shortDescription: _shortdescription,
         isAnonymous: isAnonymous,
       );
       print("reportIncidenceBody>>>>>${reportIncidenceBody.toJson()}");
@@ -577,6 +618,8 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
         print("ldkfjkdljfkdjf");
         if (status.statusCode == 200) {
          print("addReport>>>>>>>${status.body["message"]}");
+         showCustomSnackBar(status.body["message"],isError:false);
+         Get.back();
         } else {
           showCustomSnackBar(status.body["message"]);
         }

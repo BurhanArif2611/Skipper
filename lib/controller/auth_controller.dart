@@ -31,9 +31,13 @@ class AuthController extends GetxController implements GetxService {
 
   bool _forUser = true;
   bool get forUser => _forUser;
-  void changeLogin() {
+  void changeLogin(bool check) {
     try {
-      _forUser = !_forUser;
+      _forUser = check;
+      print("obje_forUserct ${_forUser}");
+
+      authRepo.saveUserRole(check);
+
        update();
     } catch (e) {}
   }
@@ -95,16 +99,17 @@ class AuthController extends GetxController implements GetxService {
     return responseModel;
   }
 
-  Future<Response> new_login(String phone, String password) async {
+  Future<Response> new_login(String phone, String password,bool security_officer) async {
     _isLoading = true;
     update();
     Get.dialog(CustomLoader(), barrierDismissible: false);
-    Response response = await authRepo.login(phone: phone, password: password);
+    Response response = await authRepo.login(phone: phone, password: password,security_officer:security_officer);
     ResponseModel responseModel;
 
     if (response.statusCode == 200) {
 
         authRepo.saveUserToken(response.body['data']['token']['accessToken']);
+        authRepo.saveUserRole(security_officer);
         await authRepo.updateToken();
 
       responseModel = ResponseModel(true,response.body['data']['token']['accessToken']);

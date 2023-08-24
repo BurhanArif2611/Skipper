@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:sixam_mart/util/styles.dart';
 
 void showCustomSnackBar(String message, {bool isError = true}) {
-  if (message != null && message.isNotEmpty && !isError) {
+ /* if (message != null && message.isNotEmpty && !isError) {*/
     ScaffoldMessenger.of(Get.context).showSnackBar(SnackBar(
       dismissDirection: DismissDirection.horizontal,
       margin: EdgeInsets.only(
@@ -23,7 +23,8 @@ void showCustomSnackBar(String message, {bool isError = true}) {
           borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL)),
       content: Text(message, style: robotoMedium.copyWith(color: Colors.white)),
     ));
-  } else {
+  /* }
+  else {
     showDialog(
         context: Get.context,
         builder: (ctx) => AlertDialog(
@@ -45,5 +46,5 @@ void showCustomSnackBar(String message, {bool isError = true}) {
                 ),
               ],
             ));
-  }
+  }*/
 }

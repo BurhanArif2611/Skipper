@@ -113,6 +113,7 @@ class Images {
   static const String contact_center = 'assets/image/contact_center.svg';
   static const String homepagetopslider = 'assets/image/homepagetopslider.png';
   static const String add_photo = 'assets/image/add_photo.png';
+  static const String upload_photo_document = 'assets/image/upload_photo_document.png';
   static const String bottom_sheet_line = 'assets/image/bottom_sheet_line.svg';
   static const String gallery_image = 'assets/image/gallery_image.svg';
   static const String take_photo = 'assets/image/take_photo.svg';
@@ -122,4 +123,7 @@ class Images {
   static const String defult_user = 'assets/image/defult_user.svg';
   static const String phone_call = 'assets/image/phone_call.svg';
   static const String circle_cancel = 'assets/image/circle_cancel.svg';
+  static const String batch = 'assets/image/batch.svg';
+  static const String send_chat = 'assets/image/send_chat.svg';
+  static const String circle_user = 'assets/image/circle_user.svg';
 }

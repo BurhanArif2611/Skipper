@@ -80,7 +80,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               onPageChanged: (index) {
                 onBoardingController.changeSelectIndex(index);
               },
-            )),
+            )
+            ),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

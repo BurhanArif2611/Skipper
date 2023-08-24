@@ -163,6 +163,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .width,
                                             fit: BoxFit.fill,
                                           ),*/
+                                                Container(
+                                                height: 150,
+                                                    width: MediaQuery.of(context).size.width,
+                                                    child:
                                                       (onBoardingController
                                                           .incidenceListModel
                                                           .docs[index]
@@ -171,8 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           .docs[index]
                                                           .images.length>0?
                                                       CustomImage(
-                                                        fit: BoxFit.cover,
-                                                        height: 150,
+                                                        fit: BoxFit.fitWidth,
                                                         image: onBoardingController
                                                             .incidenceListModel
                                                             .docs[index]
@@ -180,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       ): Image.asset(
                                                          Images.no_data_found,
                                                         width: MediaQuery.of(context).size.height*0.15, height: 150,
-                                                      )),
+                                                      ))),
                                                       SizedBox(
                                                           height: Dimensions
                                                               .PADDING_SIZE_EXTRA_SMALL),
@@ -230,8 +233,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       SizedBox(
                                                           height: Dimensions
                                                               .PADDING_SIZE_EXTRA_SMALL),
+
                                                       Row(
                                                         children: [
+                                                          onBoardingController
+                                                              .incidenceListModel
+                                                              .docs[
+                                                          index]
+                                                              .user!=null?
+
                                                           Expanded(
                                                             flex: 2,
                                                             child: Row(
@@ -249,14 +259,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                               index]
                                                                           .user
                                                                           .name
-                                                                          .first,
+                                                                          .first+" "+onBoardingController
+                                                                          .incidenceListModel
+                                                                          .docs[
+                                                                      index]
+                                                                          .user
+                                                                          .name
+                                                                          .last,
                                                                       style: robotoBold.copyWith(
                                                                           color: Theme.of(context)
                                                                               .hintColor,
                                                                           fontSize:
                                                                               Dimensions.fontSizeDefault))
                                                                 ]),
-                                                          ),
+                                                          ):SizedBox(),
                                                           Expanded(
                                                               flex: 1,
                                                               child: Text(
@@ -417,7 +433,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               onBoardingController.newsListModel != null
                                   ? Container(
                                       height: 1000,
-                                      child: ListView.builder(
+                                      child:
+                                      ListView.builder(
                                         /*controller: _scrollController,*/
                                         itemCount: onBoardingController
                                             .newsListModel.data.docs.length,
@@ -509,6 +526,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                             .hintColor,
                                                                         fontSize:
                                                                             Dimensions.fontSizeDefault)),
+                                                                ( onBoardingController
+                                                                    .newsListModel
+                                                                    .data
+                                                                    .docs[
+                                                                index]
+                                                                    .category!=null &&  onBoardingController
+                                                                    .newsListModel
+                                                                    .data
+                                                                    .docs[
+                                                                index]
+                                                                    .category
+                                                                    .name!=null ?
                                                                 Text(
                                                                     onBoardingController
                                                                         .newsListModel
@@ -521,7 +550,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                         color: Theme.of(context)
                                                                             .hintColor,
                                                                         fontSize:
-                                                                            Dimensions.fontSizeDefault))
+                                                                            Dimensions.fontSizeDefault)):SizedBox())
                                                               ]),
                                                             ])),
                                                   ),

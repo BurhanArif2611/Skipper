@@ -8,11 +8,11 @@ import 'package:get/get_connect/http/src/response/response.dart';
 
 import '../model/response/address_model.dart';
 
-class StoreRepo {
+class ComplaintRepo {
   final ApiClient apiClient;
   final SharedPreferences sharedPreferences;
- // StoreRepo({@required this.apiClient});
-  StoreRepo({@required this.apiClient, @required this.sharedPreferences});
+  // StoreRepo({@required this.apiClient});
+  ComplaintRepo({@required this.apiClient, @required this.sharedPreferences});
   Future<Response> getStoreList(int offset, String filterBy) async {
     AddressModel _addressModel;
     try {

@@ -16,32 +16,31 @@ import 'package:sixam_mart/data/model/response/incidence_list_model.dart';
 
 import '../data/api/api_checker.dart';
 import '../data/model/body/report_incidence_body.dart';
-import '../data/model/response/commentlist_model.dart';
-import '../data/model/response/contact_center_model.dart';
+import '../data/model/response/complaint_list_model.dart';
 import '../data/model/response/country_list_model.dart';
 import '../data/model/response/incidence_category_model.dart';
-import '../data/model/response/incidence_detail_response.dart';
 import '../data/model/response/news_category_model.dart';
 import '../data/model/response/news_list_model.dart';
-import '../data/model/response/resource_center_model.dart';
 import '../data/model/response/response_model.dart';
 import '../data/model/response/sos_contact_model.dart';
 import '../data/model/response/survey_detail_model.dart';
 import '../data/model/response/survey_list_model.dart';
 import '../data/repository/auth_repo.dart';
-import '../data/repository/home_repo.dart';
+import '../data/repository/complaint_repo.dart';
+import '../data/repository/store_repo.dart';
 import '../view/base/custom_loader.dart';
 import 'package:sixam_mart/helper/network_info.dart';
+
+import '../view/base/custom_snackbar.dart';
 
 /*import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:file_picker/file_picker.dart';*/
 
-class HomeController extends GetxController implements GetxService {
-  final HomeRepo homeRepo;
+class ComplaintController extends GetxController implements GetxService {
+/*  final AuthRepo authRepo;*/
+  final ComplaintRepo storeRepo;
 
-  HomeController({@required this.homeRepo}) {
-    _notification = homeRepo.isNotificationActive();
-  }
+  ComplaintController({@required this.storeRepo});
 
   bool _isLoading = false;
 
@@ -71,45 +70,6 @@ class HomeController extends GetxController implements GetxService {
 
   String get ward_name => _ward_name;
 
-  bool _notification = true;
-
-  IncidenceListModel _incidenceListModel;
-
-  IncidenceListModel get incidenceListModel => _incidenceListModel;
-
-  NewsListModel _newsListModel;
-
-  NewsListModel get newsListModel => _newsListModel;
-
-  SurveyDetailModel _surveyDetailModel;
-
-  SurveyDetailModel get surveyDetailModel => _surveyDetailModel;
-
-  NewsCategoryModel _newsCategoryListModel;
-
-  NewsCategoryModel get newsCategoryListModel => _newsCategoryListModel;
-
-  SurveyListModel _surveyListModel;
-
-  SurveyListModel get surveyListModel => _surveyListModel;
-
-  IncidenceDetailResponse _incidenceDetailResponse;
-
-  IncidenceDetailResponse get incidenceDetailResponse =>
-      _incidenceDetailResponse;
-
-  SOSContactModel _sosContactListModel;
-
-  SOSContactModel get sosContactListModel => _sosContactListModel;
-
-  ResourceCenterModel _resourceCenterListModel;
-
-  ResourceCenterModel get resourceCenterListModel => _resourceCenterListModel;
-
-  ContactCenterModel _contactCenterListModel;
-
-  ContactCenterModel get contactCenterListModel => _contactCenterListModel;
-
   int _selectedIndex = 0;
 
   int get selectedIndex => _selectedIndex;
@@ -129,10 +89,6 @@ class HomeController extends GetxController implements GetxService {
 
   Uint8List get rawFile => _rawFile;
 
-  List<Uint8List> _raw_arrayList = [];
-
-  List get raw_arrayList => _raw_arrayList;
-
   List<CountryListModel> _countryList;
 
   List<CountryListModel> get countryList => _countryList;
@@ -142,17 +98,25 @@ class HomeController extends GetxController implements GetxService {
   List<IncidenceCategoryModel> get incidencecategorylist =>
       _incidencecategorylist;
 
-  List<String> _uploadedURL = [];
+  ComplaintListModel _complaintlistarray;
 
-  List<String> get uploadedURL => _uploadedURL;
+  ComplaintListModel get complaintlistarray => _complaintlistarray;
 
-  CommentListModel _commentList;
+  String _uploadedURL = "";
 
-  CommentListModel get commentList => _commentList;
+  String get uploadedURL => _uploadedURL;
 
-  CommentListModel _securitycommentList;
+  void clearAllData() {
+    try {
 
-  CommentListModel get securitycommentList => _securitycommentList;
+      _rawFile = null;
+      _uploadedURL = "";
+      _state_name="";
+      _lga_name="";
+      _ward_name="";
+      update();
+    } catch (e) {}
+  }
 
   void changeSelectIndex(int index) {
     _selectedIndex = index;
@@ -169,25 +133,68 @@ class HomeController extends GetxController implements GetxService {
     update();
   }
 
-  void clearAllData() {
-    try {
-      _incidenceDetailResponse = null;
-      _commentList = null;
-      _securitycommentList = null;
-      _raw_arrayList = [];
-      _rawFile = null;
-      _uploadedURL = [];
-      _state_name="";
-      _lga_name="";
-      _ward_name="";
+  Future<void> getIncidenceCategoryList() async {
+    Response response = await storeRepo.getIncidentTypesList();
+    _incidencecategorylist = [];
+    if (response.statusCode == 200) {
+      response.body.forEach((notification) => _incidencecategorylist
+          .add(IncidenceCategoryModel.fromJson(notification)));
+
+      print("_countryList>>>${_incidencecategorylist.length}");
       update();
-    } catch (e) {}
+    } else {
+      ApiChecker.checkApi(response);
+    }
   }
 
+  Future<Response> deleteSOSContact(String id) async {
+    _isLoading = true;
+    update();
+    Response response = await storeRepo.deleteComplaint(id: id);
+    // ResponseModel responseModel;
+    if (response.statusCode == 200) {
+      showCustomSnackBar(response.body['message'].toString(), isError: false);
+      getComplaintList();
+    }
+    _isLoading = false;
+    update();
+    return response;
+  }
+
+  Future<void> getComplaintList() async {
+    Response response = await storeRepo.getComplaintList();
+
+    if (response.statusCode == 200) {
+      _complaintlistarray = ComplaintListModel.fromJson(response.body);
+
+      update();
+    } else {
+      ApiChecker.checkApi(response);
+    }
+  }
+
+  Future<Response> addCompliant(String complain, String category_id) async {
+    _isLoading = true;
+
+    Response response =
+        await storeRepo.addComplain(complain, category_id, _uploadedURL);
+    if (response.statusCode == 200) {
+      getComplaintList();
+
+      update();
+    } else {
+      ApiChecker.checkApi(response);
+    }
+
+    _isLoading = false;
+    return response;
+  }
+
+/*
   Future<void> getIncidenceList() async {
     _isLoading = true;
 
-    Response response = await homeRepo.getIncidents();
+    Response response = await authRepo.getIncidents();
     if (response.statusCode == 200) {
       _incidenceListModel = IncidenceListModel.fromJson(response.body);
 
@@ -202,7 +209,7 @@ class HomeController extends GetxController implements GetxService {
   Future<void> getNewsList() async {
     _isLoading = true;
 
-    Response response = await homeRepo.getNewsList();
+    Response response = await authRepo.getNewsList();
     if (response.statusCode == 200) {
       _newsListModel = NewsListModel.fromJson(response.body);
 
@@ -215,7 +222,7 @@ class HomeController extends GetxController implements GetxService {
   }
 
   Future<void> getCategoryList() async {
-    Response response = await homeRepo.getCategoryList();
+    Response response = await authRepo.getCategoryList();
     if (response.statusCode == 200) {
       _newsCategoryListModel = NewsCategoryModel.fromJson(response.body);
 
@@ -226,9 +233,10 @@ class HomeController extends GetxController implements GetxService {
   }
 
   Future<void> getStateList() async {
-    Response response = await homeRepo.getStateList();
-    _countryList = [];
+    Response response = await authRepo.getStateList();
+    _countryList=[];
     if (response.statusCode == 200) {
+
       response.body.forEach((notification) =>
           _countryList.add(CountryListModel.fromJson(notification)));
 
@@ -239,24 +247,14 @@ class HomeController extends GetxController implements GetxService {
     }
   }
 
-  Future<void> getIncidenceCategoryList() async {
-    Response response = await homeRepo.getIncidentTypesList();
-    _incidencecategorylist = [];
-    if (response.statusCode == 200) {
-      response.body.forEach((notification) => _incidencecategorylist
-          .add(IncidenceCategoryModel.fromJson(notification)));
 
-      print("_countryList>>>${_incidencecategorylist.length}");
-      update();
-    } else {
-      ApiChecker.checkApi(response);
-    }
-  }
+
 
   Future<void> getLgaList(String state_id) async {
-    Response response = await homeRepo.getLgaList(state_id);
-    _countryList = [];
+    Response response = await authRepo.getLgaList(state_id);
+    _countryList=[];
     if (response.statusCode == 200) {
+
       response.body.forEach((notification) =>
           _countryList.add(CountryListModel.fromJson(notification)));
 
@@ -268,9 +266,10 @@ class HomeController extends GetxController implements GetxService {
   }
 
   Future<void> getWardList(String lag_id) async {
-    Response response = await homeRepo.getWardList(lag_id);
-    _countryList = [];
+    Response response = await authRepo.getWardList(lag_id);
+    _countryList=[];
     if (response.statusCode == 200) {
+
       response.body.forEach((notification) =>
           _countryList.add(CountryListModel.fromJson(notification)));
 
@@ -282,7 +281,7 @@ class HomeController extends GetxController implements GetxService {
   }
 
   Future<void> getSurveyList() async {
-    Response response = await homeRepo.getSurveyList();
+    Response response = await authRepo.getSurveyList();
     if (response.statusCode == 200) {
       _surveyListModel = SurveyListModel.fromJson(response.body);
 
@@ -292,59 +291,10 @@ class HomeController extends GetxController implements GetxService {
     }
   }
 
-  Future<void> getIncidenceDetail(String incidence_id) async {
-    Response response = await homeRepo.getIncidenceDetail(incidence_id);
-
-    if (response.statusCode == 200) {
-      _incidenceDetailResponse =
-          IncidenceDetailResponse.fromJson(response.body);
-      update();
-    } else {
-      ApiChecker.checkApi(response);
-    }
-  }
-
-  Future<void> getCommentList(String incidence_id) async {
-    Response response = await homeRepo.getCommentList(incidence_id);
-    // _commentList=[];
-    if (response.statusCode == 200) {
-      _commentList = (CommentListModel.fromJson(response.body));
-      // print("CommentListModel size>>${_commentList.length}");
-      update();
-    } else {
-      ApiChecker.checkApi(response);
-    }
-  }
-
-  Future<void> getSecurityOfficerCommentList(String incidence_id) async {
-    Response response =
-        await homeRepo.getSecurityOfficerCommentList(incidence_id);
-    // _commentList=[];
-    if (response.statusCode == 200) {
-      _securitycommentList = (CommentListModel.fromJson(response.body));
-      // print("CommentListModel size>>${_commentList.length}");
-      update();
-    } else {
-      ApiChecker.checkApi(response);
-    }
-  }
-
-  Future<Response> addIncidenceComment(
-      String incidence_id, String comment_text) async {
-    Response response = await homeRepo.addComments(incidence_id, comment_text);
-    if (response.statusCode == 200) {
-      getCommentList(incidence_id);
-      update();
-    } else {
-      ApiChecker.checkApi(response);
-    }
-    return response;
-  }
-
   Future<void> getSurveysDetail(String id) async {
     _isLoading = true;
 
-    Response response = await homeRepo.getSurveyDetail(/*id*/
+    Response response = await authRepo.getSurveyDetail(*/ /*id*/ /*
         "64afb5cbdc66ae6bcda502a3");
     if (response.statusCode == 200) {
       _surveyDetailModel = SurveyDetailModel.fromJson(response.body);
@@ -360,7 +310,7 @@ class HomeController extends GetxController implements GetxService {
   Future<void> getSOSContactList() async {
     _isLoading = true;
 
-    Response response = await homeRepo.getSOSContactList();
+    Response response = await authRepo.getSOSContactList();
     if (response.statusCode == 200) {
       _sosContactListModel = SOSContactModel.fromJson(response.body);
 
@@ -372,52 +322,22 @@ class HomeController extends GetxController implements GetxService {
     _isLoading = false;
   }
 
-  Future<void> getResourceCenterList() async {
-    _isLoading = true;
-
-    Response response = await homeRepo.getResourceCenterList();
-    if (response.statusCode == 200) {
-      _resourceCenterListModel = ResourceCenterModel.fromJson(response.body);
-
-      update();
-    } else {
-      ApiChecker.checkApi(response);
-    }
-    _isLoading = false;
-    update();
-  }
-
-  Future<void> getContactCenterList() async {
-    _isLoading = true;
-
-    Response response = await homeRepo.getContactCenterList();
-    if (response.statusCode == 200) {
-      _contactCenterListModel = ContactCenterModel.fromJson(response.body);
-
-      update();
-    } else {
-      ApiChecker.checkApi(response);
-    }
-    _isLoading = false;
-    update();
-  }
-
   Future<Response> addSOSContact(
       String name, String relation, String phone) async {
     _isLoading = true;
     update();
     // Get.dialog(CustomLoader(), barrierDismissible: false);
-    Response response = await homeRepo.addSOSContact(
+    Response response = await authRepo.addSOSContact(
         name: name, relation: relation, phone: phone);
     // ResponseModel responseModel;
 
     if (response.statusCode == 200) {
       getSOSContactList();
-      /*  homeRepo.saveUserToken(response.body['data']['token']['accessToken']);
-      await homeRepo.updateToken();
+      */ /*  authRepo.saveUserToken(response.body['data']['token']['accessToken']);
+      await authRepo.updateToken();
 
       responseModel = ResponseModel(true,response.body['data']['token']['accessToken']);
-     */
+     */ /*
       //  Get.back();
     } else {
       //   Get.back();
@@ -432,16 +352,16 @@ class HomeController extends GetxController implements GetxService {
     _isLoading = true;
     update();
     // Get.dialog(CustomLoader(), barrierDismissible: false);
-    Response response = await homeRepo.deleteSOSContact(id: id);
+    Response response = await authRepo.deleteSOSContact(id:id);
     // ResponseModel responseModel;
 
     if (response.statusCode == 200) {
       getSOSContactList();
-      /*  homeRepo.saveUserToken(response.body['data']['token']['accessToken']);
-      await homeRepo.updateToken();
+      */ /*  authRepo.saveUserToken(response.body['data']['token']['accessToken']);
+      await authRepo.updateToken();
 
       responseModel = ResponseModel(true,response.body['data']['token']['accessToken']);
-     */
+     */ /*
       //  Get.back();
     } else {
       //   Get.back();
@@ -450,18 +370,19 @@ class HomeController extends GetxController implements GetxService {
     _isLoading = false;
     update();
     return response;
-  }
+  }*/
 
   void pickImage() async {
     _pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (_pickedFile != null) {
-      //_pickedFile = await NetworkInfo.compressImage(_pickedFile);
-      _rawFile = await _pickedFile.readAsBytes();
-      print("pickImage" + _pickedFile.path);
-      print("pickImage" + _rawFile.toString());
-      _raw_arrayList.add(_rawFile);
-      File file1 = new File(_pickedFile.path);
-      _uploadImage(file1, 101);
+      _pickedFile =
+          await NetworkInfo.compressImage(_pickedFile).then((value) async {
+        _rawFile = await _pickedFile.readAsBytes();
+        print("pickImage" + _pickedFile.path);
+        print("pickImage" + _rawFile.toString());
+        File file1 = new File(_pickedFile.path);
+        _uploadImage(file1, 101);
+      });
     }
     update();
   }
@@ -504,27 +425,19 @@ class HomeController extends GetxController implements GetxService {
   void pickCameraImage() async {
     _pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
     if (_pickedFile != null) {
-      //_pickedFile = await NetworkInfo.compressImage(_pickedFile);
-      _rawFile = await _pickedFile.readAsBytes();
-      print("pickImage>>>>" + _pickedFile.path.toString());
-      print("pickImage" + _rawFile.toString());
-      _raw_arrayList.add(_rawFile);
-      File file1 = new File(_pickedFile.path);
-      // homeRepo.sendFile(file1);
-      _uploadImage(file1, 101);
+      _pickedFile =
+          await NetworkInfo.compressImage(_pickedFile).then((value) async {
+        _rawFile = await _pickedFile.readAsBytes();
+        print("pickImage>>>>" + _pickedFile.path.toString());
+        print("pickImage" + _rawFile.toString());
+        File file1 = new File(_pickedFile.path);
+        // authRepo.sendFile(file1);
+        _uploadImage(file1, 101);
+      });
+
       //print("dlfjdljfdjfkdjf>>${response.statusCode}");
     }
     update();
-  }
-
-  void removeSelectedImage(int Index) {
-    try {
-      _raw_arrayList.removeAt(Index);
-      print(">>>>>>>${_raw_arrayList.length.toString()}");
-      update();
-    } catch (e) {
-      print(">>>>>>>${e.toString()}");
-    }
   }
 
   void selectState(String state_id, String state_name) {
@@ -568,27 +481,29 @@ class HomeController extends GetxController implements GetxService {
     }
   }
 
-  Future<Response> addReport(ReportIncidenceBody signUpBody) async {
+  /*Future<Response> addReport(ReportIncidenceBody signUpBody) async {
     _isLoading = true;
 
-    Response response = await homeRepo.addReport(signUpBody);
+    Response response = await authRepo.addReport(signUpBody);
     ResponseModel responseModel;
     print("response>>>${response.statusCode}");
     if (response.statusCode == 200) {
-      /* if (!Get.find<SplashController>().configModel.customerVerification) {
-        homeRepo.saveUserToken(response.body["token"]);
-        await homeRepo.updateToken();
-      }*/
+      */ /* if (!Get.find<SplashController>().configModel.customerVerification) {
+        authRepo.saveUserToken(response.body["token"]);
+        await authRepo.updateToken();
+      }*/ /*
       // responseModel = ResponseModel(true, response.body);
+
     } else {
-      /*  responseModel = ResponseModel(false, response.body["message"] != null
+
+      */ /*  responseModel = ResponseModel(false, response.body["message"] != null
               ? response.body["message"].toString()
-              : response.statusText);*/
+              : response.statusText);*/ /*
     }
     _isLoading = false;
     update();
     return response;
-  }
+  }*/
 
   Future<String> _uploadImage(File file, int number,
       {String extension = 'jpg'}) async {
@@ -627,7 +542,7 @@ class HomeController extends GetxController implements GetxService {
           filename: "1692276470974.png",
         ).then((uri) {
           print("inner >>>>> >${uri.toString()}");
-          _uploadedURL.add(uri);
+          _uploadedURL = (uri);
           print("object>>>>>>${_uploadedURL.length.toString()}");
         });
         print("object>>>>>>${result.toString()}");

@@ -15,18 +15,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../api/uploads3file.dart';
 import '../model/body/report_incidence_body.dart';
 
-class AuthRepo {
+class HomeRepo {
   final ApiClient apiClient;
   final UploadS3File apiClientother;
   final SharedPreferences sharedPreferences;
-  AuthRepo({@required this.apiClient,@required this.apiClientother, @required this.sharedPreferences});
+  HomeRepo({@required this.apiClient,@required this.apiClientother, @required this.sharedPreferences});
 
   Future<Response> registration(SignUpBody signUpBody) async {
     return await apiClient.postData(AppConstants.REGISTER_URI, signUpBody.toJson());
   }
 
-  Future<Response> login({String phone, String password,bool security_officer}) async {
-    return await apiClient.postData(AppConstants.LOGIN_URI, {"username": phone, "password": password, "grant_type": 'password', "scope": !security_officer?"2":"6", "role": !security_officer?"":"6"});
+  Future<Response> login({String phone, String password}) async {
+    return await apiClient.postData(AppConstants.LOGIN_URI, {"username": phone, "password": password, "grant_type": 'password', "scope": "2"});
   }
 
   Future<Response> addSOSContact({String name, String relation,String phone}) async {
@@ -57,7 +57,7 @@ class AuthRepo {
 
   Future<Response> updateToken() async {
     String _deviceToken;
-  //  saveUserToken(sharedPreferences.getString(AppConstants.TOKEN));
+    //  saveUserToken(sharedPreferences.getString(AppConstants.TOKEN));
     if (GetPlatform.isIOS && !GetPlatform.isWeb) {
       FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(alert: true, badge: true, sound: true);
       NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
@@ -74,7 +74,7 @@ class AuthRepo {
     if(!GetPlatform.isWeb) {
       FirebaseMessaging.instance.subscribeToTopic(AppConstants.TOPIC);
     }
-  //  return await apiClient.postData(AppConstants.TOKEN_URI, {"_method": "put", "cm_firebase_token": _deviceToken});
+    //  return await apiClient.postData(AppConstants.TOKEN_URI, {"_method": "put", "cm_firebase_token": _deviceToken});
     return null;
   }
 
@@ -142,6 +142,15 @@ class AuthRepo {
   Future<Response> getSurveyList() async {
     return await apiClient.getData(AppConstants.Surveys_URL);
   }
+  Future<Response> getIncidenceDetail(String id) async {
+    return await apiClient.getData('${AppConstants.Incidents_URI}/$id');
+  }
+  Future<Response> getCommentList(String id) async {
+    return await apiClient.getData('${AppConstants.IncidentComment_URI}/$id');
+  }
+  Future<Response> getSecurityOfficerCommentList(String id) async {
+    return await apiClient.getData('${AppConstants.SecurityComment_URI}$id');
+  }
   Future<Response> addReport(ReportIncidenceBody signUpBody) async {
     return await apiClient.postModelData(AppConstants.Incidents_URI, signUpBody);
   }
@@ -152,9 +161,18 @@ class AuthRepo {
   Future<Response> getSOSContactList() async {
     return await apiClient.getData('${AppConstants.ADD_SOS_CONTACT_URI}');
   }
+  Future<Response> getResourceCenterList() async {
+    return await apiClient.getData('${AppConstants.Resource_Centers_URI}');
+  }
+  Future<Response> getContactCenterList() async {
+    return await apiClient.getData('${AppConstants.Contact_Centers_URI}');
+  }
 
   Future<Response> verifyPhone(String phone, String otp) async {
     return await apiClient.postData(AppConstants.VERIFY_PHONE_URI, {"phone": phone, "otp": otp});
+  }
+  Future<Response> addComments(String incidence_id,String text) async {
+    return await apiClient.postData(AppConstants.Comment_URL, {"incident": incidence_id,"text": text});
   }
 
   // for  user token
@@ -165,10 +183,6 @@ class AuthRepo {
       Get.find<SplashController>().module != null ? Get.find<SplashController>().module.id : null,
     );
     return await sharedPreferences.setString(AppConstants.TOKEN, token);
-  }
-  Future<bool> saveUserRole(bool role) async {
-    print("role>>>> ${role}");
-    return await sharedPreferences.setBool(AppConstants.ROLE, role);
   }
 
   String getUserToken() {
@@ -182,7 +196,7 @@ class AuthRepo {
   bool clearSharedData() {
     if(!GetPlatform.isWeb) {
       FirebaseMessaging.instance.unsubscribeFromTopic(AppConstants.TOPIC);
-     // apiClient.postData(AppConstants.TOKEN_URI, {"_method": "put", "cm_firebase_token": '@'});
+      // apiClient.postData(AppConstants.TOKEN_URI, {"_method": "put", "cm_firebase_token": '@'});
     }
     sharedPreferences.remove(AppConstants.TOKEN);
     sharedPreferences.setStringList(AppConstants.CART_LIST, []);

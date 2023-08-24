@@ -45,7 +45,8 @@ class _SearchResultWidgetState extends State<SearchResultWidget> with TickerProv
         }
         return _isNull ? SizedBox() : Center(child: SizedBox(width: Dimensions.WEB_MAX_WIDTH, child: Padding(
           padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-          child: Row(children: [
+          child:
+          Row(children: [
             Text(
               _length.toString(),
               style: robotoBold.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeSmall),

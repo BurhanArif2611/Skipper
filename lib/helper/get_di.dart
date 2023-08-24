@@ -46,14 +46,19 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 
+import '../controller/complaint_controller.dart';
 import '../controller/dashboard_controller.dart';
 import '../controller/home_controller.dart';
 import '../data/api/uploads3file.dart';
+import '../data/repository/complaint_repo.dart';
+import '../data/repository/home_repo.dart';
 
 Future<Map<String, Map<String, String>>> init() async {
   // Core
   final sharedPreferences = await SharedPreferences.getInstance();
   Get.lazyPut(() => sharedPreferences);
+  Get.lazyPut(() => AuthRepo(apiClient: Get.find(),apiClientother: Get.find(), sharedPreferences: Get.find()));
+  Get.lazyPut(() => HomeRepo(apiClient: Get.find(),apiClientother: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => ApiClient(appBaseUrl: AppConstants.BASE_URL, sharedPreferences: Get.find()));
   Get.lazyPut(() => UploadS3File(appBaseUrl: AppConstants.BASE_URL, sharedPreferences: Get.find()));
 
@@ -61,12 +66,12 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => SplashRepo(sharedPreferences: Get.find(), apiClient: Get.find()));
   Get.lazyPut(() => LanguageRepo());
   Get.lazyPut(() => OnBoardingRepo());
-  Get.lazyPut(() => AuthRepo(apiClient: Get.find(),apiClientother: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => LocationRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => UserRepo(apiClient: Get.find()));
   Get.lazyPut(() => BannerRepo(apiClient: Get.find()));
   Get.lazyPut(() => CategoryRepo(apiClient: Get.find()));
   Get.lazyPut(() => StoreRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
+  Get.lazyPut(() => ComplaintRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => WishListRepo(apiClient: Get.find()));
   Get.lazyPut(() => ItemRepo(apiClient: Get.find()));
   Get.lazyPut(() => CartRepo(sharedPreferences: Get.find()));
@@ -100,8 +105,8 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => CampaignController(campaignRepo: Get.find()));
   Get.lazyPut(() => ParcelController(parcelRepo: Get.find()));
   Get.lazyPut(() => WalletController(walletRepo: Get.find()));
-  Get.lazyPut(() => HomeController(authRepo: Get.find()));
-
+  Get.lazyPut(() => HomeController(homeRepo: Get.find()));
+  Get.lazyPut(() => ComplaintController(storeRepo: Get.find()));
   // Retrieving localized data
   Map<String, Map<String, String>> _languages = Map();
   for(LanguageModel languageModel in AppConstants.languages) {

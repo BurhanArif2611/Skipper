@@ -30,9 +30,9 @@ class ReportIncidenceBody {
     state = json['state'];
     lga = json['lga'];
     ward = json['ward'];
-    image = json['image'].cast<String>();
-    video = json['video'].cast<String>();
-    audio = json['audio'].cast<String>();
+    image = json['image'];
+    video = json['video'];
+    audio = json['audio'];
     description = json['description'];
     shortDescription = json['short_description'];
     isAnonymous = json['isAnonymous'];

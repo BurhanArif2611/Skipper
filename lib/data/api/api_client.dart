@@ -16,6 +16,7 @@ import 'package:http/http.dart' as Http;
 
 import '../../controller/banner_controller.dart';
 import '../../controller/theme_controller.dart';
+import '../model/body/report_incidence_body.dart';
 
 class ApiClient extends GetxService {
   final String appBaseUrl;
@@ -105,11 +106,36 @@ class ApiClient extends GetxService {
         'grant_type': 'password',
         'age': '87',
       };*/
-      print('====> API Body<:>  $body');
+      print('====> API Body<::::>  $body');
       Http.Response _response = await Http.post(
         Uri.parse(appBaseUrl + uri),
         body:Uri(queryParameters: body).query,
         headers: headers ?? _mainHeaders,
+      ).timeout(Duration(seconds: timeoutInSeconds));
+      return handleResponse(_response, uri);
+    } catch (e) {
+      print('====> API Body:'+e.toString());
+      return Response(statusCode: 1, statusText: noInternetMessage);
+    }
+  }
+
+  Future<Response> postModelData(String uri, ReportIncidenceBody body) async {
+    Map<String, String> header;
+    header = {
+      'Content-Type': 'application/json',
+      'Authorization': ' ${token!=null?'Bearer ' +token:'Basic REVNTzpERU1PMTIz'}',
+    };
+    try {
+      if (Foundation.kDebugMode) {
+        print('====> API Call: $uri\nHeader: $header');
+      /*  print('====> API Body: $body');*/
+        print('====> API Body: $appBaseUrl$uri');
+      }
+
+      print('==12==> API Body<:>  ${jsonEncode(body)}');
+      Http.Response _response = await Http.post(Uri.parse(appBaseUrl + uri),
+        body: jsonEncode(body),
+        headers: header ,
       ).timeout(Duration(seconds: timeoutInSeconds));
       return handleResponse(_response, uri);
     } catch (e) {

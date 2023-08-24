@@ -86,7 +86,7 @@ class _MoreMainScreenState extends State<MoreMainScreen> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(Images.my_profile),
+                          SvgPicture.asset(Images.my_profile,color: Theme.of(context).primaryColor),
                           SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
                           Text("My Profile",style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeLarge),)
                         ],
@@ -110,7 +110,7 @@ class _MoreMainScreenState extends State<MoreMainScreen> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              SvgPicture.asset(Images.incidence_icon),
+                              SvgPicture.asset(Images.incidence_icon,color: Theme.of(context).primaryColor),
                               SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
                               Text("Incidences",style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeLarge),)
                             ],
@@ -136,7 +136,7 @@ class _MoreMainScreenState extends State<MoreMainScreen> {
                           ),
                       child: Column( mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(Images.latest_news),
+                          SvgPicture.asset(Images.latest_news,color: Theme.of(context).primaryColor),
                           SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
                           Text("Latest New",style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeLarge),)
                         ],
@@ -158,7 +158,7 @@ class _MoreMainScreenState extends State<MoreMainScreen> {
                           ),
                           child: Column( mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              SvgPicture.asset(Images.survay_icon),
+                              SvgPicture.asset(Images.survay_icon,color: Theme.of(context).primaryColor),
                               SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
                               Text("Survey",style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeLarge),)
                             ],
@@ -171,7 +171,13 @@ class _MoreMainScreenState extends State<MoreMainScreen> {
                   children: [
                     Expanded(
                       flex: 1,
-                        child: Container(
+                        child:
+                        InkWell(
+                            onTap: () {
+                              Get.toNamed(RouteHelper.getResourceCenterRoute());
+                            },
+                            child:
+                        Container(
                           height: 120,
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
@@ -184,16 +190,25 @@ class _MoreMainScreenState extends State<MoreMainScreen> {
                           ),
                       child: Column( mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(Images.resource_center),
+                          SvgPicture.asset(Images.resource_center,color: Theme.of(context).primaryColor,),
                           SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
                           Text("Resource Center",style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeLarge),)
                         ],
                       ),
-                    )),
+                    ))
+                    ),
                    SizedBox(width: Dimensions.PADDING_SIZE_DEFAULT,),
+
+                   /* Get.toNamed(RouteHelper.getSOSCOntactRoute());*/
                     Expanded(
                         flex: 1,
-                        child: Container(
+                        child:
+                        InkWell(
+                            onTap: () {
+                              Get.toNamed(RouteHelper.getSOSCOntactRoute());
+                              },
+                            child:
+                        Container(
                           height: 120,
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
@@ -206,12 +221,12 @@ class _MoreMainScreenState extends State<MoreMainScreen> {
                           ),
                           child: Column( mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              SvgPicture.asset(Images.sos_icon,height: 50,),
+                              SvgPicture.asset(Images.sos_icon,height: 50,color: Theme.of(context).primaryColor),
                               SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
                               Text("SOS contacts",style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeLarge),)
                             ],
                           ),
-                        )),
+                        ))),
                   ],
                 ),
                 SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
@@ -219,7 +234,13 @@ class _MoreMainScreenState extends State<MoreMainScreen> {
                   children: [
                     Expanded(
                       flex: 1,
-                        child: Container(
+                        child:
+                        InkWell(
+                            onTap: () {
+                              Get.toNamed(RouteHelper.getContactCenterRoute());
+                            },
+                            child:
+                        Container(
                           height: 120,
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
@@ -232,12 +253,13 @@ class _MoreMainScreenState extends State<MoreMainScreen> {
                           ),
                       child: Column( mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(Images.contact_center),
+                          SvgPicture.asset(Images.contact_center,color: Theme.of(context).primaryColor),
                           SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
                           Text("Contact Center",style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeLarge),)
                         ],
                       ),
-                    )),
+                    ))
+                    ),
                    SizedBox(width: Dimensions.PADDING_SIZE_DEFAULT,),
                     Expanded(
                         flex: 1,

@@ -21,11 +21,31 @@ class DateConverter {
   }
 
   static String dateTimeStringToDateTime(String dateTime) {
+    print("dateTimeStringToDateTime ${dateTime}");
     return DateFormat('dd MMM yyyy  ${_timeFormatter()}').format(DateFormat('yyyy-MM-dd HH:mm:ss').parseUtc(dateTime).toLocal());
   }
 
   static String dateTimeStringToDateOnly(String dateTime) {
     return DateFormat('dd MMM yyyy').format(DateFormat('yyyy-MM-dd HH:mm:ss').parseUtc(dateTime).toLocal());
+  }
+
+  static String getTime(String dateTime1) {
+  //  return DateFormat('dd MMM yyyy').format(DateFormat('yyyy-MM-dd HH:mm:ss').parseUtc(dateTime).toLocal());
+    DateTime dateTime = DateTime.parse(dateTime1);
+
+// Format the extracted time portion
+   // String formattedTime = "${dateTime.hour}:${dateTime.minute}:${dateTime.second}";
+    String formattedTime = DateFormat('h:mm a').format(dateTime);
+    print(formattedTime);
+    return formattedTime;
+  }
+
+  static String getDate(String dateTime1) {
+
+    DateTime dateTime = DateTime.parse(dateTime1);
+    String formattedTime = DateFormat('dd MMM yyyy').format(dateTime);
+    print(formattedTime);
+    return formattedTime;
   }
 
   static DateTime dateTimeStringToDate(String dateTime) {
