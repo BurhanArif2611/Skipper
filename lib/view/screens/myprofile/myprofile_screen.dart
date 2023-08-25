@@ -57,7 +57,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           leadingIcon: Images.circle_arrow_back,
           backButton: !ResponsiveHelper.isDesktop(context),
           ),
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: Get.find<AuthController>().isLoggedIn()
           ? GetBuilder<UserController>(builder: (userController) {
            return !userController.isLoading && userController.userDetailModel!=null?

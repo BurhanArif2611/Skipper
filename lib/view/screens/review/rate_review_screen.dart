@@ -34,7 +34,7 @@ class _RateReviewScreenState extends State<RateReviewScreen> with TickerProvider
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar(title: 'rate_review'.tr),
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: Column(children: [
         Center(
           child: Container(

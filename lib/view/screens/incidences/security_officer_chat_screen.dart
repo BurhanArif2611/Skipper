@@ -62,7 +62,7 @@ class _SecurityOfficerChatScreenState extends State<SecurityOfficerChatScreen>
           leadingIcon: Images.circle_arrow_back,
           backButton: !ResponsiveHelper.isDesktop(context),
         ),
-        endDrawer: MenuDrawer(),
+       /* endDrawer: MenuDrawer(),*/
         body: Get.find<AuthController>().isLoggedIn()
             ? homeController.securitycommentList != null
                 ? Container(

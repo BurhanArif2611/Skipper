@@ -56,7 +56,7 @@ class _SearchScreenState extends State<SearchScreen> {
       },
       child: Scaffold(
         appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : null,
-        endDrawer: MenuDrawer(),
+       /* endDrawer: MenuDrawer(),*/
         body: SafeArea(child: Padding(
           padding: ResponsiveHelper.isDesktop(context) ? EdgeInsets.zero : EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_SMALL),
           child: GetBuilder<SearchController>(builder: (searchController) {

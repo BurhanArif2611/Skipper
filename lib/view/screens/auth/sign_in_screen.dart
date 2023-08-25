@@ -106,7 +106,7 @@ class _SignInScreenState extends State<SignInScreen> {
             CustomAppBar(
                 title: 'Sign In'.tr, onBackPressed: () => {Get.back()}),
         /*: null*/
-        endDrawer: MenuDrawer(),
+       /* endDrawer: MenuDrawer(),*/
         body: SafeArea(
           child: /*Center(
           child: */

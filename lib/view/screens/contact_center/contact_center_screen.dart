@@ -5,6 +5,7 @@ import 'package:sixam_mart/controller/home_controller.dart';
 import 'package:sixam_mart/controller/notification_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/helper/date_converter.dart';
+import 'package:sixam_mart/util/app_constants.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/menu_drawer.dart';
@@ -13,6 +14,7 @@ import 'package:sixam_mart/view/base/not_logged_in_screen.dart';
 import 'package:sixam_mart/view/screens/notification/widget/notification_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../controller/banner_controller.dart';
 import '../../../controller/store_controller.dart';
@@ -71,7 +73,7 @@ class _ContactCenterScreenState extends State<ContactCenterScreen>
         leadingIcon: Images.circle_arrow_back,
         backButton: !ResponsiveHelper.isDesktop(context),
       ),
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: Get.find<AuthController>().isLoggedIn()
           ? GetBuilder<HomeController>(
               builder: (onBoardingController) => !onBoardingController.isLoading
@@ -165,6 +167,11 @@ class _ContactCenterScreenState extends State<ContactCenterScreen>
                                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
                                   Row(children: [
                                     Expanded(flex:1,child:
+                                    InkWell(
+                                      onTap: () {
+                                        _launchPhoneCall(onBoardingController.contactCenterListModel.docs[index].mobileNumber.toString());
+                                      },
+                                      child:
                                     Container(
                                         margin: EdgeInsets.only(
                                             top: Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -179,9 +186,17 @@ class _ContactCenterScreenState extends State<ContactCenterScreen>
 
                                         ),
                                         alignment: Alignment.center,
-                                        child:Text("Call",style: robotoBold.copyWith(color: Theme.of(context).primaryColor),)),),
+                                        child:
+                                        Text("Call",style: robotoBold.copyWith(color: Theme.of(context).primaryColor),))),
+                                    ),
+
                                     SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL,),
                                     Expanded(flex:1,child:
+                                    InkWell(
+                                      onTap: () {
+                                        _launchEmail(onBoardingController.contactCenterListModel.docs[index].email,AppConstants.APP_NAME,AppConstants.APP_NAME+" contact center");
+                                      },
+                                      child:
                                     Container(
                                         margin: EdgeInsets.only(
                                             top: Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -195,7 +210,7 @@ class _ContactCenterScreenState extends State<ContactCenterScreen>
                                           color: Colors.white,
                                         ),
                                         alignment: Alignment.center,
-                                        child:Text("Email",style: robotoBold.copyWith(color: Theme.of(context).primaryColor),)),),
+                                        child:Text("Email",style: robotoBold.copyWith(color: Theme.of(context).primaryColor),))),),
                                   ],)
                                 ]),
                               );
@@ -208,5 +223,22 @@ class _ContactCenterScreenState extends State<ContactCenterScreen>
                     )))
           : NotLoggedInScreen(),
     );
+  }
+  _launchPhoneCall(String phoneNumber) async {
+    try{
+    String url = 'tel:$phoneNumber';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }}catch(e){}
+  }
+  _launchEmail(String email, String subject, String body) async {
+    String url = 'mailto:$email?subject=${Uri.encodeFull(subject)}&body=${Uri.encodeFull(body)}';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

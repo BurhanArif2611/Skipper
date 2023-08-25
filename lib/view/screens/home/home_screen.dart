@@ -16,6 +16,7 @@ import 'package:get/get.dart';
 
 import '../../../controller/dashboard_controller.dart';
 import '../../../controller/onboarding_controller.dart';
+import '../../../data/model/response/survey_list_model.dart';
 import '../../../helper/date_converter.dart';
 import '../../base/custom_app_bar.dart';
 import '../../base/custom_image.dart';
@@ -67,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onBackPressed: () {
               Get.find<DashboardController>().changeIndex(0);
             }),
-        endDrawer: MenuDrawer(),
+       /* endDrawer: MenuDrawer(),*/
 
         body: /*Scrollbar(
           child: */
@@ -132,7 +133,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                             controller: _pageController,
                                             physics: BouncingScrollPhysics(),
                                             itemBuilder: (context, index) {
-                                              return Container(
+                                              return
+                                                InkWell(
+                                                    onTap: () {
+                                                      Get.toNamed(RouteHelper.getIncidenceDetailScreen(onBoardingController.incidenceListModel.docs[index].sId));
+
+                                                    },
+                                               child: Container(
                                                 padding: EdgeInsets.all(
                                                     Dimensions
                                                         .PADDING_SIZE_DEFAULT),
@@ -292,7 +299,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         ],
                                                       ),
                                                     ]),
-                                              );
+                                              ));
                                             },
                                             onPageChanged: (index) {
                                               onBoardingController
@@ -443,7 +450,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                         physics: NeverScrollableScrollPhysics(),
                                         scrollDirection: Axis.vertical,
                                         itemBuilder: (context, index) {
-                                          return Container(
+                                          return
+                                            InkWell(
+                                              onTap: () {
+                                            Get.toNamed(RouteHelper.getNewsDetailScreen());
+
+                                          },
+                                          child:
+                                            Container(
                                             margin: EdgeInsets.only(
                                                 top: Dimensions
                                                     .PADDING_SIZE_SMALL),
@@ -612,7 +626,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ],
                                                   )),
                                             ]),
-                                          );
+                                          ));
                                         },
                                       ))
                                   : SizedBox()),
@@ -658,7 +672,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             physics: NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.vertical,
                             itemBuilder: (context, index) {
-                              return Container(
+                              return InkWell(
+                                  onTap: () {
+                                    PendingSurvey pendingSurvey=onBoardingController.surveyListModel.data.docs.pendingSurvey[index];
+                                    Get.toNamed(RouteHelper.getSurveyStartScreen(pendingSurvey));
+
+                                    },
+                              child:
+                                Container(
                                 margin: EdgeInsets.only(
                                     top: Dimensions.PADDING_SIZE_SMALL),
                                 padding: EdgeInsets.all(
@@ -691,7 +712,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     textAlign: TextAlign.start,
                                   ),
                                 ]),
-                              );
+                              ));
                             },
                           )):SizedBox()),
                     ],

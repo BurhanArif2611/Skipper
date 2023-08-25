@@ -12,7 +12,7 @@ class AppConstants {
   static const double IOS_APP_VERSION = 1.0;
 
   //dev url
-  // static const String BASE_URL = 'http://192.168.1.42:5400';
+   /*static const String BASE_URL = 'http://192.168.1.42:5400';*/
    // staging url
     static const String BASE_URL = 'http://54.72.135.72:5400';
 
@@ -46,6 +46,7 @@ class AppConstants {
   static const String REGISTER_URI = '/signup';
   static const String LOGIN_URI = '/login';
   static const String Incidents_URI = '/incidents';
+  static const String SubmitSurveys_URI = '/submit/surveys';
   static const String IncidentComment_URI = '/incident/comment';
   static const String SecurityComment_URI = '/incident/comment/security/';
   static const String ADD_SOS_CONTACT_URI = '/user/sos';

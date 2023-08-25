@@ -62,7 +62,7 @@ class _TopNewsScreenState extends State<TopNewsScreen> {
             leadingIcon: Images.circle_arrow_back,
             backButton: !ResponsiveHelper.isDesktop(context),
             ),
-        endDrawer: MenuDrawer(),
+       /* endDrawer: MenuDrawer(),*/
         body: Get.find<AuthController>().isLoggedIn()
             ?
         SingleChildScrollView(
@@ -244,6 +244,7 @@ class _TopNewsScreenState extends State<TopNewsScreen> {
                                               SizedBox(
                                                   height: Dimensions
                                                       .PADDING_SIZE_EXTRA_SMALL),
+                                              (onBoardingController.newsListModel.data.docs[index].category!=null && onBoardingController.newsListModel.data.docs[index].category.name!=null?
                                               Row(children: [
                                                 Text("By :",
                                                     style: robotoMedium
@@ -260,7 +261,7 @@ class _TopNewsScreenState extends State<TopNewsScreen> {
                                                             .hintColor,
                                                         fontSize: Dimensions
                                                             .fontSizeDefault))
-                                              ]),
+                                              ]):SizedBox()),
                                             ])),
                                   ),
                                   Expanded(

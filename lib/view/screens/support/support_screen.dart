@@ -21,7 +21,7 @@ class _SupportScreenState extends State<SupportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'help_support'.tr),
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: Scrollbar(child: SingleChildScrollView(
         padding: ResponsiveHelper.isDesktop(context) ? EdgeInsets.zero : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
         physics: BouncingScrollPhysics(),

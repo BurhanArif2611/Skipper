@@ -64,7 +64,7 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
             onBackPressed: () {
               Get.find<DashboardController>().changeIndex(0);
             }),
-        endDrawer: MenuDrawer(),
+       /* endDrawer: MenuDrawer(),*/
         body: Get.find<AuthController>().isLoggedIn()
             ?
         SingleChildScrollView(
@@ -410,13 +410,14 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                                                             .hintColor,
                                                         fontSize: Dimensions
                                                             .fontSizeDefault)),
+                                                (onBoardingController.newsListModel.data.docs[index]!=null && onBoardingController.newsListModel.data.docs[index].category!=null?
                                                 Text(onBoardingController.newsListModel.data.docs[index].category.name,
                                                     style: robotoBold.copyWith(
                                                         color: Theme
                                                             .of(context)
                                                             .hintColor,
                                                         fontSize: Dimensions
-                                                            .fontSizeDefault))
+                                                            .fontSizeDefault)):SizedBox())
                                               ]),
                                             ])),
                                   ),

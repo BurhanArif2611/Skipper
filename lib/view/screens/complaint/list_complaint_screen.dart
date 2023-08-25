@@ -71,7 +71,7 @@ class _ListComplaintScreenState extends State<ListComplaintScreen>
         leadingIcon: Images.circle_arrow_back,
         backButton: !ResponsiveHelper.isDesktop(context),
       ),
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: Get.find<AuthController>().isLoggedIn()
           ? !Get.find<ComplaintController>().isLoading
               ? Container(

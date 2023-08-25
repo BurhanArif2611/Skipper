@@ -15,6 +15,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart/data/model/response/incidence_list_model.dart';
 
 import '../data/api/api_checker.dart';
+import '../data/model/body/news_submit_body.dart';
 import '../data/model/body/report_incidence_body.dart';
 import '../data/model/response/commentlist_model.dart';
 import '../data/model/response/contact_center_model.dart';
@@ -118,9 +119,7 @@ class HomeController extends GetxController implements GetxService {
 
   int get selectedCategoryIndex => _selectedCategoryIndex;
 
-  int _selectedOptionIndex = 0;
 
-  int get selectedOptionIndex => _selectedOptionIndex;
 
   XFile _pickedFile;
   Uint8List _rawFile;
@@ -164,10 +163,7 @@ class HomeController extends GetxController implements GetxService {
     update();
   }
 
-  void changeOptionSelectIndex(int index) {
-    _selectedOptionIndex = index;
-    update();
-  }
+
 
   void clearAllData() {
     try {
@@ -177,9 +173,9 @@ class HomeController extends GetxController implements GetxService {
       _raw_arrayList = [];
       _rawFile = null;
       _uploadedURL = [];
-      _state_name="";
-      _lga_name="";
-      _ward_name="";
+      _state_name = "";
+      _lga_name = "";
+      _ward_name = "";
       update();
     } catch (e) {}
   }
@@ -344,8 +340,8 @@ class HomeController extends GetxController implements GetxService {
   Future<void> getSurveysDetail(String id) async {
     _isLoading = true;
 
-    Response response = await homeRepo.getSurveyDetail(/*id*/
-        "64afb5cbdc66ae6bcda502a3");
+    Response response =
+        await homeRepo.getSurveyDetail(id /*"64afb5cbdc66ae6bcda502a3"*/);
     if (response.statusCode == 200) {
       _surveyDetailModel = SurveyDetailModel.fromJson(response.body);
 
@@ -637,5 +633,43 @@ class HomeController extends GetxController implements GetxService {
     }
 
     return result;
+  }
+
+  List<Answers> _selectedOptionIdList = [];
+
+  List<Answers> get selectedOptionIdList => _selectedOptionIdList;
+
+  void changeOptionSelectIndex(
+      String QuestionsID, String OptionsID, int index) {
+    Answers answers = Answers(question: QuestionsID, options: OptionsID);
+    bool check = true;
+    if (_selectedOptionIdList.length > 0) {
+      for (int i = 0; i < _selectedOptionIdList.length; i++) {
+        if (_selectedOptionIdList[i].question == QuestionsID) {
+          _selectedOptionIdList[i] = answers;
+          check = false;
+          break;
+        }
+      }
+    }
+    if (check) {
+      _selectedOptionIdList.add(answers);
+    }
+    update();
+  }
+  Future<Response> submitSurveyResult(String surveyID) async {
+    _isLoading = true;
+    NewsSubmitBody newsSubmitBody=NewsSubmitBody(surveyId:surveyID,answers:selectedOptionIdList);
+
+
+    Response response = await homeRepo.submitSurveyResultu(newsSubmitBody);
+    ResponseModel responseModel;
+    print("response>>>${response.statusCode}");
+    if (response.statusCode == 200) {
+
+    }
+    _isLoading = false;
+    update();
+    return response;
   }
 }

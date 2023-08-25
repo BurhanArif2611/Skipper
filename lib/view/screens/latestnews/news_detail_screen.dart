@@ -60,7 +60,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
           leadingIcon: Images.circle_arrow_back,
           backButton: !ResponsiveHelper.isDesktop(context),
         ),
-        endDrawer: MenuDrawer(),
+       /* endDrawer: MenuDrawer(),*/
         body: Get.find<AuthController>().isLoggedIn()
             ?
         SingleChildScrollView(

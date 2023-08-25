@@ -110,7 +110,7 @@ class _WalletScreenState extends State<WalletScreen> with TickerProviderStateMix
       backgroundColor: Theme
           .of(context)
           .cardColor,
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       appBar: CustomAppBar(
           title: widget.fromWallet ? 'wallet'.tr : 'loyalty_points'.tr,
           backButton: true),

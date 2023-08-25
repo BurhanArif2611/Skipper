@@ -74,7 +74,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
         onWillPop: () => Get.offAllNamed(RouteHelper.getInitialRoute()),
         child: Scaffold(
           appBar: CustomAppBar(title: 'otp_verification'.tr),
-          endDrawer: MenuDrawer(),
+         /* endDrawer: MenuDrawer(),*/
           body: SafeArea(
               child: Center(
                   child: Scrollbar(

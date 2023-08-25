@@ -52,7 +52,7 @@ class _AddComplaintScreenState extends State<AddComplaintScreen> {
             leadingIcon: Images.circle_arrow_back,
             backButton: !ResponsiveHelper.isDesktop(context),
           ),
-          endDrawer: MenuDrawer(),
+         /* endDrawer: MenuDrawer(),*/
           body: GetBuilder<ComplaintController>(
             builder: (complaintcontroller) => !complaintcontroller.isLoading
                 ? SingleChildScrollView(

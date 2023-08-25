@@ -73,7 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ? WebMenuBar()
           : CustomAppBar(
               title: 'Sign Up'.tr, onBackPressed: () => {Get.back()}),
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: SafeArea(
           child: Scrollbar(
         child: SingleChildScrollView(

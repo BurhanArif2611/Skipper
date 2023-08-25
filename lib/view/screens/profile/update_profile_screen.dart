@@ -51,7 +51,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).cardColor,
       appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : null,
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: GetBuilder<UserController>(builder: (userController) {
         if(userController.userInfoModel != null && _phoneController.text.isEmpty) {
           _firstNameController.text = userController.userInfoModel.fName ?? '';

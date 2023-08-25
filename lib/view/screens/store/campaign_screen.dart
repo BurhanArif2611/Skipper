@@ -34,7 +34,7 @@ class _CampaignScreenState extends State<CampaignScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : null,
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       backgroundColor: Theme.of(context).cardColor,
       body: GetBuilder<CampaignController>(builder: (campaignController) {
         return CustomScrollView(

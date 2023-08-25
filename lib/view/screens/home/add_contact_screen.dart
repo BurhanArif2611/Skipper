@@ -57,7 +57,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
         leadingIcon: Images.circle_arrow_back,
         backButton: !ResponsiveHelper.isDesktop(context),
       ),
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: Get.find<AuthController>().isLoggedIn()
           ? Scrollbar(
           child: SingleChildScrollView(

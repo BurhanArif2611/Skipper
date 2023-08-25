@@ -52,7 +52,7 @@ class _MoreMainScreenState extends State<MoreMainScreen> {
             print("skldksjd");
             Get.find<DashboardController>().changeIndex(0);
           }),
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: SingleChildScrollView(
           controller: scrollController,
           physics: AlwaysScrollableScrollPhysics(),
@@ -95,7 +95,11 @@ class _MoreMainScreenState extends State<MoreMainScreen> {
                    SizedBox(width: Dimensions.PADDING_SIZE_DEFAULT,),
                     Expanded(
                         flex: 1,
-                        child: Container(
+                        child:
+                        InkWell(
+                            onTap: () { Get.toNamed(RouteHelper.getTopNewsScreen());},
+                            child:
+                        Container(
                           height: 120,
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
@@ -115,7 +119,8 @@ class _MoreMainScreenState extends State<MoreMainScreen> {
                               Text("Incidences",style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeLarge),)
                             ],
                           ),),
-                        )),
+                        ))
+                    ),
                   ],
                 ),
                 SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
@@ -123,7 +128,11 @@ class _MoreMainScreenState extends State<MoreMainScreen> {
                   children: [
                     Expanded(
                       flex: 1,
-                        child: Container(
+                        child:
+                        InkWell(
+                            onTap: () { Get.toNamed(RouteHelper.getTopNewsScreen());},
+                            child:
+                        Container(
                           height: 120,
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
@@ -141,11 +150,18 @@ class _MoreMainScreenState extends State<MoreMainScreen> {
                           Text("Latest New",style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeLarge),)
                         ],
                       ),
-                    )),
+                    ))
+
+                    ),
                    SizedBox(width: Dimensions.PADDING_SIZE_DEFAULT,),
                     Expanded(
                         flex: 1,
-                        child: Container(
+                        child: InkWell(
+                            onTap: () {
+                              Get.toNamed(RouteHelper.getSurveyScreen());
+                            },
+                            child:
+                            Container(
                           height: 120,
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
@@ -163,7 +179,7 @@ class _MoreMainScreenState extends State<MoreMainScreen> {
                               Text("Survey",style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeLarge),)
                             ],
                           ),
-                        )),
+                        ))),
                   ],
                 ),
                 SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),

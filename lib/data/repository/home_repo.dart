@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/uploads3file.dart';
+import '../model/body/news_submit_body.dart';
 import '../model/body/report_incidence_body.dart';
 
 class HomeRepo {
@@ -153,6 +154,10 @@ class HomeRepo {
   }
   Future<Response> addReport(ReportIncidenceBody signUpBody) async {
     return await apiClient.postModelData(AppConstants.Incidents_URI, signUpBody);
+  }
+
+  Future<Response> submitSurveyResultu(NewsSubmitBody signUpBody) async {
+    return await apiClient.postResultData(AppConstants.SubmitSurveys_URI, signUpBody);
   }
 
   Future<Response> getSurveyDetail(String id) async {

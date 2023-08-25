@@ -72,7 +72,7 @@ class _SelectCountryScreenState extends State<SelectCountryScreen> {
         leadingIcon: Images.circle_arrow_back,
         backButton: !ResponsiveHelper.isDesktop(context),
       ),
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: Get.find<AuthController>().isLoggedIn()
           ? GetBuilder<HomeController>(
               builder: (homeController) => (homeController.countryList !=

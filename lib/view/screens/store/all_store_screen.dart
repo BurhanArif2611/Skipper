@@ -39,7 +39,7 @@ print("All Screens>>"+widget.isFeatured.toString());
       appBar: CustomAppBar(title: widget.isFeatured ? 'featured_stores'.tr :  widget.isPopular
           ? Get.find<SplashController>().configModel.moduleConfig.module.showRestaurantText
           ? 'popular_restaurants'.tr : 'popular_stores'.tr : '${'new_on'.tr} ${AppConstants.APP_NAME}'),
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: RefreshIndicator(
         onRefresh: () async {
           if(widget.isFeatured) {

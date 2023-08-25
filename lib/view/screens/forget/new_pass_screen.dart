@@ -38,7 +38,7 @@ class _NewPassScreenState extends State<NewPassScreen> {
     child:
       Scaffold(
       appBar: CustomAppBar(title: widget.fromPasswordChange ? 'change_password'.tr : 'Create New Password'.tr),
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: SafeArea(child: Center(child: Scrollbar(child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: FooterView(child: Container(

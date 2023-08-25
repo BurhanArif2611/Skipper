@@ -56,7 +56,7 @@ class _SurveyScreenState extends State<SurveyScreen> {
             title: 'Surveys'.tr,
             leadingIcon: Images.circle_arrow_back,
             ),
-        endDrawer: MenuDrawer(),
+       /* endDrawer: MenuDrawer(),*/
         backgroundColor: ResponsiveHelper.isDesktop(context)
             ? Theme.of(context).cardColor
             : splashController.module == null

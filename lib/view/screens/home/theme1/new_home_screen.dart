@@ -104,7 +104,7 @@ class NewHomeScreen extends StatelessWidget {
     final bool _ltr = Get.find<LocalizationController>().isLtr;
     return Scaffold(
       appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : null,
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       backgroundColor: Theme.of(context).cardColor,
       body: GetBuilder<StoreController>(builder: (storeController) {
         return GetBuilder<CategoryController>(builder: (categoryController) {

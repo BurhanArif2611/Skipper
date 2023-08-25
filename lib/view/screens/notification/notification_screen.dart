@@ -61,7 +61,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       title: 'notification'.tr,
                       backButton: ResponsiveHelper.isDesktop(context))
                   : CustomAppBar(title: 'notification'.tr, backButton: true),
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: Get.find<AuthController>().isLoggedIn()
           ?
       GetBuilder<NotificationController>(

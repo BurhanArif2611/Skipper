@@ -71,7 +71,7 @@ class _SOSContactScreenState extends State<SOSContactScreen> with WidgetsBinding
         leadingIcon: Images.circle_arrow_back,
         backButton: !ResponsiveHelper.isDesktop(context),
       ),
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: Get.find<AuthController>().isLoggedIn()
           ? !Get.find<AuthController>().isLoading?
           Container(

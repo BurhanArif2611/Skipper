@@ -66,7 +66,7 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
           leadingIcon: Images.circle_arrow_back,
           backButton: !ResponsiveHelper.isDesktop(context),
         ),
-        endDrawer: MenuDrawer(),
+       /* endDrawer: MenuDrawer(),*/
         body: GetBuilder<HomeController>(
       builder: (homeController) =>
       !homeController.isLoading ?

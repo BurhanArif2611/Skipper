@@ -62,7 +62,7 @@ class _IncidencesScreenState extends State<IncidencesScreen> {
           onBackPressed: () {
             Get.find<DashboardController>().changeIndex(0);
           }),
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: Get.find<AuthController>().isLoggedIn()
           ? GetBuilder<HomeController>(
           builder: (onBoardingController) =>

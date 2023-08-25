@@ -61,7 +61,7 @@ class _IncidenceDetailScreenState extends State<IncidenceDetailScreen>
           leadingIcon: Images.circle_arrow_back,
           backButton: !ResponsiveHelper.isDesktop(context),
         ),
-        endDrawer: MenuDrawer(),
+       /* endDrawer: MenuDrawer(),*/
         body: Get.find<AuthController>().isLoggedIn() &&
                 homeController.incidenceDetailResponse != null
             ? SingleChildScrollView(

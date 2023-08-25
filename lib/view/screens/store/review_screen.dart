@@ -32,7 +32,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
     return Scaffold(
       appBar: CustomAppBar(title: Get.find<SplashController>().configModel.moduleConfig.module.showRestaurantText
           ? 'restaurant_reviews'.tr : 'store_reviews'.tr),
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: GetBuilder<StoreController>(builder: (storeController) {
         return storeController.storeReviewList != null ? storeController.storeReviewList.length > 0 ? RefreshIndicator(
           onRefresh: () async {

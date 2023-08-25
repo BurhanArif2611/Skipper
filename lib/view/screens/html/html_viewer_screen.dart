@@ -36,7 +36,7 @@ class _HtmlViewerScreenState extends State<HtmlViewerScreen> {
       appBar: CustomAppBar(title: widget.htmlType == HtmlType.TERMS_AND_CONDITION ? 'terms_conditions'.tr
           : widget.htmlType == HtmlType.ABOUT_US ? 'about_us'.tr : widget.htmlType == HtmlType.PRIVACY_POLICY
           ? 'privacy_policy'.tr : 'no_data_found'.tr),
-      endDrawer: MenuDrawer(),
+     /* endDrawer: MenuDrawer(),*/
       body: GetBuilder<SplashController>(builder: (splashController) {
         return Center(
           child: splashController.htmlText != null ? SingleChildScrollView(
