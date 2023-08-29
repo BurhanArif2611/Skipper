@@ -141,7 +141,9 @@ class _TopNewsScreenState extends State<TopNewsScreen> {
                                 ),
                                 child: InkWell(
                               onTap: () {
-                              onBoardingController.changeCategorySelectIndex(index);
+                              onBoardingController.changeCategorySelectIndex(index,onBoardingController
+                                  .newsCategoryListModel
+                                  .data[index].sId);
                               },
                               child:
                                 Align(
@@ -189,7 +191,7 @@ class _TopNewsScreenState extends State<TopNewsScreen> {
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
                           return  InkWell(
-                              onTap: () { Get.toNamed(RouteHelper.getNewsDetailScreen());},
+                              onTap: () { Get.toNamed(RouteHelper.getNewsDetailScreen(onBoardingController.newsListModel.data.docs[index]));},
                           child:
                             Container(
                             margin: EdgeInsets.only(
@@ -319,7 +321,7 @@ class _TopNewsScreenState extends State<TopNewsScreen> {
                             ]),
                           ));
                         },
-                      )):SizedBox()),
+                      )):NoDataScreen(text: "News Not Found")),
 
 
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),

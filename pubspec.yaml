@@ -54,6 +54,8 @@ dependencies:
   aws_s3_upload: ^1.5.0
   dio: ^4.0.6
   aws_s3: ^0.1.1+hotfix.5
+  flutter_sound: ^9.2.13
+  permission_handler: ^10.4.3
 
 
 

@@ -34,20 +34,13 @@ class LatestNewsScreen extends StatefulWidget {
 
 class _LatestNewsScreenState extends State<LatestNewsScreen> {
   void _loadData() async {
-    Get.find<NotificationController>().clearNotification();
-    if (Get.find<SplashController>().configModel == null) {
-      await Get.find<SplashController>().getConfigData();
-    }
-    if (Get.find<AuthController>().isLoggedIn()) {
-      Get.find<NotificationController>().getNotificationList(1, true);
-    }
+    Get.find<HomeController>().getLatestNewsList();
   }
 
   @override
   void initState() {
     super.initState();
-
-   // _loadData();
+    _loadData();
   }
 
   @override
@@ -104,13 +97,10 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                     ],
                   ),
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                  GetBuilder<OnBoardingController>(
+                  GetBuilder<HomeController>(
                     builder: (onBoardingController) =>
                         Container(
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width,
+                          width: MediaQuery.of(context).size.width,
                           height: 300,
                           /* color: Colors.yellow,*/
 
@@ -118,7 +108,7 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                             Expanded(
                                 flex: 15,
                                 child: PageView.builder(
-                                  itemCount: 5,
+                                  itemCount: onBoardingController.latestNewsModel.data.length,
                                   controller: _pageController,
                                   physics: BouncingScrollPhysics(),
                                   itemBuilder: (context, index) {
@@ -137,7 +127,7 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                                                   .of(context)
                                                   .disabledColor),
                                           image: DecorationImage(
-                                            image: AssetImage(Images.homepagetopslider),
+                                            image: NetworkImage(onBoardingController.latestNewsModel.data[index].image),
                                             fit: BoxFit.fill,
                                           ),
                                         ),
@@ -160,14 +150,14 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                                             MainAxisAlignment.start,
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              Container(height: 150,),
+                                              Container(height: 180,),
                                               SizedBox(
                                                   height: Dimensions
                                                       .PADDING_SIZE_EXTRA_SMALL),
                                               Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
-                                                  "by Ryan Browne",
+                                                  "by "+onBoardingController.latestNewsModel.data[index].category.name,
                                                   style: robotoMedium.copyWith(color: Theme.of(context).cardColor,
                                                       fontSize: Dimensions
                                                           .fontSizeDefault /*context.height*0.022*/),
@@ -177,8 +167,10 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                                               SizedBox(
                                                   height: Dimensions
                                                       .PADDING_SIZE_EXTRA_SMALL),
-                                              Text(
-                                                "Crypto investors should be prepared to lose all their money, BOE governor says",
+                                          Align(
+                                              alignment: Alignment.centerLeft,
+                                              child:Text(
+                                                onBoardingController.latestNewsModel.data[index].title,
                                                 style: robotoBold.copyWith(
                                                     fontSize: Dimensions
                                                         .fontSizeLarge /*context.height*0.015*/,
@@ -186,12 +178,14 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                                                         .of(context)
                                                         .cardColor),
                                                 textAlign: TextAlign.start,
-                                              ),
+                                              )),
                                               SizedBox(
                                                   height: Dimensions
                                                       .PADDING_SIZE_EXTRA_SMALL),
-                                              Text(
-                                                "“I’m going to say this very bluntly again,” he added. “Buy them only if you’re prepared to lose all your money.”",
+                                          Align(
+                                              alignment: Alignment.centerLeft,
+                                              child:Text(
+                                                onBoardingController.latestNewsModel.data[index].description,
                                                 style: robotoBold.copyWith(
                                                     fontSize: Dimensions
                                                         .fontSizeSmall /*context.height*0.015*/,
@@ -199,7 +193,7 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                                                         .of(context)
                                                         .cardColor),
                                                 textAlign: TextAlign.start,
-                                              ),
+                                              )),
                                             ]) ,),
                                       );
                                   },
@@ -299,7 +293,9 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                                 ),
                                 child:InkWell(
                               onTap: () {
-                              onBoardingController.changeCategorySelectIndex(index);
+                              onBoardingController.changeCategorySelectIndex(index,onBoardingController
+                                  .newsCategoryListModel
+                                  .data[index].sId);
                               },
                               child:
                                 Align(
@@ -346,7 +342,7 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
                           return InkWell(
-                              onTap: () { Get.toNamed(RouteHelper.getNewsDetailScreen());},
+                              onTap: () { Get.toNamed(RouteHelper.getNewsDetailScreen(onBoardingController.newsListModel.data.docs[index]));},
                           child:
                             Container(
                             margin: EdgeInsets.only(
@@ -491,7 +487,7 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
 
 
   List<Widget> _pageIndicators(
-      OnBoardingController onBoardingController, BuildContext context) {
+      HomeController onBoardingController, BuildContext context) {
     List<Container> _indicators = [];
 
     for (int i = 0; i < 5; i++) {

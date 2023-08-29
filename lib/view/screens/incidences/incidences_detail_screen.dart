@@ -62,9 +62,10 @@ class _IncidenceDetailScreenState extends State<IncidenceDetailScreen>
           backButton: !ResponsiveHelper.isDesktop(context),
         ),
        /* endDrawer: MenuDrawer(),*/
-        body: Get.find<AuthController>().isLoggedIn() &&
+        body: Get.find<AuthController>().isLoggedIn() ?
                 homeController.incidenceDetailResponse != null
-            ? SingleChildScrollView(
+            ?
+        SingleChildScrollView(
                 controller: scrollController,
                 physics: AlwaysScrollableScrollPhysics(),
                 child: Column(
@@ -365,7 +366,7 @@ class _IncidenceDetailScreenState extends State<IncidenceDetailScreen>
                     ),
                     SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                   ],
-                ))
+                )):Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,))
             : NotLoggedInScreen(),
         floatingActionButton: securityOfficer
             ? Container(

@@ -70,7 +70,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE),
                     child: Text(
                       onBoardingController.onBoardingList[index].description,
-                      style: robotoRegular.copyWith(fontSize:Dimensions.fontSizeDefault /*context.height*0.015*/, color: Theme.of(context).hintColor),
+                      style: robotoMedium.copyWith(fontSize:Dimensions.fontSizeDefault /*context.height*0.015*/, color: Theme.of(context).hintColor.withOpacity(0.5)),
                       textAlign: TextAlign.center,
                     ),
                   ),

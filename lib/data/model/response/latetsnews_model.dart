@@ -1,14 +1,19 @@
-class NewsListModel {
+class LatestNewsModel {
   String message;
   int status;
-  Data data;
+  List<Data> data;
 
-  NewsListModel({this.message, this.status, this.data});
+  LatestNewsModel({this.message, this.status, this.data});
 
-  NewsListModel.fromJson(Map<String, dynamic> json) {
+  LatestNewsModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    if (json['data'] != null) {
+      data = <Data>[];
+      json['data'].forEach((v) {
+        data.add(new Data.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -16,48 +21,13 @@ class NewsListModel {
     data['message'] = this.message;
     data['status'] = this.status;
     if (this.data != null) {
-      data['data'] = this.data.toJson();
+      data['data'] = this.data.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class Data {
-  List<NewsDetail> docs;
-  int total;
-  int limit;
-  int page;
-  int pages;
-
-  Data({this.docs, this.total, this.limit, this.page, this.pages});
-
-  Data.fromJson(Map<String, dynamic> json) {
-    if (json['docs'] != null) {
-      docs = <NewsDetail>[];
-      json['docs'].forEach((v) {
-        docs.add(new NewsDetail.fromJson(v));
-      });
-    }
-    total = json['total'];
-    limit = json['limit'];
-    page = json['page'];
-    pages = json['pages'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.docs != null) {
-      data['docs'] = this.docs.map((v) => v.toJson()).toList();
-    }
-    data['total'] = this.total;
-    data['limit'] = this.limit;
-    data['page'] = this.page;
-    data['pages'] = this.pages;
-    return data;
-  }
-}
-
-class NewsDetail {
   String sId;
   String title;
   Category category;
@@ -67,7 +37,7 @@ class NewsDetail {
   String createdAt;
   int iV;
 
-  NewsDetail(
+  Data(
       {this.sId,
         this.title,
         this.category,
@@ -77,11 +47,11 @@ class NewsDetail {
         this.createdAt,
         this.iV});
 
-  NewsDetail.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     title = json['title'];
-    category = json['category'] != null ?
-         new Category.fromJson(json['category'])
+    category = json['category'] != null
+        ? new Category.fromJson(json['category'])
         : null;
     description = json['description'];
     image = json['image'];

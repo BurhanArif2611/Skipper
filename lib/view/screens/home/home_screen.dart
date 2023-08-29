@@ -21,6 +21,7 @@ import '../../../helper/date_converter.dart';
 import '../../base/custom_app_bar.dart';
 import '../../base/custom_image.dart';
 import '../../base/inner_custom_app_bar.dart';
+import '../../base/no_data_screen.dart';
 import '../../base/not_logged_in_screen.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -397,7 +398,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ),
                                                   child: InkWell(
                                                       onTap: () {
-                                                        onBoardingController.changeCategorySelectIndex(index);
+                                                        onBoardingController.changeCategorySelectIndex(index,onBoardingController
+                                                            .newsCategoryListModel
+                                                            .data[index].sId);
                                                       },
                                                       child: Align(
                                                         alignment:
@@ -437,8 +440,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                       GetBuilder<HomeController>(
                           builder: (onBoardingController) =>
-                              onBoardingController.newsListModel != null
-                                  ? Container(
+                              onBoardingController.newsListModel != null &&  onBoardingController
+                          .newsListModel.data.docs.length>0
+                                  ?
+                              Container(
                                       height: 1000,
                                       child:
                                       ListView.builder(
@@ -453,7 +458,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           return
                                             InkWell(
                                               onTap: () {
-                                            Get.toNamed(RouteHelper.getNewsDetailScreen());
+                                            Get.toNamed(RouteHelper.getNewsDetailScreen(onBoardingController
+                                                .newsListModel.data.docs[index]));
 
                                           },
                                           child:
@@ -629,7 +635,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ));
                                         },
                                       ))
-                                  : SizedBox()),
+                                  : NoDataScreen(text: "News Not Found")),
                       SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                       Row(
                         children: [

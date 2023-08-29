@@ -25,7 +25,7 @@ import '../../base/inner_custom_app_bar.dart';
 import '../../base/not_logged_in_screen.dart';
 
 class SurveyStartScreen extends StatefulWidget {
-  static Future<void> loadData(bool reload) async {}
+
 
   final PendingSurvey data;
 

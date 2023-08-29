@@ -22,6 +22,7 @@ import '../data/model/response/contact_center_model.dart';
 import '../data/model/response/country_list_model.dart';
 import '../data/model/response/incidence_category_model.dart';
 import '../data/model/response/incidence_detail_response.dart';
+import '../data/model/response/latetsnews_model.dart';
 import '../data/model/response/news_category_model.dart';
 import '../data/model/response/news_list_model.dart';
 import '../data/model/response/resource_center_model.dart';
@@ -45,8 +46,10 @@ class HomeController extends GetxController implements GetxService {
   }
 
   bool _isLoading = false;
-
   bool get isLoading => _isLoading;
+
+  bool _checkAudioRecording = false;
+  bool get checkAudioRecording => _checkAudioRecording;
 
   String _state_id = "";
 
@@ -77,6 +80,10 @@ class HomeController extends GetxController implements GetxService {
   IncidenceListModel _incidenceListModel;
 
   IncidenceListModel get incidenceListModel => _incidenceListModel;
+
+  LatestNewsModel _latestNewsModel;
+
+  LatestNewsModel get latestNewsModel => _latestNewsModel;
 
   NewsListModel _newsListModel;
 
@@ -142,8 +149,10 @@ class HomeController extends GetxController implements GetxService {
       _incidencecategorylist;
 
   List<String> _uploadedURL = [];
-
   List<String> get uploadedURL => _uploadedURL;
+
+  List<String> _uploadedAudioURL = [];
+  List<String> get uploadedAudioURL => _uploadedAudioURL;
 
   CommentListModel _commentList;
 
@@ -157,9 +166,14 @@ class HomeController extends GetxController implements GetxService {
     _selectedIndex = index;
     update();
   }
+  void changeAudioRecording(bool check) {
+    _checkAudioRecording = check;
+    update();
+  }
 
-  void changeCategorySelectIndex(int index) {
+  void changeCategorySelectIndex(int index,String cat_id) {
     _selectedCategoryIndex = index;
+    getNewsWithCategoryIDList(cat_id);
     update();
   }
 
@@ -194,11 +208,38 @@ class HomeController extends GetxController implements GetxService {
 
     _isLoading = false;
   }
+  Future<void> getLatestNewsList() async {
+    _isLoading = true;
+
+    Response response = await homeRepo.getLatestNews();
+    if (response.statusCode == 200) {
+      _latestNewsModel = LatestNewsModel.fromJson(response.body);
+
+      update();
+    } else {
+      ApiChecker.checkApi(response);
+    }
+
+    _isLoading = false;
+  }
 
   Future<void> getNewsList() async {
     _isLoading = true;
 
     Response response = await homeRepo.getNewsList();
+    if (response.statusCode == 200) {
+      _newsListModel = NewsListModel.fromJson(response.body);
+
+      update();
+    } else {
+      ApiChecker.checkApi(response);
+    }
+
+    _isLoading = false;
+  } Future<void> getNewsWithCategoryIDList(String id) async {
+    _isLoading = true;
+
+    Response response = await homeRepo.getNewsWithCategoryList(id);
     if (response.statusCode == 200) {
       _newsListModel = NewsListModel.fromJson(response.body);
 
@@ -457,7 +498,7 @@ class HomeController extends GetxController implements GetxService {
       print("pickImage" + _rawFile.toString());
       _raw_arrayList.add(_rawFile);
       File file1 = new File(_pickedFile.path);
-      _uploadImage(file1, 101);
+      uploadImage(file1, 101,"1692276470974.png");
     }
     update();
   }
@@ -507,7 +548,7 @@ class HomeController extends GetxController implements GetxService {
       _raw_arrayList.add(_rawFile);
       File file1 = new File(_pickedFile.path);
       // homeRepo.sendFile(file1);
-      _uploadImage(file1, 101);
+      uploadImage(file1, 101,"1692276470974.png");
       //print("dlfjdljfdjfkdjf>>${response.statusCode}");
     }
     update();
@@ -517,6 +558,14 @@ class HomeController extends GetxController implements GetxService {
     try {
       _raw_arrayList.removeAt(Index);
       print(">>>>>>>${_raw_arrayList.length.toString()}");
+      update();
+    } catch (e) {
+      print(">>>>>>>${e.toString()}");
+    }
+  }void removeSelectedAudioURL(int Index) {
+    try {
+      _uploadedAudioURL.removeAt(Index);
+      print(">>>>>>>${_uploadedAudioURL.length.toString()}");
       update();
     } catch (e) {
       print(">>>>>>>${e.toString()}");
@@ -586,25 +635,12 @@ class HomeController extends GetxController implements GetxService {
     return response;
   }
 
-  Future<String> _uploadImage(File file, int number,
+  Future<String> uploadImage(File file, int number,String file_name,
       {String extension = 'jpg'}) async {
     String result;
     print("file>>>>>>${file.path}");
     print("number>>>>>>${number}");
     if (result == null) {
-      // generating file name
-      /* String fileName =
-          "$number$extension\_${DateTime.now().millisecondsSinceEpoch}.$extension";
-      print("fileName>>>>>>${fileName}");*/
-
-      /* AwsS3 awsS3 = AwsS3(
-          awsFolderPath: "/",
-          file: file,
-          fileNameWithExt: fileName,
-          poolId: "poolId",
-          region: Regions.EU_WEST_1,
-          bucketName: "abujaeyemedia");*/
-
       try {
         /*try {
           result = await awsS3.uploadFile;
@@ -620,16 +656,23 @@ class HomeController extends GetxController implements GetxService {
           bucket: "abujaeyemedia",
           region: "eu-west-1",
           metadata: {"test": "test"},
-          filename: "1692276470974.png",
+          filename:file_name ,
         ).then((uri) {
           print("inner >>>>> >${uri.toString()}");
-          _uploadedURL.add(uri);
-          print("object>>>>>>${_uploadedURL.length.toString()}");
+          if(uri.toLowerCase().contains(".aac".toLowerCase())){
+            _uploadedAudioURL.add(uri);
+            print("object>>>_uploadedAudioURL>>>${_uploadedAudioURL.length.toString()}");
+          }else {
+            _uploadedURL.add(uri);
+            print("object>>>>>>${_uploadedURL.length.toString()}");
+          }
         });
+
         print("object>>>>>>${result.toString()}");
       } on PlatformException catch (e) {
         print("Failed <><><>:'${e.message}'.");
       }
+      update();
     }
 
     return result;

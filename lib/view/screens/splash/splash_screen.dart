@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
@@ -38,10 +39,28 @@ class _SplashScreenState extends State<SplashScreen> {
   GlobalKey<ScaffoldState> _globalKey = GlobalKey();
   StreamSubscription<ConnectivityResult> _onConnectivityChanged;
 
+ // PermissionStatus _microphonePermissionStatus = PermissionStatus.undetermined;
+
+  Future<void> _checkMicrophonePermission() async {
+    final status = await Permission.microphone.status;
+    setState(() {
+     // _microphonePermissionStatus = status;
+      print("_checkMicrophonePermission ${status}");
+    });
+  }
+
+  Future<void> _requestMicrophonePermission() async {
+    final status = await Permission.microphone.request();
+    setState(() {
+      print("_requestMicrophonePermission ${status}");
+     /* _microphonePermissionStatus = status;*/
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-
+    _requestMicrophonePermission();
     bool _firstTime = true;
     _onConnectivityChanged = Connectivity()
         .onConnectivityChanged

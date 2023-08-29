@@ -9,6 +9,7 @@ import 'package:sixam_mart/data/model/response/order_model.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:sixam_mart/data/model/response/parcel_category_model.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
+
 import 'package:sixam_mart/util/app_constants.dart';
 import 'package:sixam_mart/util/html_type.dart';
 import 'package:sixam_mart/view/base/image_viewer_screen.dart';
@@ -42,6 +43,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/wallet/wallet_screen.dart';
 
+/*import '../data/model/response/survey_list_model.dart';*/
+/*import '../data/model/response/news_list_model.dart';*/
+import '../data/model/response/news_list_model.dart';
 import '../data/model/response/survey_list_model.dart';
 import '../view/screens/complaint/add_complaint_screen.dart';
 import '../view/screens/complaint/list_complaint_screen.dart';
@@ -146,7 +150,6 @@ class RouteHelper {
   static String getSurveyScreen() => '$surveyscreen';
   static String getReportIncidenceScreen() => '$reportincidencescreen';
   static String getIncidenceDetailScreen(String incidence_id) => '$incidencedetailscreen?incidence_id=$incidence_id';
-  static String getNewsDetailScreen() => '$newsdetailscreen';
   static String getTopNewsScreen() => '$topnewsscreen';
   static String getSplashRoute(int orderID) => '$splash?id=$orderID';
   static String getLanguageRoute(String page) => '$language?page=$page';
@@ -203,6 +206,11 @@ class RouteHelper {
     String _data = base64Encode(utf8.encode(jsonEncode(basicCampaignModel.toJson())));
     return '$surveystartscreen?data=$_data';
   }
+  static String getNewsDetailScreen(NewsDetail detail) {
+    String _data = base64Encode(utf8.encode(jsonEncode(detail.toJson())));
+    return '$newsdetailscreen?detail=$_data';
+  }
+
   static String getSurveyQuestionScreen(PendingSurvey basicCampaignModel) {
     String _data = base64Encode(utf8.encode(jsonEncode(basicCampaignModel.toJson())));
     return '$surveyquestionscreen?data=$_data';
@@ -265,7 +273,6 @@ class RouteHelper {
     GetPage(name: surveyscreen, page: () => getRoute(SurveyScreen())),
     GetPage(name: reportincidencescreen, page: () => getRoute(ReportIncidenceScreen())),
     GetPage(name: incidencedetailscreen, page: () => getRoute(IncidenceDetailScreen(incidence_id:Get.parameters['incidence_id']))),
-    GetPage(name: newsdetailscreen, page: () => getRoute(NewsDetailScreen())),
     GetPage(name: topnewsscreen, page: () => getRoute(TopNewsScreen())),
     GetPage(name: splash, page: () => SplashScreen(orderID: Get.parameters['id'] == 'null' ? null : Get.parameters['id'])),
   //  GetPage(name: language, page: () => ChooseLanguageScreen(fromMenu: Get.parameters['page'] == 'menu')),
@@ -326,6 +333,10 @@ class RouteHelper {
       PendingSurvey _data = PendingSurvey.fromJson(jsonDecode(utf8.decode(base64Decode(Get.parameters['data'].replaceAll(' ', '+')))));
       return getRoute(SurveyStartScreen(data: _data));
     }),
+    GetPage(name: newsdetailscreen, page: () {
+      NewsDetail _data = NewsDetail.fromJson(jsonDecode(utf8.decode(base64Decode(Get.parameters['detail'].replaceAll(' ', '+')))));
+      return getRoute(NewsDetailScreen(detail:_data));
+  }),
 
     GetPage(name: surveyquestionscreen, page: () {
       PendingSurvey _data = PendingSurvey.fromJson(jsonDecode(utf8.decode(base64Decode(Get.parameters['data'].replaceAll(' ', '+')))));

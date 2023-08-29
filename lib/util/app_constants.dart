@@ -106,6 +106,7 @@ class AppConstants {
   static const String SOCIAL_REGISTER_URL = '/api/v1/auth/social-register';
   static const String UPDATE_ZONE_URL = '/api/v1/customer/update-zone';
   static const String Incidents_URL = '/incidents';
+  static const String LatestNews_URL = '/latest/news';
   static const String News_URL = '/news';
   static const String Categories_URL = '/categories';
   static const String Surveys_URL = '/surveys';

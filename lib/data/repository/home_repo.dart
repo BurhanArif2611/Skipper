@@ -122,8 +122,13 @@ class HomeRepo {
   Future<Response> getIncidents() async {
     return await apiClient.getData(AppConstants.Incidents_URL);
   }
+  Future<Response> getLatestNews() async {
+    return await apiClient.getData(AppConstants.LatestNews_URL);
+  }
   Future<Response> getNewsList() async {
     return await apiClient.getData(AppConstants.News_URL);
+  } Future<Response> getNewsWithCategoryList(String id) async {
+    return await apiClient.getData('${AppConstants.News_URL}?category=$id');
   }
   Future<Response> getCategoryList() async {
     return await apiClient.getData(AppConstants.Categories_URL);
