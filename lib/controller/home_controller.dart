@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:aws_s3_upload/aws_s3_upload.dart';
@@ -13,6 +14,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:image_compression_flutter/image_compression_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart/data/model/response/incidence_list_model.dart';
+import 'package:sixam_mart/util/app_constants.dart';
 
 import '../data/api/api_checker.dart';
 import '../data/model/body/news_submit_body.dart';
@@ -46,9 +48,11 @@ class HomeController extends GetxController implements GetxService {
   }
 
   bool _isLoading = false;
+
   bool get isLoading => _isLoading;
 
   bool _checkAudioRecording = false;
+
   bool get checkAudioRecording => _checkAudioRecording;
 
   String _state_id = "";
@@ -58,6 +62,14 @@ class HomeController extends GetxController implements GetxService {
   String _state_name = "";
 
   String get state_name => _state_name;
+
+  String _category_id = "";
+
+  String get category_id => _category_id;
+
+  String _category_name = "";
+
+  String get category_name => _category_name;
 
   String _lga_id = "";
 
@@ -126,7 +138,9 @@ class HomeController extends GetxController implements GetxService {
 
   int get selectedCategoryIndex => _selectedCategoryIndex;
 
+  int _timerCount = 0;
 
+  int get timerCount => _timerCount;
 
   XFile _pickedFile;
   Uint8List _rawFile;
@@ -148,10 +162,16 @@ class HomeController extends GetxController implements GetxService {
   List<IncidenceCategoryModel> get incidencecategorylist =>
       _incidencecategorylist;
 
+  List<String> _incidencecategoryNamelist;
+
+  List<String> get incidencecategoryNamelist => _incidencecategoryNamelist;
+
   List<String> _uploadedURL = [];
+
   List<String> get uploadedURL => _uploadedURL;
 
   List<String> _uploadedAudioURL = [];
+
   List<String> get uploadedAudioURL => _uploadedAudioURL;
 
   CommentListModel _commentList;
@@ -162,22 +182,33 @@ class HomeController extends GetxController implements GetxService {
 
   CommentListModel get securitycommentList => _securitycommentList;
 
+  List<String> items = <String>[
+    'Thugs',
+    'Flight',
+    'Ballot Snatching',
+    'Others'
+  ];
+
   void changeSelectIndex(int index) {
     _selectedIndex = index;
     update();
   }
+
   void changeAudioRecording(bool check) {
     _checkAudioRecording = check;
     update();
   }
 
-  void changeCategorySelectIndex(int index,String cat_id) {
+  void updateTimerCount(int count) {
+    _timerCount = count;
+    update();
+  }
+
+  void changeCategorySelectIndex(int index, String cat_id) {
     _selectedCategoryIndex = index;
     getNewsWithCategoryIDList(cat_id);
     update();
   }
-
-
 
   void clearAllData() {
     try {
@@ -185,11 +216,14 @@ class HomeController extends GetxController implements GetxService {
       _commentList = null;
       _securitycommentList = null;
       _raw_arrayList = [];
+      _uploadedAudioURL = [];
       _rawFile = null;
       _uploadedURL = [];
       _state_name = "";
       _lga_name = "";
       _ward_name = "";
+      _category_name = "";
+      _category_id = "";
       update();
     } catch (e) {}
   }
@@ -208,6 +242,7 @@ class HomeController extends GetxController implements GetxService {
 
     _isLoading = false;
   }
+
   Future<void> getLatestNewsList() async {
     _isLoading = true;
 
@@ -236,7 +271,9 @@ class HomeController extends GetxController implements GetxService {
     }
 
     _isLoading = false;
-  } Future<void> getNewsWithCategoryIDList(String id) async {
+  }
+
+  Future<void> getNewsWithCategoryIDList(String id) async {
     _isLoading = true;
 
     Response response = await homeRepo.getNewsWithCategoryList(id);
@@ -279,10 +316,19 @@ class HomeController extends GetxController implements GetxService {
   Future<void> getIncidenceCategoryList() async {
     Response response = await homeRepo.getIncidentTypesList();
     _incidencecategorylist = [];
+    _incidencecategoryNamelist = <String>[];
     if (response.statusCode == 200) {
       response.body.forEach((notification) => _incidencecategorylist
           .add(IncidenceCategoryModel.fromJson(notification)));
 
+      if (_incidencecategorylist.length > 0) {
+        _incidencecategorylist.forEach((element) {
+          print("object>>>>  ${element.name}");
+          _incidencecategoryNamelist.add(element.name);
+        });
+      }
+
+      print("_countryList>>12>${_incidencecategoryNamelist.length}");
       print("_countryList>>>${_incidencecategorylist.length}");
       update();
     } else {
@@ -329,7 +375,17 @@ class HomeController extends GetxController implements GetxService {
     }
   }
 
+  Future<Response> sendSOSAlert(String Lat, String Longi) async {
+    Response response = await homeRepo.sendSOSAlert(Lat, Longi);
+    if (response.statusCode == 200) {
+      update();
+    }
+
+    return response;
+  }
+
   Future<void> getIncidenceDetail(String incidence_id) async {
+    _incidenceDetailResponse = null;
     Response response = await homeRepo.getIncidenceDetail(incidence_id);
 
     if (response.statusCode == 200) {
@@ -394,7 +450,7 @@ class HomeController extends GetxController implements GetxService {
     _isLoading = false;
   }
 
-  Future<void> getSOSContactList() async {
+  Future<Response> getSOSContactList() async {
     _isLoading = true;
 
     Response response = await homeRepo.getSOSContactList();
@@ -407,6 +463,7 @@ class HomeController extends GetxController implements GetxService {
     }
 
     _isLoading = false;
+    return response;
   }
 
   Future<void> getResourceCenterList() async {
@@ -490,15 +547,18 @@ class HomeController extends GetxController implements GetxService {
   }
 
   void pickImage() async {
+    Random random = Random();
     _pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (_pickedFile != null) {
-      //_pickedFile = await NetworkInfo.compressImage(_pickedFile);
-      _rawFile = await _pickedFile.readAsBytes();
-      print("pickImage" + _pickedFile.path);
-      print("pickImage" + _rawFile.toString());
-      _raw_arrayList.add(_rawFile);
-      File file1 = new File(_pickedFile.path);
-      uploadImage(file1, 101,"1692276470974.png");
+      _pickedFile =
+          await NetworkInfo.compressImage(_pickedFile).then((value) async {
+        _rawFile = await _pickedFile.readAsBytes();
+        print("pickImage" + _pickedFile.path);
+        print("pickImage" + _rawFile.toString());
+        _raw_arrayList.add(_rawFile);
+        File file1 = new File(_pickedFile.path);
+        uploadImage(file1, 101, random.nextInt(1000).toString() + ".png");
+      });
     }
     update();
   }
@@ -539,16 +599,19 @@ class HomeController extends GetxController implements GetxService {
   }*/
 
   void pickCameraImage() async {
+    Random random = Random();
     _pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
     if (_pickedFile != null) {
-      //_pickedFile = await NetworkInfo.compressImage(_pickedFile);
-      _rawFile = await _pickedFile.readAsBytes();
-      print("pickImage>>>>" + _pickedFile.path.toString());
-      print("pickImage" + _rawFile.toString());
-      _raw_arrayList.add(_rawFile);
-      File file1 = new File(_pickedFile.path);
-      // homeRepo.sendFile(file1);
-      uploadImage(file1, 101,"1692276470974.png");
+      _pickedFile =
+          await NetworkInfo.compressImage(_pickedFile).then((value) async {
+        _rawFile = await _pickedFile.readAsBytes();
+        print("pickImage>>>>" + _pickedFile.path.toString());
+        print("pickImage" + _rawFile.toString());
+        _raw_arrayList.add(_rawFile);
+        File file1 = new File(_pickedFile.path);
+        // homeRepo.sendFile(file1);
+        uploadImage(file1, 101, random.nextInt(1000).toString() + ".png");
+      });
       //print("dlfjdljfdjfkdjf>>${response.statusCode}");
     }
     update();
@@ -562,7 +625,9 @@ class HomeController extends GetxController implements GetxService {
     } catch (e) {
       print(">>>>>>>${e.toString()}");
     }
-  }void removeSelectedAudioURL(int Index) {
+  }
+
+  void removeSelectedAudioURL(int Index) {
     try {
       _uploadedAudioURL.removeAt(Index);
       print(">>>>>>>${_uploadedAudioURL.length.toString()}");
@@ -580,6 +645,18 @@ class HomeController extends GetxController implements GetxService {
       update();
       Get.back();
       _countryList = [];
+    } catch (e) {
+      print(">>>>>>>${e.toString()}");
+    }
+  }
+  void selectCategory(String categoryID, String categoryName) {
+    try {
+      _category_id = categoryID;
+      _category_name = categoryName;
+      print(">>>>>>>${_state_id}");
+      update();
+      Get.back();
+
     } catch (e) {
       print(">>>>>>>${e.toString()}");
     }
@@ -635,9 +712,10 @@ class HomeController extends GetxController implements GetxService {
     return response;
   }
 
-  Future<String> uploadImage(File file, int number,String file_name,
+  Future<String> uploadImage(File file, int number, String file_name,
       {String extension = 'jpg'}) async {
     String result;
+    print("file_name>>>>>>${file_name}");
     print("file>>>>>>${file.path}");
     print("number>>>>>>${number}");
     if (result == null) {
@@ -650,26 +728,27 @@ class HomeController extends GetxController implements GetxService {
         }*/
         print("fileName>>>>>>${file.path}");
         result = await AwsS3.uploadFile(
-          accessKey: "AKIAR6SRPD5YRLVOTAN4",
-          secretKey: "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",
+          accessKey: AppConstants.ACCESS_KEY,
+          secretKey: AppConstants.SECRET_KEY,
           file: file,
-          bucket: "abujaeyemedia",
-          region: "eu-west-1",
+          bucket: AppConstants.BUCKET,
+          region: AppConstants.REGION,
           metadata: {"test": "test"},
-          filename:file_name ,
+          filename: file_name,
         ).then((uri) {
           print("inner >>>>> >${uri.toString()}");
-          if(uri.toLowerCase().contains(".aac".toLowerCase())){
+          if (uri.toLowerCase().contains(".aac".toLowerCase())) {
             _uploadedAudioURL.add(uri);
-            print("object>>>_uploadedAudioURL>>>${_uploadedAudioURL.length.toString()}");
-          }else {
+            print(
+                "object>>>_uploadedAudioURL>>>${_uploadedAudioURL.length.toString()}");
+          } else {
             _uploadedURL.add(uri);
             print("object>>>>>>${_uploadedURL.length.toString()}");
           }
         });
 
         print("object>>>>>>${result.toString()}");
-      } on PlatformException catch (e) {
+      } catch (e) {
         print("Failed <><><>:'${e.message}'.");
       }
       update();
@@ -700,17 +779,16 @@ class HomeController extends GetxController implements GetxService {
     }
     update();
   }
+
   Future<Response> submitSurveyResult(String surveyID) async {
     _isLoading = true;
-    NewsSubmitBody newsSubmitBody=NewsSubmitBody(surveyId:surveyID,answers:selectedOptionIdList);
-
+    NewsSubmitBody newsSubmitBody =
+        NewsSubmitBody(surveyId: surveyID, answers: selectedOptionIdList);
 
     Response response = await homeRepo.submitSurveyResultu(newsSubmitBody);
     ResponseModel responseModel;
     print("response>>>${response.statusCode}");
-    if (response.statusCode == 200) {
-
-    }
+    if (response.statusCode == 200) {}
     _isLoading = false;
     update();
     return response;

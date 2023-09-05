@@ -85,7 +85,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 overscroll.disallowGlow();
                                 return;
                               },
-                              child: Scrollbar(
+                              child:
+                              Scrollbar(
                                   child: SingleChildScrollView(
                                 controller: scrollController,
                                 physics: AlwaysScrollableScrollPhysics(),

@@ -97,7 +97,9 @@ class _MoreMainScreenState extends State<MoreMainScreen> {
                         flex: 1,
                         child:
                         InkWell(
-                            onTap: () { Get.toNamed(RouteHelper.getTopNewsScreen());},
+                            onTap: () {
+                              Get.find<DashboardController>().changeIndex(1);
+                              },
                             child:
                         Container(
                           height: 120,

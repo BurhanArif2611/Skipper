@@ -205,9 +205,9 @@ try{
                                     ? null
                                     : () {
                                         if (!widget.isCampaign) {
-                                          Get.toNamed(
+                                        /*  Get.toNamed(
                                               RouteHelper.getItemImagesRoute(
-                                                  widget.item));
+                                                  widget.item));*/
                                         }
                                       },
                                 child: Stack(children: [

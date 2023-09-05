@@ -45,6 +45,7 @@ import 'package:sixam_mart/view/screens/wallet/wallet_screen.dart';
 
 /*import '../data/model/response/survey_list_model.dart';*/
 /*import '../data/model/response/news_list_model.dart';*/
+import '../data/model/response/incidence_detail_response.dart';
 import '../data/model/response/news_list_model.dart';
 import '../data/model/response/survey_list_model.dart';
 import '../view/screens/complaint/add_complaint_screen.dart';
@@ -52,6 +53,7 @@ import '../view/screens/complaint/list_complaint_screen.dart';
 import '../view/screens/contact_center/contact_center_screen.dart';
 import '../view/screens/home/add_contact_screen.dart';
 import '../view/screens/home/sos_contact_screen.dart';
+import '../view/screens/incidences/category.dart';
 import '../view/screens/incidences/incidences_detail_screen.dart';
 import '../view/screens/incidences/report_incidence_screen.dart';
 import '../view/screens/incidences/security_officer_chat_screen.dart';
@@ -132,6 +134,7 @@ class RouteHelper {
   static const String surveystartscreen = '/survey_start_screen';
   static const String surveyquestionscreen = '/survey_question_screen';
   static const String selectcountryscreen = '/select_country_screen';
+  static const String selectcategoryscreen = '/select_category_screen';
   static const String addcomplaintscreen = '/add_complaint_screen';
   static const String listcomplaintscreen = '/list_complaint_screen';
   static const String contactcenterscreen = '/contact_center_screen';
@@ -157,6 +160,7 @@ class RouteHelper {
   static String getSignInRoute(String page) => '$signIn?page=$page';
   static String getSignUpRoute(String number) => '$signUp?number=$number';
   static String getSelectCountryRoute(String number) => '$selectcountryscreen?state_id=$number';
+  static String getSelectCategoryRoute(String number) => '$selectcategoryscreen?state_id=$number';
   static String getSecurityOfficerCHatScreenRoute(String incidence_id) => '$securityofficerchatscreen?incidence_id=$incidence_id';
   static String getAddComplaintRoute() => '$addcomplaintscreen';
   static String getListComplaintRoute() => '$listcomplaintscreen';
@@ -236,7 +240,7 @@ class RouteHelper {
   }
   static String getStoreReviewRoute(int storeID) => '$storeReview?id=$storeID';
   static String getAllStoreRoute(String page) => '$allStores?page=$page';
-  static String getItemImagesRoute(Item item) {
+  static String getItemImagesRoute(IncidenceDetailResponse item) {
     String _data = base64Url.encode(utf8.encode(jsonEncode(item.toJson())));
     return '$itemImages?item=$_data';
   }
@@ -283,6 +287,7 @@ class RouteHelper {
     GetPage(name: signUp, page: () => SignUpScreen(number: Get.parameters['number'])),
     GetPage(name: securityofficerchatscreen, page: () => SecurityOfficerChatScreen(incidence_id: Get.parameters['incidence_id'])),
     GetPage(name: selectcountryscreen, page: () => SelectCountryScreen(state_id: Get.parameters['state_id'])),
+    GetPage(name: selectcategoryscreen, page: () => CategoryScreen(state_id: Get.parameters['state_id'])),
     GetPage(name: addcomplaintscreen, page: () => AddComplaintScreen()),
     GetPage(name: listcomplaintscreen, page: () => ListComplaintScreen()),
     GetPage(name: contactcenterscreen, page: () => ContactCenterScreen()),
@@ -408,7 +413,7 @@ class RouteHelper {
       isPopular: Get.parameters['page'] == 'popular', isFeatured: Get.parameters['page'] == 'featured',
     ))),
     GetPage(name: itemImages, page: () => getRoute(ImageViewerScreen(
-      item: Item.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['item'].replaceAll(' ', '+'))))),
+      item: IncidenceDetailResponse.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['item'])))),
     ))),
     /*GetPage(name: parcelCategory, page: () => getRoute(ParcelCategoryScreen())),
     GetPage(name: parcelLocation, page: () => getRoute(ParcelLocationScreen(

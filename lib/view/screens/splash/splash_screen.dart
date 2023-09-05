@@ -51,10 +51,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _requestMicrophonePermission() async {
     final status = await Permission.microphone.request();
-    setState(() {
+    /*setState(() {
       print("_requestMicrophonePermission ${status}");
-     /* _microphonePermissionStatus = status;*/
-    });
+     *//* _microphonePermissionStatus = status;*//*
+    });*/
   }
 
   @override

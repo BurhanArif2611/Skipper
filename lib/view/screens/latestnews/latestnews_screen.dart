@@ -99,6 +99,7 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                   GetBuilder<HomeController>(
                     builder: (onBoardingController) =>
+                    onBoardingController.latestNewsModel!=null &&  onBoardingController.latestNewsModel.data!=null?
                         Container(
                           width: MediaQuery.of(context).size.width,
                           height: 300,
@@ -213,7 +214,7 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                               ),
                             ),
                           ]),
-                        ),
+                        ):SizedBox(),
                   ),
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
 

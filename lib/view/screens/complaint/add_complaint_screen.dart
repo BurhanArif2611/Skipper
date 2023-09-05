@@ -79,7 +79,8 @@ class _AddComplaintScreenState extends State<AddComplaintScreen> {
                                   fit: BoxFit.fitWidth,
                                       )
 
-                                    : Image.asset(
+                                    :
+                                Image.asset(
                                         Images.upload_photo_document,
                                         fit: BoxFit.fill,
                                         width:

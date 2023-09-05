@@ -30,22 +30,14 @@ class DateConverter {
   }
 
   static String getTime(String dateTime1) {
-  //  return DateFormat('dd MMM yyyy').format(DateFormat('yyyy-MM-dd HH:mm:ss').parseUtc(dateTime).toLocal());
-    DateTime dateTime = DateTime.parse(dateTime1);
+    return DateFormat('h:mm a').format(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parseUtc(dateTime1).toLocal());
 
-// Format the extracted time portion
-   // String formattedTime = "${dateTime.hour}:${dateTime.minute}:${dateTime.second}";
-    String formattedTime = DateFormat('h:mm a').format(dateTime);
-    print(formattedTime);
-    return formattedTime;
   }
 
   static String getDate(String dateTime1) {
+    return DateFormat('dd MMM yyyy').format(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parseUtc(dateTime1).toLocal());
 
-    DateTime dateTime = DateTime.parse(dateTime1);
-    String formattedTime = DateFormat('dd MMM yyyy').format(dateTime);
-    print(formattedTime);
-    return formattedTime;
+
   }
 
   static DateTime dateTimeStringToDate(String dateTime) {

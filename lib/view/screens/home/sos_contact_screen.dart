@@ -45,7 +45,7 @@ class _SOSContactScreenState extends State<SOSContactScreen> with WidgetsBinding
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _loadData();
+   // _loadData();
   }
   @override
   void dispose() {

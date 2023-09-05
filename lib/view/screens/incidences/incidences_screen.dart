@@ -34,13 +34,7 @@ class IncidencesScreen extends StatefulWidget {
 
 class _IncidencesScreenState extends State<IncidencesScreen> {
   void _loadData() async {
-    Get.find<NotificationController>().clearNotification();
-    if (Get.find<SplashController>().configModel == null) {
-      await Get.find<SplashController>().getConfigData();
-    }
-    if (Get.find<AuthController>().isLoggedIn()) {
-      Get.find<NotificationController>().getNotificationList(1, true);
-    }
+    await Get.find<HomeController>().getIncidenceList();
   }
 
   @override
@@ -63,7 +57,18 @@ class _IncidencesScreenState extends State<IncidencesScreen> {
             Get.find<DashboardController>().changeIndex(0);
           }),
      /* endDrawer: MenuDrawer(),*/
-      body: Get.find<AuthController>().isLoggedIn()
+      body: RefreshIndicator(
+        onRefresh: () async {
+      _loadData();
+    },
+    child: NotificationListener<OverscrollIndicatorNotification>(
+    onNotification: (OverscrollIndicatorNotification overscroll) {
+    overscroll.disallowGlow();
+    return;
+    },
+    child:
+
+      Get.find<AuthController>().isLoggedIn()
           ? GetBuilder<HomeController>(
           builder: (onBoardingController) =>
           onBoardingController.incidenceListModel!=null &&  onBoardingController.incidenceListModel.docs!=null &&  onBoardingController.incidenceListModel.docs.length>0 ?
@@ -186,7 +191,7 @@ class _IncidencesScreenState extends State<IncidencesScreen> {
 
 
       )
-          : NotLoggedInScreen(),
+          : NotLoggedInScreen()),),
 
       floatingActionButton: Container(
           width: MediaQuery.of(context).size.width, // Set the desired width here

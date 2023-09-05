@@ -92,7 +92,21 @@ class _IncidenceDetailScreenState extends State<IncidenceDetailScreen>
                                 controller: _pageController,
                                 physics: BouncingScrollPhysics(),
                                 itemBuilder: (context, index) {
-                                  return Column(
+                                  print("imahe URL>>> ${homeController
+                                      .incidenceDetailResponse
+                                      .images[index]}");
+                                  return
+                                    InkWell(
+                                      onTap: (){
+
+                                      Get.toNamed(
+                                          RouteHelper.getItemImagesRoute(
+                                              homeController
+                                                  .incidenceDetailResponse));
+
+                                  },
+                                  child:
+                                    Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
@@ -105,7 +119,7 @@ class _IncidenceDetailScreenState extends State<IncidenceDetailScreen>
                                                   .incidenceDetailResponse
                                                   .images[index],
                                             )),
-                                      ]);
+                                      ]));
                                 },
                                 onPageChanged: (index) {
                                   homeController.changeSelectIndex(index);
@@ -271,6 +285,11 @@ class _IncidenceDetailScreenState extends State<IncidenceDetailScreen>
                                                         .hintColor,
                                                     fontSize: Dimensions
                                                         .fontSizeDefault)),
+                                            ( homeController
+                                                .incidenceDetailResponse
+                                                .user!=null &&  homeController
+                                                .incidenceDetailResponse
+                                                .user.name!=null?
                                             Text(
                                                 homeController
                                                         .incidenceDetailResponse
@@ -287,7 +306,7 @@ class _IncidenceDetailScreenState extends State<IncidenceDetailScreen>
                                                     color: Theme.of(context)
                                                         .hintColor,
                                                     fontSize: Dimensions
-                                                        .fontSizeDefault))
+                                                        .fontSizeDefault)):SizedBox())
                                           ]),
                                           SizedBox(
                                               height: Dimensions

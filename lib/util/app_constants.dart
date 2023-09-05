@@ -12,9 +12,10 @@ class AppConstants {
   static const double IOS_APP_VERSION = 1.0;
 
   //dev url
-   /*static const String BASE_URL = 'http://192.168.1.42:5400';*/
+
+  // static const String BASE_URL = 'http://192.168.1.42:5400';
    // staging url
-    static const String BASE_URL = 'http://54.72.135.72:5400';
+   static const String BASE_URL = 'http://54.72.135.72:5400';
 
   //local url
    //static const String BASE_URL = 'http://192.168.1.164:8000';
@@ -115,6 +116,7 @@ class AppConstants {
   static const String WardList_URL = '/admin/wards';
   static const String IncidentTypes_URL = '/incident-types';
   static const String Complaint_URL = '/complaint';
+  static const String SENDSOSALERT_URL = '/send-sos-msg';
   static const String ComplaintDelete_URL = '/user/complaint';
   static const String Comment_URL = '/comment';
 
@@ -176,6 +178,11 @@ class AppConstants {
   static const String ZONE_ID = 'zoneId';
   static const String MODULE_ID = 'moduleId';
   static const String LOCALIZATION_KEY = 'X-localization';
+
+  static const String ACCESS_KEY = 'AKIAR6SRPD5YRLVOTAN4';
+  static const String SECRET_KEY = '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';
+  static const String BUCKET = 'abujaeyemedia';
+  static const String REGION = 'eu-west-1';
 
   // Delivery Tips
   static List<int> tips = [0, 5, 10, 15, 20, 30, 50];

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/home_controller.dart';
@@ -20,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../data/model/body/report_incidence_body.dart';
+import '../../../data/model/response/incidence_category_model.dart';
 import '../../../helper/responsive_helper.dart';
 import '../../../helper/route_helper.dart';
 import '../../../util/images.dart';
@@ -54,11 +56,14 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
   FlutterSoundRecorder _recorder;
   File file;
   Random random = Random();
+  AudioPlayer player1;
+
 
   void _loadData() async {
     Get.find<HomeController>().clearAllData();
     Get.find<HomeController>().getIncidenceCategoryList();
   }
+
 
   @override
   void initState() {
@@ -66,7 +71,10 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
     createFile();
     _player = FlutterSoundPlayer();
     _recorder = FlutterSoundRecorder();
+
     _loadData();
+
+
   }
   @override
   void dispose() {
@@ -102,16 +110,18 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                          (homeController.incidencecategorylist != null &&
-                                  homeController.incidencecategorylist.length >
+                          (homeController.incidencecategoryNamelist != null &&
+                                  homeController.incidencecategoryNamelist.length >
                                       0
-                              ? Container(
+                              ?
+                          /*Container(
                                   width: MediaQuery.of(context).size.width,
                                   padding: EdgeInsets.all(Dimensions
                                       .PADDING_SIZE_EXTRA_LARGE_SMALL),
-                                  decoration: BoxDecoration(
+                                  decoration:
+                                  BoxDecoration(
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(35)),
+                                      BorderRadius.all(Radius.circular(15)),
                                       border: Border.all(
                                           width: 0.4,
                                           color: Theme.of(context).hintColor),
@@ -148,18 +158,64 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                                     icon: Icon(Icons.keyboard_arrow_down),
                                     elevation: 0,
                                     iconSize: 30,
+                                    
                                     underline: SizedBox(),
                                     onChanged: (index) {
+                                      print(" klnvdf  ${index}");
                                       print(
                                           "selected length>>>${homeController.incidencecategorylist[0].sId.toString()}");
 
                                       setState(() {
                                         selectedItem = index;
                                       });
-                                      // localizationController.setLanguage(Locale(AppConstants.languages[index].languageCode, AppConstants.languages[index].countryCode));
+
                                     },
                                   ),
-                                )
+                                )*/
+                          Column(children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Select Incidence Category",
+                                style: robotoRegular.copyWith(
+                                    color: Theme.of(context).hintColor),
+                              ),
+                            ),
+                            SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                            InkWell(
+                                onTap: () {
+                                  Get.toNamed(
+                                      RouteHelper.getSelectCategoryRoute("Category"));
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.all(
+                                      Dimensions.PADDING_SIZE_SEMI_LARGE),
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(15)),
+                                      border: Border.all(
+                                          width: 0.4,
+                                          color: Theme.of(context).hintColor),
+                                      color: Theme.of(context).cardColor),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                          width: Dimensions.PADDING_SIZE_DEFAULT),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                              homeController.category_name != ""
+                                                  ? homeController.category_name
+                                                  : "Incidence Category",
+                                              style: robotoRegular)),
+                                      Expanded(
+                                          flex: 1,
+                                          child: Icon(Icons.keyboard_arrow_right))
+                                    ],
+                                  ),
+                                )),
+                          ],)
                               : SizedBox()),
                           SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                           Align(
@@ -179,12 +235,12 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
                                 padding: EdgeInsets.all(
-                                    Dimensions.PADDING_SIZE_SMALL),
+                                    Dimensions.PADDING_SIZE_SEMI_LARGE),
                                 decoration: BoxDecoration(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(15)),
                                     border: Border.all(
-                                        width: 0.3,
+                                        width: 0.4,
                                         color: Theme.of(context).hintColor),
                                     color: Theme.of(context).cardColor),
                                 child: Row(
@@ -222,12 +278,12 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
                                 padding: EdgeInsets.all(
-                                    Dimensions.PADDING_SIZE_SMALL),
+                                    Dimensions.PADDING_SIZE_SEMI_LARGE),
                                 decoration: BoxDecoration(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(15)),
                                     border: Border.all(
-                                        width: 0.3,
+                                        width: 0.4,
                                         color: Theme.of(context).hintColor),
                                     color: Theme.of(context).cardColor),
                                 child: Row(
@@ -265,12 +321,12 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
                                 padding: EdgeInsets.all(
-                                    Dimensions.PADDING_SIZE_SMALL),
+                                    Dimensions.PADDING_SIZE_SEMI_LARGE),
                                 decoration: BoxDecoration(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(15)),
                                     border: Border.all(
-                                        width: 0.3,
+                                        width: 0.4,
                                         color: Theme.of(context).hintColor),
                                     color: Theme.of(context).cardColor),
                                 child: Row(
@@ -304,7 +360,8 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                           SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                           InkWell(
                               onTap: () {
-                                openSelectImage(homecroller);
+                               openSelectImage(homecroller);
+
                               },
                               child: Image.asset(
                                 Images.add_photo,
@@ -389,17 +446,21 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                                   double _progressValue = 0.0;
                                   Duration _currentPosition = Duration.zero;
                                   Duration _duration = Duration.zero;
-                                  return Container(
+
+                                  return
+                                    Container(
                                     margin: EdgeInsets.all(Dimensions
                                         .PADDING_SIZE_EXTRA_SMALL),
                                     decoration: BoxDecoration(
                                         borderRadius:
                                         BorderRadius.all(Radius.circular(15)),
                                         border: Border.all(
-                                            width: 0.3,
+                                            width: 0.4,
                                             color: Theme.of(context).hintColor),
                                         color: Theme.of(context).cardColor),
-                                    child: Stack(
+                                    child:
+
+                                    Stack(
                                       children: [
                                         Column(
                                           children: [
@@ -410,6 +471,10 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                                                   stopAudio();
                                                 } else {
                                                  // playAudio(homeController.uploadedAudioURL[index].toString());
+
+
+
+
                                                   try {
                                                     if (_player.isPlaying) {
                                                        _player.closeAudioSession();
@@ -421,19 +486,20 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                                                     }
                                                     print("url ling>>> ${homeController.uploadedAudioURL[index].toString()}");
                                                      _player.startPlayer(fromURI: homeController.uploadedAudioURL[index].toString(),codec: Codec.aacADTS,);
+                                                    _player.setSubscriptionDuration(Duration(milliseconds: 100));
                                                     print('Audio playback started');
-                                                   /* setState(() {
+                                                 /* setState(() {
                                                       _isPlaying = true;
                                                     });*/
 
                                                     _player.onProgress.listen((event) {
-                                                      print('Error starting audio playback: ${event.duration}');
-                                                     /* setState(() {*/
+                                                      print('Error starting audio playback: ${event.position}');
+                                                      setState(() {
                                                         _currentPosition = event.position;
                                                         _duration = event.duration;
                                                         _progressValue = event.position.inMilliseconds / _duration.inMilliseconds;
-                                                        print('Error starting audio playback: $_progressValue');
-                                                    /*  });*/
+                                                        print('Error starting audio playback 21: $_progressValue');
+                                                      });
                                                     });
                                                   } catch (e) {
                                                     print('Error starting audio playback: $e');
@@ -441,7 +507,9 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                                                 }
                                               },
                                             ),
+
                                             LinearProgressIndicator(
+                                              color: Colors.red,
                                               value: _progressValue,
                                             ),
                                             Text('${_currentPosition.toString()} / ${_duration.toString()}'),
@@ -831,7 +899,8 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
     // Write data to the file
     // await file.writeAsString('Hello, Flutter!');*/
 
-    Directory externalDirectory = await getExternalStorageDirectory();
+    //Directory externalDirectory = await getExternalStorageDirectory();
+    Directory externalDirectory = await getApplicationDocumentsDirectory();
 
     if (externalDirectory != null) {
       // Create a directory with your app's name (change 'YourAppName')
@@ -852,6 +921,8 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
       } catch (e) {
         print('Error creating file: $e');
       }
+    }else {
+      print('Error externalDirectory>>:');
     }
   }
 
@@ -922,14 +993,14 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
     }*/
     else {
       ReportIncidenceBody reportIncidenceBody = ReportIncidenceBody(
-        incidentType: "64ad1684380c264760b1526f",
+        incidentType: homeController.category_id,
         subCategoryId: "64b1045a9e5b8a383bf2d869",
         state: homeController.state_id,
         lga: homeController.lga_id,
         ward: homeController.ward_id,
         image: homeController.uploadedURL,
         video: homeController.uploadedURL,
-        audio: homeController.uploadedURL,
+        audio: homeController.uploadedAudioURL,
         description: _firstName,
         shortDescription: _shortdescription,
         isAnonymous: isAnonymous,

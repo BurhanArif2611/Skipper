@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:aws_s3_upload/aws_s3_upload.dart';
@@ -28,6 +29,7 @@ import '../data/model/response/survey_list_model.dart';
 import '../data/repository/auth_repo.dart';
 import '../data/repository/complaint_repo.dart';
 import '../data/repository/store_repo.dart';
+import '../util/app_constants.dart';
 import '../view/base/custom_loader.dart';
 import 'package:sixam_mart/helper/network_info.dart';
 
@@ -373,6 +375,7 @@ class ComplaintController extends GetxController implements GetxService {
   }*/
 
   void pickImage() async {
+    Random random = Random();
     _pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (_pickedFile != null) {
       _pickedFile =
@@ -381,7 +384,7 @@ class ComplaintController extends GetxController implements GetxService {
         print("pickImage" + _pickedFile.path);
         print("pickImage" + _rawFile.toString());
         File file1 = new File(_pickedFile.path);
-        _uploadImage(file1, 101);
+        _uploadImage(file1, 101,random.nextInt(1000).toString()+".png");
       });
     }
     update();
@@ -423,6 +426,7 @@ class ComplaintController extends GetxController implements GetxService {
   }*/
 
   void pickCameraImage() async {
+    Random random = Random();
     _pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
     if (_pickedFile != null) {
       _pickedFile =
@@ -432,7 +436,7 @@ class ComplaintController extends GetxController implements GetxService {
         print("pickImage" + _rawFile.toString());
         File file1 = new File(_pickedFile.path);
         // authRepo.sendFile(file1);
-        _uploadImage(file1, 101);
+        _uploadImage(file1, 101,random.nextInt(1000).toString()+".png");
       });
 
       //print("dlfjdljfdjfkdjf>>${response.statusCode}");
@@ -505,7 +509,7 @@ class ComplaintController extends GetxController implements GetxService {
     return response;
   }*/
 
-  Future<String> _uploadImage(File file, int number,
+  Future<String> _uploadImage(File file, int number,String filename,
       {String extension = 'jpg'}) async {
     String result;
     print("file>>>>>>${file.path}");
@@ -533,13 +537,13 @@ class ComplaintController extends GetxController implements GetxService {
         }*/
         print("fileName>>>>>>${file.path}");
         result = await AwsS3.uploadFile(
-          accessKey: "AKIAR6SRPD5YRLVOTAN4",
-          secretKey: "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",
+          accessKey: AppConstants.ACCESS_KEY,
+          secretKey:AppConstants.SECRET_KEY,
           file: file,
-          bucket: "abujaeyemedia",
-          region: "eu-west-1",
+          bucket: AppConstants.BUCKET,
+          region: AppConstants.REGION,
           metadata: {"test": "test"},
-          filename: "1692276470974.png",
+          filename: filename,
         ).then((uri) {
           print("inner >>>>> >${uri.toString()}");
           _uploadedURL = (uri);

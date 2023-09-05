@@ -62,21 +62,27 @@ class Comments extends StatelessWidget {
                                   top: Dimensions.PADDING_SIZE_SMALL),
                               child: Column(
                                 children: [
-                                  Row(
+                                Align(alignment: Alignment.centerLeft,
+                                child:
+                                  Wrap(
+                                    alignment: WrapAlignment.start,
                                     children: [
                                      /* SvgPicture.asset(Images.circle_user),*/
-
-
-                                      ClipOval(
+                                     Container(
+                              width: 30, // Set the desired width
+                                height: 30, // Set the desired height
+                                child:
+                                ClipOval(
                                           child: CustomImage(
                                             image:  homeController.commentList.docs[index].user.image,
                                             height: 30,
                                             width: 30,
                                             fit: BoxFit.cover,
-                                          )),
+                                          ))),
                                       SizedBox(
                                         width: Dimensions.PADDING_SIZE_SMALL,
                                       ),
+
                                       Text(
                                         homeController.commentList.docs[index].user
                                                 .name.first +
@@ -85,6 +91,8 @@ class Comments extends StatelessWidget {
                                                 .user.name.last,
                                         style: robotoBold.copyWith(
                                             color: Theme.of(context).hintColor),
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
                                       ),
                                       SizedBox(
                                         width: Dimensions.PADDING_SIZE_SMALL,
@@ -98,15 +106,17 @@ class Comments extends StatelessWidget {
                                             color: Theme.of(context)
                                                 .hintColor
                                                 .withOpacity(0.3)),
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
-                                  ),
+                                  )),
                                   SizedBox(
                                     height: Dimensions.PADDING_SIZE_SMALL,
                                   ),
                                   Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
+                                    child:
+                                    Text(
                                       homeController.commentList.docs[index].text,
                                       style: robotoMedium.copyWith(
                                           color: Theme.of(context).hintColor,

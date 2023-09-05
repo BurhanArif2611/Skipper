@@ -56,6 +56,8 @@ dependencies:
   aws_s3: ^0.1.1+hotfix.5
   flutter_sound: ^9.2.13
   permission_handler: ^10.4.3
+  just_audio: ^0.9.34
+
 
 
 

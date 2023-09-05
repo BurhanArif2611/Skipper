@@ -7,20 +7,22 @@ import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:sixam_mart/view/base/custom_app_bar.dart';
 
+import '../../data/model/response/incidence_detail_response.dart';
+
 class ImageViewerScreen extends StatelessWidget {
-  final Item item;
+  final IncidenceDetailResponse item;
   ImageViewerScreen({@required this.item});
 
   @override
   Widget build(BuildContext context) {
     Get.find<ItemController>().setImageIndex(0, false);
     List<String> _imageList = [];
-    _imageList.add(item.image);
+   // _imageList.add(item.images);
     _imageList.addAll(item.images);
     final PageController _pageController = PageController();
 
     return Scaffold(
-      appBar: CustomAppBar(title: 'product_images'.tr),
+      appBar: CustomAppBar(title: 'Incidence Images'.tr),
       body: GetBuilder<ItemController>(builder: (itemController) {
         return Column(children: [
 
@@ -32,8 +34,9 @@ class ImageViewerScreen extends StatelessWidget {
               itemCount: _imageList.length,
               pageController: _pageController,
               builder: (BuildContext context, int index) {
+                print("imageURL>>>>${_imageList[index].toString()}");
                 return PhotoViewGalleryPageOptions(
-                  imageProvider: NetworkImage('${Get.find<SplashController>().configModel.baseUrls.itemImageUrl}/${_imageList[index]}'),
+                  imageProvider: NetworkImage('${_imageList[index]}'),
                   initialScale: PhotoViewComputedScale.contained,
                   heroAttributes: PhotoViewHeroAttributes(tag: index.toString()),
                 );
