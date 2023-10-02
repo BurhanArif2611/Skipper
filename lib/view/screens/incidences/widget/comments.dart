@@ -32,6 +32,7 @@ class Comments extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     timeago.setLocaleMessages('en', timeago.EnMessages());
     securityOfficer=Get.find<SplashController>().isSecurityOfficer;
     return Scaffold(
@@ -39,9 +40,9 @@ class Comments extends StatelessWidget {
         return SingleChildScrollView(
           physics: NeverScrollableScrollPhysics(),
           child: Container(
-              height: 400 /*MediaQuery.of(context).size.height*/,
+              height: MediaQuery.of(context).size.height-450,
               width: MediaQuery.of(context).size.width,
-              color: Theme.of(context).cardColor,
+            /* *//*Theme.of(context).cardColor*//*,*/
               child:
               Column(
                 children: [
@@ -128,7 +129,7 @@ class Comments extends StatelessWidget {
                         },
                       )),
                   !securityOfficer?Expanded(
-                      flex: 1,
+                      flex: 2,
                       child: Container(
                         width: MediaQuery.of(context).size.width,
                         padding: EdgeInsets.only(
@@ -140,19 +141,31 @@ class Comments extends StatelessWidget {
                             border: Border.all(
                                 width: 0.5, color: Theme.of(context).hintColor),
                             color: Theme.of(context).cardColor),
-                        child: Row(
+                        margin: EdgeInsets.only(
+                            top: Dimensions.PADDING_SIZE_SMALL,
+                            bottom: Dimensions.PADDING_SIZE_LARGE),
+                        child:
+                        Row(
                           mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Expanded(
                               flex: 5,
-                              child: CustomTextField(
+                              child:
+                              Container(
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.only(top: 5),
+                                  child:
+                              Align(alignment: Alignment.center,
+                                  child: CustomTextField(
                                 hintText: 'Text here ……'.tr,
                                 controller: _firstNameController,
                                 inputType: TextInputType.multiline,
                                 prefixIcon: null,
                                 inputAction: TextInputAction.done,
                                 divider: false,
-                              ),
+
+                              ))),
                             ),
                             Expanded(
                                 flex: 1,

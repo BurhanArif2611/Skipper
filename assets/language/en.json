@@ -431,11 +431,9 @@
   "track_delivery": "Track Delivery",
   "cancel_delivery": "Cancel Delivery",
   "delivery_id": "Delivery ID",
-
   "version_1.1": "Version 1.1",
   "featured_stores": "Featured Stores",
   "max_size_2_mb": "Max size 2MB",
-
   "version_1.2": "Version 1.2",
   "no_parcel_category_data_found": "No parcel category data found",
   "search_item_in_store": "Search item in store...",
@@ -449,13 +447,12 @@
   "download_our_app": "DOWNLOAD OUR APP",
   "download_our_apps": "DOWNLOAD OUR APPS",
   "quick_links": "Quick Links",
-  "my_account" : "My Account",
+  "my_account": "My Account",
   "contact_us": "Contact Us",
   "copyright": "Copyright © 6amTech",
   "terms_and_condition": "Terms & Conditions",
   "add_address": "Add Address",
   "subscribed_successfully": "Subscribed successfully",
-
   "landing_page_texts": "Landing Page Texts",
   "more_than_just_a_reliable_ecommerce_platform": "More than just a reliable e-commerce platform",
   "choose_your_location_to_start_shopping": "Choose your location to start shopping",
@@ -475,7 +472,6 @@
   "pick_from_map": "Pick From Map",
   "register": "Register",
   "register_as_delivery_man_and_earn_money": "Register as delivery man and earn money",
-
   "version_1.4": "Version 1.4",
   "street_number": "Street Number",
   "house": "House",
@@ -494,14 +490,12 @@
   "item_details": "Item Details",
   "enter_sender_name": "Enter sender name",
   "enter_sender_phone_number": "Enter sender phone number",
-
   "your_account_remove_successfully": "Your account remove successfully",
   "there_is_a_problem_on_removing_your_account": "There is a problem on removing your account",
   "delete_account": "Delete Account",
   "are_you_sure_to_delete_account": "Are you sure to delete your account?",
   "it_will_remove_your_all_information": "It will remove your all information.",
   "no_restaurant_data_found": "No restaurant data found",
-
   "loyalty_points": "Loyalty Points",
   "wallet_amount": "Wallet Amount",
   "convert_to_currency": "Convert To Currency",
@@ -542,5 +536,20 @@
   "add_fund_by_admin": "Add fund by admin",
   "credit": "Credit",
   "debit": "Debit",
-  "you_do_not_have_sufficient_balance_in_wallet": "You do not have sufficient balance in wallet"
+  "you_do_not_have_sufficient_balance_in_wallet": "You do not have sufficient balance in wallet",
+  "justice_content": "Our mission is above all to provide justice for all and applicable to all without any distinction, and to have an honest, pragmatic, effective government that is accountable for its governmental action.",
+  "over_mission": "Our Mission And Vision.",
+  "over_mission_content": "We work in partnership around the world to strengthen and safeguard democratic institutions, processes, norms and values to ensure a better quality of life for all.",
+  "national_unity": "National Unity",
+  "national_unity_content": "Our vision is national unity built on a foundation of equal opportunities where all Chadians will feel good at home in their own country. For this 'Les Patriotes' will do everything to make the life of every Chadian better.",
+  "work": "Work",
+  "work_content": "Our mission is to promote the spirit of work for each citizen in order to feel worthy of being able to ensure their daily needs and those of their families. For this, the Patriots emphasize their agenda on what the young person wants.",
+  "education": "Education",
+  "education_content": "Our mission is to provide access to education to all citizens, and launch a vast national school construction program. Universities will be restructured and modernized, and public and private vocational schools will be innovated for the training of specialized workers and other trades.",
+  "health": "Health",
+  "health_content": "Our mission is to make health a priority, introducing universal coverage of free health care for children, emergency care and maternal health care.",
+  "food_safety": "Food Safety",
+  "food_safety_content": "Our mission is to promote a good policy of food self-sufficiency, to feed all Chadians. By analyzing the needs of the population and the state of arable land, and by introducing agrarian reforms for the development of the rural environment.",
+  "members_of_the_national": "Members Of The National Political Bureau"
+
 }

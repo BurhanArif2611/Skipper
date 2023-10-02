@@ -19,6 +19,7 @@ import 'package:sixam_mart/view/base/not_logged_in_screen.dart';
 import 'package:sixam_mart/view/screens/notification/widget/notification_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../../data/model/body/report_incidence_body.dart';
 import '../../../data/model/response/incidence_category_model.dart';
@@ -28,6 +29,7 @@ import '../../../util/images.dart';
 import '../../base/confirmation_dialog.dart';
 import '../../base/custom_button.dart';
 import '../../base/custom_dialog.dart';
+import '../../base/custom_image.dart';
 import '../../base/custom_snackbar.dart';
 import '../../base/custom_text_field.dart';
 import '../../base/inner_custom_app_bar.dart';
@@ -45,13 +47,8 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
   final TextEditingController _longController = TextEditingController();
   bool isAnonymous = false;
 
-  List<String> items = <String>[
-    'Thugs',
-    'Flight',
-    'Ballot Snatching',
-    'Others'
-  ];
-  String selectedItem = 'Thugs';
+
+
   FlutterSoundPlayer _player;
   FlutterSoundRecorder _recorder;
   File file;
@@ -75,6 +72,12 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
     _loadData();
 
 
+  }
+  Future<ClosedCaptionFile> _loadCaptions() async {
+    final String fileContents = await DefaultAssetBundle.of(context)
+        .loadString('assets/bumble_bee_captions.vtt');
+    return WebVTTCaptionFile(
+        fileContents); // For vtt files, use WebVTTCaptionFile
   }
   @override
   void dispose() {
@@ -371,7 +374,8 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                           SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                           (homecroller.raw_arrayList != null &&
                                   homecroller.raw_arrayList.length > 0
-                              ? Container(
+                              ?
+                          Container(
                                   height: 120,
                                   width: MediaQuery.of(context).size.width,
                                   child: ListView.builder(
@@ -538,10 +542,101 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                                   );
                                 },
                               )):SizedBox()),
+                          SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+ (homeController.uploadedVideoURL !=null && homeController.uploadedVideoURL.length>0 ?
+                          Container(
+                            height: 300,
+                              width: MediaQuery.of(context).size.width,
+
+                              child: ListView.builder(
+                                itemCount: homeController.uploadedVideoURL.length,
+                                padding: EdgeInsets.all(Dimensions
+                                    .PADDING_SIZE_EXTRA_LARGE_SMALL),
+                                physics: ScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                itemBuilder: (context, index) {
+                                  VideoPlayerController _controller;
+
+                                  _controller= VideoPlayerController.networkUrl(
+                                    Uri.parse(
+                                        homeController.uploadedVideoURL[index]),
+                                    closedCaptionFile: _loadCaptions(),
+                                    videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+                                  )..initialize().then((_) async {
+                                   /* _controller.play();
+                                    _controller.setLooping(true);*/
+                                  });
+                                      /*_controller.addListener(() {
+                                        print("object");
+
+                                   *//* setState(() {
+                                      print("object")
+                                    });*//*
+                                  });*/
+
+                                //  _controller.play();
+
+                                  return
+                                    Container(
+                                      height: 200,
+                                    width: MediaQuery.of(context).size.width,
+                                    margin: EdgeInsets.all(Dimensions
+                                        .PADDING_SIZE_EXTRA_SMALL),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(15)),
+                                        border: Border.all(
+                                            width: 0.4,
+                                            color: Theme.of(context).hintColor),
+                                        color: Theme.of(context).cardColor),
+                                    child:
+
+                                    Stack(
+                                      children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                    padding: const EdgeInsets.all(20),
+                                      child: AspectRatio(
+                                        aspectRatio: _controller.value.aspectRatio,
+                                        child: Stack(
+                                          alignment: Alignment.bottomCenter,
+                                          children: <Widget>[
+                                            VideoPlayer(_controller),
+                                            ClosedCaption(text: _controller.value.caption.text),
+                                            _ControlsOverlay(controller: _controller),
+                                            VideoProgressIndicator(_controller, allowScrubbing: true),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                        Positioned(
+                                            top: 0,
+                                            right: 0,
+                                            child: InkWell(
+                                              onTap: () {
+                                                print("ksndksndsdsd");
+                                                homecroller.removeSelectedVideoURL(index);
+                                                print(
+                                                    "ksndksndsdsd${homecroller.uploadedVideoURL.length}");
+                                              },
+                                              child: SvgPicture.asset(
+                                                Images.circle_cancel,
+                                                height: 20,
+                                                width: 20,
+                                              ),
+                                            ))
+                                      ],
+                                    ),
+                                  );
+                                },
+                              )):SizedBox()),
 
 
 
                           SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+
+
                           Align(
                             alignment: Alignment.topLeft,
                             child: Text(
@@ -652,7 +747,7 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
         context: context,
         builder: (BuildContext context) {
           return Container(
-              height: 340,
+              height: 410,
               padding: EdgeInsets.all(
                 Dimensions.RADIUS_SMALL,
               ),
@@ -749,6 +844,42 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
                         ])),
                   ),
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                    margin: EdgeInsets.all(
+                      Dimensions.RADIUS_SMALL,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(
+                          width: 1, color: Theme.of(context).disabledColor),
+                      color: Colors.transparent,
+                    ),
+                    child: InkWell(
+                        onTap: () {
+                          homeController.pickVideoFile();
+                          Get.back();
+                        },
+                        child: Row(children: [
+                          SizedBox(width: 10),
+                          SvgPicture.asset(Images.take_photo),
+                          Expanded(
+                            child: Text('Choose video from gallery'.tr,
+                                textAlign: TextAlign.center,
+                                style: robotoBold.copyWith(
+                                  color: Theme.of(context).hintColor,
+                                  fontSize: Dimensions.fontSizeLarge,
+                                )),
+                          ),
+                          Image.asset(Images.arrow_right_normal,
+                              height: 10, fit: BoxFit.contain),
+                          SizedBox(width: 10),
+                        ])),
+                  ),
+                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+
                   Container(
                     width: double.infinity,
                     padding: EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
@@ -977,11 +1108,13 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
 
     if (_shortdescription.isEmpty) {
       showCustomSnackBar('Enter short description'.tr);
+    }else if (homeController.category_id!=null && homeController.category_id=='') {
+      showCustomSnackBar('Select category first !'.tr);
     } else if (_firstName.isEmpty) {
       showCustomSnackBar('Enter description'.tr);
-    } else if (!isAnonymous) {
+    }/* else if (!isAnonymous) {
       showCustomSnackBar('Select Anonymous'.tr);
-    } else if (homeController.state_id == "") {
+    } */else if (homeController.state_id == "") {
       showCustomSnackBar('Select State First !'.tr);
     } else if (homeController.lga_id == "") {
       showCustomSnackBar('Select LGA First !'.tr);
@@ -999,7 +1132,7 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
         lga: homeController.lga_id,
         ward: homeController.ward_id,
         image: homeController.uploadedURL,
-        video: homeController.uploadedURL,
+        video: homeController.uploadedVideoURL,
         audio: homeController.uploadedAudioURL,
         description: _firstName,
         shortDescription: _shortdescription,
@@ -1017,5 +1150,137 @@ class _ReportIncidenceScreenState extends State<ReportIncidenceScreen> {
         }
       });
     }
+  }
+
+
+
+
+}
+
+
+class _ControlsOverlay extends StatelessWidget {
+  final VideoPlayerController controller;
+
+  const _ControlsOverlay({@required this.controller});
+
+  static const List<Duration> _exampleCaptionOffsets = <Duration>[
+    Duration(seconds: -10),
+    Duration(seconds: -3),
+    Duration(seconds: -1, milliseconds: -500),
+    Duration(milliseconds: -250),
+    Duration.zero,
+    Duration(milliseconds: 250),
+    Duration(seconds: 1, milliseconds: 500),
+    Duration(seconds: 3),
+    Duration(seconds: 10),
+  ];
+  static const List<double> _examplePlaybackRates = <double>[
+    0.25,
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    3.0,
+    5.0,
+    10.0,
+  ];
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return
+      GetBuilder<HomeController>(
+        builder: (homeController)
+    {
+     return  Stack(
+       children: <Widget>[
+         AnimatedSwitcher(
+           duration:  Duration(milliseconds: 50),
+           reverseDuration:  Duration(milliseconds: 200),
+           child: controller.value.isPlaying
+               ?  SizedBox.shrink()
+               : Container(
+             color: Colors.black26,
+             child:  Center(
+               child: Icon(
+                 homeController.isVideoPlay? Icons.pause:Icons.play_arrow,
+                 color: Colors.white,
+                 size: 100.0,
+                 semanticLabel: 'Play',
+               ),
+             ),
+           ),
+         ),
+         GestureDetector(
+           onTap: () {
+             print("center valuee>>>> ${controller.value.isPlaying }");
+
+             controller.value.isPlaying ? controller.pause() : controller.play();
+
+             homeController.changeVideo(controller.value.isPlaying);
+           },
+         ),
+         Align(
+           alignment: Alignment.topLeft,
+           child: PopupMenuButton<Duration>(
+             initialValue: controller.value.captionOffset,
+             tooltip: 'Caption Offset',
+             onSelected: (Duration delay) {
+               controller.setCaptionOffset(delay);
+             },
+             itemBuilder: (BuildContext context) {
+               return <PopupMenuItem<Duration>>[
+                 for (final Duration offsetDuration in _exampleCaptionOffsets)
+                   PopupMenuItem<Duration>(
+                     value: offsetDuration,
+                     child: Text('${offsetDuration.inMilliseconds}ms'),
+                   )
+               ];
+             },
+             child: Padding(
+               padding: const EdgeInsets.symmetric(
+                 // Using less vertical padding as the text is also longer
+                 // horizontally, so it feels like it would need more spacing
+                 // horizontally (matching the aspect ratio of the video).
+                 vertical: 12,
+                 horizontal: 16,
+               ),
+               child: Text('${controller.value.captionOffset.inMilliseconds}ms'),
+             ),
+           ),
+         ),
+         Align(
+           alignment: Alignment.topRight,
+           child: PopupMenuButton<double>(
+             initialValue: controller.value.playbackSpeed,
+             tooltip: 'Playback speed',
+             onSelected: (double speed) {
+               controller.setPlaybackSpeed(speed);
+             },
+             itemBuilder: (BuildContext context) {
+               return <PopupMenuItem<double>>[
+                 for (final double speed in _examplePlaybackRates)
+                   PopupMenuItem<double>(
+                     value: speed,
+                     child: Text('${speed}x'),
+                   )
+               ];
+             },
+             child: Padding(
+               padding: const EdgeInsets.symmetric(
+                 // Using less vertical padding as the text is also longer
+                 // horizontally, so it feels like it would need more spacing
+                 // horizontally (matching the aspect ratio of the video).
+                 vertical: 12,
+                 horizontal: 16,
+               ),
+               child: Text('${controller.value.playbackSpeed}x'),
+             ),
+           ),
+         ),
+       ],
+     );
+    });
   }
 }

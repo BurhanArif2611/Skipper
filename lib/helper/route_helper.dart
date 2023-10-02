@@ -66,6 +66,7 @@ import '../view/screens/selectcountry/select_country_screen.dart';
 import '../view/screens/survey/survey_questions_screen.dart';
 import '../view/screens/survey/survey_start_screen.dart';
 import '../view/screens/survey/surveys_screen.dart';
+import '../view/screens/webview/webview_screen.dart';
 
 class RouteHelper {
   static const String initial = '/';
@@ -140,6 +141,7 @@ class RouteHelper {
   static const String contactcenterscreen = '/contact_center_screen';
   static const String resourcecenterscreen = '/resource_center_screen';
   static const String securityofficerchatscreen = '/security_officer_chat_screen';
+  static const String webviewscreen = '/webviewscreen';
 
   static String getInitialRoute() => '$initial';
   static String getPersonalProfileRoute() => '$personalprofilescreen';
@@ -151,6 +153,7 @@ class RouteHelper {
   static String getFavoriteScreen() => '$favouritescreen';
   static String getMyprofileScreen() => '$myprofilescreen';
   static String getSurveyScreen() => '$surveyscreen';
+  static String getWebViewScreen(String url) => '$webviewscreen?url=$url';
   static String getReportIncidenceScreen() => '$reportincidencescreen';
   static String getIncidenceDetailScreen(String incidence_id) => '$incidencedetailscreen?incidence_id=$incidence_id';
   static String getTopNewsScreen() => '$topnewsscreen';
@@ -275,6 +278,7 @@ class RouteHelper {
   //  GetPage(name: favouritescreen, page: () => getRoute(FavouriteScreen())),
     GetPage(name: myprofilescreen, page: () => getRoute(MyProfileScreen())),
     GetPage(name: surveyscreen, page: () => getRoute(SurveyScreen())),
+    GetPage(name: webviewscreen, page: () => getRoute(WebviewScreen(url: Get.parameters['url']))),
     GetPage(name: reportincidencescreen, page: () => getRoute(ReportIncidenceScreen())),
     GetPage(name: incidencedetailscreen, page: () => getRoute(IncidenceDetailScreen(incidence_id:Get.parameters['incidence_id']))),
     GetPage(name: topnewsscreen, page: () => getRoute(TopNewsScreen())),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:sixam_mart/controller/location_controller.dart';
@@ -160,8 +161,8 @@ class HomeRepo {
   Future<Response> addReport(ReportIncidenceBody signUpBody) async {
     return await apiClient.postModelData(AppConstants.Incidents_URI, signUpBody);
   }
-  Future<Response> sendSOSAlert(String lat,String long) async {
-    return await apiClient.postData(AppConstants.SENDSOSALERT_URL, {"lat": lat, "long": long});
+  Future<Response> sendSOSAlert(double lat,double long) async {
+    return await apiClient.postData(AppConstants.SENDSOSALERT_URL, {"lat": lat.toString(), "long": long.toString()});
   }
   Future<Response> submitSurveyResultu(NewsSubmitBody signUpBody) async {
     return await apiClient.postResultData(AppConstants.SubmitSurveys_URI, signUpBody);

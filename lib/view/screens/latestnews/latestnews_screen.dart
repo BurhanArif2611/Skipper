@@ -82,7 +82,7 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                                   fontSize: Dimensions.fontSizeLarge))),
                       Expanded(
                           flex: 1,
-                          child: Text(
+                          child:Text("") /*Text(
                             "See More",
                             textAlign: TextAlign.right,
                             style: TextStyle(
@@ -90,10 +90,10 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                               decorationColor: Colors.grey,
                               // Optional: Set the color of the underline
                               decorationThickness: 2.0,
-                              /*decorationPadding: EdgeInsets.only(bottom: 5.0),*/
+                              *//*decorationPadding: EdgeInsets.only(bottom: 5.0),*//*
                               // Optional: Set the thickness of the underline
                             ),
-                          )),
+                          )*/),
                     ],
                   ),
                   SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
@@ -222,7 +222,7 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                     children: [
                       Expanded(
                           flex: 1,
-                          child: Text("Todays Top News",
+                          child: Text("Top News",
                               style: robotoBold.copyWith(
                                   color: Theme
                                       .of(context)
@@ -450,7 +450,11 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                                       SizedBox(
                                           width: Dimensions
                                               .PADDING_SIZE_EXTRA_SMALL),
-                                      Text("21 Dec 2021 ",
+                                      Text( DateConverter.getDate(onBoardingController
+                                          .newsListModel
+                                          .data
+                                          .docs[index]
+                                          .createdAt),
                                           style: robotoMedium.copyWith(
                                               color: Theme
                                                   .of(context)
@@ -465,7 +469,11 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
                                           width: Dimensions
                                               .PADDING_SIZE_EXTRA_SMALL),
                                       Text(
-                                        "3:51 am",
+                                        DateConverter.getTime(onBoardingController
+                                            .newsListModel
+                                            .data
+                                            .docs[index]
+                                            .createdAt),
                                         textAlign: TextAlign.right,
                                       ),
                                     ],

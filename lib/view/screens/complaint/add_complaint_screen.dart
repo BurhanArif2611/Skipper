@@ -1,4 +1,5 @@
 import 'package:flutter_svg/svg.dart';
+import 'package:sixam_mart/controller/home_controller.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
 
@@ -8,6 +9,7 @@ import 'package:get/get.dart';
 
 import '../../../controller/complaint_controller.dart';
 import '../../../helper/responsive_helper.dart';
+import '../../../helper/route_helper.dart';
 import '../../../util/images.dart';
 import '../../base/custom_button.dart';
 import '../../base/custom_snackbar.dart';
@@ -30,7 +32,7 @@ class _AddComplaintScreenState extends State<AddComplaintScreen> {
     'Ballot Snatching',
     'Others'
   ];
-  String selectedItem = 'Thugs';
+  String complaint_id = '';
 
   void _loadData() async {
     Get.find<ComplaintController>().clearAllData();
@@ -89,7 +91,7 @@ class _AddComplaintScreenState extends State<AddComplaintScreen> {
                               )),
                           SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                           SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-                          Container(
+                         /* Container(
                             width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.all(
                                 Dimensions.PADDING_SIZE_EXTRA_LARGE_SMALL),
@@ -140,7 +142,57 @@ class _AddComplaintScreenState extends State<AddComplaintScreen> {
                               },
                             ),
                           ),
-                          SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                          SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),*/
+
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Select Category",
+                              style: robotoRegular.copyWith(
+                                  color: Theme.of(context).hintColor),
+                            ),
+                          ),
+                          SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                         GetBuilder<HomeController>(builder: (homecontroller) {
+                        complaint_id=homecontroller.complaint_id;
+                           return
+                        InkWell(
+                              onTap: () {
+                               /* Get.toNamed(
+                                    RouteHelper.getSelectCountryRoute("ward"));*/
+                                Get.toNamed(
+                                    RouteHelper.getSelectCategoryRoute("ComplaintCategory"));
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.all(
+                                    Dimensions.PADDING_SIZE_SEMI_LARGE),
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                                    border: Border.all(
+                                        width: 0.4,
+                                        color: Theme.of(context).hintColor),
+                                    color: Theme.of(context).cardColor),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                        width: Dimensions.PADDING_SIZE_DEFAULT),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                            homecontroller.complaint_name != ""
+                                                ? homecontroller.complaint_name
+                                                : "Complaint category",
+                                            style: robotoRegular)),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Icon(Icons.keyboard_arrow_right))
+                                  ],
+                                ),
+                              ));
+                         }),
+                          SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                           TextField(
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
@@ -312,13 +364,13 @@ class _AddComplaintScreenState extends State<AddComplaintScreen> {
     if (_firstName.isEmpty) {
       showCustomSnackBar('Enter description'.tr);
     }
-    /*else if (!_isValid) {
-      showCustomSnackBar('invalid_phone_number'.tr);
-    }*/
+    else if (complaint_id.isEmpty && complaint_id=='') {
+      showCustomSnackBar('select category'.tr);
+    }
     else {
 
 
-       homeController.addCompliant(_firstName,"64acfd005476cd3a0d58f5d1").then((status) async {
+       homeController.addCompliant(_firstName,complaint_id).then((status) async {
         print("ldkfjkdljfkdjf");
         if (status.statusCode == 200) {
           print("addReport>>>>>>>${status.body["message"]}");

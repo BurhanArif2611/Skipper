@@ -37,9 +37,10 @@ class _SurveyQuestionsScreenState extends State<SurveyQuestionsScreen> {
   final ScrollController _scrollController = ScrollController();
   final PageController _pageController = PageController();
   final ScrollController scrollController = ScrollController();
-  int PaginationIndex;
+  int PaginationIndex=0;
 
   void _loadData() async {
+    await Get.find<HomeController>().clearAllData();
     await Get.find<HomeController>().getSurveysDetail(widget.data.sId);
   }
 
@@ -287,7 +288,7 @@ class _SurveyQuestionsScreenState extends State<SurveyQuestionsScreen> {
                                                   },
                                                   onPageChanged: (index) {
                                                     onBoardingController
-                                                        .changeSelectIndex(
+                                                        .changeQuestionTabSelectIndex(
                                                             index);
                                                   },
                                                 )),
@@ -308,8 +309,11 @@ class _SurveyQuestionsScreenState extends State<SurveyQuestionsScreen> {
                                                     child: InkWell(
                                                         onTap:
                                                             () {_scrollPrevious();},
-                                                        child: SvgPicture.asset(
-                                                            Images.left_previous))),
+                                                        child: PaginationIndex!=0?
+                                                        SvgPicture.asset(
+                                                            Images.left_previous):SizedBox()
+
+                                                    )),
                                                 SizedBox(
                                                     width: Dimensions
                                                         .PADDING_SIZE_DEFAULT),
@@ -345,6 +349,8 @@ class _SurveyQuestionsScreenState extends State<SurveyQuestionsScreen> {
                                                                      isError: true);
                                                                }
                                                          });
+                                                       }else {
+                                                         _scrollNext();
                                                        }
                                                           },
                                                         child:
@@ -419,7 +425,7 @@ class _SurveyQuestionsScreenState extends State<SurveyQuestionsScreen> {
   List<Widget> _pageIndicators(
       HomeController onBoardingController, BuildContext context) {
     List<Container> _indicators = [];
-
+print("object>>>>  ${onBoardingController.selectedQuestionIndex}");
     for (int i = 0;
         i < onBoardingController.surveyDetailModel.data.surveyQuestions.length;
         i++) {
@@ -429,10 +435,10 @@ class _SurveyQuestionsScreenState extends State<SurveyQuestionsScreen> {
           height: 10,
           margin: EdgeInsets.only(right: 10),
           decoration: BoxDecoration(
-            color: i == onBoardingController.selectedIndex
+            color: i == onBoardingController.selectedQuestionIndex
                 ? Theme.of(context).primaryColor
                 : Theme.of(context).disabledColor,
-            borderRadius: i == onBoardingController.selectedIndex
+            borderRadius: i == onBoardingController.selectedQuestionIndex
                 ? BorderRadius.circular(50)
                 : BorderRadius.circular(25),
           ),

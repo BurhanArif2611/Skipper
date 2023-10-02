@@ -94,7 +94,8 @@ class _SurveyStartScreenState extends State<SurveyStartScreen> {
                             SizedBox(
                                 height: Dimensions.PADDING_SIZE_LARGE),
                             Text(
-                              "In publishing and graphic design, Lorem ipsum is a placeholder text commonly.",
+                              widget.data.description!=null?widget.data.description:"Let's Start",
+
                               style: robotoRegular.copyWith(
                                   fontSize: Dimensions
                                       .fontSizeDefault ,

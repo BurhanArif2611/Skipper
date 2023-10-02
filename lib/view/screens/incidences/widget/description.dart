@@ -51,9 +51,7 @@ class Description extends StatelessWidget {
                                   width: 0.3,
                                   color: Theme.of(context).hintColor),
                               color: Theme.of(context).cardColor),
-                          child:
-
-                          Stack(
+                          child: Stack(
                             children: [
                               Column(
                                 children: [
@@ -64,9 +62,6 @@ class Description extends StatelessWidget {
                                         _player.stopPlayer();
                                       } else {
                                         // playAudio(homeController.uploadedAudioURL[index].toString());
-
-
-
 
                                         try {
                                           if (_player.isPlaying) {

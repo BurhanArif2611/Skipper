@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
+import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/cart_widget.dart';
 import 'package:sixam_mart/view/screens/dashboard/widget/bottom_nav_item.dart';
 import 'package:sixam_mart/view/screens/home/home_screen.dart';
@@ -12,16 +14,23 @@ import 'package:sixam_mart/view/screens/notification/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/auth_controller.dart';
 import '../../../controller/banner_controller.dart';
 import '../../../controller/dashboard_controller.dart';
 import '../../../controller/store_controller.dart';
 import '../../../data/model/response/module_model.dart';
+import '../../../helper/route_helper.dart';
 import '../../../util/app_constants.dart';
 import '../../../util/images.dart';
+import '../../base/inner_custom_app_bar.dart';
+import '../addmembers/add_newmember.dart';
 import '../incidences/incidences_screen.dart';
 import '../latestnews/latestnews_screen.dart';
+import '../member/member_search_screen.dart';
 import '../more/more_main_screen.dart';
 import '../myprofile/myprofile_screen.dart';
+import '../polling/polling_survey_screen.dart';
+import '../setting/setting_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   final int pageIndex;
@@ -30,19 +39,26 @@ class DashboardScreen extends StatefulWidget {
 
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
-
-
 }
-
-
 
 class _DashboardScreenState extends State<DashboardScreen> {
 //  static PageController _pageController;
   int _pageIndex = 0;
+  String toolbar_name="Home";
   List<Widget> _screens;
-  GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey();
+
+  // GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey();
   bool _canExit = GetPlatform.isWeb ? true : false;
   bool eccorance = false;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _openDrawer() {
+    print("_openDrawer click");
+    scaffoldKey.currentState.openDrawer();
+  }
+  void _loadData() async {
+    Get.find<AuthController>().clearData();
+  }
 
   @override
   void initState() {
@@ -50,7 +66,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     _pageIndex = widget.pageIndex;
 
-  //  _pageController = PageController(initialPage: widget.pageIndex);
+    //  _pageController = PageController(initialPage: widget.pageIndex);
     if (Get.find<StoreController>().store != null &&
         Get.find<StoreController>().store.ecommerce == 1) {
       eccorance = true;
@@ -60,8 +76,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     _screens = [
       HomeScreen(),
-      IncidencesScreen(),
-      LatestNewsScreen(),
+      MemberSearchScreen(),
+      PollingSurveyScreen(),
       MoreMainScreen(),
       Container(),
     ];
@@ -80,19 +96,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
       eccorance = true;
       _screens = [
         HomeScreen(),
-        IncidencesScreen(),
-        LatestNewsScreen(),
-        MoreMainScreen(),
-       // MyProfileScreen(),
+        MemberSearchScreen(),
+        PollingSurveyScreen(),
+        SettingScreen(),
+        AddNewMembers(),
+        // MyProfileScreen(),
       ];
     } else {
       eccorance = false;
       _screens = [
         HomeScreen(),
-        IncidencesScreen(),
-        LatestNewsScreen(),
-        MoreMainScreen(),
-       // MyProfileScreen(),
+        MemberSearchScreen(),
+        PollingSurveyScreen(),
+        SettingScreen(),
+        AddNewMembers(),
+        // MyProfileScreen(),
       ];
     }
 
@@ -148,15 +166,289 @@ class _DashboardScreenState extends State<DashboardScreen> {
         }
       },
       child: Scaffold(
-        key: _scaffoldKey,
+        drawerEnableOpenDragGesture: false,
+        key: scaffoldKey,
+        appBar: InnerCustomAppBar(
+            title: toolbar_name,
+            leadingIcon: Images.menu_drawer_png,
+            backButton: !ResponsiveHelper.isDesktop(context),
+            onBackPressed: () {
+              _openDrawer();
+            }),
+        drawer: Drawer(
+            child: Container(
+          child: ListView(
+            // Important: Remove any padding from the ListView.
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(),
+                child: Container(
+                    alignment: Alignment.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          Images.logo,
+                          width: 100,
+                          height: 100,
+                        ),
+                      ],
+                    )),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: Dimensions.PADDING_SIZE_DEFAULT),
+                child: Text(
+                  "General",
+                  style: robotoBold.copyWith(
+                      color: Theme.of(context).hintColor.withOpacity(0.5),
+                      fontSize: Dimensions.fontSizeLarge),
+                ),
+              ),
+              SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+              ListTile(
+                title: Container(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(Images.notification),
+                      SizedBox(
+                        width: Dimensions.PADDING_SIZE_SMALL,
+                      ),
+                      Text(
+                        'Notification',
+                        style: robotoBold.copyWith(
+                            color: Theme.of(context).hintColor,
+                            fontSize: Dimensions.fontSizeLarge),
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+              Padding(
+                  padding:
+                      EdgeInsets.only(left: Dimensions.PADDING_SIZE_DEFAULT),
+                  child: Divider(
+                    thickness: 1,
+                  )),
+              SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+              ListTile(
+                title: Container(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(Images.languge),
+                      SizedBox(
+                        width: Dimensions.PADDING_SIZE_SMALL,
+                      ),
+                      Text(
+                        'Languages',
+                        style: robotoBold.copyWith(
+                            color: Theme.of(context).hintColor,
+                            fontSize: Dimensions.fontSizeLarge),
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+              Padding(
+                  padding:
+                      EdgeInsets.only(left: Dimensions.PADDING_SIZE_DEFAULT),
+                  child: Divider(
+                    thickness: 1,
+                  )),
+              SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+              ListTile(
+                title: Container(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(Images.help_support),
+                      SizedBox(
+                        width: Dimensions.PADDING_SIZE_SMALL,
+                      ),
+                      Text(
+                        'Help and Support',
+                        style: robotoBold.copyWith(
+                            color: Theme.of(context).hintColor,
+                            fontSize: Dimensions.fontSizeLarge),
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+              Padding(
+                  padding:
+                      EdgeInsets.only(left: Dimensions.PADDING_SIZE_DEFAULT),
+                  child: Divider(
+                    thickness: 1,
+                  )),
+              SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+              ListTile(
+                title: Container(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(Images.share_app),
+                      SizedBox(
+                        width: Dimensions.PADDING_SIZE_SMALL,
+                      ),
+                      Text(
+                        'Share App',
+                        style: robotoBold.copyWith(
+                            color: Theme.of(context).hintColor,
+                            fontSize: Dimensions.fontSizeLarge),
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+              Padding(
+                  padding:
+                      EdgeInsets.only(left: Dimensions.PADDING_SIZE_DEFAULT),
+                  child: Divider(
+                    thickness: 1,
+                  )),
+          SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+
+
+            ListTile(
+                title:  InkWell(
+                  onTap: () {
+                    Get.toNamed(RouteHelper.getWebViewScreen("https://partilespatriotes.org/nos-documents-fondamentaux/"));
+                  },
+                  child:
+                Container(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(Images.share_app),
+                      SizedBox(
+                        width: Dimensions.PADDING_SIZE_SMALL,
+                      ),
+                      Text(
+                        'Our fundamental documents',
+                        style: robotoBold.copyWith(
+                            color: Theme.of(context).hintColor,
+                            fontSize: Dimensions.fontSizeLarge),
+                      )
+                    ],
+                  ),
+                )),
+
+              ),
+              Padding(
+                  padding:
+                      EdgeInsets.only(left: Dimensions.PADDING_SIZE_DEFAULT),
+                  child: Divider(
+                    thickness: 1,
+                  )),
+
+              SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+              ListTile(
+                    title:   InkWell(
+                      onTap: () {
+                        Get.toNamed(RouteHelper.getWebViewScreen("https://partilespatriotes.org/notre-organisation-et-fonctionnement/"));
+                      },
+                      child:
+                    Container(
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(Images.share_app),
+                          SizedBox(
+                            width: Dimensions.PADDING_SIZE_SMALL,
+                          ),
+                          Text(
+                            'Organization and operation',
+                            style: robotoBold.copyWith(
+                                color: Theme.of(context).hintColor,
+                                fontSize: Dimensions.fontSizeLarge),
+                          )
+                        ],
+                      ),
+                    )),
+                    onTap: () {
+                      // Update the state of the app.
+                      // ...
+                    },
+                  ),
+              Padding(
+                  padding:
+                  EdgeInsets.only(left: Dimensions.PADDING_SIZE_DEFAULT),
+                  child: Divider(
+                    thickness: 1,
+                  )),
+            
+              SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+              ListTile(
+                title: Container(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(Images.rate_us),
+                      SizedBox(
+                        width: Dimensions.PADDING_SIZE_SMALL,
+                      ),
+                      Text(
+                        'Rate App',
+                        style: robotoBold.copyWith(
+                            color: Theme.of(context).hintColor,
+                            fontSize: Dimensions.fontSizeLarge),
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+              Padding(
+                  padding:
+                      EdgeInsets.only(left: Dimensions.PADDING_SIZE_DEFAULT),
+                  child: Divider(
+                    thickness: 1,
+                  )),
+            ],
+          ),
+        ) // Populate the Drawer in the next step.
+            ),
+        floatingActionButton: ResponsiveHelper.isDesktop(context)
+            ? null
+            : FloatingActionButton(
+                elevation: 5,
+                backgroundColor: Theme.of(context)
+                    .primaryColor /*_pageIndex == 2
+              ? Theme.of(context).primaryColor
+              : Theme.of(context).cardColor*/
+                ,
+                onPressed: () => _setPage(4),
+                child: CartWidget(
+                    color: Theme.of(context)
+                        .cardColor /*_pageIndex == 2
+                  ? Theme.of(context).cardColor
+                  : Theme.of(context).disabledColor*/
+                    ,
+                    size: 30),
+              ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: ResponsiveHelper.isDesktop(context)
             ? SizedBox()
             : GetBuilder<DashboardController>(builder: (cartController) {
                 if (cartController.currentIndex != null &&
                     cartController.currentIndex != 0 &&
-
                     _pageIndex != null) {
-                 // _pageController.jumpToPage(cartController.currentIndex);
+                  // _pageController.jumpToPage(cartController.currentIndex);
                   //_setPage(cartController.currentIndex);
                 }
                 return BottomAppBar(
@@ -183,14 +475,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               isSelected: cartController.currentIndex == 1,
                               onTap: () => {_setPage(1)},
                               countVisible: true,
-                              title: "Incidences",
+                              title: "Members",
                               ImagePath: Images.incidences),
+                          Expanded(child: SizedBox()),
                           BottomNavItem(
                               iconData: Icons.shopping_bag,
                               isSelected: cartController.currentIndex == 2,
                               onTap: () => _setPage(2),
                               countVisible: false,
-                              title: "Latest News",
+                              title: "Poll Events",
                               ImagePath: Images.latests_news),
                           BottomNavItem(
                               iconData: Icons.menu,
@@ -202,7 +495,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 isScrollControlled: true);*/
                               },
                               countVisible: false,
-                              title: "More",
+                              title: "Profile",
                               ImagePath: Images.more),
                         ]),
                       )),
@@ -224,9 +517,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   _setPage(int pageIndex) {
     try {
+      _loadData();
       setState(() {
-       // _pageController.jumpToPage(pageIndex);
+        // _pageController.jumpToPage(pageIndex);
         _pageIndex = pageIndex;
+        if(pageIndex==0){
+          toolbar_name="Home";
+        }if(pageIndex==1){
+          toolbar_name="Who are we";
+        }if(pageIndex==2){
+          toolbar_name="Polling Events";
+        }if(pageIndex==3){
+          toolbar_name="Notification";
+        }if(pageIndex==4){
+          toolbar_name="Add New Member";
+        }
       });
       print("if >>>${_pageIndex.toString()}");
       Get.find<DashboardController>().changeIndex(pageIndex);

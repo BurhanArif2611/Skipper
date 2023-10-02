@@ -16,6 +16,7 @@ class Images {
   static const String restaurant_marker = 'assets/image/restaurant_marker.png';
   static const String delivery_man_marker = 'assets/image/delivery_man_marker.png';
   static const String user = 'assets/image/user.png';
+  static const String id_card = 'assets/image/id_card.png';
   static const String about_us = 'assets/image/about_us.png';
   static const String coupon = 'assets/image/coupon.png';
   static const String coupon_bg = 'assets/image/coupon_bg.png';
@@ -39,6 +40,8 @@ class Images {
   static const String delivery_location = 'assets/image/delivery_location.png';
   static const String forgot = 'assets/image/forgot.png';
   static const String pick_marker = 'assets/image/pick_marker.png';
+  static const String address = 'assets/image/address.png';
+  static const String region = 'assets/image/region.png';
   static const String house = 'assets/image/house.png';
   static const String tracking = 'assets/image/tracking.png';
   static const String my_location_marker = 'assets/image/my_location_marker.png';
@@ -74,6 +77,7 @@ class Images {
   static const String sender = 'assets/image/sender.png';
   static const String wallet = 'assets/image/wallet.png';
   static const String loyal = 'assets/image/loyal.png';
+  static const String back_arrow = 'assets/image/back_arrow.png';
   static const String refer_image = 'assets/image/refer_a_friend.png';
   static const String earn_money = 'assets/image/earn_money.png';
   static const String refer_code = 'assets/image/refer_code.png';
@@ -83,7 +87,6 @@ class Images {
   static const String parcel_marker = 'assets/image/parcel_marker.png';
   static const String task_marker = 'assets/image/task_marker.png';
   static const String arrow_right = 'assets/image/arrow-right.png';
-
 
   static const String apple = 'assets/image/apple.png';
   static const String line = 'assets/image/line.png';
@@ -127,4 +130,11 @@ class Images {
   static const String batch = 'assets/image/batch.svg';
   static const String send_chat = 'assets/image/send_chat.svg';
   static const String circle_user = 'assets/image/circle_user.svg';
+  static const String menu_drawer = 'assets/image/menu_drawer.svg';
+  static const String notification = 'assets/image/notification.svg';
+  static const String languge = 'assets/image/languge.svg';
+  static const String help_support = 'assets/image/help_support.svg';
+  static const String share_app = 'assets/image/share_app.svg';
+  static const String rate_us = 'assets/image/rate_us.svg';
+  static const String menu_drawer_png = 'assets/image/menu_drawer.png';
 }

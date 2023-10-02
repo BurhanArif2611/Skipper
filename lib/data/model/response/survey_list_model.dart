@@ -78,6 +78,7 @@ class Docs {
 class PendingSurvey {
   String sId;
   String title;
+  String description;
   String updatedAt;
   String createdAt;
   int iV;
@@ -87,6 +88,7 @@ class PendingSurvey {
   PendingSurvey(
       {this.sId,
         this.title,
+        this.description,
         this.updatedAt,
         this.createdAt,
         this.iV,
@@ -101,12 +103,14 @@ class PendingSurvey {
     iV = json['__v'];
     isSubmitted = json['isSubmitted'];
     isActive = json['isActive'];
+    description = json['description']!=null? json['description']:"";
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['title'] = this.title;
+    data['description'] = this.description;
     data['updatedAt'] = this.updatedAt;
     data['createdAt'] = this.createdAt;
     data['__v'] = this.iV;

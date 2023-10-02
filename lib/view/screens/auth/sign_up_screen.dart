@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:country_code_picker/country_code.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/model/body/signup_body.dart';
@@ -22,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phone_number/phone_number.dart';
 
+import '../../../controller/home_controller.dart';
 import '../../base/custom_app_bar.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -42,6 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final FocusNode _confirmPasswordFocus = FocusNode();
   final FocusNode _referCodeFocus = FocusNode();
   final FocusNode _annoymousNameFocus = FocusNode();
+  final FocusNode _securityIdFocus = FocusNode();
 
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -51,6 +54,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final TextEditingController _anonymousController = TextEditingController();
+  final TextEditingController _securityIDController = TextEditingController();
   String _countryDialCode;
 
   @override
@@ -311,6 +315,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   : null,
                         ),
                         SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+
                         CustomTextField(
                           hintText: 'Anonymous Name'.tr,
                           controller: _anonymousController,
@@ -321,6 +326,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           inputAction: TextInputAction.done,
                           divider: false,
                         ),
+                        SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                        (authController.forUser?
+                        Column(children: [
+
+
+                        CustomTextField(
+                          hintText: 'Security id number'.tr,
+                          controller: _securityIDController,
+                          focusNode: _securityIdFocus,
+                          inputType: TextInputType.name,
+                          capitalization: TextCapitalization.words,
+                          prefixIcon: Images.latests_news,
+                          inputAction: TextInputAction.done,
+                          divider: false,
+                        ),
+                        SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Upload ID Card",
+                              style: robotoBold.copyWith(
+                                  color: Theme.of(context).hintColor.withOpacity(0.5),fontSize: Dimensions.fontSizeDefault),
+                            )),
+                        InkWell(
+                            onTap: () {
+                              openSelectImage(authController);
+                            },
+                            child: Container(
+                              height: 200,
+                              child: authController.rawFile != null
+                                  ? Image.memory(
+                                authController.rawFile,
+                                fit: BoxFit.fitWidth,
+                              )
+
+                                  :
+                              Image.asset(
+                                Images.upload_photo_document,
+                                fit: BoxFit.fill,
+                                width:
+                                MediaQuery.of(context).size.width,
+                              ),
+                            )),
+
+                        ],):SizedBox()),
                       ]),
                     ),
                     SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
@@ -360,7 +410,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               RouteHelper.getSignInRoute(RouteHelper.signUp));
                         },
                         child: Text(
-                          ' Sign Up'.tr,
+                          ' Sign In'.tr,
                           textAlign: TextAlign.center,
                           style: robotoBold.copyWith(
                             color: Theme.of(context).hintColor,
@@ -392,6 +442,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     String _password = _passwordController.text.trim();
     String _confirmPassword = _confirmPasswordController.text.trim();
     String _anonymous = _anonymousController.text.trim();
+    String _securityID = _securityIDController.text.trim();
     print("authController.forUser>>>>>> ${authController.forUser}");
 
     if (_firstName.isEmpty) {
@@ -404,6 +455,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       showCustomSnackBar('enter_a_valid_email_address'.tr);
     } else if (_number.isEmpty) {
       showCustomSnackBar('enter_phone_number'.tr);
+    }else if (authController.forUser && _securityID.isEmpty) {
+      showCustomSnackBar('enter security id number'.tr);
     }
     /*else if (!_isValid) {
       showCustomSnackBar('invalid_phone_number'.tr);
@@ -416,7 +469,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       showCustomSnackBar('confirm_password_does_not_matched'.tr);
     } else if (_anonymous.isEmpty) {
       showCustomSnackBar('Enter valid anonymous'.tr);
-    } else {
+    }
+    else if (authController.forUser && authController.uploadedURL.isEmpty &&  authController.uploadedURL=="") {
+      showCustomSnackBar('select security id photo'.tr);
+    }
+    else {
       SignUpBody signUpBody = SignUpBody(
           fName: _firstName,
           lName: _lastName,
@@ -425,7 +482,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           password: _password,
           refCode: _anonymous,
           scope: authController.forUser ? "6" : null,
-          role: authController.forUser ? "6" : null);
+          role: authController.forUser ? "6" : null,
+      security_card_id:_securityID ,
+      security_card_image: authController.uploadedURL);
       authController.registration(signUpBody).then((status) async {
         if (status.statusCode == 200) {
           Get.toNamed(RouteHelper.getSignInRoute(RouteHelper.signUp));
@@ -434,5 +493,114 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }
       });
     }
+  }
+
+
+  void openSelectImage(AuthController homeController) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+              height: 260,
+              padding: EdgeInsets.all(
+                Dimensions.RADIUS_SMALL,
+              ),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20)),
+                  border:
+                  Border.all(width: 1, color: Theme.of(context).cardColor),
+                  color: Theme.of(context).cardColor),
+              // Set the desired height of the bottom sheet
+              child: Column(
+                children: [
+                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                  Center(
+                    child: SvgPicture.asset(Images.bottom_sheet_line,color: Theme.of(context).primaryColor,),
+                  ),
+                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text('Choose For Attach File '.tr,
+                        textAlign: TextAlign.center,
+                        style: robotoBold.copyWith(
+                          color: Theme.of(context).hintColor,
+                          fontSize: Dimensions.fontSizeExtraLarge,
+                        )),
+                  ),
+                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                    margin: EdgeInsets.all(
+                      Dimensions.RADIUS_SMALL,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(
+                          width: 1, color: Theme.of(context).disabledColor),
+                      color: Colors.transparent,
+                    ),
+                    child: InkWell(
+                        onTap: () {
+                          homeController.pickImage();
+                          Get.back();
+                        },
+                        child: Row(children: [
+                          SizedBox(width: 10),
+                          SvgPicture.asset(Images.gallery_image,color: Theme.of(context).primaryColor),
+                          Expanded(
+                            child: Text('Choose picture of gallery'.tr,
+                                textAlign: TextAlign.center,
+                                style: robotoBold.copyWith(
+                                  color: Theme.of(context).hintColor,
+                                  fontSize: Dimensions.fontSizeLarge,
+                                )),
+                          ),
+                          Image.asset(Images.arrow_right_normal,
+                              height: 10, fit: BoxFit.contain),
+                          SizedBox(width: 10),
+                        ])),
+                  ),
+                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                    margin: EdgeInsets.all(
+                      Dimensions.RADIUS_SMALL,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(
+                          width: 1, color: Theme.of(context).disabledColor),
+                      color: Colors.transparent,
+                    ),
+                    child: InkWell(
+                        onTap: () {
+                          homeController.pickCameraImage();
+                          Get.back();
+                        },
+                        child: Row(children: [
+                          SizedBox(width: 10),
+                          SvgPicture.asset(Images.take_photo,color: Theme.of(context).primaryColor),
+                          Expanded(
+                            child: Text('Take a photo'.tr,
+                                textAlign: TextAlign.center,
+                                style: robotoBold.copyWith(
+                                  color: Theme.of(context).hintColor,
+                                  fontSize: Dimensions.fontSizeLarge,
+                                )),
+                          ),
+                          Image.asset(Images.arrow_right_normal,
+                              height: 10, fit: BoxFit.contain),
+                          SizedBox(width: 10),
+                        ])),
+                  ),
+                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+                ],
+              ));
+        },
+        backgroundColor: Colors.transparent);
   }
 }

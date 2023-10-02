@@ -13,7 +13,7 @@ class CartWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(clipBehavior: Clip.none, children: [
       Icon(
-        Icons.delivery_dining, size: size,
+        Icons.add, size: size,
         color: color,
       ),
       /*GetBuilder<CartController>(builder: (cartController) {

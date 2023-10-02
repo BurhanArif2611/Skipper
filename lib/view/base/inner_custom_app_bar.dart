@@ -18,6 +18,7 @@ class InnerCustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return ResponsiveHelper.isDesktop(context) ? WebMenuBar() : AppBar(
+      automaticallyImplyLeading: false,
       title: Text(title, style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).cardColor)),
       centerTitle: true,
       leading: backButton ? IconButton(

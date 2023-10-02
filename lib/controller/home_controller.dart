@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
@@ -66,6 +67,13 @@ class HomeController extends GetxController implements GetxService {
   String _category_id = "";
 
   String get category_id => _category_id;
+
+  String _complaint_id = "";
+
+  String get complaint_id => _complaint_id;
+  String _complaint_name = "";
+
+  String get complaint_name => _complaint_name;
 
   String _category_name = "";
 
@@ -142,17 +150,19 @@ class HomeController extends GetxController implements GetxService {
 
   int get timerCount => _timerCount;
 
+  int _selectedQuestionIndex = 0;
+
+  int get selectedQuestionIndex => _selectedQuestionIndex;
+
   XFile _pickedFile;
   Uint8List _rawFile;
 
   XFile get pickedFile => _pickedFile;
 
   Uint8List get rawFile => _rawFile;
-
   List<Uint8List> _raw_arrayList = [];
 
   List get raw_arrayList => _raw_arrayList;
-
   List<CountryListModel> _countryList;
 
   List<CountryListModel> get countryList => _countryList;
@@ -174,6 +184,10 @@ class HomeController extends GetxController implements GetxService {
 
   List<String> get uploadedAudioURL => _uploadedAudioURL;
 
+  List<String> _uploadedVideoURL = [];
+
+  List<String> get uploadedVideoURL => _uploadedVideoURL;
+
   CommentListModel _commentList;
 
   CommentListModel get commentList => _commentList;
@@ -182,15 +196,20 @@ class HomeController extends GetxController implements GetxService {
 
   CommentListModel get securitycommentList => _securitycommentList;
 
-  List<String> items = <String>[
-    'Thugs',
-    'Flight',
-    'Ballot Snatching',
-    'Others'
-  ];
+  bool _isVideoPlay = false;
 
+  bool get isVideoPlay => _isVideoPlay;
+
+  void changeVideo(bool index) {
+    _isVideoPlay = index;
+    update();
+  }
   void changeSelectIndex(int index) {
     _selectedIndex = index;
+    update();
+  }
+  void changeQuestionTabSelectIndex(int index) {
+    _selectedQuestionIndex = index;
     update();
   }
 
@@ -217,13 +236,18 @@ class HomeController extends GetxController implements GetxService {
       _securitycommentList = null;
       _raw_arrayList = [];
       _uploadedAudioURL = [];
+      _selectedOptionIdList = [];
       _rawFile = null;
       _uploadedURL = [];
+      _uploadedVideoURL = [];
       _state_name = "";
       _lga_name = "";
       _ward_name = "";
       _category_name = "";
       _category_id = "";
+      _complaint_name = "";
+      _complaint_id = "";
+      _selectedQuestionIndex = 0;
       update();
     } catch (e) {}
   }
@@ -375,7 +399,9 @@ class HomeController extends GetxController implements GetxService {
     }
   }
 
-  Future<Response> sendSOSAlert(String Lat, String Longi) async {
+  Future<Response> sendSOSAlert(double Lat, double Longi) async {
+    print("Lat >>>${Lat}");
+    print("Longi >>>${Longi}");
     Response response = await homeRepo.sendSOSAlert(Lat, Longi);
     if (response.statusCode == 200) {
       update();
@@ -617,6 +643,29 @@ class HomeController extends GetxController implements GetxService {
     update();
   }
 
+  void pickVideoFile() async {
+    Random random = Random();
+    XFile _pickedFile = await ImagePicker().pickVideo(source: ImageSource.gallery);
+    print("_pickedFile>>video>>" + _pickedFile.path.toString());
+    if (_pickedFile != null) {
+      /*_pickedFile = await NetworkInfo.compressVideo(_pickedFile).then((value) async {
+        print("pickImage>>video>>" + value.path);
+         print("pickImage>>video>>" + value.path);
+        _rawFile = await _pickedFile.readAsBytes();
+        print("pickImage>>video>>" + _pickedFile.path.toString());
+        print("pickImage video>>>" + _rawFile.toString());
+        _raw_arrayList.add(_rawFile);
+        File file1 = new File(value.path);
+        // homeRepo.sendFile(file1);
+        uploadImage(file1, 101, random.nextInt(1000).toString() + ".mp4");
+      });*/
+      File file1 = new File(_pickedFile.path);
+      uploadImage(file1, 101, random.nextInt(1000).toString() + ".mp4");
+      //print("dlfjdljfdjfkdjf>>${response.statusCode}");
+    }
+    update();
+  }
+
   void removeSelectedImage(int Index) {
     try {
       _raw_arrayList.removeAt(Index);
@@ -631,6 +680,14 @@ class HomeController extends GetxController implements GetxService {
     try {
       _uploadedAudioURL.removeAt(Index);
       print(">>>>>>>${_uploadedAudioURL.length.toString()}");
+      update();
+    } catch (e) {
+      print(">>>>>>>${e.toString()}");
+    }
+  } void removeSelectedVideoURL(int Index) {
+    try {
+      _uploadedVideoURL.removeAt(Index);
+      print(">>>>>>>${_uploadedVideoURL.length.toString()}");
       update();
     } catch (e) {
       print(">>>>>>>${e.toString()}");
@@ -653,6 +710,17 @@ class HomeController extends GetxController implements GetxService {
     try {
       _category_id = categoryID;
       _category_name = categoryName;
+      print(">>>>>>>${_state_id}");
+      update();
+      Get.back();
+
+    } catch (e) {
+      print(">>>>>>>${e.toString()}");
+    }
+  } void selectCamplianModel(String categoryID, String categoryName) {
+    try {
+      _complaint_id = categoryID;
+      _complaint_name = categoryName;
       print(">>>>>>>${_state_id}");
       update();
       Get.back();
@@ -741,13 +809,18 @@ class HomeController extends GetxController implements GetxService {
             _uploadedAudioURL.add(uri);
             print(
                 "object>>>_uploadedAudioURL>>>${_uploadedAudioURL.length.toString()}");
+          }else if (uri.toLowerCase().contains(".mp4".toLowerCase())) {
+
+            _uploadedVideoURL.add(uri);
+            print(
+                "object>>>_uploadedAudioURL>>>${_uploadedVideoURL.length.toString()}");
           } else {
             _uploadedURL.add(uri);
             print("object>>>>>>${_uploadedURL.length.toString()}");
           }
         });
 
-        print("object>>>>>>${result.toString()}");
+
       } catch (e) {
         print("Failed <><><>:'${e.message}'.");
       }
@@ -760,6 +833,8 @@ class HomeController extends GetxController implements GetxService {
   List<Answers> _selectedOptionIdList = [];
 
   List<Answers> get selectedOptionIdList => _selectedOptionIdList;
+
+
 
   void changeOptionSelectIndex(
       String QuestionsID, String OptionsID, int index) {

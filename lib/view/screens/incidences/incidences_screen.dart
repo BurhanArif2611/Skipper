@@ -160,20 +160,27 @@ class _IncidencesScreenState extends State<IncidencesScreen> {
                              Expanded(
                                flex: 2,
                                child: Row(children: [
-                                 Text("By :",
+                                   Expanded(
+                                   flex:
+                                   1,
+                                   child:
+                                   Text("By :",
                                      style: robotoMedium.copyWith(
                                          color:
                                          Theme.of(context)
                                              .hintColor,
                                          fontSize: Dimensions
-                                             .fontSizeDefault)),
-                                 Text(onBoardingController.incidenceListModel.docs[index].user.name.first,
+                                             .fontSizeDefault))),
+                               Expanded(
+                                   flex:
+                                   6,
+                                   child:Text(onBoardingController.incidenceListModel.docs[index].isAnonymous?"Anonymous":onBoardingController.incidenceListModel.docs[index].user.name.first,
                                      style: robotoBold.copyWith(
                                          color:
                                          Theme.of(context)
                                              .hintColor,
                                          fontSize: Dimensions
-                                             .fontSizeDefault))
+                                             .fontSizeDefault)))
                                ]),
                              ):SizedBox()),
                              Expanded(

@@ -353,7 +353,7 @@ class _IncidenceDetailScreenState extends State<IncidenceDetailScreen>
                                               height: Dimensions
                                                   .PADDING_SIZE_SMALL),
                                           Container(
-                                            height: 400,
+                                            height: 450,
                                             child: TabBarView(
                                               controller: _tabController,
                                               children: [

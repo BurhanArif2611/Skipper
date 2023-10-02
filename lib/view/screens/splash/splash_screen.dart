@@ -39,28 +39,12 @@ class _SplashScreenState extends State<SplashScreen> {
   GlobalKey<ScaffoldState> _globalKey = GlobalKey();
   StreamSubscription<ConnectivityResult> _onConnectivityChanged;
 
- // PermissionStatus _microphonePermissionStatus = PermissionStatus.undetermined;
 
-  Future<void> _checkMicrophonePermission() async {
-    final status = await Permission.microphone.status;
-    setState(() {
-     // _microphonePermissionStatus = status;
-      print("_checkMicrophonePermission ${status}");
-    });
-  }
-
-  Future<void> _requestMicrophonePermission() async {
-    final status = await Permission.microphone.request();
-    /*setState(() {
-      print("_requestMicrophonePermission ${status}");
-     *//* _microphonePermissionStatus = status;*//*
-    });*/
-  }
 
   @override
   void initState() {
     super.initState();
-    _requestMicrophonePermission();
+
     bool _firstTime = true;
     _onConnectivityChanged = Connectivity()
         .onConnectivityChanged
@@ -101,7 +85,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void _route() {
     Timer(Duration(seconds: 1), () async {
       print("_route>>>>>");
-      if (Get.find<AuthController>().isLoggedIn()) {
+    //  Get.offNamed(RouteHelper.getWebViewScreen());
+      Get.offNamed(RouteHelper.getInitialRoute());
+      /*if (Get.find<AuthController>().isLoggedIn()) {
         Get.offNamed(RouteHelper.getInitialRoute());
       } else {
         if (Get.find<SplashController>().showIntro()) {
@@ -109,99 +95,8 @@ class _SplashScreenState extends State<SplashScreen> {
         } else {
           Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
         }
-      }
-
-      // Get.offNamed(RouteHelper.getStoreRoute(0,  'store'));
-     /* if (GetPlatform.isAndroid) {
-        if (AppConstants.ANDROID_APP_VERSION < _minimumVersion ||
-            Get.find<SplashController>().configModel.maintenanceMode) {
-          Get.offNamed(RouteHelper.getUpdateRoute(
-              AppConstants.ANDROID_APP_VERSION < _minimumVersion));
-        } else {
-          if (widget.orderID != null) {
-            Get.offNamed(
-                RouteHelper.getOrderDetailsRoute(int.parse(widget.orderID)));
-          } else {
-            if (Get.find<AuthController>().isLoggedIn()) {
-              Get.find<AuthController>().updateToken();
-              // await Get.find<WishListController>().getWishList();
-              try {
-                await Firebase.initializeApp();
-                FlutterError.onError =
-                    FirebaseCrashlytics.instance.recordFlutterFatalError;
-              } catch (e) {}
-              if (Get.find<AuthController>().isLoggedIn()) {
-                if (Get.find<LocationController>().getUserAddress() != null) {
-                  Get.offNamed(RouteHelper.getInitialRoute());
-                } else {
-                  Get.offNamed(RouteHelper.getAccessLocationRoute('splash'));
-                }
-              }
-            } else {
-              if (Get.find<SplashController>().showIntro()) {
-                *//*if (AppConstants.languages.length > 1) {
-                      //  Get.offNamed(RouteHelper.getLanguageRoute('splash'));
-                      Get.find<LocalizationController>().setLanguage(Locale(
-                        AppConstants.languages[0].languageCode,
-                        AppConstants.languages[0].countryCode,
-                      ));
-                      Get.find<LocalizationController>().setSelectIndex(0);
-                       Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
-                    } else {*//*
-                Get.offNamed(RouteHelper.getOnBoardingRoute());
-                *//*  }*//*
-              } else {
-                Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
-              }
-            }
-          }
-        }
-      }
-      else if (GetPlatform.isIOS) {
-        if (AppConstants.IOS_APP_VERSION < _minimumVersion ||
-            Get.find<SplashController>().configModel.maintenanceMode) {
-          Get.offNamed(RouteHelper.getUpdateRoute(
-              AppConstants.IOS_APP_VERSION < _minimumVersion));
-        } else {
-          if (widget.orderID != null) {
-            Get.offNamed(
-                RouteHelper.getOrderDetailsRoute(int.parse(widget.orderID)));
-          } else {
-            if (Get.find<AuthController>().isLoggedIn()) {
-              Get.find<AuthController>().updateToken();
-              //  await Get.find<WishListController>().getWishList();
-              try {
-                await Firebase.initializeApp();
-                FlutterError.onError =
-                    FirebaseCrashlytics.instance.recordFlutterFatalError;
-              } catch (e) {}
-              if (Get.find<AuthController>().isLoggedIn()) {
-                if (Get.find<LocationController>().getUserAddress() != null) {
-                  Get.offNamed(RouteHelper.getInitialRoute());
-                } else {
-                  Get.offNamed(RouteHelper.getAccessLocationRoute('splash'));
-                }
-              }
-            } else {
-              if (Get.find<SplashController>().showIntro()) {
-                if (AppConstants.languages.length > 1) {
-                  //  Get.offNamed(RouteHelper.getLanguageRoute('splash'));
-                  Get.find<LocalizationController>().setLanguage(Locale(
-                    AppConstants.languages[0].languageCode,
-                    AppConstants.languages[0].countryCode,
-                  ));
-                  Get.find<LocalizationController>().setSelectIndex(0);
-                  Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
-                } else {
-                  Get.offNamed(RouteHelper.getOnBoardingRoute());
-                }
-              } else {
-                Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
-              }
-            }
-          }
-        }
       }*/
+
     });
   }
 
@@ -214,21 +109,10 @@ class _SplashScreenState extends State<SplashScreen> {
       body: GetBuilder<SplashController>(builder: (splashController) {
         return Container(
             height: double.infinity,
-            color: Theme.of(context).primaryColor,
+            color: Color(0xFFF7F5F3),
             child: Center(
               child: splashController.hasConnection
-                  ? Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(AppConstants.APP_NAME,
-                            style: robotoBold.copyWith(
-                                fontSize: Dimensions.fontSizeOverLarge,
-                                color: Theme.of(context).cardColor)),
-                        /* Image.asset(Images.logo, width: 300),*/
-                        SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                        // Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: 25)),
-                      ],
-                    )
+                  ? Image.asset(Images.logo,width: 150,height: 150,)
                   : NoInternetScreen(
                       child: SplashScreen(orderID: widget.orderID)),
             ));

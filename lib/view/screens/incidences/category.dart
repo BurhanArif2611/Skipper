@@ -39,14 +39,8 @@ class CategoryScreen extends StatefulWidget {
 class _CategoryScreenState extends State<CategoryScreen> {
   void _loadData() async {
     print("object>>>>>${widget.state_id.toString()}");
-    if (widget.state_id == "State") {
-      Get.find<HomeController>().getStateList();
-    } else if (widget.state_id == "lga") {
-      Get.find<HomeController>()
-          .getLgaList(Get.find<HomeController>().state_id);
-    } else if (widget.state_id == "ward") {
-      Get.find<HomeController>()
-          .getWardList(Get.find<HomeController>().lga_id);
+    if (widget.state_id == "ComplaintCategory") {
+     // Get.find<HomeController>().getStateList();
     }
   }
 
@@ -62,16 +56,77 @@ class _CategoryScreenState extends State<CategoryScreen> {
     final ScrollController scrollController = ScrollController();
     return Scaffold(
       appBar: InnerCustomAppBar(
-        title: 'Incidence Category'.tr,
+        title:widget.state_id == "ComplaintCategory"?'Complaint Category': 'Incidence Category'.tr,
         leadingIcon: Images.circle_arrow_back,
         backButton: !ResponsiveHelper.isDesktop(context),
       ),
       /* endDrawer: MenuDrawer(),*/
       body: Get.find<AuthController>().isLoggedIn()
           ? GetBuilder<HomeController>(
-          builder: (homeController) => (homeController.incidencecategorylist !=
+          builder: (homeController) =>
+          (
+
+              widget.state_id == "ComplaintCategory"? (homeController.newsCategoryListModel !=
+                  null &&
+                  homeController.newsCategoryListModel.data.length > 0
+                  ?
+              Container(
+                child: ListView.builder(
+                  itemCount: homeController.newsCategoryListModel.data.length,
+                  padding: EdgeInsets.only(
+                      left: Dimensions.PADDING_SIZE_SMALL),
+                  /* physics: BouncingScrollPhysics(),*/
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                        onTap: () {
+
+                          homeController.selectCamplianModel(
+                              homeController.newsCategoryListModel.data[index].sId,
+                              homeController.newsCategoryListModel.data[index].name);
+
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(
+                              Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                          margin: EdgeInsets.all(
+                              Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                    height: Dimensions
+                                        .PADDING_SIZE_EXTRA_SMALL),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    homeController.newsCategoryListModel.data[index]
+                                        .name !=
+                                        null
+                                        ? homeController
+                                        .newsCategoryListModel.data[index].name
+                                        : "",
+                                    style: robotoBold.copyWith(
+                                        fontSize: Dimensions
+                                            .fontSizeDefault /*context.height*0.022*/),
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ),
+                                SizedBox(
+                                    height: Dimensions
+                                        .PADDING_SIZE_EXTRA_SMALL),
+                                Divider(
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ]),
+                        ));
+                  },
+                ),
+              ): NoDataScreen(text: ' Category Not Found!'.tr)):(
+              homeController.incidencecategorylist !=
               null &&
-              homeController.incidencecategorylist.length > 0)
+              homeController.incidencecategorylist.length > 0
               ?
           Container(
             child: ListView.builder(
@@ -127,9 +182,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
               },
             ),
           )
-              : NoDataScreen(
-              text: ' Category Not Found!'.tr))
-          : NotLoggedInScreen(),
+              : NoDataScreen(text: ' Category Not Found!'.tr))))
+          : NotLoggedInScreen()
     );
   }
 }

@@ -7,8 +7,10 @@ class SignUpBody {
   String refCode;
   String scope;
   String role;
+  String security_card_id;
+  String security_card_image;
 
-  SignUpBody({this.fName, this.lName, this.phone, this.email='', this.password, this.refCode = '', this.scope, this.role });
+  SignUpBody({this.fName, this.lName, this.phone, this.email='', this.password, this.refCode = '', this.scope, this.role , this.security_card_id , this.security_card_image });
 
   SignUpBody.fromJson(Map<String, dynamic> json) {
     fName = json['first_name'];
@@ -19,6 +21,8 @@ class SignUpBody {
     refCode = json['anonymous'];
     scope = json['scope'];
     role = json['role'];
+    security_card_id = json['security_card_id'];
+    security_card_image = json['security_card_image'];
   }
 
   Map<String, dynamic> toJson() {
@@ -31,6 +35,8 @@ class SignUpBody {
     data['anonymous'] = this.refCode;
     data['scope'] = this.scope;
     data['role'] = this.role;
+    data['security_card_id'] = this.security_card_id;
+    data['security_card_image'] = this.security_card_image;
     return data;
   }
 }

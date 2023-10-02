@@ -75,11 +75,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
           InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(25.0),
-              borderSide: BorderSide.none,
+              borderSide:  BorderSide(color: Theme.of(context).hintColor.withOpacity(0.1), width: 1),
             ),
             enabledBorder:  OutlineInputBorder(
               borderRadius: BorderRadius.circular(25.0),
-              borderSide:  BorderSide(color: Theme.of(context).cardColor, width: 1),
+              borderSide:  BorderSide(color: Theme.of(context).hintColor.withOpacity(0.1), width: 1),
             ),
             counterText: "",
             isDense: true,

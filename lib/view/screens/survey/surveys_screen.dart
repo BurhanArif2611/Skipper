@@ -121,14 +121,16 @@ class _SurveyScreenState extends State<SurveyScreen> {
                               ),
                               SizedBox(
                                   height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                              Text(
-                                "In publishing and graphic design, Lorem ipsum is a placeholder text commonly.",
+                              Align(
+                                  alignment: Alignment.centerLeft,
+                                  child:  Text(
+                                onBoardingController.surveyListModel.data.docs.pendingSurvey[index].description!=null?onBoardingController.surveyListModel.data.docs.pendingSurvey[index].description:"",
                                 style: robotoRegular.copyWith(
                                     fontSize: Dimensions
                                         .fontSizeDefault ,
                                     color: Theme.of(context).hintColor),
                                 textAlign: TextAlign.start,
-                              ),
+                              )),
                             ]),
                           ));
                         },

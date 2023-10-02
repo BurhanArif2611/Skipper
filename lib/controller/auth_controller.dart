@@ -1,3 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
+import 'dart:typed_data';
+
+import 'package:aws_s3_upload/aws_s3_upload.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get_connect/http/src/_http/_html/_file_decoder_html.dart';
+import 'package:image_compression_flutter/image_compression_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
 import 'package:sixam_mart/data/model/body/signup_body.dart';
@@ -8,7 +18,9 @@ import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as Http;
 
+import '../helper/network_info.dart';
 import '../util/app_constants.dart';
 import '../view/base/custom_loader.dart';
 
@@ -30,7 +42,24 @@ class AuthController extends GetxController implements GetxService {
   bool get acceptTerms => _acceptTerms;
 
   bool _forUser = true;
+
   bool get forUser => _forUser;
+  File _file;
+
+  File get file => _file;
+
+
+  XFile _pickedFile;
+  Uint8List _rawFile;
+
+  XFile get pickedFile => _pickedFile;
+
+  Uint8List get rawFile => _rawFile;
+
+  String _uploadedURL = "";
+
+  String get uploadedURL => _uploadedURL;
+
   void changeLogin(bool check) {
     try {
       _forUser = check;
@@ -38,9 +67,20 @@ class AuthController extends GetxController implements GetxService {
 
       authRepo.saveUserRole(check);
 
-       update();
+      update();
     } catch (e) {}
   }
+
+  void clearData() {
+    try {
+      _uploadedURL = "";
+      _rawFile = null;
+      _pickedFile = null;
+      _isLoading=false;
+      update();
+    } catch (e) {}
+  }
+
   Future<Response> registration(SignUpBody signUpBody) async {
     _isLoading = true;
     update();
@@ -49,12 +89,13 @@ class AuthController extends GetxController implements GetxService {
     Response response = await authRepo.registration(signUpBody);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
-     /* if (!Get.find<SplashController>().configModel.customerVerification) {
+      /* if (!Get.find<SplashController>().configModel.customerVerification) {
         authRepo.saveUserToken(response.body["token"]);
         await authRepo.updateToken();
       }*/
-     // responseModel = ResponseModel(true, response.body);
-        Get.back();
+      // responseModel = ResponseModel(true, response.body);
+      clearData();
+      Get.back();
     } else {
       Get.back();
       responseModel = ResponseModel(
@@ -64,9 +105,12 @@ class AuthController extends GetxController implements GetxService {
               : response.statusText);
     }
     _isLoading = false;
+
     update();
+
     return response;
   }
+
   void clearVerificationCode() {
     try {
       _verificationCode = null;
@@ -99,28 +143,45 @@ class AuthController extends GetxController implements GetxService {
     return responseModel;
   }
 
-  Future<Response> new_login(String phone, String password,bool security_officer) async {
-    _isLoading = true;
+  Future<bool> asyncTestFileUpload(File file, String name, String email,
+      String phone, String region, String address) async {
+    _isLoading=true;
+    bool responseCheck = false;
+    Map<String, String> headers = {"Accept": "Accept application/json","content-type": "multipart/form-data"};
+
+    // Uint8List bytes = await fileToBytes(file);
+    var postUri = Uri.parse(
+        "https://admin-dashboard.partilespatriotes.org/api/members/store");
+
+    Http.MultipartRequest request = new Http.MultipartRequest("POST", postUri);
+    request.fields["name"] = name;
+    request.fields["email"] = email;
+    request.fields["phone"] = phone;
+    request.fields["region"] = region;
+    request.fields["address"] = address;
+    request.headers.addAll(headers);
+    Http.MultipartFile multipartFile = await Http.MultipartFile.fromPath(
+        'profile', file.path /*,contentType: new MediaType('image', 'jpeg')*/);
+
+    request.files.add(multipartFile);
+    request.send().then((response) async {
+      _isLoading=false;
+      print("responseString>>>>>>><<>>>>>${response.statusCode.toString()}");
+      var responseData = await response.stream.toBytes();
+      var responseString = String.fromCharCodes(responseData);
+      Map map = jsonDecode(responseString) as Map<String, dynamic>;
+      print("responseString>>>>>>>>>>>${responseString.toString()}");
+      if (response.statusCode == 200){
+        print("Uploaded!");
+        responseCheck=true;
+        showCustomSnackBar(map["message"].toString(),isError: false);
+      }
+      else {
+        showCustomSnackBar(map["message"].toString(),isError: true);
+      }
+    });
     update();
-    Get.dialog(CustomLoader(), barrierDismissible: false);
-    Response response = await authRepo.login(phone: phone, password: password,security_officer:security_officer);
-    ResponseModel responseModel;
-
-    if (response.statusCode == 200) {
-
-        authRepo.saveUserToken(response.body['data']['token']['accessToken']);
-        authRepo.saveUserRole(security_officer);
-        await authRepo.updateToken();
-
-      responseModel = ResponseModel(true,response.body['data']['token']['accessToken']);
-      Get.back();
-    } else {
-      Get.back();
-      responseModel = ResponseModel(false, response.statusText);
-    }
-    _isLoading = false;
-    update();
-    return response;
+    return responseCheck;
   }
 
   Future<Response> checkUserMobileNumber(String phone) async {
@@ -194,7 +255,7 @@ class AuthController extends GetxController implements GetxService {
     update();
     Response response = await authRepo.forgetPassword(email);
 
-   /* ResponseModel responseModel;
+    /* ResponseModel responseModel;
     if (response.statusCode == 200) {
       responseModel = ResponseModel(true, response.body["message"]);
     } else {
@@ -374,5 +435,67 @@ class AuthController extends GetxController implements GetxService {
     authRepo.setNotificationActive(isActive);
     update();
     return _notification;
+  }
+
+  void pickImage() async {
+    Random random = Random();
+    _pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (_pickedFile != null) {
+      _pickedFile =
+          await NetworkInfo.compressImage(_pickedFile).then((value) async {
+        _rawFile = await _pickedFile.readAsBytes();
+        print("pickImage" + _pickedFile.path);
+        print("pickImage" + _rawFile.toString());
+        _file = new File(_pickedFile.path);
+      });
+    }
+    update();
+  }
+
+  void pickCameraImage() async {
+    Random random = Random();
+    _pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (_pickedFile != null) {
+      _pickedFile =
+          await NetworkInfo.compressImage(_pickedFile).then((value) async {
+        _rawFile = await _pickedFile.readAsBytes();
+        print("pickImage>>>>" + _pickedFile.path.toString());
+        print("pickImage" + _rawFile.toString());
+        _file = new File(_pickedFile.path);
+      });
+
+      //print("dlfjdljfdjfkdjf>>${response.statusCode}");
+    }
+    update();
+  }
+
+  Future<String> _uploadImage(File file, int number, String filename,
+      {String extension = 'jpg'}) async {
+    String result;
+    print("file>>>>>>${file.path}");
+    print("number>>>>>>${number}");
+    if (result == null) {
+      try {
+        print("fileName>>>>>>${file.path}");
+        result = await AwsS3.uploadFile(
+          accessKey: AppConstants.ACCESS_KEY,
+          secretKey: AppConstants.SECRET_KEY,
+          file: file,
+          bucket: AppConstants.BUCKET,
+          region: AppConstants.REGION,
+          metadata: {"test": "test"},
+          filename: filename,
+        ).then((uri) {
+          print("inner >>>>> >${uri.toString()}");
+          _uploadedURL = (uri);
+          print("object>>>>>>${_uploadedURL.length.toString()}");
+        });
+        print("object>>>>>>${result.toString()}");
+      } on PlatformException catch (e) {
+        print("Failed <><><>:'${e.message}'.");
+      }
+    }
+
+    return result;
   }
 }

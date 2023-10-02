@@ -491,7 +491,7 @@ class _SignInScreenState extends State<SignInScreen> {
     } else if (_password.length < 5) {
       showCustomSnackBar('password_should_be'.tr);
     } else {
-      authController
+     /* authController
           .new_login(_email, _password,authController.forUser)
           .then((status) async {
         if (status.statusCode == 200) {
@@ -507,7 +507,7 @@ class _SignInScreenState extends State<SignInScreen> {
               ? status.body["errors"][0]["message"].toString()
               : status.body["message"].toString());
         }
-      });
+      });*/
     //
     }
   }
