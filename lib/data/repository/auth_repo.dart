@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/uploads3file.dart';
+import '../model/body/news_submit_body.dart';
 import '../model/body/report_incidence_body.dart';
 
 class AuthRepo {
@@ -35,7 +36,9 @@ class AuthRepo {
   Future<Response> deleteSOSContact({String id}) async {
     return await apiClient.deleteData('${AppConstants.ADD_SOS_CONTACT_URI}/'+id );
   }
-
+  Future<Response> submitSurveyResultu(Answers signUpBody) async {
+    return await apiClient.postResultData(AppConstants.SubmitSurveys_URI, signUpBody);
+  }
 
   Future<Response> uploadfile({String id}) async {
     return await apiClient.deleteData('${AppConstants.ADD_SOS_CONTACT_URI}/'+id );
@@ -97,6 +100,12 @@ class AuthRepo {
 
   Future<Response> verifyToken(String phone, String token) async {
     return await apiClient.postData(AppConstants.VERIFY_TOKEN_URI, {"phone": phone, "reset_token": token});
+  }
+  Future<Response> pollingSurvey() async {
+    return await apiClient.getData(AppConstants.PollingSurvey_URI);
+  }
+  Future<Response> pollingSurveyResultStore(String serveyId,String answer) async {
+    return await apiClient.postData(AppConstants.PollingSurveyStore_URI,{"servey_id":serveyId,"answer":answer});
   }
 
   Future<Response> resetPassword(String resetToken, String number, String password, String confirmPassword) async {

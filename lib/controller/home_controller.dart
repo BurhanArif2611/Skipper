@@ -857,8 +857,7 @@ class HomeController extends GetxController implements GetxService {
 
   Future<Response> submitSurveyResult(String surveyID) async {
     _isLoading = true;
-    NewsSubmitBody newsSubmitBody =
-        NewsSubmitBody(surveyId: surveyID, answers: selectedOptionIdList);
+    Answers newsSubmitBody = Answers(question: surveyID, options: selectedOptionIdList[0].options.toString());
 
     Response response = await homeRepo.submitSurveyResultu(newsSubmitBody);
     ResponseModel responseModel;

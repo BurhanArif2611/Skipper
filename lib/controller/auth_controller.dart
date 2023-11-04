@@ -20,6 +20,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as Http;
 
+import '../data/model/body/news_submit_body.dart';
+import '../data/model/response/survey_list_model.dart';
 import '../helper/network_info.dart';
 import '../util/app_constants.dart';
 import '../view/base/custom_loader.dart';
@@ -59,7 +61,22 @@ class AuthController extends GetxController implements GetxService {
   String _uploadedURL = "";
 
   String get uploadedURL => _uploadedURL;
+  SurveyListModel _surveyListModel;
+  SurveyListModel get surveyListModel => _surveyListModel;
 
+
+  int _selectedIndex = 0;
+
+  int get selectedIndex => _selectedIndex;
+
+  int _selectedQuestionIndex = 0;
+
+  int get selectedQuestionIndex => _selectedQuestionIndex;
+
+  void changeSelectIndex(int index) {
+    _selectedIndex = index;
+    update();
+  }
   void changeLogin(bool check) {
     try {
       _forUser = check;
@@ -284,6 +301,37 @@ class AuthController extends GetxController implements GetxService {
     update();
     return responseModel;
   }
+  Future<ResponseModel> getPollingSurveyToken() async {
+    _isLoading = true;
+    update();
+    Response response = await authRepo.pollingSurvey();
+    ResponseModel responseModel;
+    if (response.statusCode == 200) {
+      _surveyListModel = SurveyListModel.fromJson(response.body);
+      responseModel = ResponseModel(true, response.body["message"]);
+    } else {
+      responseModel = ResponseModel(false, response.statusText);
+    }
+    _isLoading = false;
+    update();
+    return responseModel;
+  }
+
+  Future<Response> pollingSurveyResultStore(String serveyId,String answer, int Index) async {
+    _isLoading = true;
+    update();
+    Response response = await authRepo.pollingSurveyResultStore(serveyId,answer);
+
+    if (response.statusCode == 200) {
+      if(_surveyListModel!=null && _surveyListModel.data!=null && _surveyListModel.data.length>0 ){
+        Data data=new Data(id:_surveyListModel.data[Index].id,question:_surveyListModel.data[Index].question,options:_surveyListModel.data[Index].options,status:_surveyListModel.data[Index].status,createdAt:_surveyListModel.data[Index].createdAt,updatedAt:_surveyListModel.data[Index].updatedAt,attempt:true);
+        _surveyListModel.data[Index]=data;
+      }
+    }
+    _isLoading = false;
+    update();
+    return response;
+  }
 
   Future<ResponseModel> resetPassword(String resetToken, String number,
       String password, String confirmPassword) async {
@@ -497,5 +545,50 @@ class AuthController extends GetxController implements GetxService {
     }
 
     return result;
+  }
+
+  List<Answers> _selectedOptionIdList = [];
+
+  List<Answers> get selectedOptionIdList => _selectedOptionIdList;
+
+  void changeOptionSelectIndex(
+      String QuestionsID, String OptionsID, int index) {
+    print("QuestionsID>>>${QuestionsID}");
+    print("OptionsID>>>${OptionsID}");
+    Answers answers = Answers(question: QuestionsID, options: OptionsID);
+    bool check = true;
+    if (_selectedOptionIdList.length > 0) {
+      for (int i = 0; i < _selectedOptionIdList.length; i++) {
+        if (_selectedOptionIdList[i].question == QuestionsID) {
+          _selectedOptionIdList[i] = answers;
+          check = false;
+          break;
+        }
+      }
+    }
+    if (check) {
+      _selectedOptionIdList.add(answers);
+    }
+    update();
+  }
+
+  Future<Response> submitSurveyResult(String surveyID) async {
+    _isLoading = true;
+    Answers newsSubmitBody =
+    Answers(question: surveyID, options: selectedOptionIdList[0].options);
+
+    Response response = await authRepo.submitSurveyResultu(newsSubmitBody);
+    ResponseModel responseModel;
+    print("response>>>${response.statusCode}");
+    if (response.statusCode == 200) {
+
+    }
+    _isLoading = false;
+    update();
+    return response;
+  }
+  void changeQuestionTabSelectIndex(int index) {
+    _selectedQuestionIndex = index;
+    update();
   }
 }

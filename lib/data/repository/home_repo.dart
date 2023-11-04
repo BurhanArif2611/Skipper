@@ -164,7 +164,7 @@ class HomeRepo {
   Future<Response> sendSOSAlert(double lat,double long) async {
     return await apiClient.postData(AppConstants.SENDSOSALERT_URL, {"lat": lat.toString(), "long": long.toString()});
   }
-  Future<Response> submitSurveyResultu(NewsSubmitBody signUpBody) async {
+  Future<Response> submitSurveyResultu(Answers signUpBody) async {
     return await apiClient.postResultData(AppConstants.SubmitSurveys_URI, signUpBody);
   }
 

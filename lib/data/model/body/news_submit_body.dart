@@ -5,7 +5,7 @@ class NewsSubmitBody {
   NewsSubmitBody({this.surveyId, this.answers});
 
   NewsSubmitBody.fromJson(Map<String, dynamic> json) {
-    surveyId = json['survey_id'];
+    surveyId = json['servey_id'];
     if (json['answers'] != null) {
       answers = <Answers>[];
       json['answers'].forEach((v) {
@@ -16,7 +16,7 @@ class NewsSubmitBody {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['survey_id'] = this.surveyId;
+    data['servey_id'] = this.surveyId;
     if (this.answers != null) {
       data['answers'] = this.answers.map((v) => v.toJson()).toList();
     }
@@ -31,14 +31,14 @@ class Answers {
   Answers({this.question, this.options});
 
   Answers.fromJson(Map<String, dynamic> json) {
-    question = json['question'];
-    options = json['options'];
+    question = json['servey_id'];
+    options = json['answer'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['question'] = this.question;
-    data['options'] = this.options;
+    data['servey_id'] = this.question;
+    data['answer'] = this.options;
     return data;
   }
 }

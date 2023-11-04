@@ -31,7 +31,6 @@ class Data {
   int status;
   String createdAt;
   String updatedAt;
-  bool attempt;
 
   Data(
       {this.id,
@@ -39,9 +38,7 @@ class Data {
         this.options,
         this.status,
         this.createdAt,
-        this.updatedAt,
-        this.attempt
-      });
+        this.updatedAt});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -50,7 +47,6 @@ class Data {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    attempt = json['attempt']!=null ?json['attempt']:false;
   }
 
   Map<String, dynamic> toJson() {
@@ -61,7 +57,6 @@ class Data {
     data['status'] = this.status;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    data['attempt'] = this.attempt;
     return data;
   }
 }

@@ -24,13 +24,10 @@ import '../../../util/app_constants.dart';
 import '../../../util/images.dart';
 import '../../base/inner_custom_app_bar.dart';
 import '../addmembers/add_newmember.dart';
-import '../incidences/incidences_screen.dart';
-import '../latestnews/latestnews_screen.dart';
+
 import '../member/member_search_screen.dart';
 import '../more/more_main_screen.dart';
-import '../myprofile/myprofile_screen.dart';
 import '../polling/polling_survey_screen.dart';
-import '../setting/setting_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   final int pageIndex;
@@ -98,7 +95,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         HomeScreen(),
         MemberSearchScreen(),
         PollingSurveyScreen(),
-        SettingScreen(),
+        MoreMainScreen(),
         AddNewMembers(),
         // MyProfileScreen(),
       ];
@@ -108,7 +105,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         HomeScreen(),
         MemberSearchScreen(),
         PollingSurveyScreen(),
-        SettingScreen(),
+        MoreMainScreen(),
         AddNewMembers(),
         // MyProfileScreen(),
       ];

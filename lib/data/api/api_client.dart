@@ -81,7 +81,7 @@ class ApiClient extends GetxService {
       {Map<String, dynamic> query, Map<String, String> headers}) async {
     try {
       if (Foundation.kDebugMode) {
-        print('====> API Call: $uri\nHeader: $_mainHeaders');
+        print('====> API Call: ${appBaseUrl+uri}\nHeader: $_mainHeaders');
       }
       Http.Response _response = await Http.get(
         Uri.parse(appBaseUrl + uri),
@@ -144,7 +144,7 @@ class ApiClient extends GetxService {
       return Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
-  Future<Response> postResultData(String uri, NewsSubmitBody body) async {
+  Future<Response> postResultData(String uri, Answers body) async {
     Map<String, String> header;
     header = {
       'Content-Type': 'application/json',

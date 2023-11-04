@@ -18,6 +18,10 @@ class Images {
   static const String user = 'assets/image/user.png';
   static const String id_card = 'assets/image/id_card.png';
   static const String about_us = 'assets/image/about_us.png';
+  static const String president = 'assets/image/president.png';
+  static const String vice_president = 'assets/image/vice_president.png';
+  static const String mahamat_third = 'assets/image/mahamat_third.png';
+  static const String fourth = 'assets/image/fourth.png';
   static const String coupon = 'assets/image/coupon.png';
   static const String coupon_bg = 'assets/image/coupon_bg.png';
   static const String language = 'assets/image/language.png';

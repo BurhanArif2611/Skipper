@@ -12,7 +12,7 @@ import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
-import 'package:sixam_mart/view/base/item_view.dart';
+
 import 'package:sixam_mart/view/base/menu_drawer.dart';
 
 import 'package:flutter/material.dart';
@@ -48,13 +48,7 @@ class _MemberSearchScreenState extends State<MemberSearchScreen> {
   double latitude;
   double longitude;
 
-  void _loadData() async {
-    await Get.find<HomeController>().getIncidenceList();
-    await Get.find<HomeController>().getNewsList();
-    await Get.find<HomeController>().getCategoryList();
-    await Get.find<HomeController>().getSurveyList();
-    await Get.find<HomeController>().clearAllData();
-  }
+
 
   @override
   void initState() {
@@ -99,8 +93,8 @@ class _MemberSearchScreenState extends State<MemberSearchScreen> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(Dimensions
                                   .PADDING_SIZE_SMALL), // Set the radius here
-                              child: Image.network(
-                                'https://partilespatriotes.org/wp-content/uploads/2015/12/2-7.jpg',
+                              child: Image.asset(
+                                Images.president,
                                 // Replace with your image URL or asset path
                                 width: MediaQuery.of(context)
                                     .size
@@ -154,8 +148,7 @@ class _MemberSearchScreenState extends State<MemberSearchScreen> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(Dimensions
                                   .PADDING_SIZE_SMALL), // Set the radius here
-                              child: Image.network(
-                                'https://partilespatriotes.org/wp-content/uploads/2015/12/2-5.jpg',
+                              child: Image.asset(Images.vice_president,
                                 // Replace with your image URL or asset path
                                 width: MediaQuery.of(context)
                                     .size
@@ -208,8 +201,8 @@ class _MemberSearchScreenState extends State<MemberSearchScreen> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(Dimensions
                                   .PADDING_SIZE_SMALL), // Set the radius here
-                              child: Image.network(
-                                'https://partilespatriotes.org/wp-content/uploads/2015/12/2-1-1.jpg',
+                              child: Image.asset(
+                                Images.mahamat_third,
                                 // Replace with your image URL or asset path
                                 width: MediaQuery.of(context)
                                     .size
@@ -262,8 +255,8 @@ class _MemberSearchScreenState extends State<MemberSearchScreen> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(Dimensions
                                   .PADDING_SIZE_SMALL), // Set the radius here
-                              child: Image.network(
-                                'https://partilespatriotes.org/wp-content/uploads/2015/12/2-1.jpg',
+                              child: Image.asset(
+                                Images.fourth,
                                 // Replace with your image URL or asset path
                                 width: MediaQuery.of(context)
                                     .size
