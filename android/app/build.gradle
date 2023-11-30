@@ -46,20 +46,20 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "app.abujaeye"
+        applicationId "com.patriotes.android"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 10
-        versionName "1.0.9"
+        versionCode 1
+        versionName "1.0.0"
         multiDexEnabled true
     }
 
     signingConfigs {
         release {
             keyAlias 'key0'
-            keyPassword 'Codezilla@123'
-            storeFile file('/Users/codezilla-mac-2/Desktop/store.jks')
-            storePassword 'Codezilla@123'
+            keyPassword 'patriotes'
+            storeFile file('/Users/apple/AndroidStudioProjects/Burhan Arif/Flutter/PartyApp/Party/user-app/android/jks_details/party_new.jks')
+            storePassword 'patriotes'
         }
     }
     kotlinOptions {

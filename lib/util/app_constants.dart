@@ -41,6 +41,7 @@ class AppConstants {
   static const String FORGET_PASSWORD_URI = '/forget-password/';
   static const String VERIFY_TOKEN_URI = '/api/v1/auth/verify-token';
   static const String PollingSurvey_URI = '/api/survey';
+  static const String Regions_URI = '/api/regions';
   static const String PollingSurveyStore_URI = '/api/survey/store';
   static const String RESET_PASSWORD_URI = '/api/v1/auth/reset-password';
   static const String VERIFY_PHONE_URI = '/api/v1/auth/verify-phone';
@@ -207,10 +208,15 @@ class AppConstants {
         languageName: 'English',
         countryCode: 'US',
         languageCode: 'en'),
-    LanguageModel(
+   /* LanguageModel(
         imageUrl: Images.arabic,
         languageName: 'عربى',
         countryCode: 'SA',
-        languageCode: 'ar'),
+        languageCode: 'ar'), */
+    LanguageModel(
+        imageUrl: Images.arabic,
+        languageName: 'French',
+        countryCode: 'FRA',
+        languageCode: 'fr'),
   ];
 }

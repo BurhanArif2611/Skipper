@@ -72,6 +72,7 @@ import '../view/screens/selectcountry/select_country_screen.dart';*/
 /*import '../view/screens/survey/survey_questions_screen.dart';
 import '../view/screens/survey/survey_start_screen.dart';
 import '../view/screens/survey/surveys_screen.dart';*/
+import '../view/screens/language/language_screen.dart';
 import '../view/screens/webview/webview_screen.dart';
 
 class RouteHelper {
@@ -285,6 +286,7 @@ class RouteHelper {
 /*
     GetPage(name: myprofilescreen, page: () => getRoute(MyProfileScreen())),
 */
+    GetPage(name: language, page: () => ChooseLanguageScreen(fromMenu: Get.parameters['page'] == 'menu')),
    /* GetPage(name: surveyscreen, page: () => getRoute(SurveyScreen())),*/
     GetPage(name: webviewscreen, page: () => getRoute(WebviewScreen(url: Get.parameters['url']))),
   /*  GetPage(name: reportincidencescreen, page: () => getRoute(ReportIncidenceScreen())),

@@ -1,35 +1,14 @@
 import 'dart:async';
 
-import 'package:flutter_svg/svg.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:sixam_mart/controller/home_controller.dart';
 
-import 'package:sixam_mart/controller/splash_controller.dart';
-import 'package:sixam_mart/controller/user_controller.dart';
-import 'package:sixam_mart/helper/responsive_helper.dart';
-import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
 
-import 'package:sixam_mart/view/base/menu_drawer.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../controller/dashboard_controller.dart';
-import '../../../controller/onboarding_controller.dart';
-import '../../../data/model/response/survey_list_model.dart';
-import '../../../helper/date_converter.dart';
-import '../../base/custom_app_bar.dart';
-import '../../base/custom_button.dart';
-import '../../base/custom_dialog.dart';
-import '../../base/custom_image.dart';
-import '../../base/custom_snackbar.dart';
-import '../../base/inner_custom_app_bar.dart';
-import '../../base/no_data_screen.dart';
-import '../../base/not_logged_in_screen.dart';
+
 import 'package:timeago/timeago.dart' as timeago;
 
 class MemberSearchScreen extends StatefulWidget {
@@ -117,7 +96,7 @@ class _MemberSearchScreenState extends State<MemberSearchScreen> {
                               height: Dimensions.PADDING_SIZE_SMALL,
                             ),
                             Text(
-                              "Président National".tr,
+                              "national_president".tr,
                               style: robotoMedium.copyWith(
                                   color: Theme.of(context)
                                       .hintColor
@@ -171,7 +150,7 @@ class _MemberSearchScreenState extends State<MemberSearchScreen> {
                               height: Dimensions.PADDING_SIZE_SMALL,
                             ),
                             Text(
-                              "Vice-president".tr,
+                              "vice_president".tr,
                               style: robotoMedium.copyWith(
                                   color: Theme.of(context)
                                       .hintColor
@@ -225,7 +204,7 @@ class _MemberSearchScreenState extends State<MemberSearchScreen> {
                               height: Dimensions.PADDING_SIZE_SMALL,
                             ),
                             Text(
-                              "Secrétaire général du Parti".tr,
+                              "General_Secretary_of_the_Party".tr,
                               style: robotoMedium.copyWith(
                                   color: Theme.of(context)
                                       .hintColor
@@ -279,7 +258,7 @@ class _MemberSearchScreenState extends State<MemberSearchScreen> {
                               height: Dimensions.PADDING_SIZE_SMALL,
                             ),
                             Text(
-                              "Port-parole".tr,
+                              "Spokesperson".tr,
                               style: robotoMedium.copyWith(
                                   color: Theme.of(context)
                                       .hintColor

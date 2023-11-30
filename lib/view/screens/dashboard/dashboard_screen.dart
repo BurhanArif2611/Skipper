@@ -27,6 +27,7 @@ import '../addmembers/add_newmember.dart';
 
 import '../member/member_search_screen.dart';
 import '../more/more_main_screen.dart';
+import '../our_ideas/our_ideas_screen.dart';
 import '../polling/polling_survey_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -41,7 +42,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
 //  static PageController _pageController;
   int _pageIndex = 0;
-  String toolbar_name="Home";
+  String toolbar_name="home".tr;
   List<Widget> _screens;
 
   // GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey();
@@ -75,7 +76,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       HomeScreen(),
       MemberSearchScreen(),
       PollingSurveyScreen(),
-      MoreMainScreen(),
+      OurIdeasScreen(),
       Container(),
     ];
 
@@ -95,7 +96,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         HomeScreen(),
         MemberSearchScreen(),
         PollingSurveyScreen(),
-        MoreMainScreen(),
+        OurIdeasScreen(),
         AddNewMembers(),
         // MyProfileScreen(),
       ];
@@ -105,7 +106,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         HomeScreen(),
         MemberSearchScreen(),
         PollingSurveyScreen(),
-        MoreMainScreen(),
+        OurIdeasScreen(),
         AddNewMembers(),
         // MyProfileScreen(),
       ];
@@ -196,7 +197,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Padding(
                 padding: EdgeInsets.only(left: Dimensions.PADDING_SIZE_DEFAULT),
                 child: Text(
-                  "General",
+                  "general".tr,
                   style: robotoBold.copyWith(
                       color: Theme.of(context).hintColor.withOpacity(0.5),
                       fontSize: Dimensions.fontSizeLarge),
@@ -212,7 +213,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         width: Dimensions.PADDING_SIZE_SMALL,
                       ),
                       Text(
-                        'Notification',
+                        'notification'.tr,
                         style: robotoBold.copyWith(
                             color: Theme.of(context).hintColor,
                             fontSize: Dimensions.fontSizeLarge),
@@ -233,7 +234,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   )),
               SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
               ListTile(
-                title: Container(
+                title:
+                Container(
                   child: Row(
                     children: [
                       SvgPicture.asset(Images.languge),
@@ -241,7 +243,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         width: Dimensions.PADDING_SIZE_SMALL,
                       ),
                       Text(
-                        'Languages',
+                        'languages'.tr,
                         style: robotoBold.copyWith(
                             color: Theme.of(context).hintColor,
                             fontSize: Dimensions.fontSizeLarge),
@@ -252,6 +254,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 onTap: () {
                   // Update the state of the app.
                   // ...
+                  Get.offNamed(RouteHelper.getLanguageRoute('menu'));
                 },
               ),
               Padding(
@@ -270,7 +273,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         width: Dimensions.PADDING_SIZE_SMALL,
                       ),
                       Text(
-                        'Help and Support',
+                        'help_and_support'.tr,
                         style: robotoBold.copyWith(
                             color: Theme.of(context).hintColor,
                             fontSize: Dimensions.fontSizeLarge),
@@ -299,7 +302,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         width: Dimensions.PADDING_SIZE_SMALL,
                       ),
                       Text(
-                        'Share App',
+                        'share_app'.tr,
                         style: robotoBold.copyWith(
                             color: Theme.of(context).hintColor,
                             fontSize: Dimensions.fontSizeLarge),
@@ -335,10 +338,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         width: Dimensions.PADDING_SIZE_SMALL,
                       ),
                       Text(
-                        'Our fundamental documents',
+                        'our_fundamental_documents'.tr,
                         style: robotoBold.copyWith(
                             color: Theme.of(context).hintColor,
                             fontSize: Dimensions.fontSizeLarge),
+
                       )
                     ],
                   ),
@@ -367,7 +371,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             width: Dimensions.PADDING_SIZE_SMALL,
                           ),
                           Text(
-                            'Organization and operation',
+                            'organization_and_operation'.tr,
                             style: robotoBold.copyWith(
                                 color: Theme.of(context).hintColor,
                                 fontSize: Dimensions.fontSizeLarge),
@@ -397,7 +401,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         width: Dimensions.PADDING_SIZE_SMALL,
                       ),
                       Text(
-                        'Rate App',
+                        'rate_app'.tr,
                         style: robotoBold.copyWith(
                             color: Theme.of(context).hintColor,
                             fontSize: Dimensions.fontSizeLarge),
@@ -463,7 +467,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               isSelected: cartController.currentIndex == 0,
                               onTap: () => _setPage(0),
                               countVisible: false,
-                              title: "Home",
+                              title: "home".tr,
                               ImagePath: Images.home),
                           BottomNavItem(
                               iconData: eccorance
@@ -472,7 +476,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               isSelected: cartController.currentIndex == 1,
                               onTap: () => {_setPage(1)},
                               countVisible: true,
-                              title: "Members",
+                              title: "Members".tr,
                               ImagePath: Images.incidences),
                           Expanded(child: SizedBox()),
                           BottomNavItem(
@@ -480,7 +484,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               isSelected: cartController.currentIndex == 2,
                               onTap: () => _setPage(2),
                               countVisible: false,
-                              title: "Poll Events",
+                              title: "poll_events".tr,
                               ImagePath: Images.latests_news),
                           BottomNavItem(
                               iconData: Icons.menu,
@@ -492,7 +496,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 isScrollControlled: true);*/
                               },
                               countVisible: false,
-                              title: "Profile",
+                              title: "Profile".tr,
                               ImagePath: Images.more),
                         ]),
                       )),
@@ -525,7 +529,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         }if(pageIndex==2){
           toolbar_name="Polling Events";
         }if(pageIndex==3){
-          toolbar_name="Notification";
+          toolbar_name="Our Ideas";
         }if(pageIndex==4){
           toolbar_name="Add New Member";
         }

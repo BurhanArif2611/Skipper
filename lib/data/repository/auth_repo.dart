@@ -103,6 +103,8 @@ class AuthRepo {
   }
   Future<Response> pollingSurvey() async {
     return await apiClient.getData(AppConstants.PollingSurvey_URI);
+  }Future<Response> regions() async {
+    return await apiClient.getData(AppConstants.Regions_URI);
   }
   Future<Response> pollingSurveyResultStore(String serveyId,String answer) async {
     return await apiClient.postData(AppConstants.PollingSurveyStore_URI,{"servey_id":serveyId,"answer":answer});

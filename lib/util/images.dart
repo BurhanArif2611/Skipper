@@ -19,6 +19,10 @@ class Images {
   static const String id_card = 'assets/image/id_card.png';
   static const String about_us = 'assets/image/about_us.png';
   static const String president = 'assets/image/president.png';
+  static const String political_event = 'assets/image/political_event.webp';
+  static const String economic_programme = 'assets/image/economic_programme.png';
+  static const String social_programme = 'assets/image/social_program.png';
+  static const String culture_programme = 'assets/image/culture_program.png';
   static const String vice_president = 'assets/image/vice_president.png';
   static const String mahamat_third = 'assets/image/mahamat_third.png';
   static const String fourth = 'assets/image/fourth.png';
@@ -140,5 +144,7 @@ class Images {
   static const String help_support = 'assets/image/help_support.svg';
   static const String share_app = 'assets/image/share_app.svg';
   static const String rate_us = 'assets/image/rate_us.svg';
+  static const String search = 'assets/image/search.svg';
   static const String menu_drawer_png = 'assets/image/menu_drawer.png';
+  static const String splash_gif = 'assets/image/splash.gif';
 }

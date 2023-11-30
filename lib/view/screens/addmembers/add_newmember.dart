@@ -1,24 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter_svg/svg.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:sixam_mart/controller/home_controller.dart';
-
-import 'package:sixam_mart/controller/splash_controller.dart';
-import 'package:sixam_mart/controller/user_controller.dart';
-import 'package:sixam_mart/helper/responsive_helper.dart';
-import 'package:sixam_mart/helper/route_helper.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
 /**/
-import 'package:sixam_mart/view/base/menu_drawer.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/auth_controller.dart';
+import '../../../data/model/response/regions_response.dart';
 import '../../base/custom_button.dart';
 import '../../base/custom_dialog.dart';
 import '../../base/custom_image.dart';
@@ -48,6 +41,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
 
   void _loadData() async {
     Get.find<AuthController>().clearData();
+    await Get.find<AuthController>().getRegions();
   }
 
   @override
@@ -125,7 +119,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
             SizedBox(
                 height:
                 Dimensions.PADDING_SIZE_LARGE),
-            CustomTextField(
+            /*CustomTextField(
               hintText: 'Region'.tr,
                controller: _regionController,
               focusNode: _regionFocus,
@@ -135,7 +129,86 @@ class _AddNewMembersState extends State<AddNewMembers> {
               TextCapitalization.words,
               prefixIcon: Images.region,
               divider: false,
-            ), SizedBox(
+            )*/
+            GetBuilder<AuthController>(
+                builder: (carlistingController) {
+                  return TypeAheadField(
+                    textFieldConfiguration: TextFieldConfiguration(
+                      controller: _regionController,
+                      textInputAction: TextInputAction.search,
+                      textCapitalization: TextCapitalization.words,
+                      keyboardType: TextInputType.streetAddress,
+                      onChanged: (text) {
+                       // _regionController.getLocation(false, text);
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Search Regions'.tr,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          borderSide: BorderSide(
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withOpacity(0.3),
+                              width: 1),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          borderSide: BorderSide(
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withOpacity(0.3),
+                              width: 1),
+                        ),
+                        hintStyle: robotoMedium.copyWith(
+                          fontSize: Dimensions.fontSizeLarge,
+                          color: Color(0xFFA1A8B0),
+                        ),
+                        filled: true,
+                        fillColor: Theme.of(context).cardColor,
+                        prefixIcon: IconButton(
+                          icon: SvgPicture.asset(
+                            Images.search,
+                            width: 20,
+                            height: 20,
+                          ),
+                        ),
+                      ),
+                      style: robotoMedium.copyWith(
+                        color: Theme.of(context).textTheme.bodyText1.color,
+                        fontSize: Dimensions.fontSizeSmall,
+                      ),
+                    ),
+                    suggestionsCallback: (pattern) =>
+                    carlistingController.regionsListModel!=null?carlistingController.regionsListModel.data:null,
+                    itemBuilder: (context, RegionsData suggestion) {
+                      return Padding(
+                        padding:
+                        EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                        child: Row(children: [
+                          Expanded(
+                              child: Text(
+                                suggestion.chiefPlace,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: robotoMedium.copyWith(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      .color,
+                                  fontSize: Dimensions.fontSizeSmall,
+                                ),
+                              )),
+                        ]),
+                      );
+                    },
+                    onSuggestionSelected: (RegionsData suggestion) async {
+                      _regionController.text = suggestion.chiefPlace;
+
+                    },
+                  );
+                })
+
+            , SizedBox(
                 height:
                 Dimensions.PADDING_SIZE_LARGE),
             CustomTextField(

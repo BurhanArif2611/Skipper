@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:sixam_mart/controller/auth_controller.dart';
+import 'package:flutter_svg/svg.dart';
+
 import 'package:sixam_mart/controller/cart_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
@@ -17,14 +15,6 @@ import 'package:sixam_mart/view/base/no_internet_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../controller/banner_controller.dart';
-import '../../../controller/category_controller.dart';
-import '../../../controller/localization_controller.dart';
-import '../../../controller/store_controller.dart';
-import '../../../controller/theme_controller.dart';
-import '../../../data/model/response/module_model.dart';
-import '../../../data/model/response/store_model.dart';
-import '../../../util/styles.dart';
 
 class SplashScreen extends StatefulWidget {
   final String orderID;
@@ -70,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
       _firstTime = false;
     });
 
-    Get.find<CartController>().getCartData();
+  //  Get.find<CartController>().getCartData();
     // Get.find<ThemeController>().toggleTheme();
     _route();
   }
@@ -83,7 +73,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _route() {
-    Timer(Duration(seconds: 1), () async {
+    Timer(Duration(seconds: 10), () async {
       print("_route>>>>>");
     //  Get.offNamed(RouteHelper.getWebViewScreen());
       Get.offNamed(RouteHelper.getInitialRoute());
@@ -106,17 +96,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return Scaffold(
       key: _globalKey,
-      body: GetBuilder<SplashController>(builder: (splashController) {
-        return Container(
+      body:
+         Container(
             height: double.infinity,
-            color: Color(0xFFF7F5F3),
-            child: Center(
+            color: /*splashController.hasConnection?*/Color(0xFF000000)/*:Color(0xFFF7F5F3)*/,
+            child:/*splashController.hasConnection?*/Image.asset(Images.splash_gif,width: MediaQuery.of(context).size.width,height: MediaQuery.of(context).size.height,)/*:
+            Center(
               child: splashController.hasConnection
                   ? Image.asset(Images.logo,width: 150,height: 150,)
                   : NoInternetScreen(
                       child: SplashScreen(orderID: widget.orderID)),
-            ));
-      }),
+            )*/)
+
     );
   }
 }

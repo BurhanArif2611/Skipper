@@ -1,4 +1,4 @@
-package app.abujaeye
+package com.patriotes.android
 
 import io.flutter.embedding.android.FlutterActivity
 

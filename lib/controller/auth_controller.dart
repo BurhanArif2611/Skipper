@@ -21,6 +21,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as Http;
 
 import '../data/model/body/news_submit_body.dart';
+import '../data/model/response/regions_response.dart';
 import '../data/model/response/survey_list_model.dart';
 import '../helper/network_info.dart';
 import '../util/app_constants.dart';
@@ -63,6 +64,9 @@ class AuthController extends GetxController implements GetxService {
   String get uploadedURL => _uploadedURL;
   SurveyListModel _surveyListModel;
   SurveyListModel get surveyListModel => _surveyListModel;
+
+  RegionsResponse _regionsListModel;
+  RegionsResponse get regionsListModel => _regionsListModel;
 
 
   int _selectedIndex = 0;
@@ -308,6 +312,21 @@ class AuthController extends GetxController implements GetxService {
     ResponseModel responseModel;
     if (response.statusCode == 200) {
       _surveyListModel = SurveyListModel.fromJson(response.body);
+      responseModel = ResponseModel(true, response.body["message"]);
+    } else {
+      responseModel = ResponseModel(false, response.statusText);
+    }
+    _isLoading = false;
+    update();
+    return responseModel;
+  }
+  Future<ResponseModel> getRegions() async {
+    _isLoading = true;
+    update();
+    Response response = await authRepo.regions();
+    ResponseModel responseModel;
+    if (response.statusCode == 200) {
+      _regionsListModel = RegionsResponse.fromJson(response.body);
       responseModel = ResponseModel(true, response.body["message"]);
     } else {
       responseModel = ResponseModel(false, response.statusText);
