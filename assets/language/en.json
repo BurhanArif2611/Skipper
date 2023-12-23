@@ -571,5 +571,12 @@
   "political_program": "Political Program:…",
   "Economic_Programme": "Economic Programme:…",
   "social_Programme": "Social Programme…",
-  "culture_Programme": "Cultural Program"
+  "culture_Programme": "Cultural Program",
+
+  "enter_first_name": "Enter First Name",
+  "enter_email_address": "Enter Email Address",
+  "search_regions": "Search Regions",
+  "address": "Address",
+  "upload_member_profile_images": "Upload member profile Images",
+  "add_member": "Add Member"
 }

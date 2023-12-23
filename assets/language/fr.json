@@ -1,6 +1,6 @@
 {
   "connection_to_api_server_failed": "Connection to API server failed due to internet connection",
-  "select_language": "Select Language",
+  "select_language": "Choisissez votre langue",
   "save": "Sauvegarder",
   "select_a_language": "Select a language",
   "on_boarding_1_title": "Get Favorite Items",
@@ -41,7 +41,7 @@
   "by_allowing_location_access": "By allowing location access, you can search for stores and items near you and receive more accurate delivery.",
   "user_current_location": "Use Current Location",
   "set_from_map": "Set From Map",
-  "you_can_change_language": "*You can change language later from menu bar",
+  "you_can_change_language": "*Vous pouvez changer de langue plus tard depuis la barre de menu",
   "resend_code_successful": "Resend code successful",
   "pick_an_address": "Pick an address",
   "choose_your_interests": "Choose \nYour Interests",
@@ -561,16 +561,37 @@
   "help_and_support": "Aide et soutien",
   "share_app": "Partager l'application",
   "our_fundamental_documents": "Nos documents fondamentaux",
-  "organization_and_operation": "Organisation et fonctionnement",
+  "organization_and_operation": "Organisation fonctionnement",
   "rate_app": "Application de taux",
   "Members": "Membres",
-  "poll_events": "Événements de sondage",
+  "poll_events": "Événements sondage",
   "Profile": "Profil",
   "national_program": "Programme National",
   "national_program_detail": "Vous pouvez avoir un accès détaillé à notre programme national divisé en programme politique, économique, social et culturel.",
   "political_program": "Political Programme:…",
   "Economic_Programme": "Economic Programme:…",
   "social_Programme": "Social Programme…",
-  "culture_Programme": "Cultural Program"
+  "culture_Programme": "Cultural Program",
+  "join_us": "Rejoignez-nous",
+  "members": "Membres",
+  "who_are_we": "Qui sommes nous",
+  "polling_events": "Événements de sondage",
+  "our_ideas": "Nos idées",
+  "add_new_member": "Ajouter un nouveau membre",
+
+  "NASOUR_IBRAHIM": "Dr. NASOUR IBRAHIM KOURSAMI",
+  "DÉSIRE_MICHAEL": "DR. DÉSIRE MICHAEL ALLADOUM",
+  "MAHAMAT_SALEH": "MR. MAHAMAT SALEH SEID",
+  "AHMAT_HAROUN": "MR. AHMAT HAROUN",
+
+
+  "enter_first_name": "Entrez votre prénom",
+  "enter_email_address": "Entrer l'adresse e-mail",
+  "search_regions": "Rechercher des régions",
+  "address": "Adresse",
+  "upload_member_profile_images": "Télécharger le profil du membre Images",
+  "add_member": "Ajouter un membre"
+
+
 
 }

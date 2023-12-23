@@ -195,7 +195,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     )),
               ),
               Padding(
-                padding: EdgeInsets.only(left: Dimensions.PADDING_SIZE_DEFAULT),
+                padding: EdgeInsets.only(left: Dimensions.PADDING_SIZE_DEFAULT,right: Dimensions.PADDING_SIZE_DEFAULT),
                 child: Text(
                   "general".tr,
                   style: robotoBold.copyWith(
@@ -476,9 +476,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               isSelected: cartController.currentIndex == 1,
                               onTap: () => {_setPage(1)},
                               countVisible: true,
-                              title: "Members".tr,
+                              title: "members".tr,
                               ImagePath: Images.incidences),
-                          Expanded(child: SizedBox()),
+                          Expanded(child:Container(alignment: Alignment.center,padding: EdgeInsets.only(top: Dimensions.PADDING_SIZE_LARGE),
+                              child: Align(alignment:Alignment.center,child:Text("join_us".tr,textAlign: TextAlign.center, style: robotoRegular.copyWith(color: _pageIndex==4 ? Theme.of(context).primaryColor : Colors.grey),)))),
                           BottomNavItem(
                               iconData: Icons.shopping_bag,
                               isSelected: cartController.currentIndex == 2,
@@ -496,7 +497,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 isScrollControlled: true);*/
                               },
                               countVisible: false,
-                              title: "Profile".tr,
+                              title: "profile".tr,
                               ImagePath: Images.more),
                         ]),
                       )),
@@ -523,15 +524,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
         // _pageController.jumpToPage(pageIndex);
         _pageIndex = pageIndex;
         if(pageIndex==0){
-          toolbar_name="Home";
+          toolbar_name="home".tr;
         }if(pageIndex==1){
-          toolbar_name="Who are we";
+          toolbar_name="who_are_we".tr;
         }if(pageIndex==2){
-          toolbar_name="Polling Events";
+          toolbar_name="polling_events".tr;
         }if(pageIndex==3){
-          toolbar_name="Our Ideas";
+          toolbar_name="our_ideas".tr;
         }if(pageIndex==4){
-          toolbar_name="Add New Member";
+          toolbar_name="add_new_member".tr;
         }
       });
       print("if >>>${_pageIndex.toString()}");

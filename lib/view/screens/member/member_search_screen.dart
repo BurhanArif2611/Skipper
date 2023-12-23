@@ -87,7 +87,7 @@ class _MemberSearchScreenState extends State<MemberSearchScreen> {
                               height: Dimensions.PADDING_SIZE_SMALL,
                             ),
                             Text(
-                              "Dr. NASOUR IBRAHIM KOURSAMI".tr,
+                              "NASOUR_IBRAHIM".tr,
                               style: robotoBold.copyWith(
                                   color: Theme.of(context).primaryColor,
                                   fontSize: Dimensions.fontSizeExtraLarge),
@@ -141,7 +141,7 @@ class _MemberSearchScreenState extends State<MemberSearchScreen> {
                               height: Dimensions.PADDING_SIZE_SMALL,
                             ),
                             Text(
-                              "DR. DÉSIRE MICHAEL ALLADOUM".tr,
+                              "DÉSIRE_MICHAEL".tr,
                               style: robotoBold.copyWith(
                                   color: Theme.of(context).primaryColor,
                                   fontSize: Dimensions.fontSizeExtraLarge),
@@ -195,7 +195,7 @@ class _MemberSearchScreenState extends State<MemberSearchScreen> {
                               height: Dimensions.PADDING_SIZE_SMALL,
                             ),
                             Text(
-                              "MR. MAHAMAT SALEH SEID".tr,
+                              "MAHAMAT_SALEH".tr,
                               style: robotoBold.copyWith(
                                   color: Theme.of(context).primaryColor,
                                   fontSize: Dimensions.fontSizeExtraLarge),
@@ -249,7 +249,7 @@ class _MemberSearchScreenState extends State<MemberSearchScreen> {
                               height: Dimensions.PADDING_SIZE_SMALL,
                             ),
                             Text(
-                              "MR. AHMAT HAROUN".tr,
+                              "AHMAT_HAROUN".tr,
                               style: robotoBold.copyWith(
                                   color: Theme.of(context).primaryColor,
                                   fontSize: Dimensions.fontSizeExtraLarge),

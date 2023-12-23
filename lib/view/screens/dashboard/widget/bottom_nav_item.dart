@@ -38,7 +38,7 @@ class BottomNavItem extends StatelessWidget {
         ),*/
         Image.asset(ImagePath, color: isSelected ? Theme.of(context).primaryColor : Colors.grey,
             height: 30, width: 30),
-        Text(title,style: robotoRegular.copyWith(color: isSelected ? Theme.of(context).primaryColor : Colors.grey)),
+        Text(title,style: robotoRegular.copyWith(color: isSelected ? Theme.of(context).primaryColor : Colors.grey),maxLines: 1,),
       ]),
     ));
   }

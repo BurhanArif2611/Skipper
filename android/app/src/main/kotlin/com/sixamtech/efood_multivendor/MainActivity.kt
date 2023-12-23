@@ -1,4 +1,4 @@
-package com.patriotes.android
+package com.patriotes.androidapp
 
 import io.flutter.embedding.android.FlutterActivity
 

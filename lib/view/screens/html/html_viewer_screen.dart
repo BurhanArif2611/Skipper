@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/base/footer_view.dart';
 import 'package:sixam_mart/view/base/menu_drawer.dart';
-import 'package:universal_html/html.dart' as html;
+/*import 'package:universal_html/html.dart' as html;*/
 import 'package:url_launcher/url_launcher_string.dart';
 
 class HtmlViewerScreen extends StatefulWidget {
@@ -71,7 +71,7 @@ class _HtmlViewerScreenState extends State<HtmlViewerScreen> {
                       url = 'https://' + url;
                     }
                     print('Redirect to url: $url');
-                    html.window.open(url, "_blank");
+                   // html.window.open(url, "_blank");
                   },
                 ),
 

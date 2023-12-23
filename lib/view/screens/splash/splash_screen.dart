@@ -76,16 +76,9 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 10), () async {
       print("_route>>>>>");
     //  Get.offNamed(RouteHelper.getWebViewScreen());
-      Get.offNamed(RouteHelper.getInitialRoute());
-      /*if (Get.find<AuthController>().isLoggedIn()) {
-        Get.offNamed(RouteHelper.getInitialRoute());
-      } else {
-        if (Get.find<SplashController>().showIntro()) {
-          Get.offNamed(RouteHelper.getOnBoardingRoute());
-        } else {
-          Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
-        }
-      }*/
+    //  Get.offNamed(RouteHelper.getInitialRoute());
+      Get.offNamed(RouteHelper.getLanguageRoute('menu'));
+
 
     });
   }

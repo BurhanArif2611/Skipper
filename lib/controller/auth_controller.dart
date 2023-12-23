@@ -198,9 +198,11 @@ class AuthController extends GetxController implements GetxService {
         showCustomSnackBar(map["message"].toString(),isError: false);
       }
       else {
+        _isLoading=false;
         showCustomSnackBar(map["message"].toString(),isError: true);
       }
     });
+    _isLoading=false;
     update();
     return responseCheck;
   }

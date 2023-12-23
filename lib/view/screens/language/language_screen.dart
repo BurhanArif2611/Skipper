@@ -70,7 +70,7 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
                         SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
 
                         Text('you_can_change_language'.tr, style: robotoRegular.copyWith(
-                          fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor,
+                          fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor,
                         )),
 
                         ResponsiveHelper.isDesktop(context) ? Padding(

@@ -38,6 +38,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _regionController = TextEditingController();
+  final TextEditingController _regionIdController = TextEditingController();
 
   void _loadData() async {
     Get.find<AuthController>().clearData();
@@ -81,7 +82,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
                 Dimensions.PADDING_SIZE_LARGE),
 
             CustomTextField(
-              hintText: 'Enter First Name'.tr,
+              hintText: 'enter_first_name'.tr,
               controller: _nameController,
               focusNode: _nameFocus,
               nextFocus: _emailFocus,
@@ -95,7 +96,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
                 height:
                 Dimensions.PADDING_SIZE_LARGE),
             CustomTextField(
-              hintText: 'Enter Email Address'.tr,
+              hintText: 'enter_email_address'.tr,
                controller: _emailController,
               focusNode: _emailFocus,
               nextFocus: _phoneFocus,
@@ -108,7 +109,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
                 height:
                 Dimensions.PADDING_SIZE_LARGE),
             CustomTextField(
-              hintText: 'Phone'.tr,
+              hintText: 'phone'.tr,
                controller: _phoneController,
               focusNode: _phoneFocus,
               nextFocus: _regionFocus,
@@ -142,7 +143,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
                        // _regionController.getLocation(false, text);
                       },
                       decoration: InputDecoration(
-                        hintText: 'Search Regions'.tr,
+                        hintText: 'search_regions'.tr,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25.0),
                           borderSide: BorderSide(
@@ -203,6 +204,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
                     },
                     onSuggestionSelected: (RegionsData suggestion) async {
                       _regionController.text = suggestion.chiefPlace;
+                      _regionIdController.text = suggestion.id.toString();
 
                     },
                   );
@@ -212,7 +214,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
                 height:
                 Dimensions.PADDING_SIZE_LARGE),
             CustomTextField(
-              hintText: 'Address'.tr,
+              hintText: 'address'.tr,
                controller: _addressController,
               focusNode: _addressFocus,
               nextFocus: _addressFocus,
@@ -228,7 +230,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
             Align(
               alignment: Alignment.topLeft,
               child: Text(
-                "Upload member profile Images",
+                "upload_member_profile_images".tr,
                 style: robotoRegular.copyWith(
                     color: Theme.of(context).hintColor,
                     fontSize: Dimensions.fontSizeLarge),
@@ -255,7 +257,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
             SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
 
             CustomButton(
-              buttonText: 'Add Member'.tr,
+              buttonText: 'add_member'.tr,
               onPressed: () => _login(authController)
               ,
             ), SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_LARGE),
@@ -386,7 +388,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
     String _email = _emailController.text.trim();
     String _name = _nameController.text.trim();
     String _phone = _phoneController.text.trim();
-    String _region = _regionController.text.trim();
+    String _region = _regionIdController.text.trim();
     String _address = _addressController.text.trim();
 
 
