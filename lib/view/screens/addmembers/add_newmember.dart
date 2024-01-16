@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 
 import '../../../controller/auth_controller.dart';
 import '../../../data/model/response/regions_response.dart';
+import '../../../helper/route_helper.dart';
 import '../../base/custom_button.dart';
 import '../../base/custom_dialog.dart';
 import '../../base/custom_image.dart';
@@ -408,13 +409,13 @@ class _AddNewMembersState extends State<AddNewMembers> {
           .asyncTestFileUpload(authController.file, _name, _email, _phone, _region, _address)
           .then((status) async {
         if (status) {
+
          authController.clearData();
          _emailController.text = "";
          _nameController.text = "";
          _phoneController.text = "";
          _regionController.text = "";
          _addressController.text = "";
-
         }
       });
       //

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
@@ -311,6 +312,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
                 onTap: () {
+                  Share.share('check out our ${AppConstants.APP_NAME} App ${'https://play.google.com/store/apps/details?id=com.patriotes.androidapp'}', subject: 'Look what I made!');
+
                   // Update the state of the app.
                   // ...
                 },

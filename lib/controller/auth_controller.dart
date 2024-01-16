@@ -167,6 +167,7 @@ class AuthController extends GetxController implements GetxService {
   Future<bool> asyncTestFileUpload(File file, String name, String email,
       String phone, String region, String address) async {
     _isLoading=true;
+
     bool responseCheck = false;
     Map<String, String> headers = {"Accept": "Accept application/json","content-type": "multipart/form-data"};
 
@@ -196,6 +197,7 @@ class AuthController extends GetxController implements GetxService {
         print("Uploaded!");
         responseCheck=true;
         showCustomSnackBar(map["message"].toString(),isError: false);
+        Get.offNamed(RouteHelper.getPaymentRoute());
       }
       else {
         _isLoading=false;

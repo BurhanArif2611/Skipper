@@ -330,10 +330,10 @@ class WalletController extends GetxController implements GetxService {
       print("response>>" + response.body['link'].toString());
 
       if (response.body['status'] == 200) {
-        Get.offNamed(RouteHelper.getPaymentRoute(
+       /* Get.offNamed(RouteHelper.getPaymentRoute(
             "-12",
             Get.find<UserController>().userInfoModel.id,
-            response.body['link'].toString()));
+            response.body['link'].toString()));*/
         _isLoading = false;
       } else {
         showCustomSnackBar(response.body['message'].toString(), isError: true);

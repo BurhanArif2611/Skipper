@@ -52,6 +52,7 @@ import 'package:sixam_mart/view/screens/wallet/wallet_screen.dart';
 import '../data/model/response/incidence_detail_response.dart';
 import '../data/model/response/news_list_model.dart';
 import '../data/model/response/survey_list_model.dart';
+import '../view/screens/addmembers/payment_sucess_screen.dart';
 import '../view/screens/complaint/add_complaint_screen.dart';
 import '../view/screens/complaint/list_complaint_screen.dart';
 import '../view/screens/contact_center/contact_center_screen.dart';
@@ -209,7 +210,7 @@ class RouteHelper {
   static String getOrderSuccessRoute(String orderID) {
     return '$orderSuccess?id=$orderID';
   }
-  static String getPaymentRoute(String id, int user, String type) => '$payment?id=$id&user=$user&type=$type';
+  static String getPaymentRoute() => '$payment';
   static String getCheckoutRoute(String page) => '$checkout?page=$page';
   static String getOrderTrackingRoute(int id) => '$orderTracking?id=$id';
   static String getBasicCampaignRoute(BasicCampaignModel basicCampaignModel) {
@@ -377,6 +378,8 @@ class RouteHelper {
     GetPage(name: updateProfile, page: () => getRoute(UpdateProfileScreen())),
    /* GetPage(name: coupon, page: () => getRoute(CouponScreen())),
    */ GetPage(name: notification, page: () => getRoute(NotificationScreen())),
+
+    GetPage(name: payment, page: () => getRoute(PaymentSuccessScreen())),
     /*GetPage(name: map, page: () {
       List<int> _decode = base64Decode(Get.parameters['address'].replaceAll(' ', '+'));
       AddressModel _data = AddressModel.fromJson(jsonDecode(utf8.decode(_decode)));
