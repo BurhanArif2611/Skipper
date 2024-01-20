@@ -74,10 +74,8 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
 
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE, vertical: Dimensions.PADDING_SIZE_SMALL),
-                child: Text( (success)?'Now this member is added in our party successfully.':
-                success ? 'your_parcel_request_is_placed_successfully'.tr
-                    : 'your_order_is_placed_successfully'.tr ,
-                  style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
+                child: Text('payment_sub_title'.tr ,
+                  style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault, color: Colors.grey),
                   textAlign: TextAlign.center,
                 ),
               ),

@@ -223,6 +223,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
                 onTap: () {
+
                   // Update the state of the app.
                   // ...
                 },
@@ -481,8 +482,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               countVisible: true,
                               title: "members".tr,
                               ImagePath: Images.incidences),
-                          Expanded(child:Container(alignment: Alignment.center,padding: EdgeInsets.only(top: Dimensions.PADDING_SIZE_LARGE),
-                              child: Align(alignment:Alignment.center,child:Text("join_us".tr,textAlign: TextAlign.center, style: robotoRegular.copyWith(color: _pageIndex==4 ? Theme.of(context).primaryColor : Colors.grey),)))),
+                          Expanded(child:Container(alignment: Alignment.center,padding: EdgeInsets.only(top: Dimensions.PADDING_SIZE_EXTRA_LARGE),
+                              child: Align(alignment:Alignment.center,child:Text("join_us".tr,textAlign: TextAlign.center, style: robotoRegular.copyWith(color: _pageIndex==4 ? Theme.of(context).primaryColor : Colors.black,fontSize: Dimensions.fontSizeSmall ),)))),
                           BottomNavItem(
                               iconData: Icons.shopping_bag,
                               isSelected: cartController.currentIndex == 2,

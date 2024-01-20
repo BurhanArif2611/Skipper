@@ -578,5 +578,6 @@
   "search_regions": "Search Regions",
   "address": "Address",
   "upload_member_profile_images": "Upload member profile Images",
-  "add_member": "Add Member"
+  "add_member": "Add Member",
+  "payment_sub_title": "Member has been successfully added."
 }

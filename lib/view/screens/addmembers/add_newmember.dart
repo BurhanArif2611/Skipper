@@ -257,11 +257,24 @@ class _AddNewMembersState extends State<AddNewMembers> {
             ),
             SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
 
-            CustomButton(
-              buttonText: 'add_member'.tr,
-              onPressed: () => _login(authController)
-              ,
-            ), SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_LARGE),
+
+
+            GetBuilder<AuthController>(builder: (userController) {
+
+              return !userController.isButtonLoading
+                  ?  CustomButton(
+                buttonText: 'add_member'.tr,
+                onPressed: () => _login(authController)
+              )
+                  : Center(
+                child: CircularProgressIndicator(),
+              );
+            }),
+
+
+
+
+            SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_LARGE),
 
           ],),
         )):
@@ -405,6 +418,8 @@ class _AddNewMembersState extends State<AddNewMembers> {
     }else if (_address.isEmpty) {
       showCustomSnackBar('Enter Address '.tr);
     } else {
+      authController.showLoader();
+
       authController
           .asyncTestFileUpload(authController.file, _name, _email, _phone, _region, _address)
           .then((status) async {
@@ -422,5 +437,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
     }
   }
 }
+
+
 
 

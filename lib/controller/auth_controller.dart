@@ -34,11 +34,14 @@ class AuthController extends GetxController implements GetxService {
     _notification = authRepo.isNotificationActive();
   }
 
-  bool _isLoading = false;
+
   bool _notification = true;
   bool _acceptTerms = true;
-
+  bool _isLoading = false;
   bool get isLoading => _isLoading;
+
+  bool _isButtonLoading = false;
+  bool get isButtonLoading => _isButtonLoading;
 
   bool get notification => _notification;
 
@@ -138,7 +141,12 @@ class AuthController extends GetxController implements GetxService {
       // update();
     } catch (e) {}
   }
-
+  void showLoader() {
+    try {
+      _isButtonLoading=true;
+       update();
+    } catch (e) {}
+  }
   Future<ResponseModel> login(String phone, String password) async {
     _isLoading = true;
     update();
@@ -166,8 +174,10 @@ class AuthController extends GetxController implements GetxService {
 
   Future<bool> asyncTestFileUpload(File file, String name, String email,
       String phone, String region, String address) async {
-    _isLoading=true;
 
+    _isButtonLoading=true;
+
+    print("responseString>>>>>>><<>>>>>API Call??");
     bool responseCheck = false;
     Map<String, String> headers = {"Accept": "Accept application/json","content-type": "multipart/form-data"};
 
@@ -186,8 +196,11 @@ class AuthController extends GetxController implements GetxService {
         'profile', file.path /*,contentType: new MediaType('image', 'jpeg')*/);
 
     request.files.add(multipartFile);
+
+    print("responseString>>>>>>><<>>>>>${request.fields.toString()}");
     request.send().then((response) async {
       _isLoading=false;
+      _isButtonLoading=false;
       print("responseString>>>>>>><<>>>>>${response.statusCode.toString()}");
       var responseData = await response.stream.toBytes();
       var responseString = String.fromCharCodes(responseData);
@@ -198,14 +211,20 @@ class AuthController extends GetxController implements GetxService {
         responseCheck=true;
         showCustomSnackBar(map["message"].toString(),isError: false);
         Get.offNamed(RouteHelper.getPaymentRoute());
+
+        _isLoading=false;
+        _isButtonLoading=false;
+        update();
       }
       else {
         _isLoading=false;
+        _isButtonLoading=false;
         showCustomSnackBar(map["message"].toString(),isError: true);
+
+        update();
       }
     });
-    _isLoading=false;
-    update();
+
     return responseCheck;
   }
 
