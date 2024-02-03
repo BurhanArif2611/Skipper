@@ -19,14 +19,7 @@ import 'package:sixam_mart/view/base/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../controller/dashboard_controller.dart';
-import '../../../controller/onboarding_controller.dart';
-import '../../../data/model/response/survey_list_model.dart';
-import '../../../helper/date_converter.dart';
-import '../../base/custom_app_bar.dart';
-import '../../base/custom_button.dart';
-import '../../base/custom_dialog.dart';
-import '../../base/custom_image.dart';
+
 import '../../base/custom_snackbar.dart';
 import '../../base/inner_custom_app_bar.dart';
 import '../../base/no_data_screen.dart';
@@ -356,7 +349,7 @@ class _PollingSurveyScreenState extends State<PollingSurveyScreen> {
                                                                         alignment: Alignment.center,
                                                                         child: Text(
                                                                          /* onBoardingController.surveyListModel.data.length - 1 == (PaginationIndex)
-                                                                              ?*/ "Submit"
+                                                                              ?*/ "submit".tr
                                                                               /*: "Next"*/,
                                                                           style: robotoMedium.copyWith(
                                                                               color: Theme.of(context).primaryColor,

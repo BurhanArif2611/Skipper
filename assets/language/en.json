@@ -579,5 +579,7 @@
   "address": "Address",
   "upload_member_profile_images": "Upload member profile Images",
   "add_member": "Add Member",
-  "payment_sub_title": "Member has been successfully added."
+  "payment_sub_title": "Member has been successfully added.",
+  "justice": "Justice",
+  "submit": "Submit"
 }

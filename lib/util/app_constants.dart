@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:sixam_mart/data/model/response/choose_us_model.dart';
 import 'package:sixam_mart/data/model/response/language_model.dart';
+import 'package:sixam_mart/data/model/response/region_response_model.dart';
 import 'package:sixam_mart/util/images.dart';
 
 import '../controller/banner_controller.dart';
@@ -224,5 +225,31 @@ class AppConstants {
         countryCode: 'US',
         languageCode: 'en')
 
+  ];
+
+  static List<RegionResponseModel> region = [
+    RegionResponseModel(id: 1,chief_place: "ATI",chief_place_ar: "",provinces: "BATHA",provinces_ar: "البطحاء"),
+    RegionResponseModel(id: 2,chief_place: "FAYA",chief_place_ar: "",provinces: "BORKOU",provinces_ar: "بوركو"),
+    RegionResponseModel(id: 3,chief_place: "MASSENYA",chief_place_ar: "",provinces: "CHARI-BAGUIRMI",provinces_ar: "شاري باجورمي"),
+    RegionResponseModel(id: 4,chief_place: "MONGO",chief_place_ar: "",provinces: "GUERA",provinces_ar: "غيرا"),
+    RegionResponseModel(id: 5,chief_place: "MASSAKORI",chief_place_ar: "",provinces: "HADJER LAMIS",provinces_ar: "هاجر لميس"),
+    RegionResponseModel(id: 6,chief_place: "MAO",chief_place_ar: "",provinces: "KANEM",provinces_ar: "كانم"),
+    RegionResponseModel(id: 7,chief_place: "BOL",chief_place_ar: "",provinces: "LAC",provinces_ar: "لاك"),
+    RegionResponseModel(id: 8,chief_place: "MOUNDOU",chief_place_ar: "",provinces: "LOGONE OCCIDENTALE",provinces_ar: "لوغون أوكسيدنتال"),
+    RegionResponseModel(id: 9,chief_place: "DOBA",chief_place_ar: "",provinces: "LOGONE ORIENTALE",provinces_ar: "تسجيل الدخول الشرقي"),
+    RegionResponseModel(id: 10,chief_place: "KOUMRA",chief_place_ar: "",provinces: "MANDOUL",provinces_ar: "مندول"),
+    RegionResponseModel(id: 11,chief_place: "BONGOR",chief_place_ar: "",provinces: "MAYO-KEBBI EST",provinces_ar: "مؤسسة مايو-كيبي"),
+    RegionResponseModel(id: 12,chief_place: "PALA",chief_place_ar: "",provinces: "MAYO-KEBBI OUEST",provinces_ar: "مايو كيبي ويست"),
+    RegionResponseModel(id: 13,chief_place: "SARH",chief_place_ar: "",provinces: "MOYEN CHARI",provinces_ar: "موين شاري"),
+    RegionResponseModel(id: 14,chief_place: "ABECHE",chief_place_ar: "",provinces: "OUADDAI",provinces_ar: "أوداي"),
+    RegionResponseModel(id: 15,chief_place: "AMTIMAN",chief_place_ar: "",provinces: "SALAMAT",provinces_ar: "سلامات"),
+    RegionResponseModel(id: 16,chief_place: "LAI",chief_place_ar: "",provinces: "TANDJILE",provinces_ar: "تاندجيلي"),
+    RegionResponseModel(id: 17,chief_place: "BILTINE",chief_place_ar: "",provinces: "BILTINE",provinces_ar: "بيلتين"),
+    RegionResponseModel(id: 18,chief_place: "N\u2019DJAMENA",chief_place_ar: "",provinces: "N\u2019DJAMENA",provinces_ar: "نجامينا"),
+    RegionResponseModel(id: 19,chief_place: "MOUSSOURO",chief_place_ar: "",provinces: "BARH EL-KHAZAL",provinces_ar: "بار الخزعل"),
+    RegionResponseModel(id: 20,chief_place: "FADA",chief_place_ar: "",provinces: "ENNEDI OUEST",provinces_ar: "إنيدي الغربية"),
+    RegionResponseModel(id: 21,chief_place: "GOZ BEIDA",chief_place_ar: "",provinces: "SILA",provinces_ar: "سيلا"),
+    RegionResponseModel(id: 22,chief_place: "BARDAI",chief_place_ar: "",provinces: "TIBESTI",provinces_ar: "تيبستي"),
+    RegionResponseModel(id: 23,chief_place: "AMDJARASS",chief_place_ar: "",provinces: "ENNEDI EST",provinces_ar: "إنيدي"),
   ];
 }

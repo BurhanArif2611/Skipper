@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/auth_controller.dart';
+import '../../../controller/localization_controller.dart';
+import '../../../data/model/response/region_response_model.dart';
 import '../../../data/model/response/regions_response.dart';
 import '../../../helper/route_helper.dart';
 import '../../base/custom_button.dart';
@@ -40,16 +42,18 @@ class _AddNewMembersState extends State<AddNewMembers> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _regionController = TextEditingController();
   final TextEditingController _regionIdController = TextEditingController();
-
+  String language;
   void _loadData() async {
     Get.find<AuthController>().clearData();
-    await Get.find<AuthController>().getRegions();
+  //  await Get.find<AuthController>().getRegions();
   }
 
   @override
   void initState() {
     super.initState();
     _loadData();
+    language=Get.find<LocalizationController>().locale.languageCode;
+
   }
 
   @override
@@ -132,9 +136,10 @@ class _AddNewMembersState extends State<AddNewMembers> {
               prefixIcon: Images.region,
               divider: false,
             )*/
-            GetBuilder<AuthController>(
+           /* GetBuilder<AuthController>(
                 builder: (carlistingController) {
-                  return TypeAheadField(
+                  return */
+                    TypeAheadField(
                     textFieldConfiguration: TextFieldConfiguration(
                       controller: _regionController,
                       textInputAction: TextInputAction.search,
@@ -180,16 +185,16 @@ class _AddNewMembersState extends State<AddNewMembers> {
                         fontSize: Dimensions.fontSizeSmall,
                       ),
                     ),
-                    suggestionsCallback: (pattern) =>
-                    carlistingController.regionsListModel!=null?carlistingController.regionsListModel.data:null,
-                    itemBuilder: (context, RegionsData suggestion) {
+                    suggestionsCallback: (pattern) =>authController.regionsResponseListModel!=null?authController.regionsResponseListModel:null,
+                    /*carlistingController.regionsListModel!=null?carlistingController.regionsListModel.data:null,*/
+                    itemBuilder: (context, RegionResponseModel suggestion) {
                       return Padding(
                         padding:
                         EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                         child: Row(children: [
                           Expanded(
-                              child: Text(
-                                suggestion.chiefPlace,
+                              child: Text(language=="ar"?
+                                suggestion.provinces_ar:suggestion.provinces,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: robotoMedium.copyWith(
@@ -203,13 +208,13 @@ class _AddNewMembersState extends State<AddNewMembers> {
                         ]),
                       );
                     },
-                    onSuggestionSelected: (RegionsData suggestion) async {
-                      _regionController.text = suggestion.chiefPlace;
+                    onSuggestionSelected: (RegionResponseModel suggestion) async {
+                      _regionController.text = language=="ar"?suggestion.provinces_ar:suggestion.provinces;
                       _regionIdController.text = suggestion.id.toString();
 
                     },
-                  );
-                })
+                  )
+                /*})*/
 
             , SizedBox(
                 height:
@@ -229,7 +234,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
                 height:
                 Dimensions.PADDING_SIZE_LARGE),
             Align(
-              alignment: Alignment.topLeft,
+              alignment:language=="ar"?Alignment.topRight:Alignment.topLeft,
               child: Text(
                 "upload_member_profile_images".tr,
                 style: robotoRegular.copyWith(
@@ -247,6 +252,11 @@ class _AddNewMembersState extends State<AddNewMembers> {
                     ? Image.memory(
                   authController.rawFile,
                   fit: BoxFit.fitWidth,
+                ):language=="ar"?
+                Image.asset(
+                  Images.add_photo_ar,
+                  fit: BoxFit.fill,
+                  width: MediaQuery.of(context).size.width,
                 ):
                 Image.asset(
                   Images.add_photo,

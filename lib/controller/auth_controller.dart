@@ -21,6 +21,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as Http;
 
 import '../data/model/body/news_submit_body.dart';
+import '../data/model/response/region_response_model.dart';
 import '../data/model/response/regions_response.dart';
 import '../data/model/response/survey_list_model.dart';
 import '../helper/network_info.dart';
@@ -70,6 +71,9 @@ class AuthController extends GetxController implements GetxService {
 
   RegionsResponse _regionsListModel;
   RegionsResponse get regionsListModel => _regionsListModel;
+
+  List<RegionResponseModel> _regionsResponseListMode=AppConstants.region;
+  List<RegionResponseModel> get regionsResponseListModel => _regionsResponseListMode;
 
 
   int _selectedIndex = 0;
@@ -354,7 +358,8 @@ class AuthController extends GetxController implements GetxService {
     } else {
       responseModel = ResponseModel(false, response.statusText);
     }
-    _isLoading = false;
+
+     _isLoading = false;
     update();
     return responseModel;
   }

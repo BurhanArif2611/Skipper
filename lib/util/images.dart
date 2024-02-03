@@ -125,6 +125,7 @@ class Images {
   static const String contact_center = 'assets/image/contact_center.svg';
   static const String homepagetopslider = 'assets/image/homepagetopslider.png';
   static const String add_photo = 'assets/image/add_photo.png';
+  static const String add_photo_ar = 'assets/image/add_photo_ar.png';
   static const String upload_photo_document = 'assets/image/upload_photo_document.png';
   static const String bottom_sheet_line = 'assets/image/bottom_sheet_line.svg';
   static const String gallery_image = 'assets/image/gallery_image.svg';
