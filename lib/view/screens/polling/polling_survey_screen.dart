@@ -6,10 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/home_controller.dart';
 
-import 'package:sixam_mart/controller/splash_controller.dart';
-import 'package:sixam_mart/controller/user_controller.dart';
-import 'package:sixam_mart/helper/responsive_helper.dart';
-import 'package:sixam_mart/helper/route_helper.dart';
+
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
@@ -41,8 +38,14 @@ class _PollingSurveyScreenState extends State<PollingSurveyScreen> {
   Timer _timer;
   int PaginationIndex=0;
   String alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  String LANGUAGE_CODE="";
+
   void _loadData() async {
     await Get.find<AuthController>().getPollingSurveyToken();
+   // print("<><LANGUAGE_CODE()><>"+ Get.find<AuthController>().getLANGUAGE_CODE());
+    setState(() {
+      LANGUAGE_CODE= Get.find<AuthController>().getLANGUAGE_CODE();
+    });
   }
 
   @override
@@ -323,8 +326,8 @@ class _PollingSurveyScreenState extends State<PollingSurveyScreen> {
                                                                                 /* value.body["message"]*/
                                                                                 'Thank you for taking the survey',
                                                                                 isError: false);
-                                                                            Get.back();
-                                                                            Navigator.pop(context);
+                                                                           /* Get.back();
+                                                                            Navigator.pop(context);*/
                                                                           } else {
                                                                             showCustomSnackBar(value.body["message"],
                                                                                 isError: true);

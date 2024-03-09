@@ -15,9 +15,9 @@ dependencies:
   get: ^4.6.5
   shared_preferences: ^2.0.11
   connectivity: ^3.0.6
-  firebase_core: ^2.4.1
-  firebase_messaging: ^14.2.1
-  flutter_local_notifications: ^13.0.0
+  firebase_core: ^2.24.0
+  firebase_messaging: ^14.7.10
+  flutter_local_notifications: ^16.3.0
   path_provider: ^2.0.8
   url_strategy: ^0.2.0
   pin_code_fields: ^7.3.0
@@ -59,9 +59,7 @@ dependencies:
   video_compress: ^3.1.2
   webview_flutter: ^3.0.4
   flutter_typeahead: ^4.8.0
-
-
-
+  device_info_plus: ^8.2.2
 
 
 

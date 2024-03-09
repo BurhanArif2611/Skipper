@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_svg/svg.dart';
@@ -59,10 +60,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Get.find<AuthController>().clearData();
   }
 
+  Future<void> _getDeviceId() async {
+    try{
+    DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+    if (GetPlatform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
+     if(androidInfo.id!=null){
+      Get.find<AuthController>().changeDeviceID(androidInfo.id);}
+     else if(androidInfo.model!=null){
+      Get.find<AuthController>().changeDeviceID(androidInfo.model);}
+
+
+    } else if (GetPlatform.isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfoPlugin.iosInfo;
+      if(iosInfo.identifierForVendor!=null){
+        Get.find<AuthController>().changeDeviceID(iosInfo.identifierForVendor);}
+      else if(iosInfo.model!=null){
+        Get.find<AuthController>().changeDeviceID(iosInfo.model);}
+    }}catch(e){}
+  }
+
   @override
   void initState() {
     super.initState();
-
+    _getDeviceId();
     _pageIndex = widget.pageIndex;
 
     //  _pageController = PageController(initialPage: widget.pageIndex);
@@ -204,7 +225,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       fontSize: Dimensions.fontSizeLarge),
                 ),
               ),
-              SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+             /* SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
               ListTile(
                 title: Container(
                   child: Row(
@@ -233,7 +254,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       EdgeInsets.only(left: Dimensions.PADDING_SIZE_DEFAULT),
                   child: Divider(
                     thickness: 1,
-                  )),
+                  )),*/
+
+
               SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
               ListTile(
                 title:
@@ -265,7 +288,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: Divider(
                     thickness: 1,
                   )),
-              SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+             /* SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
               ListTile(
                 title: Container(
                   child: Row(
@@ -293,7 +316,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       EdgeInsets.only(left: Dimensions.PADDING_SIZE_DEFAULT),
                   child: Divider(
                     thickness: 1,
-                  )),
+                  )),*/
+
+
+
               SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
               ListTile(
                 title: Container(
@@ -395,7 +421,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     thickness: 1,
                   )),
             
-              SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+             /* SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
               ListTile(
                 title: Container(
                   child: Row(
@@ -423,7 +449,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       EdgeInsets.only(left: Dimensions.PADDING_SIZE_DEFAULT),
                   child: Divider(
                     thickness: 1,
-                  )),
+                  )),*/
             ],
           ),
         ) // Populate the Drawer in the next step.

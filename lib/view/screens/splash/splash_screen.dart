@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:sixam_mart/controller/cart_controller.dart';
@@ -29,12 +30,23 @@ class _SplashScreenState extends State<SplashScreen> {
   GlobalKey<ScaffoldState> _globalKey = GlobalKey();
   StreamSubscription<ConnectivityResult> _onConnectivityChanged;
 
-
+  Future<String> _saveDeviceToken() async {
+    String _deviceToken = '@';
+    if(!GetPlatform.isWeb) {
+      try {
+        _deviceToken = await FirebaseMessaging.instance.getToken();
+      }catch(e) {}
+    }
+    if (_deviceToken != null) {
+      print('--------Device Token---------- '+_deviceToken);
+    }
+    return _deviceToken;
+  }
 
   @override
   void initState() {
     super.initState();
-
+    _saveDeviceToken();
     bool _firstTime = true;
     _onConnectivityChanged = Connectivity()
         .onConnectivityChanged

@@ -391,7 +391,7 @@ class HomeController extends GetxController implements GetxService {
   Future<void> getSurveyList() async {
     Response response = await homeRepo.getSurveyList();
     if (response.statusCode == 200) {
-      _surveyListModel = SurveyListModel.fromJson(response.body);
+      _surveyListModel = SurveyListModel.fromJson(response.body,"");
 
       update();
     } else {

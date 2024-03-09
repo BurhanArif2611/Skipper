@@ -17,6 +17,7 @@ class NotificationHelper {
     var androidInitialize = new AndroidInitializationSettings('notification_icon');
    /* var iOSInitialize = new IOSInitializationSettings();*/
     var initializationsSettings = new InitializationSettings(android: androidInitialize/*, iOS: iOSInitialize*/);
+    flutterLocalNotificationsPlugin.initialize(initializationsSettings);
    /* flutterLocalNotificationsPlugin.initialize(initializationsSettings, onSelectNotification: (String payload) async {
       try{
         if(payload != null && payload.isNotEmpty) {
@@ -29,7 +30,7 @@ class NotificationHelper {
     });
 */
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("onMessage: ${message.notification.title}/${message.notification.body}/${message.notification.titleLocKey}");
+     // print("onMessage: ${message.notification.title}/${message.notification.body}/${message.notification.titleLocKey}");
       NotificationHelper.showNotification(message, flutterLocalNotificationsPlugin, false);
       if(Get.find<AuthController>().isLoggedIn()) {
         Get.find<OrderController>().getRunningOrders(1);
@@ -53,7 +54,7 @@ class NotificationHelper {
     if(!GetPlatform.isIOS) {
       String _title;
       String _body;
-      String _orderID;
+      String _orderID="";
       String _image;
       if(data) {
         _title = message.data['title'];
@@ -65,8 +66,8 @@ class NotificationHelper {
       }else {
         _title = message.notification.title;
         _body = message.notification.body;
-        _orderID = message.notification.titleLocKey;
-        if(GetPlatform.isAndroid) {
+        _orderID =message.notification.titleLocKey!=null? message.notification.titleLocKey:"01";
+        /*if(GetPlatform.isAndroid) {
           _image = (message.notification.android.imageUrl != null && message.notification.android.imageUrl.isNotEmpty)
               ? message.notification.android.imageUrl.startsWith('http') ? message.notification.android.imageUrl
               : '${AppConstants.BASE_URL}/storage/app/public/notification/${message.notification.android.imageUrl}' : null;
@@ -74,28 +75,31 @@ class NotificationHelper {
           _image = (message.notification.apple.imageUrl != null && message.notification.apple.imageUrl.isNotEmpty)
               ? message.notification.apple.imageUrl.startsWith('http') ? message.notification.apple.imageUrl
               : '${AppConstants.BASE_URL}/storage/app/public/notification/${message.notification.apple.imageUrl}' : null;
-        }
+        }*/
       }
 
       if(_image != null && _image.isNotEmpty) {
         try{
           await showBigPictureNotificationHiddenLargeIcon(_title, _body, _orderID, _image, fln);
         }catch(e) {
-          await showBigTextNotification(_title, _body, _orderID, fln);
+         // await showBigTextNotification(_title, _body, _orderID, fln);
+          await showTextNotification(_title, _body, fln);
         }
       }else {
-        await showBigTextNotification(_title, _body, _orderID, fln);
+       // await showBigTextNotification(_title, _body, "", fln);
+        await showTextNotification(_title, _body, fln);
       }
     }
   }
 
-  static Future<void> showTextNotification(String title, String body, String orderID, FlutterLocalNotificationsPlugin fln) async {
+  static Future<void> showTextNotification(String title, String body, FlutterLocalNotificationsPlugin fln) async {
+
     const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      '6ammart', '6ammart', playSound: true,
+        AppConstants.APP_NAME, AppConstants.APP_NAME, playSound: true,
       importance: Importance.max, priority: Priority.max, sound: RawResourceAndroidNotificationSound('notification'),
     );
     const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-    await fln.show(0, title, body, platformChannelSpecifics, payload: orderID);
+    await fln.show(011, title, body, platformChannelSpecifics, payload: 'item x');
   }
 
   static Future<void> showBigTextNotification(String title, String body, String orderID, FlutterLocalNotificationsPlugin fln) async {

@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "114113749507",
-    "project_id": "shapshapcustomer",
-    "storage_bucket": "shapshapcustomer.appspot.com"
+    "project_number": "920084313799",
+    "project_id": "patriotespartyapp",
+    "storage_bucket": "patriotespartyapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:114113749507:android:a396266d7e57beca0f6436",
+        "mobilesdk_app_id": "1:920084313799:android:11aa856cad5ce688b3b0e2",
         "android_client_info": {
           "package_name": "com.patriotes.androidapp"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "114113749507-5m2uhfkijj5ru23q8qgkisnk06262fcd.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCalcLkr0u8hHP7OdH7dUaogRg2IjuSSfQ"
+          "current_key": "AIzaSyAhculDR1d-l-RYyX2nDptZCQpMDSe4wr0"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "114113749507-5m2uhfkijj5ru23q8qgkisnk06262fcd.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 import '../../../../controller/cart_controller.dart';
+import '../../../../util/dimensions.dart';
 import '../../../../util/images.dart';
 import '../../../../util/styles.dart';
 
@@ -38,7 +39,7 @@ class BottomNavItem extends StatelessWidget {
         ),*/
         Image.asset(ImagePath, color: isSelected ? Theme.of(context).primaryColor : Colors.grey,
             height: 30, width: 30),
-        Text(title,style: robotoRegular.copyWith(color: isSelected ? Theme.of(context).primaryColor : Colors.grey),maxLines: 1,),
+        Text(title,style: robotoRegular.copyWith(color: isSelected ? Theme.of(context).primaryColor : Colors.grey,fontSize: Dimensions.fontSizeSmall),maxLines: 1,),
       ]),
     ));
   }

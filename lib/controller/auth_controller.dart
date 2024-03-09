@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get_connect/http/src/_http/_html/_file_decoder_html.dart';
 import 'package:image_compression_flutter/image_compression_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
 import 'package:sixam_mart/data/model/body/signup_body.dart';
@@ -35,7 +36,7 @@ class AuthController extends GetxController implements GetxService {
     _notification = authRepo.isNotificationActive();
   }
 
-
+  SharedPreferences sharedPreferences;
   bool _notification = true;
   bool _acceptTerms = true;
   bool _isLoading = false;
@@ -84,9 +85,21 @@ class AuthController extends GetxController implements GetxService {
 
   int get selectedQuestionIndex => _selectedQuestionIndex;
 
+
+  String _getDeviceID = "";
+
+  String get getDeviceID => _getDeviceID;
+
   void changeSelectIndex(int index) {
     _selectedIndex = index;
     update();
+  }
+
+  void changeDeviceID(String number) {
+    try{
+    _getDeviceID = number;
+    update();}
+        catch(e){}
   }
   void changeLogin(bool check) {
     try {
@@ -335,10 +348,10 @@ class AuthController extends GetxController implements GetxService {
   Future<ResponseModel> getPollingSurveyToken() async {
     _isLoading = true;
     update();
-    Response response = await authRepo.pollingSurvey();
+    Response response = await authRepo.pollingSurvey(getDeviceID);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
-      _surveyListModel = SurveyListModel.fromJson(response.body);
+      _surveyListModel = SurveyListModel.fromJson(response.body,authRepo.getLANGUAGE_CODE());
       responseModel = ResponseModel(true, response.body["message"]);
     } else {
       responseModel = ResponseModel(false, response.statusText);
@@ -367,7 +380,7 @@ class AuthController extends GetxController implements GetxService {
   Future<Response> pollingSurveyResultStore(String serveyId,String answer, int Index) async {
     _isLoading = true;
     update();
-    Response response = await authRepo.pollingSurveyResultStore(serveyId,answer);
+    Response response = await authRepo.pollingSurveyResultStore(serveyId,answer,getDeviceID);
 
     if (response.statusCode == 200) {
       if(_surveyListModel!=null && _surveyListModel.data!=null && _surveyListModel.data.length>0 ){
@@ -523,6 +536,9 @@ class AuthController extends GetxController implements GetxService {
 
   String getUserToken() {
     return authRepo.getUserToken();
+  }
+  String getLANGUAGE_CODE() {
+    return authRepo.getLANGUAGE_CODE();
   }
 
   bool setNotificationActive(bool isActive) {

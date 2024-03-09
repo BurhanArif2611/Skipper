@@ -49,8 +49,8 @@ android {
         applicationId "com.patriotes.androidapp"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 7
-        versionName "1.0.6"
+        versionCode 8
+        versionName "1.0.7"
         multiDexEnabled true
     }
 
@@ -96,7 +96,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "com.google.firebase:firebase-messaging:21.0.1"
+    implementation "com.google.firebase:firebase-messaging:23.4.1"
 }
 //Codezilla@123
 //desktop/store.jks

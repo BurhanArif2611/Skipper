@@ -101,13 +101,14 @@ class AuthRepo {
   Future<Response> verifyToken(String phone, String token) async {
     return await apiClient.postData(AppConstants.VERIFY_TOKEN_URI, {"phone": phone, "reset_token": token});
   }
-  Future<Response> pollingSurvey() async {
-    return await apiClient.getData(AppConstants.PollingSurvey_URI);
-  }Future<Response> regions() async {
+  Future<Response> pollingSurvey(String imei_number) async {
+    return await apiClient.getData('${AppConstants.PollingSurvey_URI}?imei_number=$imei_number');
+  }
+  Future<Response> regions() async {
     return await apiClient.getData(AppConstants.Regions_URI);
   }
-  Future<Response> pollingSurveyResultStore(String serveyId,String answer) async {
-    return await apiClient.postData(AppConstants.PollingSurveyStore_URI,{"servey_id":serveyId,"answer":answer});
+  Future<Response> pollingSurveyResultStore(String serveyId,String answer,String imei_number) async {
+    return await apiClient.postData(AppConstants.SubmitSurveys_URI,{"servey_id":serveyId,"answer":answer,"imei_number":imei_number});
   }
 
   Future<Response> resetPassword(String resetToken, String number, String password, String confirmPassword) async {
@@ -184,6 +185,9 @@ class AuthRepo {
 
   String getUserToken() {
     return sharedPreferences.getString(AppConstants.TOKEN) ?? "";
+  }
+  String getLANGUAGE_CODE() {
+    return sharedPreferences.getString(AppConstants.LANGUAGE_CODE) ;
   }
 
   bool isLoggedIn() {
