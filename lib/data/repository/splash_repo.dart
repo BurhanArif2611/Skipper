@@ -19,6 +19,9 @@ class SplashRepo {
   Future<Response> getConfigData() async {
     return await apiClient.getData(AppConstants.CONFIG_URI);
   }
+  Future<Response> saveToken(String token) async {
+    return await apiClient.postData(AppConstants.SAVE_TOKEN_URL,{"device_token":token});
+  }
   bool isSecuryOfficer() {
     return sharedPreferences.getBool(AppConstants.ROLE);
   }

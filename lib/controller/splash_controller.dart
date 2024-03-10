@@ -76,6 +76,17 @@ class SplashController extends GetxController implements GetxService {
     return _isSuccess;
   }
 
+  Future<bool> saveToken(String token) async {
+
+    Response response = await splashRepo.saveToken(token);
+
+    if(response.statusCode == 200) {
+
+    }
+    update();
+    return true;
+  }
+
   Future<void> initSharedData() async {
     if(!GetPlatform.isWeb) {
       _module = null;

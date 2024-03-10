@@ -123,6 +123,7 @@ class AppConstants {
   static const String SENDSOSALERT_URL = '/send-sos-msg';
   static const String ComplaintDelete_URL = '/user/complaint';
   static const String Comment_URL = '/comment';
+  static const String SAVE_TOKEN_URL = '/api/save-device-token';
 
 
   static const String MODULES_URI = '/api/v1/module';

@@ -39,6 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
     }
     if (_deviceToken != null) {
       print('--------Device Token---------- '+_deviceToken);
+      Get.find<SplashController>().saveToken(_deviceToken);
     }
     return _deviceToken;
   }
