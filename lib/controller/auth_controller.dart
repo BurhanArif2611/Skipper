@@ -190,7 +190,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   Future<bool> asyncTestFileUpload(File file, String name, String email,
-      String phone, String region, String address) async {
+      String phone, String region, String address, String dob, String sex, String function) async {
 
     _isButtonLoading=true;
 
@@ -208,6 +208,9 @@ class AuthController extends GetxController implements GetxService {
     request.fields["phone"] = phone;
     request.fields["region"] = region;
     request.fields["address"] = address;
+    request.fields["dob"] = dob;
+    request.fields["sex"] = sex;
+    request.fields["function"] = function;
     request.headers.addAll(headers);
     Http.MultipartFile multipartFile = await Http.MultipartFile.fromPath(
         'profile', file.path /*,contentType: new MediaType('image', 'jpeg')*/);

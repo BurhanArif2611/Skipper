@@ -49,8 +49,8 @@ android {
         applicationId "com.patriotes.androidapp"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 8
-        versionName "1.0.7"
+        versionCode 10
+        versionName "1.0.9"
         multiDexEnabled true
     }
 

@@ -581,5 +581,15 @@
   "add_member": "Add Member",
   "payment_sub_title": "Member has been successfully added.",
   "justice": "Justice",
-  "submit": "Submit"
+  "submit": "Submit",
+  "function": "Function",
+  "select_dob": "Select DOB",
+  "Male": "Male",
+  "Female": "Female",
+  "Other": "Other",
+  "Select Gender": "Select Gender"
+
+
+
+
 }

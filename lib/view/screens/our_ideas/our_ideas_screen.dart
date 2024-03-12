@@ -52,7 +52,7 @@ class _OurIdeasScreenState extends State<OurIdeasScreen> {
                       SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_LARGE,),
 
                       Text("national_program_detail".tr,textAlign: TextAlign.center,
-                        style: robotoBold.copyWith(color: Theme.of(context).disabledColor,fontSize: Dimensions.fontSizeExtraSmall),),
+                        style: robotoBold.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.fontSizeExtraSmall),),
                       SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
 
                       Container(

@@ -593,7 +593,13 @@
   "add_member": "Ajouter un membre",
   "payment_sub_title": "Le membre a été ajouté avec succès",
   "justice": "Justice",
-  "submit": "Submit"
+  "submit": "Submit",
+  "function": "Fonction",
+  "select_dob": "Date de naissance",
+  "Male": "Mâle",
+  "Female": "Femelle",
+  "Other": "Autre",
+  "Select Gender": "Sélectionnez le sexe"
 
 
 

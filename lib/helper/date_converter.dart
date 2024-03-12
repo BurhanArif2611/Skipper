@@ -56,6 +56,12 @@ class DateConverter {
     return DateFormat('dd MMM yyyy').format(isoStringToLocalDate(dateTime));
   }
 
+  static String is_oStringToLocalDateOnly(String dateTime_) {
+    DateTime dateTime = DateTime.parse(dateTime_);
+   // String formattedDate = DateFormat('yyyy-MM-dd').format(dateTime);
+    return DateFormat('yyyy-MM-dd').format(dateTime);
+  }
+
   static String stringToLocalDateOnly(String dateTime) {
     return DateFormat('dd MMM yyyy').format(DateFormat('yyyy-MM-dd').parseUtc(dateTime).toLocal());
   }

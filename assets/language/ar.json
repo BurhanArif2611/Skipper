@@ -561,7 +561,7 @@
   "general": "عام",
   "join_us": "انضم إلينا",
   "members": "أعضاء",
-  "poll_events": "أحداث الاستطلاع",
+  "poll_events": "تصويت",
   "who_are_we": "من نحن",
   "polling_events": "أحداث الاقتراع",
   "our_ideas": "أفكارنا",
@@ -599,5 +599,11 @@
   "rate_app": "قيم التطبيق",
   "payment_sub_title": "تمت إضافة العضو بنجاح",
   "justice": "عدالة",
-  "submit": "يُقدِّم"
+  "submit": "يُقدِّم",
+  "function": "وظيفة",
+  "select_dob": "حدد تاريخ الميلاد",
+  "Male": "ذكر",
+  "Female": "أنثى",
+  "Other": "آخر",
+  "Select Gender": "حدد الجنس"
 }
