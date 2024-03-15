@@ -54,7 +54,6 @@ class _AddNewMembersState extends State<AddNewMembers> {
     'Other'.tr,
   ];
 
-
   void _loadData() async {
     Get.find<AuthController>().clearData();
     //  await Get.find<AuthController>().getRegions();
@@ -78,7 +77,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        selectDate = DateConverter.is_oStringToLocalDateOnly( picked.toString());
+        selectDate = DateConverter.is_oStringToLocalDateOnly(picked.toString());
       });
     }
   }
@@ -128,22 +127,48 @@ class _AddNewMembersState extends State<AddNewMembers> {
                                     width: MediaQuery.of(context).size.width,
                                     height: 50,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          25.0),
+                                      borderRadius: BorderRadius.circular(25.0),
                                       border: Border.all(
                                           width: 1,
-                                          color: Theme.of(context).hintColor.withOpacity(0.1)),
-                                    ) ,
-                                    padding: EdgeInsets.only(left: 20,right: 20),
-                                    alignment: language == "ar"?Alignment.centerRight: Alignment.centerLeft,
-                                    child: InkWell(onTap: (){
-                                      _selectDate(context);
-                                    },
-                                      child:
-
-                                      Text(
-                                        selectDate!=""?selectDate: 'select_dob'.tr,textAlign:TextAlign.start,style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge, color:selectDate!=""?
-                                      Theme.of(context).hintColor: Color(0xFFA1A8B0)),),),
+                                          color: Theme.of(context)
+                                              .hintColor
+                                              .withOpacity(0.1)),
+                                    ),
+                                    padding:
+                                        EdgeInsets.only(left: 20, right: 20),
+                                    alignment: language == "ar"
+                                        ? Alignment.centerRight
+                                        : Alignment.centerLeft,
+                                    child: InkWell(
+                                        onTap: () {
+                                          _selectDate(context);
+                                        },
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            SvgPicture.asset(
+                                              Images.calender,
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              selectDate != ""
+                                                  ? selectDate
+                                                  : 'select_dob'.tr,
+                                              textAlign: TextAlign.start,
+                                              style: robotoRegular.copyWith(
+                                                  fontSize:
+                                                      Dimensions.fontSizeLarge,
+                                                  color: selectDate != ""
+                                                      ? Theme.of(context)
+                                                          .hintColor
+                                                      : Color(0xFFA1A8B0)),
+                                            ),
+                                          ],
+                                        )),
                                   ),
                                   SizedBox(
                                       height: Dimensions.PADDING_SIZE_LARGE),
@@ -289,7 +314,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
                                     controller: _addressController,
                                     focusNode: _addressFocus,
                                     nextFocus: _functionFocus,
-                                    inputType: TextInputType.name,
+                                    inputType: TextInputType.emailAddress,
                                     capitalization: TextCapitalization.words,
                                     prefixIcon: Images.address,
                                     divider: false,
@@ -301,46 +326,56 @@ class _AddNewMembersState extends State<AddNewMembers> {
                                     controller: _functionController,
                                     focusNode: _functionFocus,
                                     nextFocus: _functionFocus,
-                                    inputType: TextInputType.name,
+                                    inputType: TextInputType.emailAddress,
                                     capitalization: TextCapitalization.words,
-                                    prefixIcon: Images.address,
+                                    prefixIcon:
+                                        Images.teamwork_team_svgrepo_com,
                                     divider: false,
                                   ),
                                   SizedBox(
                                       height: Dimensions.PADDING_SIZE_LARGE),
-
-                                  Container(width: MediaQuery.of(context).size.width,
-                                    child:
-                                    DropdownButtonHideUnderline(
+                                  Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: DropdownButtonHideUnderline(
                                       child: DropdownButton2<String>(
                                         isExpanded: true,
-                                        hint:
-                                        Row(
+                                        hint: Row(
                                           children: [
                                             Expanded(
-                                              child: Padding(padding: EdgeInsets.only(left:20,right: 20),
-                                          child:
-                                              Text(
-                                                'Select Gender'.tr,
-                                                style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge, color: Color(0xFFA1A8B0)),
-                                                overflow: TextOverflow.ellipsis,
-                                              )),
+                                              child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 20, right: 20),
+                                                  child: Text(
+                                                    'Select Gender'.tr,
+                                                    style:
+                                                        robotoRegular.copyWith(
+                                                            fontSize: Dimensions
+                                                                .fontSizeLarge,
+                                                            color: Color(
+                                                                0xFFA1A8B0)),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  )),
                                             ),
                                           ],
                                         ),
                                         items: items
-                                            .map((String item) => DropdownMenuItem<String>(
-                                          value: item,
-                                          child: Text(
-                                            item,
-                                            style:  TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Theme.of(context).hintColor,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ))
+                                            .map((String item) =>
+                                                DropdownMenuItem<String>(
+                                                  value: item,
+                                                  child: Text(
+                                                    item,
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Theme.of(context)
+                                                          .hintColor,
+                                                    ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ))
                                             .toList(),
                                         value: selectedSex,
                                         onChanged: (String value) {
@@ -350,51 +385,58 @@ class _AddNewMembersState extends State<AddNewMembers> {
                                         },
                                         buttonStyleData: ButtonStyleData(
                                           height: 50,
-                                          width: MediaQuery.of(context).size.width,
-                                          padding:  EdgeInsets.only(left: 14, right: 14),
-
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          padding: EdgeInsets.only(
+                                              left: 14, right: 14),
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(25.0),
+                                            borderRadius:
+                                                BorderRadius.circular(25.0),
                                             border: Border.all(
-                                              color: Theme.of(context).hintColor.withOpacity(0.1),
-                                              width: 1
-                                            ),
+                                                color: Theme.of(context)
+                                                    .hintColor
+                                                    .withOpacity(0.1),
+                                                width: 1),
                                             color: Colors.white,
                                           ),
-
                                         ),
-                                        iconStyleData:  IconStyleData(
+                                        iconStyleData: IconStyleData(
                                           icon: Icon(
                                             Icons.arrow_forward_ios_outlined,
                                           ),
                                           iconSize: 14,
-                                          iconEnabledColor: Theme.of(context).primaryColor,
+                                          iconEnabledColor:
+                                              Theme.of(context).primaryColor,
                                           iconDisabledColor: Colors.grey,
                                         ),
-                                        dropdownStyleData:
-                                        DropdownStyleData(
-                                          width: MediaQuery.of(context).size.width-20,
+                                        dropdownStyleData: DropdownStyleData(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              20,
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(25),
+                                            borderRadius:
+                                                BorderRadius.circular(25),
                                             color: Colors.white,
                                           ),
-                                          offset:  Offset(-50, 0),
+                                          offset: Offset(-50, 0),
                                           scrollbarTheme: ScrollbarThemeData(
-                                            radius:  Radius.circular(25.0),
-                                            thickness: MaterialStateProperty.all<double>(6),
-                                            thumbVisibility: MaterialStateProperty.all<bool>(true),
+                                            radius: Radius.circular(25.0),
+                                            thickness: MaterialStateProperty
+                                                .all<double>(6),
+                                            thumbVisibility:
+                                                MaterialStateProperty.all<bool>(
+                                                    true),
                                           ),
                                         ),
-
-                                        menuItemStyleData:
-                                        MenuItemStyleData(
+                                        menuItemStyleData: MenuItemStyleData(
                                           height: 40,
-                                          padding: EdgeInsets.only(left: 14, right: 14),
+                                          padding: EdgeInsets.only(
+                                              left: 14, right: 14),
                                         ),
                                       ),
                                     ),
                                   ),
-
                                   SizedBox(
                                       height: Dimensions.PADDING_SIZE_LARGE),
                                   Align(
@@ -579,9 +621,9 @@ class _AddNewMembersState extends State<AddNewMembers> {
     String _name = _nameController.text.trim();
     String _phone = _phoneController.text.trim();
     String _region = _regionIdController.text.trim();
-    String _address = _addressController.text.trim();
+    String _address = _addressController.text.toString();
     String dob = selectDate.trim();
-    String function = _functionController.text;
+    String function = _functionController.text.toString();
     String sex = selectedSex;
 
     if (_name.isEmpty) {
@@ -604,8 +646,8 @@ class _AddNewMembersState extends State<AddNewMembers> {
       authController.showLoader();
 
       authController
-          .asyncTestFileUpload(
-              authController.file, _name, _email, _phone, _region, _address,dob,sex,function)
+          .asyncTestFileUpload(authController.file, _name, _email, _phone,
+              _region, _address, dob, sex, function)
           .then((status) async {
         if (status) {
           authController.clearData();

@@ -146,6 +146,8 @@ class Images {
   static const String share_app = 'assets/image/share_app.svg';
   static const String rate_us = 'assets/image/rate_us.svg';
   static const String search = 'assets/image/search.svg';
+  static const String calender = 'assets/image/calender-svgrepo-com (1).svg';
   static const String menu_drawer_png = 'assets/image/menu_drawer.png';
+  static const String teamwork_team_svgrepo_com = 'assets/image/teamwork-team-svgrepo-com.png';
   static const String splash_gif = 'assets/image/splash.gif';
 }
