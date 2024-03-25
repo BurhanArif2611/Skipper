@@ -2,9 +2,7 @@ import 'dart:convert';
 
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
-import 'package:sixam_mart/controller/order_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
-import 'package:sixam_mart/controller/wishlist_controller.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
 import 'package:sixam_mart/data/model/response/address_model.dart';
 import 'package:sixam_mart/data/model/response/place_details_model.dart';
@@ -253,7 +251,7 @@ class LocationController extends GetxController implements GetxService {
             ? 'your_selected_location_is_from_different_zone'.tr : 'your_selected_location_is_from_different_zone_store'.tr);
       }else {
         getAddressList();
-        Get.find<OrderController>().setAddressIndex(0);
+
         String message = response.body["message"];
         responseModel = ResponseModel(true, message);
       }
@@ -367,7 +365,7 @@ class LocationController extends GetxController implements GetxService {
       Get.find<AuthController>().updateZone();
     }
     HomeScreen.loadData(true);
-    Get.find<OrderController>().clearPrevData();
+
     if(fromSignUp) {
       //  Get.offAllNamed(RouteHelper.getInterestRoute());
       Get.offAllNamed(RouteHelper.getInitialRoute());

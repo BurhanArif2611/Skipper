@@ -13,6 +13,7 @@ class BottomNavItem extends StatelessWidget {
   final bool countVisible;
   final String title;
   final String ImagePath;
+  final String ImagePathSelected;
 
   BottomNavItem(
       {@required this.iconData,
@@ -20,7 +21,8 @@ class BottomNavItem extends StatelessWidget {
       this.isSelected = false,
       this.countVisible,
       this.title,
-      this.ImagePath
+      this.ImagePath,
+      this.ImagePathSelected
       });
 
   @override
@@ -37,9 +39,9 @@ class BottomNavItem extends StatelessWidget {
               size: 25),
           onPressed: onTap,
         ),*/
-        Image.asset(ImagePath, color: isSelected ? Theme.of(context).primaryColor : Colors.grey,
+        Image.asset(isSelected?ImagePathSelected:ImagePath, /*color: isSelected ? Theme.of(context).primaryColor : Colors.grey,*/
             height: 30, width: 30),
-        Text(title,style: robotoRegular.copyWith(color: isSelected ? Theme.of(context).primaryColor : Colors.grey,fontSize: Dimensions.fontSizeSmall),maxLines: 1,),
+        Text(title,style: robotoMedium.copyWith(color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).primaryColor.withOpacity(0.50),fontSize: Dimensions.fontSizeSmall),maxLines: 1,),
       ]),
     ));
   }

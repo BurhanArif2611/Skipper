@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sixam_mart/controller/category_controller.dart';
 import 'package:sixam_mart/controller/coupon_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
-import 'package:sixam_mart/controller/order_controller.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
 import 'package:sixam_mart/data/model/response/branch.dart';
 import 'package:sixam_mart/data/model/response/category_model.dart';
@@ -158,13 +157,7 @@ class StoreController extends GetxController implements GetxService {
   }
 
   void initCheckoutData(int storeID) {
-    if(_store == null || _store.id != storeID || Get.find<OrderController>().distance == null) {
-      Get.find<CouponController>().removeCouponData(false);
-      Get.find<OrderController>().clearPrevData();
-      Get.find<StoreController>().getStoreDetails(Store(id: storeID), false);
-    }else {
-      Get.find<OrderController>().initializeTimeSlot(_store);
-    }
+
   }
 
   Future<Store> getStoreDetails(Store store, bool fromModule) async {
@@ -178,7 +171,7 @@ class StoreController extends GetxController implements GetxService {
       Response response = await storeRepo.getStoreDetails(store.id.toString());
       if (response.statusCode == 200) {
         _store = Store.fromJson(response.body);
-        Get.find<OrderController>().initializeTimeSlot(_store);
+
        /* Get.find<OrderController>().getDistanceInKM(
           LatLng(
             double.parse(Get.find<LocationController>().getUserAddress().latitude),
@@ -192,9 +185,7 @@ class StoreController extends GetxController implements GetxService {
       } else {
         ApiChecker.checkApi(response);
       }
-      Get.find<OrderController>().setOrderType(
-        _store != null ? _store.delivery!=null && _store.delivery ? 'delivery' : 'take_away' : 'delivery', notify: false,
-      );
+
 
       _isLoading = false;
       update();

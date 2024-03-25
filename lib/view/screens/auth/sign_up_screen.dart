@@ -79,22 +79,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
               title: 'Sign Up'.tr, onBackPressed: () => {Get.back()}),
      /* endDrawer: MenuDrawer(),*/
       body: SafeArea(
-          child: Scrollbar(
+          child:Container(color: Theme.of(context).backgroundColor,
+          child:
+          Scrollbar(
         child: SingleChildScrollView(
           padding: ResponsiveHelper.isDesktop(context)
               ? EdgeInsets.zero
               : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
           physics: BouncingScrollPhysics(),
-          child: FooterView(
-            /* child: Center(*/
-            child: Container(
-              width: context.width > 700 ? 700 : context.width,
-              padding: context.width > 700
-                  ? EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT)
-                  : null,
-              margin: context.width > 700
-                  ? EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT)
-                  : null,
+          child:
+            Container(
+              width:  context.width,
+              height:  context.height-50,
+              padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
               decoration: context.width > 700
                   ? BoxDecoration(
                       color: Theme.of(context).cardColor,
@@ -107,94 +104,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             spreadRadius: 1)
                       ],
                     )
-                  : null,
+                  :  BoxDecoration(
+                  color: Theme.of(context).backgroundColor,),
               child: GetBuilder<SplashController>(builder: (splashController) {
                 return GetBuilder<AuthController>(builder: (authController) {
-                  return Column(children: [
-                    SizedBox(height: 20),
+                  return
                     Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.only(
-                          left: Dimensions.RADIUS_SMALL,
-                          right: Dimensions.RADIUS_SMALL),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(35.0),
-                        border: Border.all(
-                            width: 1, color: Theme.of(context).disabledColor),
-                        color: Colors.transparent,
-                      ),
-                      child: Row(children: [
-                        SizedBox(width: 10),
-                        Expanded(
-                            child: TextButton(
-                          onPressed: () => {
-                            authController.changeLogin(false),
-                            splashController.isSecuryOfficer(),
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: !authController.forUser
-                                ? Theme.of(context)
-                                    .primaryColor
-                                    .withOpacity(0.3)
-                                : null,
-                            shape: !authController.forUser
-                                ? RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        Dimensions.RADIUS_EXTRA_LARGE),
-                                  )
-                                : null,
-                          ),
-                          child: Text('For User'.tr,
-                              textAlign: TextAlign.center,
-                              style: robotoBold.copyWith(
-                                color: !authController.forUser
-                                    ? Theme.of(context).primaryColor
-                                    : Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .color,
-                                fontSize: Dimensions.fontSizeDefault,
-                              )),
-                        )),
-                        SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-                        Expanded(
-                            child: TextButton(
-                          onPressed: () => {
-                            {
-                              authController.changeLogin(true),
-                              splashController.isSecuryOfficer(),
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: authController.forUser
-                                ? Theme.of(context)
-                                    .primaryColor
-                                    .withOpacity(0.3)
-                                : null,
-                            shape: authController.forUser
-                                ? RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        Dimensions.RADIUS_EXTRA_LARGE),
-                                  )
-                                : null,
-                          ),
-                          child: Text('Security Officer'.tr,
-                              textAlign: TextAlign.center,
-                              style: robotoRegular.copyWith(
-                                color: authController.forUser
-                                    ? Theme.of(context).primaryColor
-                                    : Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .color,
-                                fontSize: Dimensions.fontSizeDefault,
-                              )),
-                        )),
-                        SizedBox(width: 10),
-                      ]),
-                    ),
-                    SizedBox(height: 20),
+                        color: Theme.of(context).backgroundColor,
+                        child:
+                    Column(children: [
+                    SizedBox(height: 10),
+                      Align(alignment: Alignment.topLeft,
+                          child:
+
+                          Text("Create an Account",style: robotoBold.copyWith(fontSize: Dimensions.fontSizeOverLarge,color: Theme.of(context).primaryColor),)),
+                      SizedBox(height: 20,),
                     Container(
+                      color: Theme.of(context).backgroundColor,
                       /*decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
                         color: Theme.of(context).cardColor,
@@ -373,9 +299,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ],):SizedBox()),
                       ]),
                     ),
-                    SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                      ConditionCheckBox(authController: authController),
 
-                    /* ConditionCheckBox(authController: authController),*/
                     SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
 
                     /* !authController.isLoading ?*/ Row(children: [
@@ -400,7 +325,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         'Already have an account? '.tr,
                         textAlign: TextAlign.center,
                         style: robotoBold.copyWith(
-                          color: Theme.of(context).dividerColor,
+                          color: Theme.of(context).cardColor.withOpacity(0.50),
                           fontSize: Dimensions.fontSizeDefault,
                         ),
                       ),
@@ -413,7 +338,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ' Sign In'.tr,
                           textAlign: TextAlign.center,
                           style: robotoBold.copyWith(
-                            color: Theme.of(context).hintColor,
+                            color: Theme.of(context).primaryColor,
                             fontSize: Dimensions.fontSizeDefault,
                           ),
                         ),
@@ -423,14 +348,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     // SocialLoginWidget(),
 
                     /* GuestButton(),*/
-                  ]);
+                  ]));
                 });
               }),
             ),
             /* ),*/
-          ),
+
         ),
-      )),
+      ))),
     );
   }
 

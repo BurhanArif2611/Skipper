@@ -9,16 +9,13 @@ import 'package:sixam_mart/util/app_constants.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
-import 'package:sixam_mart/view/base/confirmation_dialog.dart';
-import 'package:sixam_mart/view/base/custom_image.dart';
-import 'package:sixam_mart/view/base/footer_view.dart';
-import 'package:sixam_mart/view/base/menu_drawer.dart';
-import 'package:sixam_mart/view/base/web_menu_bar.dart';
-import 'package:sixam_mart/view/screens/profile/widget/profile_bg_widget.dart';
-import 'package:sixam_mart/view/screens/profile/widget/profile_button.dart';
-import 'package:sixam_mart/view/screens/profile/widget/profile_card.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../base/custom_app_bar.dart';
+import '../../base/custom_button.dart';
+import '../../base/custom_text_field.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -39,213 +36,217 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bool _showWalletCard =
-        Get.find<SplashController>().configModel.customerWalletStatus == 1 ||
-            Get.find<SplashController>().configModel.loyaltyPointStatus == 1;
+
 
     return Scaffold(
-      appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : null,
+      appBar: CustomAppBar(
+          title: 'Profile', onBackPressed: () => {Get.back()}),
      /* endDrawer: MenuDrawer(),*/
       backgroundColor: Theme.of(context).cardColor,
       body: GetBuilder<UserController>(builder: (userController) {
-        return (_isLoggedIn && userController.userInfoModel == null)
-            ? Center(child: CircularProgressIndicator())
-            :
-        ProfileBgWidget(
-                backButton: true,
-                circularImage: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        width: 2, color: Theme.of(context).cardColor),
-                    shape: BoxShape.circle,
-                  ),
-                  alignment: Alignment.center,
-                  child: ClipOval(
-                      child: CustomImage(
-                    image:
-                        '${Get.find<SplashController>().configModel.baseUrls.customerImageUrl}'
-                        '/${(userController.userInfoModel != null && _isLoggedIn) ? userController.userInfoModel.image : ''}',
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover,
-                  )),
+        return /*(_isLoggedIn && userController.userInfoModel == null)*/
+            Container(
+              color: Theme.of(context).backgroundColor,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              padding: EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+
+                children: [
+                SizedBox(
+                  height: 40,
                 ),
-                mainWidget: SingleChildScrollView(
-                    /*physics: BouncingScrollPhysics(),*/
-                    child: FooterView(
-                      minHeight: _isLoggedIn ? 0.6 : 0.35,
-                      child: Center(
-                          child: Container(
-                        width: Dimensions.WEB_MAX_WIDTH,
-                        color: Theme.of(context).cardColor,
-                        padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                        child: Column(children: [
-                          Text(
-                            _isLoggedIn
-                                ? '${userController.userInfoModel.fName} ${userController.userInfoModel.lName}'
-                                : 'guest'.tr,
-                            style: robotoMedium.copyWith(
-                                fontSize: Dimensions.fontSizeLarge),
-                          ),
-                          SizedBox(height: 30),
-                          _isLoggedIn
-                              ? Row(children: [
-                                  ProfileCard(
-                                      title: 'since_joining'.tr,
-                                      data:
-                                          '${userController.userInfoModel.memberSinceDays} ${'days'.tr}'),
-                                  SizedBox(
-                                      width: Dimensions.PADDING_SIZE_SMALL),
-                                  ProfileCard(
-                                      title: 'total_order'.tr,
-                                      data: userController
-                                          .userInfoModel.orderCount
-                                          .toString()),
-                                ])
-                              : SizedBox(),
-                          SizedBox(
-                              height: _showWalletCard
-                                  ? Dimensions.PADDING_SIZE_SMALL
-                                  : 0),
-                          _showWalletCard
-                              ? Row(children: [
-                                  Get.find<SplashController>()
-                                              .configModel
-                                              .customerWalletStatus ==
-                                          1
-                                      ? ProfileCard(
-                                          title: 'wallet_amount'.tr,
-                                          data: (userController!=null && userController.userInfoModel!=null && userController.userInfoModel.walletBalance !=null)? PriceConverter.convertPrice(
-                                              userController
-                                                  .userInfoModel.walletBalance):"0",
-                                        )
-                                      : SizedBox.shrink(),
-                                  SizedBox(
-                                      width: Get.find<SplashController>()
-                                                      .configModel
-                                                      .customerWalletStatus ==
-                                                  1 &&
-                                              Get.find<SplashController>()
-                                                      .configModel
-                                                      .loyaltyPointStatus ==
-                                                  1
-                                          ? Dimensions.PADDING_SIZE_SMALL
-                                          : 0.0),
-                                  Get.find<SplashController>()
-                                              .configModel
-                                              .loyaltyPointStatus ==
-                                          1
-                                      ? ProfileCard(
-                                          title: 'loyalty_points'.tr,
-                                          data: userController.userInfoModel
-                                                      .loyaltyPoint !=
-                                                  null
-                                              ? userController
-                                                  .userInfoModel.loyaltyPoint
-                                                  .toString()
-                                              : '0',
-                                        )
-                                      : SizedBox.shrink(),
-                                ])
-                              : SizedBox(),
-                         /* SizedBox(height: _isLoggedIn ? 30 : 0),
-                          ProfileButton(
-                              icon: Icons.dark_mode,
-                              title: 'dark_mode'.tr,
-                              isButtonActive: Get.isDarkMode,
-                              onTap: () {
-                                Get.find<ThemeController>().toggleTheme();
-                              }),*/
-                          SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                          _isLoggedIn
-                              ? GetBuilder<AuthController>(
-                                  builder: (authController) {
-                                  return ProfileButton(
-                                    icon: Icons.notifications,
-                                    title: 'notification'.tr,
-                                    isButtonActive: authController.notification,
-                                    onTap: () {
-                                      authController.setNotificationActive(
-                                          !authController.notification);
-                                    },
-                                  );
-                                })
-                              : SizedBox(),
-                          SizedBox(
-                              height: _isLoggedIn
-                                  ? Dimensions.PADDING_SIZE_SMALL
-                                  : 0),
-                          _isLoggedIn && (AppConstants.ParantStoreID.toString()==AppConstants.StoreID.toString())
-                              ? ProfileButton(
-                                  icon: Icons.lock,
-                                  title: 'change_password'.tr,
-                                  onTap: () {
-                                    Get.toNamed(
-                                        RouteHelper.getResetPasswordRoute(
-                                            '', '', 'password-change'));
-                                  })
-                              : SizedBox(),
-                          SizedBox(
-                              height: _isLoggedIn
-                                  ? Dimensions.PADDING_SIZE_SMALL
-                                  : 0),
-                          _isLoggedIn && (AppConstants.ParantStoreID.toString()==AppConstants.StoreID.toString())?
-                          ProfileButton(
-                              icon: Icons.edit,
-                              title: 'edit_profile'.tr,
-                              onTap: () {
-                                Get.toNamed(
-                                    RouteHelper.getUpdateProfileRoute());
-                              }): SizedBox(),
-                          SizedBox(
-                              height: _isLoggedIn
-                                  ? Dimensions.PADDING_SIZE_SMALL
-                                  : Dimensions.PADDING_SIZE_LARGE),
-                          _isLoggedIn && (AppConstants.ParantStoreID.toString()==AppConstants.StoreID.toString())
-                              ? ProfileButton(
-                                  icon: Icons.delete,
-                                  title: 'delete_account'.tr,
-                                  onTap: () {
-                                    Get.dialog(
-                                        ConfirmationDialog(
-                                          icon: Images.support,
-                                          title:
-                                              'are_you_sure_to_delete_account'
-                                                  .tr,
-                                          description:
-                                              'it_will_remove_your_all_information'
-                                                  .tr,
-                                          isLogOut: true,
-                                          onYesPressed: () =>
-                                              userController.removeUser(),
-                                        ),
-                                        useSafeArea: false);
-                                  },
-                                )
-                              : SizedBox(),
-                          SizedBox(
-                              height: _isLoggedIn
-                                  ? Dimensions.PADDING_SIZE_LARGE
-                                  : 0),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('${'version'.tr}:',
-                                    style: robotoRegular.copyWith(
-                                        fontSize:
-                                            Dimensions.fontSizeExtraSmall)),
-                                SizedBox(
-                                    width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                Text(AppConstants.ANDROID_APP_VERSION.toString(),
-                                    style: robotoMedium.copyWith(
-                                        fontSize:
-                                            Dimensions.fontSizeExtraSmall)),
-                              ]),
-                        ]),
-                      )),
-                    )),
-              );
+                  Center(
+                    child: CircleImageWithCameraIcon(
+                      imageUrl: 'https://via.placeholder.com/150',
+                      imageSize: 100.0,
+                      cameraIconSize: 20.0,
+                    ),
+                  ),
+                  SizedBox(
+                  height: 40,
+                ),
+                Text(
+                  "Beneficiary Name",
+                  style: robotoMedium.copyWith(
+                      fontSize: Dimensions.fontSizeDefault,
+                      color: Theme.of(context).cardColor),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                CustomTextField(
+                  hintText: 'Beneficiary Name'.tr,
+                  /* controller: _firstNameController,
+          focusNode: _firstNameFocus,
+          nextFocus: _lastNameFocus,*/
+                  inputType: TextInputType.name,
+                  capitalization: TextCapitalization.words,
+                  divider: false,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+
+                Text(
+                  "Beneficiary Bank Name",
+                  style: robotoMedium.copyWith(
+                      fontSize: Dimensions.fontSizeDefault,
+                      color: Theme.of(context).cardColor),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                CustomTextField(
+                  hintText: 'Beneficiary Bank Name'.tr,
+                  /* controller: _firstNameController,
+          focusNode: _firstNameFocus,
+          nextFocus: _lastNameFocus,*/
+                  inputType: TextInputType.name,
+                  capitalization: TextCapitalization.words,
+                  divider: false,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+
+                Text(
+                  "Routing number & Correspondent Account No.",
+                  style: robotoMedium.copyWith(
+                      fontSize: Dimensions.fontSizeDefault,
+                      color: Theme.of(context).cardColor),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                CustomTextField(
+                  hintText: 'Routing number & Correspondent Account No.'.tr,
+                  /* controller: _firstNameController,
+          focusNode: _firstNameFocus,
+          nextFocus: _lastNameFocus,*/
+                  inputType: TextInputType.name,
+                  capitalization: TextCapitalization.words,
+                  divider: false,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+
+                Text(
+                  "Swift Code",
+                  style: robotoMedium.copyWith(
+                      fontSize: Dimensions.fontSizeDefault,
+                      color: Theme.of(context).cardColor),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                CustomTextField(
+                  hintText: 'Swift Code'.tr,
+                  /* controller: _firstNameController,
+          focusNode: _firstNameFocus,
+          nextFocus: _lastNameFocus,*/
+                  inputType: TextInputType.name,
+                  capitalization: TextCapitalization.words,
+                  divider: false,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+
+                Text(
+                  "Address",
+                  style: robotoMedium.copyWith(
+                      fontSize: Dimensions.fontSizeDefault,
+                      color: Theme.of(context).cardColor),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                CustomTextField(
+                  hintText: 'Address'.tr,
+                  /* controller: _firstNameController,
+          focusNode: _firstNameFocus,
+          nextFocus: _lastNameFocus,*/
+                  inputType: TextInputType.name,
+                  capitalization: TextCapitalization.words,
+                  divider: false,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+
+                SizedBox(
+                  height: 20,
+                ),
+                CustomButton(
+                  height: 50,
+                  buttonText: 'Update'.tr,
+                  onPressed:  () {
+                    Get.back();
+                    //Get.toNamed(RouteHelper.getKYCSuccessScreenRoute());
+                  },
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+              ],),);
       }),
+    );
+  }
+}
+
+class CircleImageWithCameraIcon extends StatelessWidget {
+  final String imageUrl;
+  final double imageSize;
+  final double cameraIconSize;
+
+  CircleImageWithCameraIcon({
+    @required this.imageUrl,
+    @required this.imageSize,
+    @required this.cameraIconSize,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.bottomRight,
+      children: [
+        Container(
+          width: imageSize,
+          height: imageSize,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+                width: 1,
+                color: Theme.of(context)
+                    .cardColor
+                    .withOpacity(0.50)),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: NetworkImage(imageUrl),
+            ),
+          ),
+        ),
+        Positioned(
+          right: 0,
+          bottom: 0,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.grey, width: 2.0),
+            ),
+            child: Icon(
+              Icons.camera_alt,
+              size: cameraIconSize,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

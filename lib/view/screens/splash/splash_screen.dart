@@ -2,20 +2,19 @@ import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_svg/svg.dart';
 
-import 'package:sixam_mart/controller/cart_controller.dart';
-import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
-import 'package:sixam_mart/controller/wishlist_controller.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
-import 'package:sixam_mart/util/app_constants.dart';
-import 'package:sixam_mart/util/dimensions.dart';
+
 import 'package:sixam_mart/util/images.dart';
-import 'package:sixam_mart/view/base/no_internet_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/auth_controller.dart';
+import '../../../util/app_constants.dart';
+import '../../../util/dimensions.dart';
+import '../../../util/styles.dart';
+import '../../base/no_internet_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   final String orderID;
@@ -32,14 +31,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<String> _saveDeviceToken() async {
     String _deviceToken = '@';
-    if(!GetPlatform.isWeb) {
+    if (!GetPlatform.isWeb) {
       try {
         _deviceToken = await FirebaseMessaging.instance.getToken();
-      }catch(e) {}
+      } catch (e) {}
     }
     if (_deviceToken != null) {
-      print('--------Device Token---------- '+_deviceToken);
-      Get.find<SplashController>().saveToken(_deviceToken);
+      print('--------Device Token---------- ' + _deviceToken);
+
+      /// Get.find<SplashController>().saveToken(_deviceToken);
     }
     return _deviceToken;
   }
@@ -67,15 +67,15 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ));
         if (!isNotConnected) {
-          _route();
+            _route();
         }
       }
       _firstTime = false;
     });
 
-  //  Get.find<CartController>().getCartData();
+    //  Get.find<CartController>().getCartData();
     // Get.find<ThemeController>().toggleTheme();
-    _route();
+      _route();
   }
 
   @override
@@ -86,13 +86,17 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _route() {
-    Timer(Duration(seconds: 10), () async {
+    Timer(Duration(seconds: 1), () async {
       print("_route>>>>>");
-    //  Get.offNamed(RouteHelper.getWebViewScreen());
-    //  Get.offNamed(RouteHelper.getInitialRoute());
-      Get.offNamed(RouteHelper.getLanguageRoute('menu'));
-
-
+      if (Get.find<AuthController>().isLoggedIn()) {
+        Get.offNamed(RouteHelper.getInitialRoute());
+      } else {
+        if (Get.find<SplashController>().showIntro()) {
+          Get.offNamed(RouteHelper.getOnBoardingRoute());
+        } else {
+          Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
+        }
+      }
     });
   }
 
@@ -102,18 +106,23 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return Scaffold(
       key: _globalKey,
-      body:
-         Container(
+      body: GetBuilder<SplashController>(builder: (splashController) {
+        return Container(
             height: double.infinity,
-            color: /*splashController.hasConnection?*/Color(0xFF000000)/*:Color(0xFFF7F5F3)*/,
-            child:/*splashController.hasConnection?*/Image.asset(Images.splash_gif,width: MediaQuery.of(context).size.width,height: MediaQuery.of(context).size.height,)/*:
-            Center(
+            color: Theme.of(context).hintColor,
+            child: Center(
               child: splashController.hasConnection
-                  ? Image.asset(Images.logo,width: 150,height: 150,)
+                  ? Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(Images.logo, width: 300),
+                        SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                      ],
+                    )
                   : NoInternetScreen(
                       child: SplashScreen(orderID: widget.orderID)),
-            )*/)
-
+            ));
+      }),
     );
   }
 }

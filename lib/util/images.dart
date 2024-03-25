@@ -1,5 +1,6 @@
 class Images {
   static const String logo = 'assets/image/logo.png';
+  static const String logo_white = 'assets/image/logo_white.svg';
   static const String placeholder = 'assets/image/placeholder.jpg';
   static const String arabic = 'assets/image/arabic.png';
   static const String call = 'assets/image/call.png';
@@ -11,8 +12,6 @@ class Images {
   static const String map = 'assets/image/map.png';
   static const String onboard_1 = 'assets/image/onboard_1.png';
   static const String onboard_2 = 'assets/image/onboard_2.png';
-  static const String onboard_3 = 'assets/image/onboard_3.png';
-  static const String onboard_4 = 'assets/image/onboard_4.png';
   static const String restaurant_marker = 'assets/image/restaurant_marker.png';
   static const String delivery_man_marker = 'assets/image/delivery_man_marker.png';
   static const String user = 'assets/image/user.png';
@@ -25,6 +24,7 @@ class Images {
   static const String culture_programme = 'assets/image/culture_program.png';
   static const String vice_president = 'assets/image/vice_president.png';
   static const String mahamat_third = 'assets/image/mahamat_third.png';
+  static const String teamPreviewbg = 'assets/image/teamPreviewbg.png';
   static const String fourth = 'assets/image/fourth.png';
   static const String coupon = 'assets/image/coupon.png';
   static const String coupon_bg = 'assets/image/coupon_bg.png';
@@ -34,6 +34,7 @@ class Images {
   static const String location = 'assets/image/location.png';
   static const String policy = 'assets/image/policy.png';
   static const String support = 'assets/image/support.png';
+  static const String support_ = 'assets/image/support_.png';
   static const String terms = 'assets/image/terms.png';
   static const String empty_box = 'assets/image/empty_box.png';
   static const String empty_cart = 'assets/image/empty_cart.png';
@@ -108,6 +109,7 @@ class Images {
   static const String complaint = 'assets/image/complaint.svg';
   static const String change_email = 'assets/image/change_email.svg';
   static const String change_password = 'assets/image/change_password.svg';
+  static const String change_password_new = 'assets/image/change password_new.svg';
   static const String logout = 'assets/image/logout.svg';
   static const String logout_popup = 'assets/image/logout_popup.svg';
   static const String logout_popup_background = 'assets/image/logout_popup_background.png';
@@ -150,4 +152,23 @@ class Images {
   static const String menu_drawer_png = 'assets/image/menu_drawer.png';
   static const String teamwork_team_svgrepo_com = 'assets/image/teamwork-team-svgrepo-com.png';
   static const String splash_gif = 'assets/image/splash.gif';
+
+  static const String arena = 'assets/image/arena.png';
+  static const String arena_selected = 'assets/image/arena_selected.png';
+  static const String my_matchs_selected = 'assets/image/my_matchs_selected.png';
+  static const String my_matchs = 'assets/image/my_matchs.png';
+  static const String wallet_selected = 'assets/image/wallet_selected.png';
+  static const String account = 'assets/image/account.png';
+  static const String account_selected = 'assets/image/account_selected.png';
+  static const String team_logo = 'assets/image/team_logo.png';
+  static const String lineup = 'assets/image/lineup.png';
+  static const String kyc = 'assets/image/kyc.png';
+  static const String refer_earn = 'assets/image/refer_earn.png';
+  static const String how_play = 'assets/image/how_play.png';
+  static const String privacy_policy = 'assets/image/privacy-policy.png';
+  static const String sticker = 'assets/image/sticker.svg';
+  static const String wallet_fill = 'assets/image/wallet_fill.svg';
+  static const String defult_member_user = 'assets/image/defult_member_user.svg';
+  static const String select_plus = 'assets/image/select_plus.svg';
+  static const String filter = 'assets/image/filter.svg';
 }

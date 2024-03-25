@@ -61,6 +61,7 @@ dependencies:
   flutter_typeahead: ^4.8.0
   device_info_plus: ^8.2.2
   dropdown_button2: ^2.1.4
+  easy_stepper: ^0.6.0
 
 
 

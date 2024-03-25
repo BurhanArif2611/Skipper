@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/notification_controller.dart';
-import 'package:sixam_mart/controller/order_controller.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -33,8 +32,6 @@ class NotificationHelper {
      // print("onMessage: ${message.notification.title}/${message.notification.body}/${message.notification.titleLocKey}");
       NotificationHelper.showNotification(message, flutterLocalNotificationsPlugin, false);
       if(Get.find<AuthController>().isLoggedIn()) {
-        Get.find<OrderController>().getRunningOrders(1);
-        Get.find<OrderController>().getHistoryOrders(1);
         Get.find<NotificationController>().getNotificationList(1,true);
       }
     });

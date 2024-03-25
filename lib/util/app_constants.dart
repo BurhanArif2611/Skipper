@@ -14,9 +14,9 @@ class AppConstants {
 
   //dev url
 
-  // static const String BASE_URL = 'http://192.168.1.42:5400';
+   static const String BASE_URL = 'http://192.168.1.42:5400';
    // staging url
-   static const String BASE_URL = 'https://admin-dashboard.partilespatriotes.org';
+   //static const String BASE_URL = 'https://admin-dashboard.partilespatriotes.org';
 
   //local url
    //static const String BASE_URL = 'http://192.168.1.164:8000';

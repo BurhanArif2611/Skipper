@@ -2,7 +2,6 @@ import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
 import 'package:sixam_mart/controller/localization_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
-import 'package:sixam_mart/controller/search_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/util/app_constants.dart';
@@ -13,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:sixam_mart/view/base/text_hover.dart';
-import 'package:sixam_mart/view/screens/search/widget/search_field.dart';
 
 class WebMenuBar extends StatefulWidget implements PreferredSizeWidget {
   @override
@@ -75,25 +73,8 @@ class _WebMenuBarState extends State<WebMenuBar> {
           MenuButton(title: 'about_us'.tr, onTap: () => Get.toNamed(RouteHelper.getHtmlRoute('about-us'))),
           SizedBox(width: 20),
           MenuButton(title: 'privacy_policy'.tr, onTap: () => Get.toNamed(RouteHelper.getHtmlRoute('privacy-policy'))),
-        ]) : SizedBox(width: 250, child: GetBuilder<SearchController>(builder: (searchController) {
-          _searchController.text = searchController.searchHomeText;
-          return SearchField(
-            controller: _searchController,
-            hint: Get.find<SplashController>().configModel.moduleConfig.module.showRestaurantText
-                ? 'search_food_or_restaurant'.tr : 'search_item_or_store'.tr,
-            suffixIcon: searchController.searchHomeText.length > 0 ? Icons.highlight_remove : Icons.search,
-            filledColor: Theme.of(context).backgroundColor,
-            iconPressed: () {
-              if(searchController.searchHomeText.length > 0) {
-                _searchController.text = '';
-                searchController.clearSearchHomeText();
-              }else {
-                searchData();
-              }
-            },
-            onSubmit: (text) => searchData(),
-          );
-        })),
+        ]) : SizedBox(width: 250),
+
         SizedBox(width: 20),
 
         MenuIconButton(icon: Icons.notifications, onTap: () => Get.toNamed(RouteHelper.getNotificationRoute())),

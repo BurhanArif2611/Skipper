@@ -153,12 +153,12 @@ class CodePickerWidgetState extends State<CodePickerWidget> {
     Widget _widget;
     if (widget.builder != null)
       _widget = InkWell(
-     /*  onTap: showCountryCodePickerDialog,*/
+       onTap: showCountryCodePickerDialog,
         child: widget.builder(selectedItem),
       );
     else {
       _widget = TextButton(
-        /*onPressed: widget.enabled ? showCountryCodePickerDialog : null,*/
+        onPressed: widget.enabled ? showCountryCodePickerDialog : null,
         child: Flex(
           direction: Axis.horizontal,
           mainAxisSize: MainAxisSize.min,
@@ -192,7 +192,7 @@ class CodePickerWidgetState extends State<CodePickerWidget> {
                       ? selectedItem.toCountryStringOnly()
                       : selectedItem.toString(),
                   style:
-                  widget.textStyle ?? Theme.of(context).textTheme.button,
+                  widget.textStyle ?? Theme.of(context).cardColor,
                   overflow: widget.textOverflow,
                 ),
               ),
@@ -242,7 +242,7 @@ class CodePickerWidgetState extends State<CodePickerWidget> {
   void initState() {
     super.initState();
 
-    if (widget.initialSelection != null) {
+    if (widget.initialSelection != null && widget.initialSelection != "") {
       selectedItem = elements.firstWhere(
               (e) =>
           (e.code.toUpperCase() ==
@@ -253,15 +253,16 @@ class CodePickerWidgetState extends State<CodePickerWidget> {
     } else {
       selectedItem = elements[0];
     }
-
-    favoriteElements = elements
-        .where((e) =>
-    widget.favorite.firstWhereOrNull((f) =>
-    e.code.toUpperCase() == f.toUpperCase() ||
-        e.dialCode == f ||
-        e.name.toUpperCase() == f.toUpperCase()) !=
-        null)
-        .toList();
+   /* if (widget.favorite != null && widget.favorite != "") {
+      favoriteElements = elements
+          .where((e) =>
+      widget.favorite.firstWhereOrNull((f) =>
+      e.code.toUpperCase() == f.toUpperCase() ||
+          e.dialCode == f ||
+          e.name.toUpperCase() == f.toUpperCase()) !=
+          null)
+          .toList();
+    }*/
   }
 
   void showCountryCodePickerDialog() {

@@ -6,7 +6,6 @@ import 'package:sixam_mart/controller/localization_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/controller/theme_controller.dart';
-import 'package:sixam_mart/controller/wishlist_controller.dart';
 import 'package:sixam_mart/helper/notification_helper.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';

@@ -1,7 +1,6 @@
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/item_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
-import 'package:sixam_mart/controller/wishlist_controller.dart';
 import 'package:sixam_mart/data/model/response/config_model.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:sixam_mart/data/model/response/module_model.dart';
@@ -191,27 +190,7 @@ class ItemWidget extends StatelessWidget {
                   child: Icon(Icons.add, size: _desktop ? 30 : 25),
                 ) : SizedBox(),
 
-                GetBuilder<WishListController>(builder: (wishController) {
-                  bool _isWished = isStore ? wishController.wishStoreIdList.contains(store.id)
-                      : wishController.wishItemIdList.contains(item.id);
-                  return InkWell(
-                    onTap: () {
-                      if(Get.find<AuthController>().isLoggedIn()) {
-                        _isWished ? wishController.removeFromWishList(isStore ? store.id : item.id, isStore)
-                            : wishController.addToWishList(item, store, isStore);
-                      }else {
-                        showCustomSnackBar('you_are_not_logged_in'.tr);
-                      }
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: _desktop ? Dimensions.PADDING_SIZE_SMALL : 0),
-                      child: Icon(
-                        _isWished ? Icons.favorite : Icons.favorite_border,  size: _desktop ? 30 : 25,
-                        color: _isWished ? Theme.of(context).primaryColor : Theme.of(context).disabledColor,
-                      ),
-                    ),
-                  );
-                }),
+
 
               ]),
 

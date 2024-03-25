@@ -2,7 +2,6 @@ import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
 import 'package:sixam_mart/controller/item_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
-import 'package:sixam_mart/controller/wishlist_controller.dart';
 import 'package:sixam_mart/data/model/response/cart_model.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:sixam_mart/helper/date_converter.dart';
@@ -350,47 +349,7 @@ try{
                                                 .toggleVegNonVeg
                                             ? 50
                                             : 0),
-                                    widget.isCampaign
-                                        ? SizedBox(height: 25)
-                                        : GetBuilder<WishListController>(
-                                            builder: (wishList) {
-                                            return InkWell(
-                                              onTap: () {
-                                                if (Get.find<AuthController>()
-                                                    .isLoggedIn()) {
-                                                  wishList.wishItemIdList
-                                                          .contains(
-                                                              widget.item.id)
-                                                      ? wishList
-                                                          .removeFromWishList(
-                                                              widget.item.id,
-                                                              false)
-                                                      : wishList.addToWishList(
-                                                          widget.item,
-                                                          null,
-                                                          false);
-                                                } else {
-                                                  showCustomSnackBar(
-                                                      'you_are_not_logged_in'
-                                                          .tr);
-                                                }
-                                              },
-                                              child: Icon(
-                                                wishList.wishItemIdList
-                                                        .contains(
-                                                            widget.item.id)
-                                                    ? Icons.favorite
-                                                    : Icons.favorite_border,
-                                                color: wishList.wishItemIdList
-                                                        .contains(
-                                                            widget.item.id)
-                                                    ? Theme.of(context)
-                                                        .primaryColor
-                                                    : Theme.of(context)
-                                                        .disabledColor,
-                                              ),
-                                            );
-                                          }),
+
                                   ]),
                             ]),
 

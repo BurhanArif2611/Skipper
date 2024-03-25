@@ -12,7 +12,7 @@
   "skip": "Skip",
   "next": "Next",
   "get_started": "Get Started",
-  "sign_in": "Sign In",
+  "sign_in": "Login",
   "sign_up": "Sign Up",
   "email": "E-mail",
   "password": "Password",
@@ -587,9 +587,9 @@
   "Male": "Male",
   "Female": "Female",
   "Other": "Other",
-  "Select Gender": "Select Gender"
+  "Select Gender": "Select Gender",
 
-
-
-
+  "arena": "Arena",
+  "my_matches": "My Matches",
+  "account": "Account"
 }

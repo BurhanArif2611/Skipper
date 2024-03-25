@@ -10,16 +10,11 @@ import 'package:sixam_mart/controller/localization_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/notification_controller.dart';
 import 'package:sixam_mart/controller/onboarding_controller.dart';
-import 'package:sixam_mart/controller/order_controller.dart';
 import 'package:sixam_mart/controller/item_controller.dart';
-import 'package:sixam_mart/controller/parcel_controller.dart';
 import 'package:sixam_mart/controller/store_controller.dart';
-import 'package:sixam_mart/controller/search_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/controller/theme_controller.dart';
 import 'package:sixam_mart/controller/user_controller.dart';
-import 'package:sixam_mart/controller/wallet_controller.dart';
-import 'package:sixam_mart/controller/wishlist_controller.dart';
 import 'package:sixam_mart/data/repository/auth_repo.dart';
 import 'package:sixam_mart/data/repository/banner_repo.dart';
 import 'package:sixam_mart/data/repository/campaign_repo.dart';
@@ -97,14 +92,10 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => DashboardController());
   Get.lazyPut(() => CartController(cartRepo: Get.find()));
   Get.lazyPut(() => StoreController(storeRepo: Get.find()));
-  Get.lazyPut(() => WishListController(wishListRepo: Get.find(), itemRepo: Get.find()));
-  Get.lazyPut(() => SearchController(searchRepo: Get.find()));
+
   Get.lazyPut(() => CouponController(couponRepo: Get.find()));
-  Get.lazyPut(() => OrderController(orderRepo: Get.find()));
   Get.lazyPut(() => NotificationController(notificationRepo: Get.find()));
   Get.lazyPut(() => CampaignController(campaignRepo: Get.find()));
-  Get.lazyPut(() => ParcelController(parcelRepo: Get.find()));
-  Get.lazyPut(() => WalletController(walletRepo: Get.find()));
   Get.lazyPut(() => HomeController(homeRepo: Get.find()));
   Get.lazyPut(() => ComplaintController(storeRepo: Get.find()));
   // Retrieving localized data

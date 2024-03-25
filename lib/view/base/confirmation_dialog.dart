@@ -1,4 +1,3 @@
-import 'package:sixam_mart/controller/order_controller.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/custom_button.dart';
@@ -46,7 +45,7 @@ class ConfirmationDialog extends StatelessWidget {
             ),
             SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
 
-            GetBuilder<OrderController>(builder: (orderController) {
+           /* GetBuilder<OrderController>(builder: (orderController) {
               return !orderController.isLoading ? Row(children: [
                 Expanded(child: TextButton(
                   onPressed: () => isLogOut ? onYesPressed() : onNoPressed != null ? onNoPressed() : Get.back(),
@@ -67,7 +66,7 @@ class ConfirmationDialog extends StatelessWidget {
                   radius: Dimensions.RADIUS_SMALL, height: 50,
                 )),
               ]) : Center(child: CircularProgressIndicator());
-            }),
+            }),*/
 
           ]),
         )),

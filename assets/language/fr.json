@@ -12,7 +12,7 @@
   "skip": "Skip",
   "next": "Next",
   "get_started": "Get Started",
-  "sign_in": "Sign In",
+  "sign_in": "Login",
   "sign_up": "Sign Up",
   "email": "E-mail",
   "password": "Password",
@@ -599,7 +599,8 @@
   "Male": "Mâle",
   "Female": "Femelle",
   "Other": "Autre",
-  "Select Gender": "Sélectionnez le sexe"
+  "Select Gender": "Sélectionnez le sexe",
+  "account": "Account"
 
 
 

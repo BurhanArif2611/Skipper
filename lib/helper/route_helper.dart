@@ -9,6 +9,7 @@ import 'package:sixam_mart/data/model/response/order_model.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:sixam_mart/data/model/response/parcel_category_model.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
+import 'package:sixam_mart/view/screens/forget/forget_pass_screen.dart';
 
 import 'package:sixam_mart/util/app_constants.dart';
 import 'package:sixam_mart/util/html_type.dart';
@@ -30,12 +31,6 @@ import 'package:sixam_mart/view/screens/onboard/onboarding_screen.dart';
 import 'package:sixam_mart/view/screens/profile/profile_screen.dart';
 import 'package:sixam_mart/view/screens/profile/update_profile_screen.dart';
 import 'package:sixam_mart/view/screens/refer_and_earn/refer_and_earn_screen.dart';
-/*import 'package:sixam_mart/view/screens/store/all_store_screen.dart';
-import 'package:sixam_mart/view/screens/store/campaign_screen.dart';
-import 'package:sixam_mart/view/screens/store/store_item_search_screen.dart';
-import 'package:sixam_mart/view/screens/store/store_screen.dart';
-import 'package:sixam_mart/view/screens/store/review_screen.dart';*/
-import 'package:sixam_mart/view/screens/search/search_screen.dart';
 import 'package:sixam_mart/view/screens/splash/splash_screen.dart';
 import 'package:sixam_mart/view/screens/support/support_screen.dart';
 /*
@@ -43,37 +38,25 @@ import 'package:sixam_mart/view/screens/update/update_screen.dart';
 */
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-/*
-import 'package:sixam_mart/view/screens/wallet/wallet_screen.dart';
-*/
 
-/*import '../data/model/response/survey_list_model.dart';*/
-/*import '../data/model/response/news_list_model.dart';*/
 import '../data/model/response/incidence_detail_response.dart';
 import '../data/model/response/news_list_model.dart';
 import '../data/model/response/survey_list_model.dart';
-import '../view/screens/addmembers/payment_sucess_screen.dart';
 import '../view/screens/complaint/add_complaint_screen.dart';
 import '../view/screens/complaint/list_complaint_screen.dart';
 import '../view/screens/contact_center/contact_center_screen.dart';
-/*
-import '../view/screens/home/add_contact_screen.dart';
-*/
-/*import '../view/screens/home/sos_contact_screen.dart';
-import '../view/screens/incidences/category.dart';
-import '../view/screens/incidences/incidences_detail_screen.dart';
-import '../view/screens/incidences/report_incidence_screen.dart';
-import '../view/screens/incidences/security_officer_chat_screen.dart';
-import '../view/screens/latestnews/top_news.dart';
-import '../view/screens/myprofile/changepassword_screen.dart';
-import '../view/screens/myprofile/emailaddress_screen.dart';
-import '../view/screens/myprofile/personal_profile_screen.dart';
-import '../view/screens/resource_center/resource_center_screen.dart';
-import '../view/screens/selectcountry/select_country_screen.dart';*/
-/*import '../view/screens/survey/survey_questions_screen.dart';
-import '../view/screens/survey/survey_start_screen.dart';
-import '../view/screens/survey/surveys_screen.dart';*/
+
+import '../view/screens/create_team/choose_captain_screen.dart';
+import '../view/screens/create_team/create_team_screen.dart';
+import '../view/screens/create_team/final_create_team_preview.dart';
+import '../view/screens/kyc/kyc_screen.dart';
+import '../view/screens/kyc/kyc_success_screen.dart';
 import '../view/screens/language/language_screen.dart';
+import '../view/screens/leader_board/leaderboard_screen.dart';
+import '../view/screens/wallet/add_bank_screen.dart';
+import '../view/screens/wallet/add_card_screen.dart';
+import '../view/screens/wallet/add_payment_option_screen.dart';
+import '../view/screens/wallet/withdraw.dart';
 import '../view/screens/webview/webview_screen.dart';
 
 class RouteHelper {
@@ -150,6 +133,16 @@ class RouteHelper {
   static const String resourcecenterscreen = '/resource_center_screen';
   static const String securityofficerchatscreen = '/security_officer_chat_screen';
   static const String webviewscreen = '/webviewscreen';
+  static const String kycscreen = '/kycscreen';
+  static const String kycsuccessscreen = '/kyc_success_screen';
+  static const String withdrawscreen = '/withdraw_screen';
+  static const String addcardscreen = '/addcard_screen';
+  static const String addbankscreen = '/addbank_screen';
+  static const String addpaymentoption = '/addpaymentoption_screen';
+  static const String createteamscreen = '/create_team_screen';
+  static const String choose_captain_screen = '/choose_captain_team_screen';
+  static const String final_team_screen = '/final_team_screen';
+  static const String leaderboard = '/leaderboard';
 
   static String getInitialRoute() => '$initial';
   static String getPersonalProfileRoute() => '$personalprofilescreen';
@@ -177,6 +170,12 @@ class RouteHelper {
   static String getListComplaintRoute() => '$listcomplaintscreen';
   static String getContactCenterRoute() => '$contactcenterscreen';
   static String getResourceCenterRoute() => '$resourcecenterscreen';
+  static String getKYCScreenRoute() => '$kycscreen';
+  static String getKYCSuccessScreenRoute() => '$kycsuccessscreen';
+  static String getLeaderBoardScreenRoute() => '$leaderboard';
+  static String getFinalTeamScreenRoute() => '$final_team_screen';
+  static String getChooseCaptainScreenRoute() => '$choose_captain_screen';
+  static String getCreateTeamScreenRoute() => '$createteamscreen';
   static String getVerificationRoute(String number, String token, String page, String pass) {
     return '$verification?page=$page&number=$number&token=$token&pass=$pass';
   }
@@ -198,6 +197,10 @@ class RouteHelper {
     return '$orderDetails?id=$orderID';
   }
   static String getProfileRoute() => '$profile';
+  static String getWithdrawRoute() => '$withdrawscreen';
+  static String getAddCardRoute() => '$addcardscreen';
+  static String getAddBankRoute() => '$addbankscreen';
+  static String getAddPaymentOptionRoute() => '$addpaymentoption';
   static String getUpdateProfileRoute() => '$updateProfile';
   static String getCouponRoute() => '$coupon';
   static String getNotificationRoute() => '$notification';
@@ -226,10 +229,7 @@ class RouteHelper {
     return '$newsdetailscreen?detail=$_data';
   }
 
- /* static String getSurveyQuestionScreen(PendingSurvey basicCampaignModel) {
-    String _data = base64Encode(utf8.encode(jsonEncode(basicCampaignModel.toJson())));
-    return '$surveyquestionscreen?data=$_data';
-  }*/
+
 
   static String getHtmlRoute(String page) => '$html?page=$page';
   static String getCategoryRoute() => '$categories';
@@ -277,11 +277,7 @@ class RouteHelper {
 
   static List<GetPage> routes = [
     GetPage(name: initial, page: () => getRoute(DashboardScreen(pageIndex: 0))),
-   /* GetPage(name: personalprofilescreen, page: () => getRoute(PersonalProfileScreen())),
-    GetPage(name: changepasswordscreen, page: () => getRoute(ChangePasswordScreen())),
-    GetPage(name: changeemailscreen, page: () => getRoute(EmailAddressScreen())),
-    GetPage(name: addcontactscreen, page: () => getRoute(AddContactScreen())),
-    GetPage(name: soscontactscreen, page: () => getRoute(SOSContactScreen())),*/
+
     GetPage(name: dashboard, page: () => getRoute(DashboardScreen(pageIndex: 0))),
   //  GetPage(name: favouritescreen, page: () => getRoute(FavouriteScreen())),
 /*
@@ -290,9 +286,7 @@ class RouteHelper {
     GetPage(name: language, page: () => ChooseLanguageScreen(fromMenu: Get.parameters['page'] == 'menu')),
    /* GetPage(name: surveyscreen, page: () => getRoute(SurveyScreen())),*/
     GetPage(name: webviewscreen, page: () => getRoute(WebviewScreen(url: Get.parameters['url']))),
-  /*  GetPage(name: reportincidencescreen, page: () => getRoute(ReportIncidenceScreen())),
-    GetPage(name: incidencedetailscreen, page: () => getRoute(IncidenceDetailScreen(incidence_id:Get.parameters['incidence_id']))),
-    GetPage(name: topnewsscreen, page: () => getRoute(TopNewsScreen())),*/
+
     GetPage(name: splash, page: () => SplashScreen(orderID: Get.parameters['id'] == 'null' ? null : Get.parameters['id'])),
   //  GetPage(name: language, page: () => ChooseLanguageScreen(fromMenu: Get.parameters['page'] == 'menu')),
     GetPage(name: onBoarding, page: () => OnBoardingScreen()),
@@ -300,156 +294,60 @@ class RouteHelper {
       exitFromApp: Get.parameters['page'] == signUp || Get.parameters['page'] == splash || Get.parameters['page'] == onBoarding,
     )),
     GetPage(name: signUp, page: () => SignUpScreen(number: Get.parameters['number'])),
-  //  GetPage(name: securityofficerchatscreen, page: () => SecurityOfficerChatScreen(incidence_id: Get.parameters['incidence_id'])),
-  //  GetPage(name: selectcountryscreen, page: () => SelectCountryScreen(state_id: Get.parameters['state_id'])),
-   /* GetPage(name: selectcategoryscreen, page: () => CategoryScreen(state_id: Get.parameters['state_id'])),
-    GetPage(name: addcomplaintscreen, page: () => AddComplaintScreen()),
-    GetPage(name: listcomplaintscreen, page: () => ListComplaintScreen()),
-    GetPage(name: contactcenterscreen, page: () => ContactCenterScreen()),
-    GetPage(name: resourcecenterscreen, page: () => ResourceCenterScreen()),*/
 
-
-   /* GetPage(name: verification, page: () {
-      List<int> _decode = base64Decode(Get.parameters['pass'].replaceAll(' ', '+'));
-      String _data = utf8.decode(_decode);
-      return VerificationScreen(
-        number: Get.parameters['number'], fromSignUp: Get.parameters['page'] == signUp, token: Get.parameters['token'],
-        password: _data,
-      );
-    }),*/
-   /* GetPage(name: accessLocation, page: () => AccessLocationScreen(
-      fromSignUp: Get.parameters['page'] == signUp, fromHome: Get.parameters['page'] == 'home', route: null,
-    )),*/
-    /*GetPage(name: pickMap, page: () {
-      PickMapScreen _pickMapScreen = Get.arguments;
-      bool _fromAddress = Get.parameters['page'] == 'add-address';
-      return ((Get.parameters['page'] == 'parcel' && _pickMapScreen == null) || (_fromAddress && _pickMapScreen == null))
-          ? NotFound() : _pickMapScreen != null ? _pickMapScreen : PickMapScreen(
-        fromSignUp: Get.parameters['page'] == signUp, fromAddAddress: _fromAddress, route: Get.parameters['page'],
-        canRoute: Get.parameters['route'] == 'true',
-      );
-    }),*/
-   /* GetPage(name: interest, page: () => InterestScreen()),*/
     GetPage(name: main, page: () => getRoute(DashboardScreen(
       pageIndex: Get.parameters['page'] == 'home' ? 0 : Get.parameters['page'] == 'favourite' ? 1
           : Get.parameters['page'] == 'cart' ? 2 : Get.parameters['page'] == 'order' ? 3 : Get.parameters['page'] == 'menu' ? 4 : 0,
     ))),
-   /* GetPage(name: forgotPassword, page: () {
+
+    GetPage(name: forgotPassword, page: () {
       SocialLogInBody _data;
       if(Get.parameters['page'] == 'social-login') {
         List<int> _decode = base64Decode(Get.parameters['data'].replaceAll(' ', '+'));
         _data = SocialLogInBody.fromJson(jsonDecode(utf8.decode(_decode)));
       }
       return ForgetPassScreen(fromSocialLogin: Get.parameters['page'] == 'social-login', socialLogInBody: _data,number: Get.parameters['number']);
-    }),*/
-    /*GetPage(name: resetPassword, page: () => NewPassScreen(
+    }),
+    GetPage(name: verification, page: () {
+      List<int> _decode = base64Decode(Get.parameters['pass'].replaceAll(' ', '+'));
+      String _data = utf8.decode(_decode);
+      return VerificationScreen(
+        number: Get.parameters['number'], fromSignUp: Get.parameters['page'] == signUp, token: Get.parameters['token'],
+        password: _data,
+      );
+    }),
+    GetPage(name: resetPassword, page: () => NewPassScreen(
       resetToken: Get.parameters['token'], number: Get.parameters['phone'], fromPasswordChange: Get.parameters['page'] == 'password-change',
-    )),*/
-   /* GetPage(name: surveystartscreen, page: () => getRoute(SurveyStartScreen(
-      data:*//*PendingSurvey()*//*Get.parameters['data']=='',
-    ))),*/
-
-   /* GetPage(name: surveystartscreen, page: () {
-      PendingSurvey _data = PendingSurvey.fromJson(jsonDecode(utf8.decode(base64Decode(Get.parameters['data'].replaceAll(' ', '+')))));
-      return getRoute(SurveyStartScreen(data: _data));
-    }),*/
-   /* GetPage(name: newsdetailscreen, page: () {
-      NewsDetail _data = NewsDetail.fromJson(jsonDecode(utf8.decode(base64Decode(Get.parameters['detail'].replaceAll(' ', '+')))));
-      return getRoute(NewsDetailScreen(detail:_data));
-  }),
-*/
-   /* GetPage(name: surveyquestionscreen, page: () {
-      PendingSurvey _data = PendingSurvey.fromJson(jsonDecode(utf8.decode(base64Decode(Get.parameters['data'].replaceAll(' ', '+')))));
-      return getRoute(SurveyQuestionsScreen(data: _data));
-    }),*/
-
-
-    GetPage(name: search, page: () => getRoute(SearchScreen(queryText: Get.parameters['query']))),
-    /*GetPage(name: store, page: () {
-      return getRoute(Get.arguments != null ? Get.arguments : StoreScreen(
-        store: Store(id: int.parse(Get.parameters['id'])),
-        fromModule: Get.parameters['page'] == 'module',
-      ));
-    }),*/
-  /*  GetPage(name: orderDetails, page: () {
-      return getRoute(Get.arguments != null ? Get.arguments : OrderDetailsScreen(orderId: int.parse(Get.parameters['id'] ?? '0'), orderModel: null));
-    }),*/
+    )),
     GetPage(name: profile, page: () => getRoute(ProfileScreen())),
+    GetPage(name: withdrawscreen, page: () => getRoute(WithdrawScreen())),
+    GetPage(name: addcardscreen, page: () => getRoute(AddCardScreen())),
+    GetPage(name: addbankscreen, page: () => getRoute(AddBankScreen())),
+    GetPage(name: addpaymentoption, page: () => getRoute(AddPaymentOptionScreen())),
     GetPage(name: updateProfile, page: () => getRoute(UpdateProfileScreen())),
    /* GetPage(name: coupon, page: () => getRoute(CouponScreen())),
    */ GetPage(name: notification, page: () => getRoute(NotificationScreen())),
+   GetPage(name: kycscreen, page: () => getRoute(KYCScreen())),
+   GetPage(name: kycsuccessscreen, page: () => getRoute(KYCSUCCESSScreen())),
+   GetPage(name: leaderboard, page: () => getRoute(LeaderBoardScreen())),
+   GetPage(name: final_team_screen, page: () => getRoute(FinalCreateTeamPreviewScreen())),
+   GetPage(name: createteamscreen, page: () => getRoute(CreateTeamScreen())),
+   GetPage(name: choose_captain_screen, page: () => getRoute(ChooseCaptainTeamScreen())),
 
-    GetPage(name: payment, page: () => getRoute(PaymentSuccessScreen())),
-    /*GetPage(name: map, page: () {
-      List<int> _decode = base64Decode(Get.parameters['address'].replaceAll(' ', '+'));
-      AddressModel _data = AddressModel.fromJson(jsonDecode(utf8.decode(_decode)));
-      return getRoute(MapScreen(fromStore: Get.parameters['page'] == 'store', address: _data));
-    }),*/
-   /* GetPage(name: address, page: () => getRoute(AddressScreen())),
-    GetPage(name: orderSuccess, page: () => getRoute(OrderSuccessfulScreen(orderID: Get.parameters['id']))),
-    GetPage(name: payment, page: () => getRoute(PaymentScreen(orderModel: OrderModel(
-        id: int.parse(Get.parameters['id']), orderType: Get.parameters['type'], userId: int.parse(Get.parameters['user'],
-    ))))),*/
-   /* GetPage(name: checkout, page: () {
-      CheckoutScreen _checkoutScreen = Get.arguments;
-      bool _fromCart = Get.parameters['page'] == 'cart';
-      return getRoute(_checkoutScreen != null ? _checkoutScreen : !_fromCart ? NotFound() : CheckoutScreen(
-        cartList: null, fromCart: Get.parameters['page'] == 'cart',
-      ));
-    }),
-    GetPage(name: orderTracking, page: () => getRoute(OrderTrackingScreen(orderID: Get.parameters['id']))),
-  */ /* GetPage(name: basicCampaign, page: () {
-      BasicCampaignModel _data = BasicCampaignModel.fromJson(jsonDecode(utf8.decode(base64Decode(Get.parameters['data'].replaceAll(' ', '+')))));
-      return getRoute(CampaignScreen(campaign: _data));
-    }),*/
+
+
     GetPage(name: html, page: () => HtmlViewerScreen(
       htmlType: Get.parameters['page'] == 'terms-and-condition' ? HtmlType.TERMS_AND_CONDITION
           : Get.parameters['page'] == 'privacy-policy' ? HtmlType.PRIVACY_POLICY : HtmlType.ABOUT_US,
     )),
-    /*GetPage(name: categories, page: () => getRoute(CategoryScreen())),
-    GetPage(name: categoryItem, page: () {
-      List<int> _decode = base64Decode(Get.parameters['name'].replaceAll(' ', '+'));
-      String _data = utf8.decode(_decode);
-      return getRoute(CategoryItemScreen(categoryID: Get.parameters['id'], categoryName: _data));
-    }),*/
-   /* GetPage(name: popularItems, page: () => getRoute(PopularItemScreen(isPopular: Get.parameters['page'] == 'popular'))),
-    GetPage(name: itemCampaign, page: () => getRoute(ItemCampaignScreen())),
-   */ GetPage(name: support, page: () => getRoute(SupportScreen())),
-  //  GetPage(name: update, page: () => UpdateScreen(isUpdate: Get.parameters['update'] == 'true')),
-   /* GetPage(name: cart, page: () => getRoute(CartScreen(fromNav: false))),
-    GetPage(name: addAddress, page: () => getRoute(AddAddressScreen(
-      fromCheckout: Get.parameters['page'] == 'checkout', zoneId: int.parse(Get.parameters['zone_id']),
-    ))),*/
-   /* GetPage(name: editAddress, page: () => getRoute(AddAddressScreen(
-      fromCheckout: false,
-      address: AddressModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['data'].replaceAll(' ', '+'))))),
-    ))),*/
+     GetPage(name: support, page: () => getRoute(SupportScreen())),
+
     GetPage(name: rateReview, page: () => getRoute(Get.arguments != null ? Get.arguments : NotFound())),
-   /* GetPage(name: storeReview, page: () => getRoute(ReviewScreen(storeID: Get.parameters['id']))),
-    GetPage(name: allStores, page: () => getRoute(AllStoreScreen(
-      isPopular: Get.parameters['page'] == 'popular', isFeatured: Get.parameters['page'] == 'featured',
-    ))),*/
+
     GetPage(name: itemImages, page: () => getRoute(ImageViewerScreen(
       item: IncidenceDetailResponse.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['item'])))),
     ))),
-    /*GetPage(name: parcelCategory, page: () => getRoute(ParcelCategoryScreen())),
-    GetPage(name: parcelLocation, page: () => getRoute(ParcelLocationScreen(
-      category: ParcelCategoryModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['data'].replaceAll(' ', '+'))))),
-    ))),
-    GetPage(name: errandmainscreen, page: () => getRoute(ErrandMainScreen())),
-
-
-    GetPage(name: parcelRequest, page: () => getRoute(ParcelRequestScreen(
-      parcelCategory: ParcelCategoryModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['category'].replaceAll(' ', '+'))))),
-      pickedUpAddress: AddressModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['picked'].replaceAll(' ', '+'))))),
-      destinationAddress: AddressModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['destination'].replaceAll(' ', '+'))))),
-    ))),*/
-   // GetPage(name: searchStoreItem, page: () => getRoute(StoreItemSearchScreen(storeID: Get.parameters['id']))),
-   /* GetPage(name: order, page: () => getRoute(OrderScreen())),
-  */ /* GetPage(name: itemDetails, page: () => getRoute(Get.arguments != null ? Get.arguments : ItemDetailsScreen(item: Item(id: int.parse(Get.parameters['id'])), inStorePage: Get.parameters['page'] == 'restaurant'))),
-    */
-    //GetPage(name: wallet, page: () => getRoute(WalletScreen(fromWallet: Get.parameters['page'] == 'wallet'))),
-    GetPage(name: referAndEarn, page: () => getRoute(ReferAndEarnScreen())),
+     GetPage(name: referAndEarn, page: () => getRoute(ReferAndEarnScreen())),
   ];
 
   static getRoute(Widget navigateTo) {

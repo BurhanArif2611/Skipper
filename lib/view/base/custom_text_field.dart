@@ -55,11 +55,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Column(
       children: [
         TextField(
+
           maxLines: widget.maxLines,
           controller: widget.controller,
           focusNode: widget.focusNode,
           textAlign: widget.textAlign,
-          style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge),
+          style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge,color: Theme.of(context).cardColor),
           textInputAction: widget.inputAction,
           keyboardType: widget.inputType,
           cursorColor: Theme.of(context).primaryColor,
@@ -74,30 +75,31 @@ class _CustomTextFieldState extends State<CustomTextField> {
           decoration:
           InputDecoration(
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(25.0),
-              borderSide:  BorderSide(color: Theme.of(context).hintColor.withOpacity(0.1), width: 1),
+              borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
+              borderSide:  BorderSide(color: Theme.of(context).cardColor.withOpacity(0.80), width: 1),
             ),
             enabledBorder:  OutlineInputBorder(
-              borderRadius: BorderRadius.circular(25.0),
-              borderSide:  BorderSide(color: Theme.of(context).hintColor.withOpacity(0.1), width: 1),
+              borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
+              borderSide:  BorderSide(color: Theme.of(context).cardColor.withOpacity(0.50), width: 1),
             ),
             counterText: "",
             isDense: true,
             hintText: widget.hintText,
-            fillColor: Theme.of(context).cardColor,
+            fillColor:Colors.transparent /*Theme.of(context).cardColor*/,
             hintStyle: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge, color: Color(0xFFA1A8B0)),
             filled: true,
+
             prefixIcon: widget.prefixIcon != null ? Padding(
               padding: EdgeInsets.symmetric(horizontal: widget.prefixSize),
               child: widget.prefixIcon.toString() == "lock" ?
-              Icon(Icons.lock_clock_outlined , color: Theme.of(context).hintColor):widget.prefixIcon.toString() == "email"?Icon(Icons.email_outlined , color: Theme.of(context).hintColor):
-              Image.asset(widget.prefixIcon, height: 20, width: 20),
+              Icon(Icons.lock_clock_outlined , color: Theme.of(context).cardColor):widget.prefixIcon.toString() == "email"?Icon(Icons.email_outlined , color: Theme.of(context).cardColor):
+              Image.asset(widget.prefixIcon, height: 20, width: 20,color: Theme.of(context).cardColor ,),
             ) : null,
             suffixIcon: widget.isPassword ? IconButton(
               hoverColor: Colors.transparent,
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
-              icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility, color: Theme.of(context).hintColor.withOpacity(0.3)),
+              icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility, color: Theme.of(context).cardColor.withOpacity(0.30)),
               onPressed: _toggle,
             ) : null,
           ),

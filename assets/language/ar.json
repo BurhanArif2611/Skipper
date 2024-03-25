@@ -605,5 +605,6 @@
   "Male": "ذكر",
   "Female": "أنثى",
   "Other": "آخر",
-  "Select Gender": "حدد الجنس"
+  "Select Gender": "حدد الجنس",
+  "account": "Account"
 }

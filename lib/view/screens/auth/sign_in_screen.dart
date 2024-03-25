@@ -17,19 +17,11 @@ import 'package:sixam_mart/view/base/custom_text_field.dart';
 import 'package:sixam_mart/view/base/footer_view.dart';
 import 'package:sixam_mart/view/base/menu_drawer.dart';
 import 'package:sixam_mart/view/base/web_menu_bar.dart';
-import 'package:sixam_mart/view/screens/auth/widget/code_picker_widget.dart';
-import 'package:sixam_mart/view/screens/auth/widget/condition_check_box.dart';
-import 'package:sixam_mart/view/screens/auth/widget/guest_button.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:phone_number/phone_number.dart';
 
-import '../../../controller/banner_controller.dart';
-import '../../../controller/store_controller.dart';
-import '../../../controller/theme_controller.dart';
-import '../../../data/model/response/store_model.dart';
-import '../../../util/app_constants.dart';
 import '../../base/custom_app_bar.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -99,12 +91,13 @@ class _SignInScreenState extends State<SignInScreen> {
         }
       },
       child: Scaffold(
+
         appBar: ResponsiveHelper.isDesktop(context)
             ? WebMenuBar()
             : /*!widget.exitFromApp
                 ?*/
             CustomAppBar(
-                title: 'Sign In'.tr, onBackPressed: () => {Get.back()}),
+                title: '', onBackPressed: () => {Get.back()}),
         /*: null*/
        /* endDrawer: MenuDrawer(),*/
         body: SafeArea(
@@ -115,7 +108,8 @@ class _SignInScreenState extends State<SignInScreen> {
               physics: BouncingScrollPhysics(),
               child: FooterView(
                 child: Container(
-                  width: context.width > 700 ? 700 : context.width,
+                  width:  context.width,
+                  height:  context.height-50,
                   padding: context.width > 700
                       ? EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT)
                       : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
@@ -124,7 +118,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       : EdgeInsets.zero,
                   decoration: context.width > 700
                       ? BoxDecoration(
-                          color: Theme.of(context).primaryColor,
+                          color: Theme.of(context).backgroundColor,
                           borderRadius:
                               BorderRadius.circular(Dimensions.RADIUS_SMALL),
                           boxShadow: [
@@ -134,105 +128,33 @@ class _SignInScreenState extends State<SignInScreen> {
                                 spreadRadius: 1)
                           ],
                         )
-                      : null,
+                      : BoxDecoration(
+                      color: Theme.of(context).backgroundColor,),
                   child: GetBuilder<SplashController>(builder: (splashController) {
                     return GetBuilder<AuthController>(builder: (authController) {
                       return  Stack(children: [
                       Container(
                           margin: EdgeInsets.only(bottom: 50),
+                          padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                           child: Column(children: [
                             SizedBox(height: 20),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(
-                                  left: Dimensions.RADIUS_SMALL,
-                                  right: Dimensions.RADIUS_SMALL),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(35.0),
-                                border: Border.all(
-                                    width: 1,
-                                    color: Theme.of(context).disabledColor),
-                                color: Colors.transparent,
-                              ),
-                              child: Row(children: [
-                                SizedBox(width: 10),
-                                Expanded(
-                                    child: TextButton(
-                                  onPressed: () => {
-                                    authController.changeLogin(false),
-                                    splashController.isSecuryOfficer(),
-                                  },
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: !authController.forUser
-                                        ? Theme.of(context)
-                                            .primaryColor
-                                            .withOpacity(0.3)
-                                        : null,
-                                    shape: !authController.forUser
-                                        ? RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                Dimensions.RADIUS_EXTRA_LARGE),
-                                          )
-                                        : null,
-                                  ),
-                                  child: Text('For User'.tr,
-                                      textAlign: TextAlign.center,
-                                      style: robotoBold.copyWith(
-                                        color: !authController.forUser
-                                            ?Theme.of(context).primaryColor: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1
-                                                .color
-                                            ,
-                                        fontSize: Dimensions.fontSizeDefault,
-                                      )),
-                                )),
-                                SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-                                Expanded(
-                                    child: TextButton(
-                                  onPressed: () => {
-                                    {
-                                      authController.changeLogin(true),
-                                      splashController.isSecuryOfficer(),
-                                    }
-                                  },
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: authController.forUser
-                                        ? Theme.of(context)
-                                            .primaryColor
-                                            .withOpacity(0.3)
-                                        : null,
-                                    shape: authController.forUser
-                                        ? RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                Dimensions.RADIUS_EXTRA_LARGE),
-                                          )
-                                        : null,
-                                  ),
-                                  child: Text('Security Officer'.tr,
-                                      textAlign: TextAlign.center,
-                                      style: robotoRegular.copyWith(
-                                        color: authController.forUser
-                                            ?Theme.of(context).primaryColor: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1
-                                                .color
-                                             ,
-                                        fontSize: Dimensions.fontSizeDefault,
-                                      )),
-                                )),
-                                SizedBox(width: 10),
-                              ]),
-                            ),
+                           Align(alignment: Alignment.topLeft,
+                           child:
 
+                           Text("Login",style: robotoBold.copyWith(fontSize: Dimensions.fontSizeOverLarge,color: Theme.of(context).primaryColor),)),
+                            SizedBox(height: 10,),
+                            Align(alignment: Alignment.topLeft,
+                                child:
+                            Text("Please enter your phone number",style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).cardColor),)),
                             SizedBox(height: 20),
-                            Container(
+                        Container(
                               child: Column(children: [
                                 Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal:
                                             Dimensions.PADDING_SIZE_LARGE),
                                     child: Divider(height: 1)),
+
                                 CustomTextField(
                                   hintText: 'Enter your email'.tr,
                                   controller: _emailController,
@@ -244,7 +166,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   isPassword: false,
 
                                 ),
-                                SizedBox(height: 10),
+                                SizedBox(height: 30),
                                 if (_showPassword)
                                   CustomTextField(
                                     hintText: 'password'.tr,
@@ -266,18 +188,16 @@ class _SignInScreenState extends State<SignInScreen> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    /* if (_phoneController.text.isEmpty) {
-                                showCustomSnackBar('enter_phone_number'.tr);
-                              } else {*/
+
                                     Get.toNamed(RouteHelper.getForgotPassRoute(
                                         false, null, _emailController.text));
-                                    /*}*/
+
                                   },
                                   child: Text(
                                     '${'forgot_password'.tr}?',
                                     style: robotoMedium.copyWith(
                                         fontSize: Dimensions.fontSizeDefault,
-                                        color: Theme.of(context).hintColor),
+                                        color: Theme.of(context).primaryColor),
                                   ),
                                 ),
                               ]),
@@ -310,10 +230,10 @@ class _SignInScreenState extends State<SignInScreen> {
                               SizedBox(
                                   width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                               Text(
-                                'OR'.tr,
+                                'Or sign in with'.tr,
                                 textAlign: TextAlign.center,
                                 style: robotoBold.copyWith(
-                                  color: Theme.of(context).dividerColor,
+                                  color: Theme.of(context).cardColor,
                                   fontSize: Dimensions.fontSizeDefault,
                                 ),
                               ),
@@ -330,10 +250,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                   left: Dimensions.RADIUS_SMALL,
                                   right: Dimensions.RADIUS_SMALL),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(35.0),
+                                borderRadius: BorderRadius.circular(15.0),
                                 border: Border.all(
                                     width: 1,
-                                    color: Theme.of(context).disabledColor),
+                                    color: Theme.of(context).primaryColor),
                                 color: Colors.transparent,
                               ),
                               child: Row(children: [
@@ -348,12 +268,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   child: Text('Sign in with Google'.tr,
                                       textAlign: TextAlign.center,
                                       style: robotoBold.copyWith(
-                                        color: !authController.forUser
-                                            ? Theme.of(context)
-                                                .textTheme
-                                                .bodyText1
-                                                .color
-                                            : Theme.of(context).hintColor,
+                                        color: Theme.of(context).cardColor,
                                         fontSize: Dimensions.fontSizeLarge,
                                       )),
                                 )),
@@ -366,10 +281,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                   left: Dimensions.RADIUS_SMALL,
                                   right: Dimensions.RADIUS_SMALL),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(35.0),
+                                borderRadius: BorderRadius.circular(15.0),
                                 border: Border.all(
                                     width: 1,
-                                    color: Theme.of(context).disabledColor),
+                                    color: Theme.of(context).primaryColor),
                                 color: Colors.transparent,
                               ),
                               child: Row(children: [
@@ -384,12 +299,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   child: Text('Sign in with Apple'.tr,
                                       textAlign: TextAlign.center,
                                       style: robotoBold.copyWith(
-                                        color: !authController.forUser
-                                            ? Theme.of(context)
-                                                .textTheme
-                                                .bodyText1
-                                                .color
-                                            : Theme.of(context).hintColor,
+                                        color: Theme.of(context).cardColor,
                                         fontSize: Dimensions.fontSizeLarge,
                                       )),
                                 )),
@@ -402,11 +312,12 @@ class _SignInScreenState extends State<SignInScreen> {
                                   left: Dimensions.RADIUS_SMALL,
                                   right: Dimensions.RADIUS_SMALL),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(35.0),
+                                borderRadius: BorderRadius.circular(15.0),
                                 border: Border.all(
                                     width: 1,
-                                    color: Theme.of(context).disabledColor),
+                                    color: Theme.of(context).primaryColor),
                                 color: Colors.transparent,
+
                               ),
                               child: Row(children: [
                                 SizedBox(width: 10),
@@ -420,12 +331,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   child: Text('Sign in with Facebook'.tr,
                                       textAlign: TextAlign.center,
                                       style: robotoBold.copyWith(
-                                        color: !authController.forUser
-                                            ? Theme.of(context)
-                                                .textTheme
-                                                .bodyText1
-                                                .color
-                                            : Theme.of(context).hintColor,
+                                        color: Theme.of(context).cardColor,
                                         fontSize: Dimensions.fontSizeLarge,
                                       )),
                                 )),
@@ -446,7 +352,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 'Don’t have an account? '.tr,
                                 textAlign: TextAlign.center,
                                 style: robotoBold.copyWith(
-                                  color: Theme.of(context).dividerColor,
+                                  color: Theme.of(context).cardColor.withOpacity(0.50),
                                   fontSize: Dimensions.fontSizeDefault,
                                 ),
                               ),
@@ -458,7 +364,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   ' Sign Up'.tr,
                                   textAlign: TextAlign.center,
                                   style: robotoBold.copyWith(
-                                    color: Theme.of(context).hintColor,
+                                    color: Theme.of(context).primaryColor,
                                     fontSize: Dimensions.fontSizeDefault,
                                   ),
                                 ),
@@ -491,6 +397,7 @@ class _SignInScreenState extends State<SignInScreen> {
     } else if (_password.length < 5) {
       showCustomSnackBar('password_should_be'.tr);
     } else {
+      Get.offAllNamed(RouteHelper.getInitialRoute());
      /* authController
           .new_login(_email, _password,authController.forUser)
           .then((status) async {

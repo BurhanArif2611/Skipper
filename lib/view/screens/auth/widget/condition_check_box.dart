@@ -17,7 +17,7 @@ class ConditionCheckBox extends StatelessWidget {
         value: authController.acceptTerms,
         onChanged: (bool isChecked) => authController.toggleTerms(),
       ),
-      Text('i_agree_with'.tr, style: robotoRegular),
+      Text('i_agree_with'.tr, style: robotoRegular.copyWith(color: Theme.of(context).disabledColor.withOpacity(0.50))),
       InkWell(
         onTap: () => Get.toNamed(RouteHelper.getHtmlRoute('terms-and-condition')),
         child: Padding(

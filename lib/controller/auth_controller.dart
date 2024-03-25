@@ -90,8 +90,18 @@ class AuthController extends GetxController implements GetxService {
 
   String get getDeviceID => _getDeviceID;
 
+
+  int _selectedTeamMemberIndex = 0;
+
+  int get selectedTeamMemberIndex => _selectedTeamMemberIndex;
+
+
   void changeSelectIndex(int index) {
     _selectedIndex = index;
+    update();
+  }
+  void changeTeamMemberSelectIndex(int index) {
+    _selectedTeamMemberIndex = index;
     update();
   }
 

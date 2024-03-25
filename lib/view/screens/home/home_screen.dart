@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_svg/svg.dart';
 import 'package:sixam_mart/controller/home_controller.dart';
 
 import 'package:sixam_mart/util/dimensions.dart';
@@ -8,7 +9,7 @@ import 'package:sixam_mart/util/styles.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:sixam_mart/view/screens/home/widget/team_card.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -27,12 +28,9 @@ class _HomeScreenState extends State<HomeScreen> {
   double latitude;
   double longitude;
 
-
-
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -46,138 +44,75 @@ class _HomeScreenState extends State<HomeScreen> {
     timeago.setLocaleMessages('en', timeago.EnMessages());
 
     return Scaffold(
-        body: Scrollbar(
+        body: Container(
+        color: Theme.of(context).backgroundColor,
+        child:
+        Scrollbar(
             child: SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Container(
+        color: Theme.of(context).backgroundColor,
+        width: MediaQuery.of(context).size.height,
+        margin: EdgeInsets.only(top: Dimensions.PADDING_SIZE_LARGE),
         padding: EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
-        child: Column(children: [
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 5,
+            ),
+            Row(
+              children: [
+                Expanded(
+                    flex: 1,
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: SvgPicture.asset(Images.logo_white))),
+                Expanded(
+                    flex: 1,
+                    child: Align(
+                        alignment: Alignment.centerRight,
+                        child: SvgPicture.asset(
+                          Images.notification,
+                          color: Theme.of(context).primaryColor,
+                        ))),
+              ],
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Text(
+              "Featured Matches",
+              style: robotoBold.copyWith(
+                  fontSize: Dimensions.fontSizeExtraSingleLarge,
+                  color: Theme.of(context).primaryColor),
+            ),
 
-          Text("over_mission".tr,style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeExtraLarge),),
-          SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
-
-          Text("over_mission_content".tr,style: robotoMedium.copyWith(color: Theme.of(context).hintColor.withOpacity(0.5),fontSize: Dimensions.fontSizeDefault),),
-          SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
-
-          Container(
-            alignment: Alignment.topLeft,
-            child: Column(children: [
-           Align(alignment: Alignment.topLeft,
-           child:
-              Text("justice".tr,style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeLarge),)),
-            Align(alignment: Alignment.topLeft,
-              child:
-            Container(
-              width: 50,
-              alignment: Alignment.topLeft,// Set the height of the line
-              child:  Divider(color: Theme.of(context).primaryColor,thickness: 1,),// Set the color of the line
-            )),
-            SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL,),
-            Text("justice_content".tr,style: robotoMedium.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.fontSizeLarge),),
-
-          ],),),
-
-          SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
-
-          Container(
-            alignment: Alignment.topLeft,
-            child: Column(children: [
-           Align(alignment: Alignment.topLeft,
-           child:
-              Text("national_unity".tr,style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeLarge),)),
-            Align(alignment: Alignment.topLeft,
-              child:
-            Container(
-              width: 50,
-              alignment: Alignment.topLeft,// Set the height of the line
-              child:  Divider(color: Theme.of(context).primaryColor,thickness: 1,),// Set the color of the line
-            )),
-            SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL,),
-            Text("national_unity_content".tr,style: robotoMedium.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.fontSizeLarge),),
-
-          ],),),
-          SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
-
-          Container(
-            alignment: Alignment.topLeft,
-            child: Column(children: [
-           Align(alignment: Alignment.topLeft,
-           child:
-              Text("work".tr,style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeLarge),)),
-            Align(alignment: Alignment.topLeft,
-              child:
-            Container(
-              width: 50,
-              alignment: Alignment.topLeft,// Set the height of the line
-              child:  Divider(color: Theme.of(context).primaryColor,thickness: 1,),// Set the color of the line
-            )),
-            SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL,),
-            Text("work_content".tr,style: robotoMedium.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.fontSizeLarge),),
-
-          ],),),
-
-          SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
-
-          Container(
-            alignment: Alignment.topLeft,
-            child: Column(children: [
-           Align(alignment: Alignment.topLeft,
-           child:
-              Text("education".tr,style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeLarge),)),
-            Align(alignment: Alignment.topLeft,
-              child:
-            Container(
-              width: 50,
-              alignment: Alignment.topLeft,// Set the height of the line
-              child:  Divider(color: Theme.of(context).primaryColor,thickness: 1,),// Set the color of the line
-            )),
-            SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL,),
-            Text("education_content".tr,style: robotoMedium.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.fontSizeLarge),),
-
-          ],),),
- SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
-
-          Container(
-            alignment: Alignment.topLeft,
-            child: Column(children: [
-           Align(alignment: Alignment.topLeft,
-           child:
-              Text("health".tr,style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeLarge),)),
-            Align(alignment: Alignment.topLeft,
-              child:
-            Container(
-              width: 50,
-              alignment: Alignment.topLeft,// Set the height of the line
-              child:  Divider(color: Theme.of(context).primaryColor,thickness: 1,),// Set the color of the line
-            )),
-            SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL,),
-            Text("health_content".tr,style: robotoMedium.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.fontSizeLarge),),
-
-          ],),),SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
-
-          Container(
-            alignment: Alignment.topLeft,
-            child: Column(children: [
-           Align(alignment: Alignment.topLeft,
-           child:
-              Text("food_safety".tr,style: robotoBold.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeLarge),)),
-            Align(alignment: Alignment.topLeft,
-              child:
-            Container(
-              width: 50,
-              alignment: Alignment.topLeft,// Set the height of the line
-              child:  Divider(color: Theme.of(context).primaryColor,thickness: 1,),// Set the color of the line
-            )),
-            SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL,),
-            Text("food_safety_content".tr,style: robotoMedium.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.fontSizeLarge),),
-
-          ],),),
-
-
-
-        ],),
+            TeamCardItem(),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              "Upcoming Matches",
+              style: robotoBold.copyWith(
+                  fontSize: Dimensions.fontSizeExtraSingleLarge,
+                  color: Theme.of(context).primaryColor),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+                controller: _scrollController,
+                itemCount: 10,
+                physics: ScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index_option) {
+                  return TeamCardItem();
+                }),
+          ],
+        ),
       ),
-    )));
+    )))
+    );
   }
 }
 

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:image_picker/image_picker.dart';
-import 'package:sixam_mart/controller/parcel_controller.dart';
 import 'package:sixam_mart/data/api/api_client.dart';
 import 'package:sixam_mart/data/model/body/errand_order_body.dart';
 import 'package:sixam_mart/data/model/body/place_order_body.dart';
@@ -112,20 +111,7 @@ class OrderRepo {
       AppConstants.ModelID,
     );
     List<MultipartBody> multipartBody = [];
-    if (Get.find<ParcelController>().anothertaskList.length > 0) {
-      for (int i = 0; i < Get.find<ParcelController>().anothertaskList.length; i++) {
-        if (Get.find<ParcelController>().anothertaskList[i].task_media != null) {
-          for (int j = 0; j < Get
-              .find<ParcelController>()
-              .anothertaskList[i].task_media.length; j++) {
-            print("image>>"+'task_media_file_$i[${j}]');
-            multipartBody.add(MultipartBody('task_media_file_$i[${j}]', Get
-                .find<ParcelController>()
-                .anothertaskList[i].task_media[j].file));
-          }
-        }
-      }
-    }
+
 
     return await apiClient.postMultipartData(
         AppConstants.PLACE_ORDER_URI, orderBody.toJson(), multipartBody

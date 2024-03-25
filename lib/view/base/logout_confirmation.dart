@@ -1,5 +1,4 @@
 import 'package:flutter_svg/svg.dart';
-import 'package:sixam_mart/controller/order_controller.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/custom_button.dart';
@@ -85,47 +84,7 @@ class LogoutConfirmationDialog extends StatelessWidget {
                               textAlign: TextAlign.center),
                         ):SizedBox(),
                         SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                        GetBuilder<OrderController>(builder: (orderController) {
-                          return !orderController.isLoading
-                              ? Row(children: [
-                            Expanded(
-                                child: CustomButton(
-                                  buttonText: isLogOut ? 'no'.tr : 'yes'.tr,
-                                  onPressed: () =>
-                                  isLogOut ? Get.back() : onYesPressed(),
-                                  radius: Dimensions.RADIUS_SMALL,
-                                  height: 50,
-                                )),
 
-                                  SizedBox(
-                                      width: Dimensions.PADDING_SIZE_LARGE),
-                            Expanded(
-                                child: TextButton(
-                                  onPressed: () =>  isLogOut ? Get.back() : onYesPressed(),
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: Theme.of(context)
-                                        .disabledColor
-                                        .withOpacity(0.3),
-                                    minimumSize:
-                                    Size(Dimensions.WEB_MAX_WIDTH, 50),
-                                    padding: EdgeInsets.zero,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            Dimensions.RADIUS_SMALL)),
-                                  ),
-                                  child: Text(
-                                    isLogOut ? 'yes'.tr : 'no'.tr,
-                                    textAlign: TextAlign.center,
-                                    style: robotoBold.copyWith(
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1
-                                            .color),
-                                  ),
-                                )),
-                                ])
-                              : Center(child: CircularProgressIndicator());
-                        }),
                       ]),
                     ),
 

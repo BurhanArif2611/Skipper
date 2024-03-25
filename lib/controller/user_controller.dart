@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
-import 'package:sixam_mart/controller/wishlist_controller.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
 import 'package:sixam_mart/data/model/response/response_model.dart';
 import 'package:sixam_mart/data/repository/user_repo.dart';
@@ -116,7 +115,6 @@ class UserController extends GetxController implements GetxService {
       showCustomSnackBar('your_account_remove_successfully'.tr);
       Get.find<AuthController>().clearSharedData();
       Get.find<CartController>().clearCartList();
-      Get.find<WishListController>().removeWishes();
       AppConstants.StoreID=AppConstants.ParantStoreID;
       Get.offAllNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
 
