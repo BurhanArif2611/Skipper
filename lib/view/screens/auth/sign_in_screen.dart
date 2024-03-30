@@ -94,42 +94,30 @@ class _SignInScreenState extends State<SignInScreen> {
 
         appBar: ResponsiveHelper.isDesktop(context)
             ? WebMenuBar()
-            : /*!widget.exitFromApp
-                ?*/
+            : !widget.exitFromApp
+                ?
             CustomAppBar(
-                title: '', onBackPressed: () => {Get.back()}),
-        /*: null*/
+                title: '', onBackPressed: () => {Get.back()})
+        : null,
        /* endDrawer: MenuDrawer(),*/
         body: SafeArea(
           child: /*Center(
           child: */
               Scrollbar(
             child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: FooterView(
-                child: Container(
+              physics: NeverScrollableScrollPhysics(),
+              child:
+                Container(
                   width:  context.width,
-                  height:  context.height-50,
+                  height: context.height,
                   padding: context.width > 700
                       ? EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT)
                       : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                   margin: context.width > 700
                       ? EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT)
                       : EdgeInsets.zero,
-                  decoration: context.width > 700
-                      ? BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius:
-                              BorderRadius.circular(Dimensions.RADIUS_SMALL),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.grey[Get.isDarkMode ? 700 : 300],
-                                blurRadius: 5,
-                                spreadRadius: 1)
-                          ],
-                        )
-                      : BoxDecoration(
-                      color: Theme.of(context).backgroundColor,),
+                  color: Theme.of(context).backgroundColor,
+
                   child: GetBuilder<SplashController>(builder: (splashController) {
                     return GetBuilder<AuthController>(builder: (authController) {
                       return  Stack(children: [
@@ -341,7 +329,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             /* GuestButton(),*/
                           ])),
                       Positioned(
-                        bottom: 0,
+                        bottom: 10,
                         right: 0,
                         left: 0,
                         child:
@@ -377,7 +365,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     });
                   }),
                 ),
-              ),
+
             ),
           ), /*)*/
         ),

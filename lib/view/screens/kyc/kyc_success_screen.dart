@@ -77,7 +77,7 @@ class KYCSUCCESSScreenState extends State<KYCSUCCESSScreen> {
                   height: 50,
                   buttonText: 'Back to home'.tr,
                   onPressed:  () {
-                    Get.toNamed(RouteHelper.getDashboardRoute());
+                    Get.offAllNamed(RouteHelper.getInitialRoute());
                   },
                 ),
               ],

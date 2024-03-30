@@ -144,9 +144,28 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
                       children: [
                         Container(width: 200,
                           padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color:Theme.of(context).primaryColor ,
-                            borderRadius: BorderRadius.all( Radius.circular(Dimensions.RADIUS_SMALL)),
+                          decoration:  BoxDecoration(
+                            gradient:
+                            LinearGradient(
+                              colors: [
+                                Color(
+                                    0xFFF8CA0A),
+                                Color(
+                                    0xFFFFE166),
+                                Color(
+                                    0xFFDCB822),
+                                Color(
+                                    0xFFFFE166),
+                              ],
+                              begin: Alignment
+                                  .centerLeft,
+                              end: Alignment
+                                  .centerRight,
+                            ),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(
+                                    Dimensions
+                                        .RADIUS_SMALL)),
                           ),
                           alignment: Alignment.center,
                           child: Text("Preview",style: robotoBold.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.fontSizeLarge),),

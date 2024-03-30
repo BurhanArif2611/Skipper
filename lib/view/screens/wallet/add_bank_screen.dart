@@ -40,7 +40,7 @@ class _AddBankScreenState extends State<AddBankScreen> {
         appBar:
         CustomAppBar(title: 'Add Bank', onBackPressed: () => {Get.back()}),
         body: Container(
-            color: Theme.of(context).hintColor,
+            color: Theme.of(context).backgroundColor,
             child: Scrollbar(
                 child: SingleChildScrollView(
                     physics: BouncingScrollPhysics(),

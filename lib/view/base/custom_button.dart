@@ -17,7 +17,57 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ButtonStyle _flatButtonStyle = TextButton.styleFrom(
+    return ElevatedButton(
+      onPressed: () {
+        // Your action here
+        onPressed();
+      },
+      style: ButtonStyle(
+        padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+        ),
+        backgroundColor: MaterialStateProperty.all(Colors.transparent),
+        // Prevent shadow on button
+        elevation: MaterialStateProperty.all(0),
+        // Overlay color for button's splash effect
+        overlayColor: MaterialStateProperty.resolveWith<Color>(
+              (Set<MaterialState> states) {
+            if (states.contains(MaterialState.pressed)) return Colors.transparent;
+            return null; // Defer to the widget's default.
+          },
+        ),
+      ),
+      child: Ink(
+        decoration:transparent
+            ? null : BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFF8CA0A), Color(0xFFFFE166),Color(0xFFDCB822),Color(0xFFFFE166),],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(radius)),
+        ),
+        child: Container(
+            height: height != null ? height : 50,
+          constraints: BoxConstraints(minWidth: 88, minHeight: 36),
+          padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
+          alignment: Alignment.center,
+          child: Text(
+            buttonText ??'',
+            textAlign: TextAlign.center,
+            style: robotoBlack.copyWith(
+          color: transparent ? Theme.of(context).primaryColor : Theme.of(context).hintColor,
+        fontSize: fontSize != null ? fontSize : Dimensions.fontSizeLarge,
+      ),
+          ),
+        ),
+      ),
+    );
+
+    /*final ButtonStyle _flatButtonStyle = TextButton.styleFrom(
       backgroundColor: onPressed == null ? Theme.of(context).disabledColor : transparent
           ? Colors.transparent : Theme.of(context).primaryColor,
       minimumSize: Size(width != null ? width : Dimensions.WEB_MAX_WIDTH, height != null ? height : 50),
@@ -44,6 +94,6 @@ class CustomButton extends StatelessWidget {
           )),
         ]),
       ),
-    )));
+    )));*/
   }
 }
