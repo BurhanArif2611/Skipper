@@ -93,7 +93,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                   inputType: TextInputType.phone,
                   inputAction: TextInputAction.done,
                   hintText: 'phone'.tr,
-                  maxLength: 11,
+                  maxLength: 10,
                  // isEnabled: (widget.number!=null && widget.number.toString()=="")?true:true,
                   onSubmit: (text) => GetPlatform.isWeb ? _forgetPass(_countryDialCode) : null,
                 )),
@@ -118,13 +118,13 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
 
 
 
-    //String _phone = _numberController.text.trim();
-    String _phone ="3748374873";
+    String _phone = _numberController.text.trim();
+   // String _phone ="3748374873";
 
     String _numberWithCountryCode = countryCode+_phone;
 
-    Get.toNamed(RouteHelper.getVerificationRoute(
-        _numberWithCountryCode, '', RouteHelper.forgotPassword, ''));
+    /*Get.toNamed(RouteHelper.getVerificationRoute(
+        _numberWithCountryCode, '', RouteHelper.forgotPassword, ''));*/
 
     bool _isValid = GetPlatform.isWeb ? true : false;
     if(!GetPlatform.isWeb) {
@@ -137,9 +137,9 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
 
     if (_phone.isEmpty) {
       showCustomSnackBar('enter_phone_number'.tr);
-    }/*else if (!_isValid) {
+    }else if (!_isValid) {
       showCustomSnackBar('invalid_phone_number'.tr);
-    }*/
+    }
     else {
       if(widget.fromSocialLogin) {
         widget.socialLogInBody.phone = _numberWithCountryCode;
@@ -148,13 +148,14 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
       else {
         Get.find<AuthController>().forgetPassword(_numberWithCountryCode).then((status) async {
           if (status.statusCode == 200) {
-            if (!status.body['status']) {
-              Get.toNamed(RouteHelper
-                  .getSignUpRoute(_numberController.text.toString()));
+            if (status.body['metadata']['code']== "200") {
+              showCustomSnackBar(status.body['metadata']['message'].toString(),isError:false);
+
+              Get.toNamed(RouteHelper.getVerificationRoute(
+                  _numberWithCountryCode, status.body['data']['opt_id'], RouteHelper.forgotPassword, ''));
             }
             else {
-              Get.toNamed(RouteHelper.getVerificationRoute(
-                  _numberWithCountryCode, '', RouteHelper.forgotPassword, ''));
+              showCustomSnackBar(status.body['metadata']['message'].toString(),isError:true);
             }
           }else {
             try{

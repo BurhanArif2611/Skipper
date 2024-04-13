@@ -14,7 +14,7 @@ class AppConstants {
 
   //dev url
 
-   static const String BASE_URL = 'http://192.168.1.42:5400';
+   static const String BASE_URL = 'http://3.111.70.114:8090';
    // staging url
    //static const String BASE_URL = 'https://admin-dashboard.partilespatriotes.org';
 
@@ -39,16 +39,16 @@ class AppConstants {
   static const String TRACK_URI = '/api/v1/customer/order/track?order_id=';
   static const String MESSAGE_URI = '/api/v1/customer/message/get';
   static const String SEND_MESSAGE_URI = '/api/v1/customer/message/send';
-  static const String FORGET_PASSWORD_URI = '/forget-password/';
+  static const String FORGET_PASSWORD_URI = '/users/forget/';
   static const String VERIFY_TOKEN_URI = '/api/v1/auth/verify-token';
   static const String PollingSurvey_URI = '/api/survey';
   static const String Regions_URI = '/api/regions';
   static const String PollingSurveyStore_URI = '/api/survey/store';
-  static const String RESET_PASSWORD_URI = '/api/v1/auth/reset-password';
-  static const String VERIFY_PHONE_URI = '/api/v1/auth/verify-phone';
+  static const String RESET_PASSWORD_URI = '/users/forgetpassword';
+  static const String VERIFY_PHONE_URI = '/users/veriyotp';
   static const String CHECK_EMAIL_URI = '/api/v1/auth/check-email';
   static const String VERIFY_EMAIL_URI = '/api/v1/auth/verify-email';
-  static const String REGISTER_URI = '/signup';
+  static const String REGISTER_URI = '/users';
   static const String LOGIN_URI = '/login';
   static const String Incidents_URI = '/incidents';
   static const String SubmitSurveys_URI = '/api/survey/answer';

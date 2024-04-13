@@ -52,9 +52,9 @@ class _SignInScreenState extends State<SignInScreen> {
             : CountryCode.fromCountryCode(
                     Get.find<SplashController>().configModel.country)
                 .dialCode;*/
-    _emailController.text = Get.find<AuthController>().getUserNumber() ?? '';
+  /*  _emailController.text = Get.find<AuthController>().getUserNumber() ?? '';
     _passwordController.text =
-        Get.find<AuthController>().getUserPassword() ?? '';
+        Get.find<AuthController>().getUserPassword() ?? '';*/
   }
 
   @override
@@ -385,24 +385,17 @@ class _SignInScreenState extends State<SignInScreen> {
     } else if (_password.length < 5) {
       showCustomSnackBar('password_should_be'.tr);
     } else {
-      Get.offAllNamed(RouteHelper.getInitialRoute());
-     /* authController
-          .new_login(_email, _password,authController.forUser)
+     /* */
+      authController
+          .login(_email, _password)
           .then((status) async {
-        if (status.statusCode == 200) {
-          // String _token = status.message.substring(1, status.message.length);
-          String _token = status.body['data']['token']['accessToken'];
-          print("_token>>>>> ${_token}");
-          splashController.isSecuryOfficer();
+        if (status.body['accessToken']!=null ) {
           Get.offAllNamed(RouteHelper.getInitialRoute());
-
         } else {
           // showCustomSnackBar(status.message);
-          showCustomSnackBar(status.body["errors"] != null
-              ? status.body["errors"][0]["message"].toString()
-              : status.body["message"].toString());
+          showCustomSnackBar(status.body['message'].toString());
         }
-      });*/
+      });
     //
     }
   }

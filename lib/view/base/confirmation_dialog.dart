@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
+import '../../controller/auth_controller.dart';
+
 class ConfirmationDialog extends StatelessWidget {
   final String icon;
   final String title;
@@ -45,28 +47,29 @@ class ConfirmationDialog extends StatelessWidget {
             ),
             SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
 
-           /* GetBuilder<OrderController>(builder: (orderController) {
-              return !orderController.isLoading ? Row(children: [
+            GetBuilder<AuthController>(builder: (orderController) {
+              return !orderController.isLoading ?
+              Row(children: [
                 Expanded(child: TextButton(
-                  onPressed: () => isLogOut ? onYesPressed() : onNoPressed != null ? onNoPressed() : Get.back(),
+                  onPressed: () => isLogOut ? Get.back(): onNoPressed() ,
                   style: TextButton.styleFrom(
                     backgroundColor: Theme.of(context).disabledColor.withOpacity(0.3), minimumSize: Size(Dimensions.WEB_MAX_WIDTH, 50), padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL)),
                   ),
                   child: Text(
-                    isLogOut ? 'yes'.tr : 'no'.tr, textAlign: TextAlign.center,
+                    isLogOut ?  'no'.tr:'yes'.tr , textAlign: TextAlign.center,
                     style: robotoBold.copyWith(color: Theme.of(context).textTheme.bodyText1.color),
                   ),
                 )),
                 SizedBox(width: Dimensions.PADDING_SIZE_LARGE),
 
                 Expanded(child: CustomButton(
-                  buttonText: isLogOut ? 'no'.tr : 'yes'.tr,
-                  onPressed: () => isLogOut ? Get.back() : onYesPressed(),
+                  buttonText: isLogOut ?  'yes'.tr:'no'.tr ,
+                  onPressed: () => isLogOut ?  onYesPressed():Get.back() ,
                   radius: Dimensions.RADIUS_SMALL, height: 50,
                 )),
               ]) : Center(child: CircularProgressIndicator());
-            }),*/
+            }),
 
           ]),
         )),

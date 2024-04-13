@@ -3,6 +3,7 @@ import 'package:country_code_picker/country_code.dart';
 import 'package:country_code_picker/country_codes.dart';
 import 'package:country_code_picker/selection_dialog.dart';
 import 'package:flutter/material.dart';
+
 import 'package:universal_platform/universal_platform.dart';
 
 class CodePickerWidget extends StatefulWidget {
@@ -266,7 +267,7 @@ class CodePickerWidgetState extends State<CodePickerWidget> {
   }
 
   void showCountryCodePickerDialog() {
-    if (!UniversalPlatform.isAndroid && !UniversalPlatform.isIOS) {
+    /*if (!UniversalPlatform.isAndroid && !UniversalPlatform.isIOS) {*/
       showDialog(
         barrierColor: widget.barrierColor ?? Colors.grey.withOpacity(0.5),
         // backgroundColor: widget.backgroundColor ?? Colors.transparent,
@@ -307,7 +308,8 @@ class CodePickerWidgetState extends State<CodePickerWidget> {
           _publishSelection(e);
         }
       });
-    } else {
+   /* }*/
+   /* else {*/
       /*showMaterialModalBottomSheet(
         barrierColor: widget.barrierColor ?? Colors.grey.withOpacity(0.5),
         backgroundColor: widget.backgroundColor ?? Colors.transparent,
@@ -343,7 +345,7 @@ class CodePickerWidgetState extends State<CodePickerWidget> {
           _publishSelection(e);
         }
       });*/
-    }
+   /* }*/
   }
 
   void _publishSelection(CountryCode e) {

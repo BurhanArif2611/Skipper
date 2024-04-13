@@ -27,7 +27,7 @@ class AuthRepo {
   }
 
   Future<Response> login({String phone, String password,bool security_officer}) async {
-    return await apiClient.postData(AppConstants.LOGIN_URI, {"username": phone, "password": password, "grant_type": 'password', "scope": !security_officer?"2":"6", "role": !security_officer?"":"6"});
+    return await apiClient.postData(AppConstants.LOGIN_URI, {"username": phone, "password": password, "grant_type": 'password'});
   }
 
   Future<Response> addSOSContact({String name, String relation,String phone}) async {
@@ -95,7 +95,8 @@ class AuthRepo {
   }
 
   Future<Response> forgetPassword(String phone) async {
-    return await apiClient.postData(AppConstants.FORGET_PASSWORD_URI, {"email": phone});
+   // return await apiClient.postData(AppConstants.FORGET_PASSWORD_URI, {"email": phone});
+    return await apiClient.getData('${AppConstants.FORGET_PASSWORD_URI}$phone');
   }
 
   Future<Response> verifyToken(String phone, String token) async {
@@ -114,9 +115,10 @@ class AuthRepo {
   Future<Response> resetPassword(String resetToken, String number, String password, String confirmPassword) async {
     return await apiClient.postData(
       AppConstants.RESET_PASSWORD_URI,
-      {"_method": "put", "reset_token": resetToken, "phone": number, "password": password, "confirm_password": confirmPassword},
+      { "email": resetToken,  "password": password, "confirmPassword": confirmPassword},
     );
   }
+
 
   Future<Response> checkEmail(String email) async {
     return await apiClient.postData(AppConstants.CHECK_EMAIL_URI, {"email": email});
@@ -165,9 +167,10 @@ class AuthRepo {
     return await apiClient.getData('${AppConstants.ADD_SOS_CONTACT_URI}');
   }
 
-  Future<Response> verifyPhone(String phone, String otp) async {
-    return await apiClient.postData(AppConstants.VERIFY_PHONE_URI, {"phone": phone, "otp": otp});
+  Future<Response> verifyPhone(String otp_id, String otp) async {
+    return await apiClient.postData(AppConstants.VERIFY_PHONE_URI, {"otp_id": otp_id, "otp": otp});
   }
+
 
   // for  user token
   Future<bool> saveUserToken(String token) async {

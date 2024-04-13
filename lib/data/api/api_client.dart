@@ -70,8 +70,8 @@ class ApiClient extends GetxService {
     }
       Map<String, String> _header;
      _header = {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'Authorization': ' ${token!=null?'Bearer ' +token:'Basic REVNTzpERU1PMTIz'}',
+        'Content-Type': 'application/json'/*,
+        'Authorization': ' ${token!=null?'Bearer ' +token:'Basic REVNTzpERU1PMTIz'}',*/
       };
 
     _mainHeaders = _header;
@@ -110,7 +110,7 @@ class ApiClient extends GetxService {
       print('====> API Body<::::>  $body');
       Http.Response _response = await Http.post(
         Uri.parse(appBaseUrl + uri),
-        body:Uri(queryParameters: body).query,
+        body:jsonEncode(body)/*:Uri(queryParameters: body).query*/,
         headers: headers ?? _mainHeaders,
       ).timeout(Duration(seconds: timeoutInSeconds));
       return handleResponse(_response, uri);
@@ -118,13 +118,39 @@ class ApiClient extends GetxService {
       print('====> API Body:'+e.toString());
       return Response(statusCode: 1, statusText: noInternetMessage);
     }
+  }Future<Response> getJsonData(String uri, dynamic body,
+      {Map<String, String> headers}) async {
+    try {
+      if (Foundation.kDebugMode) {
+        print('====> API Call: $uri\nHeader: $_mainHeaders');
+      /*  print('====> API Body: $body');*/
+        print('====> API URL: $appBaseUrl$uri');
+      }
+
+     /* final body = {
+        'grant_type': 'password',
+        'age': '87',
+      };*/
+      print('====> API Body<::::>  $body');
+      final Uri uriNew = Uri.https(AppConstants.BASE_URL, uri, body);
+      Http.Response _response = await Http.get(uriNew).timeout(Duration(seconds: timeoutInSeconds));
+      /*Http.Response _response = await Http.get(
+        Uri.parse(appBaseUrl + uri),
+        body:jsonEncode(body)*//*:Uri(queryParameters: body).query*//*,
+        headers: headers ?? _mainHeaders,
+      ).timeout(Duration(seconds: timeoutInSeconds));*/
+      return handleResponse(_response, uri);
+    } catch (e) {
+      print('====> API response Error:'+e.toString());
+      return Response(statusCode: 1, statusText: noInternetMessage);
+    }
   }
 
   Future<Response> postModelData(String uri, ReportIncidenceBody body) async {
     Map<String, String> header;
     header = {
-      'Content-Type': 'application/json',
-      'Authorization': ' ${token!=null?'Bearer ' +token:'Basic REVNTzpERU1PMTIz'}',
+      'Content-Type': 'application/json'/*,
+      'Authorization': ' ${token!=null?'Bearer ' +token:'Basic REVNTzpERU1PMTIz'}',*/
     };
     try {
       if (Foundation.kDebugMode) {
@@ -147,8 +173,8 @@ class ApiClient extends GetxService {
   Future<Response> postResultData(String uri, Answers body) async {
     Map<String, String> header;
     header = {
-      'Content-Type': 'application/json',
-      'Authorization': ' ${token!=null?'Bearer ' +token:'Basic REVNTzpERU1PMTIz'}',
+      'Content-Type': 'application/json'/*,
+      'Authorization': ' ${token!=null?'Bearer ' +token:'Basic REVNTzpERU1PMTIz'}',*/
     };
     try {
       if (Foundation.kDebugMode) {

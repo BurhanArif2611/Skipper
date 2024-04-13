@@ -10,7 +10,11 @@ import 'package:get/get.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../../../controller/auth_controller.dart';
+import '../../../controller/cart_controller.dart';
+import '../../../controller/user_controller.dart';
 import '../../../helper/route_helper.dart';
+import '../../base/confirmation_dialog.dart';
 import '../../base/custom_app_bar.dart';
 import '../home/widget/team_card.dart';
 
@@ -473,6 +477,77 @@ class _AccountScreenState extends State<AccountScreen> {
                                     ],
                                   )),
                             ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Divider(
+                            thickness: 0.5,
+                            color:
+                                Theme.of(context).cardColor.withOpacity(0.50),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          InkWell(
+                            onTap: (){
+                              Get.dialog(ConfirmationDialog(icon: Images.support, description: 'are_you_sure_to_logout'.tr, isLogOut: true, onYesPressed: () {
+                                Get.find<AuthController>().clearSharedData();
+                                Get.find<CartController>().clearCartList();
+
+                                Get.find<UserController>().initData();
+
+                                Get.offAllNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
+                                /**/
+
+                              }), useSafeArea: false);
+                            },
+                            child:
+
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Expanded(
+                                  flex: 1,
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        Images.log_out,
+                                        color: Theme.of(context).cardColor,
+                                        height: 20,width: 20,
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Text(
+                                        "Logout",
+                                        style: robotoMedium.copyWith(
+                                            color: Theme.of(context).cardColor),
+                                      )
+                                    ],
+                                  )),
+                              Expanded(
+                                  flex: 1,
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        color: Theme.of(context).cardColor,
+                                        size: 20,
+                                      ),
+                                    ],
+                                  )),
+                            ],
+                          )),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Divider(
+                            thickness: 0.5,
+                            color:
+                            Theme.of(context).cardColor.withOpacity(0.50),
                           ),
                         ],
                       ),

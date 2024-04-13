@@ -40,9 +40,11 @@ class AuthController extends GetxController implements GetxService {
   bool _notification = true;
   bool _acceptTerms = true;
   bool _isLoading = false;
+
   bool get isLoading => _isLoading;
 
   bool _isButtonLoading = false;
+
   bool get isButtonLoading => _isButtonLoading;
 
   bool get notification => _notification;
@@ -56,7 +58,6 @@ class AuthController extends GetxController implements GetxService {
 
   File get file => _file;
 
-
   XFile _pickedFile;
   Uint8List _rawFile;
 
@@ -68,14 +69,17 @@ class AuthController extends GetxController implements GetxService {
 
   String get uploadedURL => _uploadedURL;
   SurveyListModel _surveyListModel;
+
   SurveyListModel get surveyListModel => _surveyListModel;
 
   RegionsResponse _regionsListModel;
+
   RegionsResponse get regionsListModel => _regionsListModel;
 
-  List<RegionResponseModel> _regionsResponseListMode=AppConstants.region;
-  List<RegionResponseModel> get regionsResponseListModel => _regionsResponseListMode;
+  List<RegionResponseModel> _regionsResponseListMode = AppConstants.region;
 
+  List<RegionResponseModel> get regionsResponseListModel =>
+      _regionsResponseListMode;
 
   int _selectedIndex = 0;
 
@@ -85,32 +89,31 @@ class AuthController extends GetxController implements GetxService {
 
   int get selectedQuestionIndex => _selectedQuestionIndex;
 
-
   String _getDeviceID = "";
 
   String get getDeviceID => _getDeviceID;
-
 
   int _selectedTeamMemberIndex = 0;
 
   int get selectedTeamMemberIndex => _selectedTeamMemberIndex;
 
-
   void changeSelectIndex(int index) {
     _selectedIndex = index;
     update();
   }
+
   void changeTeamMemberSelectIndex(int index) {
     _selectedTeamMemberIndex = index;
     update();
   }
 
   void changeDeviceID(String number) {
-    try{
-    _getDeviceID = number;
-    update();}
-        catch(e){}
+    try {
+      _getDeviceID = number;
+      update();
+    } catch (e) {}
   }
+
   void changeLogin(bool check) {
     try {
       _forUser = check;
@@ -127,7 +130,7 @@ class AuthController extends GetxController implements GetxService {
       _uploadedURL = "";
       _rawFile = null;
       _pickedFile = null;
-      _isLoading=false;
+      _isLoading = false;
       update();
     } catch (e) {}
   }
@@ -168,45 +171,54 @@ class AuthController extends GetxController implements GetxService {
       // update();
     } catch (e) {}
   }
+
   void showLoader() {
     try {
-      _isButtonLoading=true;
-       update();
+      _isButtonLoading = true;
+      update();
     } catch (e) {}
   }
-  Future<ResponseModel> login(String phone, String password) async {
+
+  Future<Response> login(String phone, String password) async {
     _isLoading = true;
     update();
     Get.dialog(CustomLoader(), barrierDismissible: false);
     Response response = await authRepo.login(phone: phone, password: password);
-    ResponseModel responseModel;
+
     if (response.statusCode == 200) {
-      if (Get.find<SplashController>().configModel.customerVerification &&
-          response.body['is_phone_verified'] == 0) {
-      } else {
-        authRepo.saveUserToken(response.body['token']);
-        await authRepo.updateToken();
-      }
-      responseModel = ResponseModel(true,
-          '${response.body['is_phone_verified']}${response.body['token']}');
       Get.back();
+      if (response.body['accessToken'] != null) {
+        try {
+          authRepo.saveUserToken(response.body['accessToken'].toString());
+          await authRepo.updateToken();
+        }catch(e){}
+      }
     } else {
       Get.back();
-      responseModel = ResponseModel(false, response.statusText);
     }
     _isLoading = false;
     update();
-    return responseModel;
+    return response;
   }
 
-  Future<bool> asyncTestFileUpload(File file, String name, String email,
-      String phone, String region, String address, String dob, String sex, String function) async {
-
-    _isButtonLoading=true;
+  Future<bool> asyncTestFileUpload(
+      File file,
+      String name,
+      String email,
+      String phone,
+      String region,
+      String address,
+      String dob,
+      String sex,
+      String function) async {
+    _isButtonLoading = true;
 
     print("responseString>>>>>>><<>>>>>API Call??");
     bool responseCheck = false;
-    Map<String, String> headers = {"Accept": "Accept application/json","content-type": "multipart/form-data"};
+    Map<String, String> headers = {
+      "Accept": "Accept application/json",
+      "content-type": "multipart/form-data"
+    };
 
     // Uint8List bytes = await fileToBytes(file);
     var postUri = Uri.parse(
@@ -229,27 +241,26 @@ class AuthController extends GetxController implements GetxService {
 
     print("responseString>>>>>>><<>>>>>${request.fields.toString()}");
     request.send().then((response) async {
-      _isLoading=false;
-      _isButtonLoading=false;
+      _isLoading = false;
+      _isButtonLoading = false;
       print("responseString>>>>>>><<>>>>>${response.statusCode.toString()}");
       var responseData = await response.stream.toBytes();
       var responseString = String.fromCharCodes(responseData);
       Map map = jsonDecode(responseString) as Map<String, dynamic>;
       print("responseString>>>>>>>>>>>${responseString.toString()}");
-      if (response.statusCode == 200){
+      if (response.statusCode == 200) {
         print("Uploaded!");
-        responseCheck=true;
-        showCustomSnackBar(map["message"].toString(),isError: false);
+        responseCheck = true;
+        showCustomSnackBar(map["message"].toString(), isError: false);
         Get.offNamed(RouteHelper.getPaymentRoute());
 
-        _isLoading=false;
-        _isButtonLoading=false;
+        _isLoading = false;
+        _isButtonLoading = false;
         update();
-      }
-      else {
-        _isLoading=false;
-        _isButtonLoading=false;
-        showCustomSnackBar(map["message"].toString(),isError: true);
+      } else {
+        _isLoading = false;
+        _isButtonLoading = false;
+        showCustomSnackBar(map["message"].toString(), isError: true);
 
         update();
       }
@@ -358,13 +369,15 @@ class AuthController extends GetxController implements GetxService {
     update();
     return responseModel;
   }
+
   Future<ResponseModel> getPollingSurveyToken() async {
     _isLoading = true;
     update();
     Response response = await authRepo.pollingSurvey(getDeviceID);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
-      _surveyListModel = SurveyListModel.fromJson(response.body,authRepo.getLANGUAGE_CODE());
+      _surveyListModel =
+          SurveyListModel.fromJson(response.body, authRepo.getLANGUAGE_CODE());
       responseModel = ResponseModel(true, response.body["message"]);
     } else {
       responseModel = ResponseModel(false, response.statusText);
@@ -373,6 +386,7 @@ class AuthController extends GetxController implements GetxService {
     update();
     return responseModel;
   }
+
   Future<ResponseModel> getRegions() async {
     _isLoading = true;
     update();
@@ -385,20 +399,31 @@ class AuthController extends GetxController implements GetxService {
       responseModel = ResponseModel(false, response.statusText);
     }
 
-     _isLoading = false;
+    _isLoading = false;
     update();
     return responseModel;
   }
 
-  Future<Response> pollingSurveyResultStore(String serveyId,String answer, int Index) async {
+  Future<Response> pollingSurveyResultStore(
+      String serveyId, String answer, int Index) async {
     _isLoading = true;
     update();
-    Response response = await authRepo.pollingSurveyResultStore(serveyId,answer,getDeviceID);
+    Response response =
+        await authRepo.pollingSurveyResultStore(serveyId, answer, getDeviceID);
 
     if (response.statusCode == 200) {
-      if(_surveyListModel!=null && _surveyListModel.data!=null && _surveyListModel.data.length>0 ){
-        Data data=new Data(id:_surveyListModel.data[Index].id,question:_surveyListModel.data[Index].question,options:_surveyListModel.data[Index].options,status:_surveyListModel.data[Index].status,createdAt:_surveyListModel.data[Index].createdAt,updatedAt:_surveyListModel.data[Index].updatedAt,attempt:true);
-        _surveyListModel.data[Index]=data;
+      if (_surveyListModel != null &&
+          _surveyListModel.data != null &&
+          _surveyListModel.data.length > 0) {
+        Data data = new Data(
+            id: _surveyListModel.data[Index].id,
+            question: _surveyListModel.data[Index].question,
+            options: _surveyListModel.data[Index].options,
+            status: _surveyListModel.data[Index].status,
+            createdAt: _surveyListModel.data[Index].createdAt,
+            updatedAt: _surveyListModel.data[Index].updatedAt,
+            attempt: true);
+        _surveyListModel.data[Index] = data;
       }
     }
     _isLoading = false;
@@ -406,21 +431,16 @@ class AuthController extends GetxController implements GetxService {
     return response;
   }
 
-  Future<ResponseModel> resetPassword(String resetToken, String number,
+  Future<Response> resetPassword(String resetToken, String number,
       String password, String confirmPassword) async {
     _isLoading = true;
     update();
     Response response = await authRepo.resetPassword(
         resetToken, number, password, confirmPassword);
-    ResponseModel responseModel;
-    if (response.statusCode == 200) {
-      responseModel = ResponseModel(true, response.body["message"]);
-    } else {
-      responseModel = ResponseModel(false, response.statusText);
-    }
+
     _isLoading = false;
     update();
-    return responseModel;
+    return response;
   }
 
   Future<ResponseModel> checkEmail(String email) async {
@@ -455,29 +475,14 @@ class AuthController extends GetxController implements GetxService {
     return responseModel;
   }
 
-  Future<ResponseModel> verifyPhone(String phone, String token) async {
+  Future<Response> verifyPhone(String phone, String token) async {
     _isLoading = true;
     update();
-    Response response = await authRepo.verifyPhone(phone, _verificationCode);
-    ResponseModel responseModel;
-    if (response.statusCode == 200) {
-      try {
-        if (token != '') {
-          authRepo.saveUserToken(token);
-        } else {
-          if (response.body["token"] != null) {
-            authRepo.saveUserToken(response.body["token"]);
-          }
-        }
-      } catch (e) {}
-      await authRepo.updateToken();
-      responseModel = ResponseModel(true, response.body["message"]);
-    } else {
-      responseModel = ResponseModel(false, response.statusText);
-    }
+    Response response = await authRepo.verifyPhone(token, _verificationCode);
+
     _isLoading = false;
     update();
-    return responseModel;
+    return response;
   }
 
   Future<void> updateZone() async {
@@ -550,6 +555,7 @@ class AuthController extends GetxController implements GetxService {
   String getUserToken() {
     return authRepo.getUserToken();
   }
+
   String getLANGUAGE_CODE() {
     return authRepo.getLANGUAGE_CODE();
   }
@@ -651,18 +657,17 @@ class AuthController extends GetxController implements GetxService {
   Future<Response> submitSurveyResult(String surveyID) async {
     _isLoading = true;
     Answers newsSubmitBody =
-    Answers(question: surveyID, options: selectedOptionIdList[0].options);
+        Answers(question: surveyID, options: selectedOptionIdList[0].options);
 
     Response response = await authRepo.submitSurveyResultu(newsSubmitBody);
     ResponseModel responseModel;
     print("response>>>${response.statusCode}");
-    if (response.statusCode == 200) {
-
-    }
+    if (response.statusCode == 200) {}
     _isLoading = false;
     update();
     return response;
   }
+
   void changeQuestionTabSelectIndex(int index) {
     _selectedQuestionIndex = index;
     update();
