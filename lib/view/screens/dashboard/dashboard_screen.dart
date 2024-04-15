@@ -1,10 +1,7 @@
 import 'dart:async';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:share_plus/share_plus.dart';
+
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
@@ -20,9 +17,7 @@ import '../../../controller/auth_controller.dart';
 import '../../../controller/banner_controller.dart';
 import '../../../controller/dashboard_controller.dart';
 import '../../../controller/store_controller.dart';
-import '../../../data/model/response/module_model.dart';
-import '../../../helper/route_helper.dart';
-import '../../../util/app_constants.dart';
+
 import '../../../util/images.dart';
 import '../../base/inner_custom_app_bar.dart';
 

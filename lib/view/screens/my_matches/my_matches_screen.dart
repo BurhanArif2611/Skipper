@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../base/custom_app_bar.dart';
+import '../home/widget/dummy_team_card.dart';
 import '../home/widget/team_card.dart';
 
 class MyMatchesScreen extends StatefulWidget {
@@ -70,7 +71,7 @@ class _MyMatchesScreenState extends State<MyMatchesScreen> {
                           physics: ScrollPhysics(),
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context, index_option) {
-                            return TeamCardItem();
+                            return DummyTeamCardItem();
                           }),
 
                     ],

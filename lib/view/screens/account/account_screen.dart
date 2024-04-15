@@ -349,7 +349,20 @@ class _AccountScreenState extends State<AccountScreen> {
                           SizedBox(
                             height: 20,
                           ),
-                          Row(
+                         InkWell(onTap: (){
+
+                           Navigator.of(context)
+                               .pushNamed(RouteHelper
+                               .getResetPasswordRoute(
+                               "",
+                               "",
+                               'password-change'))
+                               .then((value) {
+                             /*Get.back();*/
+                           });
+                         },
+                         child:
+                         Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Expanded(
@@ -383,7 +396,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     ],
                                   )),
                             ],
-                          ),
+                          )),
                           SizedBox(
                             height: 20,
                           ),

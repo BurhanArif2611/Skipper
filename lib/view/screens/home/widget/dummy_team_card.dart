@@ -10,10 +10,10 @@ import '../../../../util/dimensions.dart';
 import '../../../../util/images.dart';
 import '../../../../util/styles.dart';
 
-class TeamCardItem extends StatelessWidget {
-  Matches matches;
+class DummyTeamCardItem extends StatelessWidget {
 
-  TeamCardItem(this.matches);
+
+  DummyTeamCardItem();
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +55,10 @@ class TeamCardItem extends StatelessWidget {
                     Column(children: [
                       Image.asset(Images.team_logo),
                       SizedBox(height: 5,),
-                      Text(matches.teams.a.name,style: robotoMedium.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeSmall),)
+                      Text("INDIA",style: robotoMedium.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeSmall),)
                     ],),
                     SizedBox(width: 10,),
-                    Text(matches.teams.a.code,style: robotoBold.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeSmall),)
+                    Text("IND",style: robotoBold.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeSmall),)
                   ],)
               ),
 
@@ -83,12 +83,12 @@ class TeamCardItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
 
-                      Text(matches.teams.b.code,style: robotoBold.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeSmall),),
+                      Text("IND",style: robotoBold.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeSmall),),
                       SizedBox(width: 10,),
                       Column(children: [
                         Image.asset(Images.team_logo),
                         SizedBox(height: 5,),
-                        Text(matches.teams.b.name,style: robotoMedium.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeSmall),)
+                        Text("INDIA",style: robotoMedium.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeSmall),)
                       ],),
                     ],)
               ),
@@ -124,20 +124,4 @@ class TeamCardItem extends StatelessWidget {
     ))
       ;
   }
-
- /* void ConvertTime(int time) {
-    // Convert Unix timestamp to milliseconds
-    try {
-      int timestamp = time * 1000;
-
-      // Create a DateTime object from the timestamp
-      DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
-
-      // Format the DateTime object to display in IST
-      String formattedDateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(
-          dateTime.toUtc().add(Duration(hours: 5, minutes: 30)));
-
-      print(formattedDateTime); // Output: 2021-01-26 05:30:00
-    }catch(e){}
-  }*/
 }

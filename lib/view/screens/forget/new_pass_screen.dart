@@ -36,6 +36,13 @@ class _NewPassScreenState extends State<NewPassScreen> {
   final FocusNode _confirmPasswordFocus = FocusNode();
 
   @override
+  void initState() {
+    super.initState();
+    print("fromPasswordChange>>>${widget.fromPasswordChange}");
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () => Get.offAllNamed(RouteHelper.getInitialRoute()),
@@ -107,7 +114,8 @@ class _NewPassScreenState extends State<NewPassScreen> {
                         return GetBuilder<AuthController>(
                             builder: (authBuilder) {
                           return /* (!authBuilder.isLoading && !userController.isLoading) ?*/ CustomButton(
-                            buttonText: 'done'.tr,
+                            buttonText: widget.fromPasswordChange
+                                ?'Update Password':'done'.tr,
                             onPressed: () => _resetPassword(),
                           ) /*: Center(child: CircularProgressIndicator())*/;
                         });
@@ -129,23 +137,45 @@ class _NewPassScreenState extends State<NewPassScreen> {
     } else if (_password != _confirmPassword) {
       showCustomSnackBar('confirm_password_does_not_matched'.tr);
     } else {
-      Get.find<AuthController>()
-          .resetPassword(widget.number, '+' + widget.number.trim(), _password,
-              _confirmPassword)
-          .then((value) {
-        if (value.statusCode == 200) {
-          if (value.body['metadata']['code'] == 200 ||
-              value.body['metadata']['code'] == "200") {
-            showCustomSnackBar(value.body['metadata']['message'].toString());
-            Get.offNamed(RouteHelper.getSignInRoute(
-                RouteHelper.onBoarding));
+
+      if(widget.fromPasswordChange){
+        Get.find<AuthController>()
+            .updatePassword( _password,
+            _confirmPassword)
+            .then((value) {
+          if (value.statusCode == 200) {
+            if (value.body['metadata']['code'] == 200 ||
+                value.body['metadata']['code'] == "200") {
+              showCustomSnackBar(value.body['metadata']['message'].toString());
+              Get.offNamed(RouteHelper.getSignInRoute(
+                  RouteHelper.onBoarding));
+            } else {
+              showCustomSnackBar(value.body['metadata']['message'].toString());
+            }
           } else {
-            showCustomSnackBar(value.body['metadata']['message'].toString());
+            showCustomSnackBar("Invalid Details");
           }
-        } else {
-          showCustomSnackBar("Invalid Details");
-        }
-      });
+        });
+      }
+      else {
+        Get.find<AuthController>()
+            .resetPassword(widget.number, '+' + widget.number.trim(), _password,
+            _confirmPassword)
+            .then((value) {
+          if (value.statusCode == 200) {
+            if (value.body['metadata']['code'] == 200 ||
+                value.body['metadata']['code'] == "200") {
+              showCustomSnackBar(value.body['metadata']['message'].toString());
+              Get.offNamed(RouteHelper.getSignInRoute(
+                  RouteHelper.onBoarding));
+            } else {
+              showCustomSnackBar(value.body['metadata']['message'].toString());
+            }
+          } else {
+            showCustomSnackBar("Invalid Details");
+          }
+        });
+      }
     }
   }
 }

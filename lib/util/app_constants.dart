@@ -15,6 +15,7 @@ class AppConstants {
   //dev url
 
    static const String BASE_URL = 'http://3.111.70.114:8090';
+   static const String MATCH_LIST_BASE_URL = 'http://3.111.70.114:8085';
    // staging url
    //static const String BASE_URL = 'https://admin-dashboard.partilespatriotes.org';
 
@@ -45,6 +46,7 @@ class AppConstants {
   static const String Regions_URI = '/api/regions';
   static const String PollingSurveyStore_URI = '/api/survey/store';
   static const String RESET_PASSWORD_URI = '/users/forgetpassword';
+  static const String UPDATEPASSWORD_URI = '/users/updatepassword';
   static const String VERIFY_PHONE_URI = '/users/veriyotp';
   static const String CHECK_EMAIL_URI = '/api/v1/auth/check-email';
   static const String VERIFY_EMAIL_URI = '/api/v1/auth/verify-email';
@@ -165,6 +167,8 @@ class AppConstants {
   // Shared Key
   static const String THEME = '6ammart_theme';
   static const String TOKEN = '6ammart_token';
+  static const String RefreshTOKEN = 'RefreshTOKEN';
+  static const String UserName = 'username';
   static const String ROLE = 'Role';
   static const String COUNTRY_CODE = '6ammart_country_code';
   static const String LANGUAGE_CODE = '6ammart_language_code';

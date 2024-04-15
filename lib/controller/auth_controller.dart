@@ -165,6 +165,36 @@ class AuthController extends GetxController implements GetxService {
     return response;
   }
 
+  Future<Response> updateProfile(SignUpBody signUpBody) async {
+    _isLoading = true;
+    update();
+    Get.dialog(CustomLoader(), barrierDismissible: false);
+    clearUserNumberAndPassword();
+    Response response = await authRepo.updateProfile(signUpBody,"vishal343");
+    ResponseModel responseModel;
+    if (response.statusCode == 200) {
+      /* if (!Get.find<SplashController>().configModel.customerVerification) {
+        authRepo.saveUserToken(response.body["token"]);
+        await authRepo.updateToken();
+      }*/
+      // responseModel = ResponseModel(true, response.body);
+      clearData();
+      Get.back();
+    } else {
+      Get.back();
+      responseModel = ResponseModel(
+          false,
+          response.body["message"] != null
+              ? response.body["message"].toString()
+              : response.statusText);
+    }
+    _isLoading = false;
+
+    update();
+
+    return response;
+  }
+
   void clearVerificationCode() {
     try {
       _verificationCode = null;
@@ -189,9 +219,13 @@ class AuthController extends GetxController implements GetxService {
       Get.back();
       if (response.body['accessToken'] != null) {
         try {
-          authRepo.saveUserToken(response.body['accessToken'].toString());
-          await authRepo.updateToken();
-        }catch(e){}
+          print("try>>>>>${response.body['accessToken'].toString()}");
+          saveUserToken(response.body['accessToken'].toString(),response.body['refreshToken'].toString(),response.body['username'].toString());
+          /*authRepo.saveUserToken(response.body['accessToken'].toString());
+          await authRepo.updateToken();*/
+        }catch(e){
+          print("catch>>>>>${e.toString()}");
+        }
       }
     } else {
       Get.back();
@@ -201,73 +235,13 @@ class AuthController extends GetxController implements GetxService {
     return response;
   }
 
-  Future<bool> asyncTestFileUpload(
-      File file,
-      String name,
-      String email,
-      String phone,
-      String region,
-      String address,
-      String dob,
-      String sex,
-      String function) async {
-    _isButtonLoading = true;
-
-    print("responseString>>>>>>><<>>>>>API Call??");
-    bool responseCheck = false;
-    Map<String, String> headers = {
-      "Accept": "Accept application/json",
-      "content-type": "multipart/form-data"
-    };
-
-    // Uint8List bytes = await fileToBytes(file);
-    var postUri = Uri.parse(
-        "https://admin-dashboard.partilespatriotes.org/api/members/store");
-
-    Http.MultipartRequest request = new Http.MultipartRequest("POST", postUri);
-    request.fields["name"] = name;
-    request.fields["email"] = email;
-    request.fields["phone"] = phone;
-    request.fields["region"] = region;
-    request.fields["address"] = address;
-    request.fields["dob"] = dob;
-    request.fields["sex"] = sex;
-    request.fields["function"] = function;
-    request.headers.addAll(headers);
-    Http.MultipartFile multipartFile = await Http.MultipartFile.fromPath(
-        'profile', file.path /*,contentType: new MediaType('image', 'jpeg')*/);
-
-    request.files.add(multipartFile);
-
-    print("responseString>>>>>>><<>>>>>${request.fields.toString()}");
-    request.send().then((response) async {
-      _isLoading = false;
-      _isButtonLoading = false;
-      print("responseString>>>>>>><<>>>>>${response.statusCode.toString()}");
-      var responseData = await response.stream.toBytes();
-      var responseString = String.fromCharCodes(responseData);
-      Map map = jsonDecode(responseString) as Map<String, dynamic>;
-      print("responseString>>>>>>>>>>>${responseString.toString()}");
-      if (response.statusCode == 200) {
-        print("Uploaded!");
-        responseCheck = true;
-        showCustomSnackBar(map["message"].toString(), isError: false);
-        Get.offNamed(RouteHelper.getPaymentRoute());
-
-        _isLoading = false;
-        _isButtonLoading = false;
-        update();
-      } else {
-        _isLoading = false;
-        _isButtonLoading = false;
-        showCustomSnackBar(map["message"].toString(), isError: true);
-
-        update();
-      }
-    });
-
-    return responseCheck;
+  saveUserToken(String token,String refreshToken,String username,) async {
+    final prefs = await SharedPreferences.getInstance();
+     prefs.setString(AppConstants.TOKEN, token);
+     prefs.setString(AppConstants.RefreshTOKEN, refreshToken);
+     prefs.setString(AppConstants.UserName, username);
   }
+
 
   Future<Response> checkUserMobileNumber(String phone) async {
     _isLoading = true;
@@ -437,6 +411,16 @@ class AuthController extends GetxController implements GetxService {
     update();
     Response response = await authRepo.resetPassword(
         resetToken, number, password, confirmPassword);
+
+    _isLoading = false;
+    update();
+    return response;
+  }Future<Response> updatePassword(
+      String password, String confirmPassword) async {
+    _isLoading = true;
+    update();
+    Response response = await authRepo.updatePassword(
+        password, confirmPassword,"token","email");
 
     _isLoading = false;
     update();

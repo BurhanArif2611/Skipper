@@ -25,6 +25,9 @@ class AuthRepo {
   Future<Response> registration(SignUpBody signUpBody) async {
     return await apiClient.postData(AppConstants.REGISTER_URI, signUpBody.toJson());
   }
+  Future<Response> updateProfile(SignUpBody signUpBody,String UserID) async {
+    return await apiClient.putData('${AppConstants.REGISTER_URI}/$UserID', signUpBody.toJson());
+  }
 
   Future<Response> login({String phone, String password,bool security_officer}) async {
     return await apiClient.postData(AppConstants.LOGIN_URI, {"username": phone, "password": password, "grant_type": 'password'});
@@ -117,6 +120,11 @@ class AuthRepo {
       AppConstants.RESET_PASSWORD_URI,
       { "email": resetToken,  "password": password, "confirmPassword": confirmPassword},
     );
+  } Future<Response> updatePassword( String password, String confirmPassword, String token, String email) async {
+    return await apiClient.postData(
+      AppConstants.UPDATEPASSWORD_URI,
+      { "email": email,  "password": password, "confirmPassword": confirmPassword, "token": token},
+    );
   }
 
 
@@ -174,11 +182,11 @@ class AuthRepo {
 
   // for  user token
   Future<bool> saveUserToken(String token) async {
-    apiClient.token = token;
+   /* apiClient.token = token;
     apiClient.updateHeader(
       token, null, sharedPreferences.getString(AppConstants.LANGUAGE_CODE),
       Get.find<SplashController>().module != null ? Get.find<SplashController>().module.id : null,
-    );
+    );*/
     return await sharedPreferences.setString(AppConstants.TOKEN, token);
   }
   Future<bool> saveUserRole(bool role) async {

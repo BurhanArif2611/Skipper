@@ -27,10 +27,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ) : SizedBox(),
       backgroundColor: /*Colors.transparent*/Theme.of(context).hintColor,
       elevation: 0,
-      actions: /*showCart ?*/ [
+      actions: showCart ? [
         IconButton(onPressed: () => Get.toNamed(RouteHelper.getCartRoute()),
         icon: CartWidget(color: Theme.of(context).cardColor, size: 25),
-      )]/* : [SizedBox()]*/,
+      )] : [SizedBox()],
     );
   }
 

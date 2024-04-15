@@ -102,7 +102,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       appBar: ResponsiveHelper.isDesktop(context)
           ? WebMenuBar()
           : CustomAppBar(
-              title: 'Sign Up'.tr, onBackPressed: () => {Get.back()}),
+              title: 'Sign Up'.tr, onBackPressed: () => {Get.back()},showCart:false),
       /* endDrawer: MenuDrawer(),*/
       body: SafeArea(
           child: Container(
@@ -242,9 +242,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 )),
                               ]),
                           SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-/*
-                        Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE), child: Divider(height: 1)),
-*/
+
 
                           CustomTextField(
                             hintText: 'password'.tr,
@@ -494,8 +492,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     String _password = _passwordController.text.trim();
     String _confirmPassword = _confirmPasswordController.text.trim();
     String _anonymous = _anonymousController.text.trim();
-    String _securityID = _securityIDController.text.trim();
-    print("authController.forUser>>>>>> ${authController.forUser}");
+
 
     if (_firstName.isEmpty) {
       showCustomSnackBar('enter_your_first_name'.tr);
@@ -507,10 +504,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       showCustomSnackBar('enter_a_valid_email_address'.tr);
     } else if (_number.isEmpty) {
       showCustomSnackBar('enter_phone_number'.tr);
-    } else if (authController.forUser && _securityID.isEmpty) {
-      showCustomSnackBar('enter security id number'.tr);
     }
-   /* else if (!_isValid) {
+    /* else if (!_isValid) {
       showCustomSnackBar('invalid_phone_number'.tr);
     }*/
     else if (_password.isEmpty) {
@@ -527,20 +522,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
       showCustomSnackBar('Enter valid Gender'.tr);
     } else {
       SignUpBody signUpBody = SignUpBody(
-        name: _firstName,
-        surname: _lastName,
-        email: _email,
-        phone: countryCode+_number,
-        password: _password,
-        username: _email,
-        birthDate: selectDate,
-        gender: selectedSex,
-      );
+          name: _firstName,
+          surname: _lastName,
+          email: _email,
+          phone: countryCode + _number,
+          password: _password,
+          username: _email,
+          birthDate: selectDate,
+          gender: selectedSex,
+          enabled: true,
+          note: "",
+          roles: "user",
+          creationDt: DateTime.now().toString(),
+          updatedDt: DateTime.now().toString(),
+          loginDt: "",
+          secured: "",
+          skype: "",
+          facebook: "",
+          linkedin: "",
+          website: "",
+          contactNote: "",
+          address: "",
+          address2: "",
+          city: "",
+          country: countryCode,
+          zipCode: "");
       authController.registration(signUpBody).then((status) async {
         if (status.statusCode == 200) {
-          if(status.body['metadata']['code']==200 || status.body['metadata']['code']=="200" ){
-          Get.toNamed(RouteHelper.getSignInRoute(RouteHelper.signUp));}
-          else {
+          if (status.body['metadata']['code'] == 200 ||
+              status.body['metadata']['code'] == "200") {
+            Get.toNamed(RouteHelper.getSignInRoute(RouteHelper.signUp));
+          } else {
             showCustomSnackBar(status.body['metadata']['message']);
           }
         } else {

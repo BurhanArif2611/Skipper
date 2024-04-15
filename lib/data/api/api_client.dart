@@ -93,6 +93,22 @@ class ApiClient extends GetxService {
       return Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
+  Future<Response> getMatchData(String uri,
+      {Map<String, dynamic> query, Map<String, String> headers}) async {
+    try {
+      if (Foundation.kDebugMode) {
+        print('====> API Call: ${AppConstants.MATCH_LIST_BASE_URL+uri}\nHeader: $_mainHeaders');
+      }
+      Http.Response _response = await Http.get(
+        Uri.parse(AppConstants.MATCH_LIST_BASE_URL + uri),
+        headers: headers ?? _mainHeaders,
+      ).timeout(Duration(seconds: timeoutInSeconds));
+      return handleResponse(_response, uri);
+    } catch (e) {
+      print('------------${e.toString()}');
+      return Response(statusCode: 1, statusText: noInternetMessage);
+    }
+  }
 
   Future<Response> postData(String uri, dynamic body,
       {Map<String, String> headers}) async {
@@ -239,7 +255,7 @@ class ApiClient extends GetxService {
       }
       Http.Response _response = await Http.put(
         Uri.parse(appBaseUrl + uri),
-        body: Uri(queryParameters: body).query,
+        body:jsonEncode(body) /*Uri(queryParameters: body).query*/,
         headers: headers ?? _mainHeaders,
       ).timeout(Duration(seconds: timeoutInSeconds));
       return handleResponse(_response, uri);
