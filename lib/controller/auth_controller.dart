@@ -165,12 +165,12 @@ class AuthController extends GetxController implements GetxService {
     return response;
   }
 
-  Future<Response> updateProfile(SignUpBody signUpBody) async {
+  Future<Response> updateProfile(SignUpBody signUpBody,String userName) async {
     _isLoading = true;
     update();
     Get.dialog(CustomLoader(), barrierDismissible: false);
     clearUserNumberAndPassword();
-    Response response = await authRepo.updateProfile(signUpBody,"vishal343");
+    Response response = await authRepo.updateProfile(signUpBody,userName);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
       /* if (!Get.find<SplashController>().configModel.customerVerification) {
@@ -240,6 +240,11 @@ class AuthController extends GetxController implements GetxService {
      prefs.setString(AppConstants.TOKEN, token);
      prefs.setString(AppConstants.RefreshTOKEN, refreshToken);
      prefs.setString(AppConstants.UserName, username);
+  }
+ Future<String> getUserToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(AppConstants.TOKEN);
+
   }
 
 
@@ -415,12 +420,14 @@ class AuthController extends GetxController implements GetxService {
     _isLoading = false;
     update();
     return response;
-  }Future<Response> updatePassword(
-      String password, String confirmPassword) async {
+  }
+  Future<Response> updatePassword(
+      String password, String confirmPassword, String email) async {
     _isLoading = true;
+    String token=await getUserToken();
     update();
     Response response = await authRepo.updatePassword(
-        password, confirmPassword,"token","email");
+        password, confirmPassword,token,email);
 
     _isLoading = false;
     update();
@@ -536,9 +543,9 @@ class AuthController extends GetxController implements GetxService {
     return authRepo.clearUserNumberAndPassword();
   }
 
-  String getUserToken() {
+ /* String getUserToken() {
     return authRepo.getUserToken();
-  }
+  }*/
 
   String getLANGUAGE_CODE() {
     return authRepo.getLANGUAGE_CODE();

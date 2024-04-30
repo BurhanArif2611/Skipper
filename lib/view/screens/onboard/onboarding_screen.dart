@@ -153,7 +153,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                         onPressed: () {
                                           if (onBoardingController
                                                   .selectedIndex !=
-                                              3) {
+                                              2) {
                                             _pageController.nextPage(
                                                 duration: Duration(seconds: 1),
                                                 curve: Curves.ease);

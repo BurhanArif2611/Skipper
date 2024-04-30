@@ -59,7 +59,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
      else if(androidInfo.model!=null){
       Get.find<AuthController>().changeDeviceID(androidInfo.model);}
 
-
+    
     } else if (GetPlatform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfoPlugin.iosInfo;
       if(iosInfo.identifierForVendor!=null){

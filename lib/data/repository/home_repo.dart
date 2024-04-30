@@ -102,6 +102,13 @@ class HomeRepo {
   Future<Response> getMatchList() async {
     return await apiClient.getMatchData("/tournament/v1/fixture?tournamentkey=sadasd&page=1");
   }
+  Future<Response> getFeaturedMatchList() async {
+    return await apiClient.getMatchData("/tournament/v1/featured");
+  }
+
+  Future<Response> getSquadlList(String tournamentkey,String teamkey) async {
+    return await apiClient.getMatchData("/tournament/v1/squadlist?tournamentkey=$tournamentkey&teamkey=$teamkey}");
+  }
 
   Future<Response> getUserDetails(String userName) async {
     return await apiClient.getData("/users/$userName");

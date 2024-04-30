@@ -536,7 +536,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           creationDt: DateTime.now().toString(),
           updatedDt: DateTime.now().toString(),
           loginDt: "",
-          secured: "",
+          secured: false,
           skype: "",
           facebook: "",
           linkedin: "",

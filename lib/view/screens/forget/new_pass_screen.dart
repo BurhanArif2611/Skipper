@@ -14,6 +14,8 @@ import 'package:get/get.dart';
 import 'package:sixam_mart/view/base/footer_view.dart';
 import 'package:sixam_mart/view/base/menu_drawer.dart';
 
+import '../../../controller/home_controller.dart';
+
 class NewPassScreen extends StatefulWidget {
   final String resetToken;
   final String number;
@@ -141,7 +143,7 @@ class _NewPassScreenState extends State<NewPassScreen> {
       if(widget.fromPasswordChange){
         Get.find<AuthController>()
             .updatePassword( _password,
-            _confirmPassword)
+            _confirmPassword,Get.find<HomeController>().userDetailModel!=null && Get.find<HomeController>().userDetailModel.contactDTO!=null ?Get.find<HomeController>().userDetailModel.contactDTO.email:"")
             .then((value) {
           if (value.statusCode == 200) {
             if (value.body['metadata']['code'] == 200 ||

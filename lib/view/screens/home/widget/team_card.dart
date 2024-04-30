@@ -23,7 +23,7 @@ class TeamCardItem extends StatelessWidget {
     child:
       Container(
         padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-        margin: EdgeInsets.only(top:Dimensions.PADDING_SIZE_SMALL),
+        margin: EdgeInsets.only(top:Dimensions.PADDING_SIZE_LARGE),
         decoration: BoxDecoration(
           color: Theme.of(context).hintColor,
           borderRadius: BorderRadius.circular(Dimensions.RADIUS_LARGE),

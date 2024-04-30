@@ -24,12 +24,14 @@ import '../data/model/body/report_incidence_body.dart';
 import '../data/model/response/commentlist_model.dart';
 import '../data/model/response/contact_center_model.dart';
 import '../data/model/response/country_list_model.dart';
+import '../data/model/response/featured_matches.dart';
 import '../data/model/response/incidence_category_model.dart';
 import '../data/model/response/incidence_detail_response.dart';
 import '../data/model/response/latetsnews_model.dart';
 import '../data/model/response/matchlist.dart';
 import '../data/model/response/news_category_model.dart';
 import '../data/model/response/news_list_model.dart';
+import '../data/model/response/player.dart';
 import '../data/model/response/resource_center_model.dart';
 import '../data/model/response/response_model.dart';
 import '../data/model/response/sos_contact_model.dart';
@@ -50,6 +52,7 @@ class HomeController extends GetxController implements GetxService {
   HomeController({@required this.homeRepo}) {
     _notification = homeRepo.isNotificationActive();
   }
+
   bool _notification = true;
   bool _isLoading = false;
 
@@ -58,6 +61,14 @@ class HomeController extends GetxController implements GetxService {
   List<String> _uploadedVideoURL = [];
 
   List<String> get uploadedVideoURL => _uploadedVideoURL;
+
+  List<Player> _playersList = [];
+
+  List<Player> get playersList => _playersList;
+
+  List<Player> _selectedPlayersList = [];
+
+  List<Player> get selectedPlayersList => _selectedPlayersList;
 
   CommentListModel _commentList;
 
@@ -71,13 +82,19 @@ class HomeController extends GetxController implements GetxService {
 
   Matchlist get matchlist => _matchlist;
 
-  String  _userName;
+  featuredMatches _featuredMatchesList;
+
+  featuredMatches get featuredMatchesList => _featuredMatchesList;
+
+  String _userName;
 
   String get userName => _userName;
 
+  String _captainId;
+  String get captainId => _captainId;
 
-
-
+  String _vCaptainId;
+  String get vCaptainId => _vCaptainId;
 
   Future<void> getMatchesList() async {
     _isLoading = true;
@@ -92,18 +109,61 @@ class HomeController extends GetxController implements GetxService {
     _isLoading = false;
   }
 
+  Future<Response> getSquadlList() async {
+    _playersList=[];
+    _isLoading = true;
+
+    Response response = await homeRepo.getSquadlList("sadasd", "sdfsdfdsf");
+
+    if (response.statusCode == 200) {
+      if (response.body['data']['tournament_team'] != null) {
+        if (response.body['data']['tournament_team']['player_keys'] != null) {
+          for (int i = 0;
+              i <
+                  response
+                      .body['data']['tournament_team']['player_keys'].length;
+              i++) {
+            Player player = Player.fromJson(response.body['data']
+                    ['tournament_team']['players']
+                [response.body['data']['tournament_team']['player_keys'][i]]);
+            _playersList.add(player);
+          }
+        }
+      }
+      print("_playersList>>>${_playersList.length.toString()}");
+    }
+
+    _isLoading = false;
+    update();
+    return response;
+  }
+
+  Future<void> getFeaturedMatchesList() async {
+    _isLoading = true;
+    Response response = await homeRepo.getFeaturedMatchList();
+    if (response.statusCode == 200) {
+      _featuredMatchesList = featuredMatches.fromJson(response.body);
+
+      update();
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    _isLoading = false;
+  }
+
   Future<void> getUserData() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       print("isLogin>>>>" + prefs.getString(AppConstants.UserName).toString());
       _userName = prefs.getString(AppConstants.UserName).toString();
 
-       if(_userName!=null && _userName!=""){
-         getUserDetails(_userName);
-       }
+      if (_userName != null && _userName != "") {
+        getUserDetails(_userName);
+      }
       update();
     } catch (e) {}
   }
+
   Future<void> getUserDetails(String userName) async {
     _isLoading = true;
     Response response = await homeRepo.getUserDetails(userName);
@@ -115,5 +175,37 @@ class HomeController extends GetxController implements GetxService {
       ApiChecker.checkApi(response);
     }
     _isLoading = false;
+  }
+
+  Future<void> addPlayersInMyTeam(Player player) async {
+    bool check=false;
+    if(_selectedPlayersList.length>0){
+      for(int i=0;i<_selectedPlayersList.length;i++){
+        if(_selectedPlayersList[i]==player){
+          _selectedPlayersList.removeAt(i);
+          check=true;
+          break;
+        }
+      }
+    }
+    if(!check){
+    _selectedPlayersList.add(player);
+    }
+    update();
+  }
+
+  void clearData(){
+    _playersList=[];
+    _selectedPlayersList=[];
+    update();
+  }
+
+  void addCaptain(String id){
+   _captainId=id;
+    update();
+  }
+  void addVCaptain(String id){
+   _vCaptainId=id;
+    update();
   }
 }

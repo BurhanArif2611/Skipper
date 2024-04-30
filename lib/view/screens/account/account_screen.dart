@@ -12,6 +12,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../controller/auth_controller.dart';
 import '../../../controller/cart_controller.dart';
+import '../../../controller/home_controller.dart';
 import '../../../controller/user_controller.dart';
 import '../../../helper/route_helper.dart';
 import '../../base/confirmation_dialog.dart';
@@ -34,11 +35,14 @@ class _AccountScreenState extends State<AccountScreen> {
   double latitude;
   double longitude;
 
+
+
+
+
   @override
   void initState() {
     super.initState();
-
-    // _loadData();
+    
   }
 
   @override
@@ -81,8 +85,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "Akash Dutt",
+                                  Text(Get.find<HomeController>().userDetailModel!=null && Get.find<HomeController>().userDetailModel.name!=null?Get.find<HomeController>().userDetailModel.name:
+                                    "",
                                     style: robotoBold.copyWith(
                                         color: Theme.of(context).cardColor,
                                         fontSize: Dimensions.fontSizeLarge),
@@ -90,8 +94,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                   SizedBox(
                                     height: 5,
                                   ),
-                                  Text(
-                                    "hello@example.com",
+                                  Text(Get.find<HomeController>().userDetailModel!=null && Get.find<HomeController>().userDetailModel.contactDTO!=null&& Get.find<HomeController>().userDetailModel.contactDTO.email!=null?Get.find<HomeController>().userDetailModel.contactDTO.email:
+                                    "",
                                     style: robotoRegular.copyWith(
                                         color: Theme.of(context)
                                             .cardColor

@@ -5,17 +5,25 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 import '../../../../controller/cart_controller.dart';
+import '../../../../controller/home_controller.dart';
+import '../../../../data/model/response/player.dart';
 import '../../../../helper/route_helper.dart';
 import '../../../../util/dimensions.dart';
 import '../../../../util/images.dart';
 import '../../../../util/styles.dart';
 
 class MemberCard extends StatelessWidget {
-  MemberCard();
+  Player player;
+
+  MemberCard(this.player );
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return  GetBuilder<HomeController>(
+        builder: (homeController) {
+      return
+
+      InkWell(
         onTap: () {
          // Get.toNamed(RouteHelper.getCreateTeamScreenRoute());
         },
@@ -50,7 +58,7 @@ class MemberCard extends StatelessWidget {
                                       decoration:BoxDecoration(
                                         color: Color(0xFF003F16)  ,
                                           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10)
-                                    )),child: Text("AUS",style: robotoMedium.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeLargeExtraSmall),),))
+                                    )),child: Text(player.nationality.shortCode,style: robotoMedium.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeLargeExtraSmall),),))
                               ],)
                                  ,
                             ),
@@ -64,7 +72,7 @@ class MemberCard extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "David Warner",
+                                      player.name,
                                       style: robotoBold.copyWith(
                                           color: Theme.of(context).cardColor,
                                           fontSize: Dimensions.fontSizeDefault),
@@ -77,6 +85,7 @@ class MemberCard extends StatelessWidget {
                                               .withOpacity(0.5),
                                           fontSize: Dimensions.fontSizeSmall),
                                     ),
+
                                     Text(
                                       "Played last Match",
                                       style: robotoBold.copyWith(
@@ -122,7 +131,13 @@ class MemberCard extends StatelessWidget {
                                     SizedBox(
                                       width: 10,
                                     ),
-                                    SvgPicture.asset(Images.select_plus)
+                                    InkWell(onTap: (){
+                                      homeController.addPlayersInMyTeam(player);
+                                    },
+                                    child:
+                                    homeController.selectedPlayersList.contains(player)?
+                                        Icon(Icons.check_circle_outline_rounded,color: Theme.of(context).primaryColor,size: 30,):
+                                    SvgPicture.asset(Images.select_plus))
                                   ],
                                 )),
                           ],
@@ -134,5 +149,6 @@ class MemberCard extends StatelessWidget {
                 ),
               ],
             )));
+        });
   }
 }

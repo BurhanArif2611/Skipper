@@ -8,6 +8,7 @@ import 'package:sixam_mart/util/styles.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:sixam_mart/view/screens/create_team/widget/member_card.dart';
 import 'package:sixam_mart/view/screens/create_team/widget/slider_team_card.dart';
 import 'package:sixam_mart/view/screens/kyc/widget/steppage.dart';
@@ -15,6 +16,7 @@ import 'package:sixam_mart/view/screens/kyc/widget/steppage.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../controller/auth_controller.dart';
+import '../../../controller/home_controller.dart';
 import '../../../controller/onboarding_controller.dart';
 import '../../../helper/route_helper.dart';
 import '../../base/custom_app_bar.dart';
@@ -37,8 +39,12 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
   @override
   void initState() {
     super.initState();
+    _loadData();
+  }
 
-    // _loadData();
+  void _loadData() async {
+   // await Get.find<HomeController>().clearData();
+    await Get.find<HomeController>().getSquadlList();
   }
 
   @override
@@ -306,8 +312,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                                                         decoration: authController
                                                                     .selectedTeamMemberIndex ==
                                                                 3
-                                                            ?
-                                                        BoxDecoration(
+                                                            ? BoxDecoration(
                                                                 gradient:
                                                                     LinearGradient(
                                                                   colors: [
@@ -433,16 +438,19 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                                         SizedBox(
                                           height: 10,
                                         ),
-                                        ListView.builder(
-                                            shrinkWrap: true,
-                                            /*  controller: _scrollController,*/
-                                            itemCount: 10,
-                                            physics: ScrollPhysics(),
-                                            scrollDirection: Axis.vertical,
-                                            itemBuilder:
-                                                (context, index_option) {
-                                              return MemberCard();
-                                            }),
+                                        GetBuilder<HomeController>(
+                                            builder: (homeController) {
+                                          return homeController.playersList!=null && homeController.playersList.length>0?
+                                            ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: homeController.playersList.length,
+                                              physics: ScrollPhysics(),
+                                              scrollDirection: Axis.vertical,
+                                              itemBuilder:
+                                                  (context, index) {
+                                                return MemberCard(homeController.playersList[index]);
+                                              }):Center(child: CircularProgressIndicator(),);
+                                        }),
                                       ],
                                     )),
                               ))))
@@ -459,28 +467,19 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                           Container(
                             width: 200,
                             padding: EdgeInsets.all(10),
-                            decoration:  BoxDecoration(
-                              gradient:
-                              LinearGradient(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
                                 colors: [
-                                  Color(
-                                      0xFFF8CA0A),
-                                  Color(
-                                      0xFFFFE166),
-                                  Color(
-                                      0xFFDCB822),
-                                  Color(
-                                      0xFFFFE166),
+                                  Color(0xFFF8CA0A),
+                                  Color(0xFFFFE166),
+                                  Color(0xFFDCB822),
+                                  Color(0xFFFFE166),
                                 ],
-                                begin: Alignment
-                                    .centerLeft,
-                                end: Alignment
-                                    .centerRight,
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
                               ),
                               borderRadius: BorderRadius.all(
-                                  Radius.circular(
-                                      Dimensions
-                                          .RADIUS_SMALL)),
+                                  Radius.circular(Dimensions.RADIUS_SMALL)),
                             ),
                             alignment: Alignment.center,
                             child: Text(
@@ -495,8 +494,13 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                           ),
                           InkWell(
                               onTap: () {
+                               if( Get.find<HomeController>().selectedPlayersList!=null &&  Get.find<HomeController>().selectedPlayersList.length>=11){
+
                                 Get.toNamed(
-                                    RouteHelper.getChooseCaptainScreenRoute());
+                                    RouteHelper.getChooseCaptainScreenRoute());}
+                               else {
+                                 showCustomSnackBar("Please select at list 11 players",isError: true);
+                               }
                               },
                               child: Container(
                                 width: 80,

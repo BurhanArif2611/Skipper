@@ -56,6 +56,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   DateTime selectedDate = DateTime.now();
   String selectDate = '';
   String selectedSex;
+  String userName="";
+  UserDetailModel _userDetailModel;
   final List<String> items = [
     'Male',
     'Female',
@@ -72,13 +74,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 
     if(Get.find<HomeController>().userDetailModel!=null){
-      UserDetailModel _userDetailModel=Get.find<HomeController>().userDetailModel;
+       _userDetailModel=Get.find<HomeController>().userDetailModel;
 
       _firstNameController.text=_userDetailModel.name.toString();
       _lastNameController.text=_userDetailModel.surname.toString();
       _emailController.text=_userDetailModel.username.toString();
-      selectDate=_userDetailModel.birthDate.toString();
+      _phoneController.text=_userDetailModel.contactDTO.phone.toString();
+
      // selectedSex=_userDetailModel.gender.toString();
+      setState(() {
+        userName=_userDetailModel.username;
+        selectDate=_userDetailModel.birthDate.toString();
+      });
     }
   }
 
@@ -416,7 +423,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     /* else if (!_isValid) {
       showCustomSnackBar('invalid_phone_number'.tr);
     }*/
-    else if (_password.isEmpty) {
+    /*else if (_password.isEmpty) {
       showCustomSnackBar('enter_password'.tr);
     } else if (_password.length < 8) {
       showCustomSnackBar('password_should_be'.tr);
@@ -424,7 +431,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       showCustomSnackBar('confirm_password_does_not_matched'.tr);
     } else if (_anonymous.isEmpty) {
       showCustomSnackBar('Enter valid anonymous'.tr);
-    } else if (selectDate.isEmpty) {
+    } */else if (selectDate.isEmpty) {
       showCustomSnackBar('Enter valid DOB'.tr);
     } else if (selectedSex.isEmpty) {
       showCustomSnackBar('Enter valid Gender'.tr);
@@ -439,23 +446,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
           birthDate: selectDate,
           gender: selectedSex,
           enabled: true,
-          note: "",
-          roles: "user",
+          note: _userDetailModel.note,
+          roles: _userDetailModel.roles!=null&& _userDetailModel.roles.length>0?_userDetailModel.roles[0].toString():"user",
           creationDt: DateTime.now().toString(),
           updatedDt: DateTime.now().toString(),
-          loginDt: "",
-          secured: "",
-          skype: "",
-          facebook: "",
-          linkedin: "",
-          website: "",
-          contactNote: "",
-          address: "",
-          address2: "",
-          city: "",
+          loginDt: _userDetailModel.loginDt,
+          secured: _userDetailModel.secured,
+          skype: _userDetailModel.contactDTO.skype,
+          facebook: _userDetailModel.contactDTO.facebook,
+          linkedin: _userDetailModel.contactDTO.linkedin,
+          website: _userDetailModel.contactDTO.website,
+          contactNote: _userDetailModel.contactDTO.contactNote,
+          address: _userDetailModel.addressDTO.address,
+          address2: _userDetailModel.addressDTO.address2,
+          city: _userDetailModel.addressDTO.city,
           country: countryCode,
-          zipCode: "");
-      authController.updateProfile(signUpBody).then((status) async {
+          zipCode: _userDetailModel.addressDTO.zipCode);
+      authController.updateProfile(signUpBody,userName).then((status) async {
         if (status.statusCode == 200) {
           if (status.body['metadata']['code'] == 200 ||
               status.body['metadata']['code'] == "200") {

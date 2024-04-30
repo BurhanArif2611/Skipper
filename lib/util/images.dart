@@ -171,4 +171,5 @@ class Images {
   static const String defult_member_user = 'assets/image/defult_member_user.svg';
   static const String select_plus = 'assets/image/select_plus.svg';
   static const String filter = 'assets/image/filter.svg';
+  static const String preview_bg = 'assets/image/preview_bg.png';
 }

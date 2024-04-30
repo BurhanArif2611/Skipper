@@ -5,20 +5,23 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 import '../../../../controller/cart_controller.dart';
+import '../../../../controller/home_controller.dart';
+import '../../../../data/model/response/player.dart';
 import '../../../../helper/route_helper.dart';
 import '../../../../util/dimensions.dart';
 import '../../../../util/images.dart';
 import '../../../../util/styles.dart';
 
 class CaptainSelectionCard extends StatelessWidget {
-  CaptainSelectionCard();
+  Player player;
+  HomeController homeController;
+
+  CaptainSelectionCard(this.player,this.homeController);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: () {
-
-        },
+        onTap: () {},
         child: Container(
             padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
             margin: EdgeInsets.only(top: Dimensions.PADDING_SIZE_SMALL),
@@ -42,17 +45,38 @@ class CaptainSelectionCard extends StatelessWidget {
                           children: [
                             Expanded(
                               flex: 1,
-                              child:Stack(children: [
-                                SvgPicture.asset(Images.defult_member_user),
-                                Positioned(bottom: 0,left: 0,
-                                    child: Container(
-                                      padding: EdgeInsets.only(left: Dimensions.PADDING_SIZE_DEFAULT,right:Dimensions.PADDING_SIZE_DEFAULT,top:Dimensions.PADDING_SIZE_EXTRA_LARGE_SMALL ,bottom:Dimensions.PADDING_SIZE_EXTRA_LARGE_SMALL ),
-                                      decoration:BoxDecoration(
-                                          color: Color(0xFF003F16)  ,
-                                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10)
-                                          )),child: Text("AUS",style: robotoMedium.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeLargeExtraSmall),),))
-                              ],)
-                              ,
+                              child: Stack(
+                                children: [
+                                  SvgPicture.asset(Images.defult_member_user),
+                                  Positioned(
+                                      bottom: 0,
+                                      left: 0,
+                                      child: Container(
+                                        padding: EdgeInsets.only(
+                                            left:
+                                                Dimensions.PADDING_SIZE_DEFAULT,
+                                            right:
+                                                Dimensions.PADDING_SIZE_DEFAULT,
+                                            top: Dimensions
+                                                .PADDING_SIZE_EXTRA_LARGE_SMALL,
+                                            bottom: Dimensions
+                                                .PADDING_SIZE_EXTRA_LARGE_SMALL),
+                                        decoration: BoxDecoration(
+                                            color: Color(0xFF003F16),
+                                            borderRadius: BorderRadius.only(
+                                                bottomLeft:
+                                                    Radius.circular(10))),
+                                        child: Text(
+                                          player.nationality.shortCode,
+                                          style: robotoMedium.copyWith(
+                                              color:
+                                                  Theme.of(context).cardColor,
+                                              fontSize: Dimensions
+                                                  .fontSizeLargeExtraSmall),
+                                        ),
+                                      ))
+                                ],
+                              ),
                             ),
                             SizedBox(
                               width: 10,
@@ -64,7 +88,7 @@ class CaptainSelectionCard extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "David Warner",
+                                      player.name,
                                       style: robotoBold.copyWith(
                                           color: Theme.of(context).cardColor,
                                           fontSize: Dimensions.fontSizeSmall),
@@ -77,7 +101,6 @@ class CaptainSelectionCard extends StatelessWidget {
                                               .withOpacity(0.5),
                                           fontSize: Dimensions.fontSizeSmall),
                                     ),
-
                                   ],
                                 )),
                           ],
@@ -93,27 +116,59 @@ class CaptainSelectionCard extends StatelessWidget {
                           children: [
                             Expanded(flex: 1, child: SizedBox()),
                             Expanded(
-                                flex: 1,
-                                child: Container(
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.3), shape: BoxShape.circle,
-                                    border: Border.all(width: 1, color: Theme.of(context).cardColor),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Text("C",style: robotoBold.copyWith(color: Theme.of(context).cardColor),),
-                                )),
+                                    flex: 1,
+                                    child:
+                                    InkWell(
+                                        onTap: () {
+                                          homeController.addCaptain(player.key);
+                                        },
+                                        child:
+                                    Container(
+                                      padding: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color:homeController.captainId==player.key? Colors.white: Colors.black.withOpacity(0.3),
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            width: 1,
+                                            color: Theme.of(context).cardColor),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "C",
+                                        style: robotoBold.copyWith(
+                                            color:homeController.captainId==player.key? Theme.of(context).primaryColor:Theme.of(context).cardColor),
+                                      ),
+                                    ))
+
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
                             Expanded(
-                                flex: 2,
-                                child: Container(
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.3), shape: BoxShape.circle,
-                                    border: Border.all(width: 1, color: Theme.of(context).cardColor),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Text("VC",style: robotoBold.copyWith(color: Theme.of(context).cardColor),),
-                                )),
+                                    flex: 2,
+                                    child:
+                                    InkWell(
+                                        onTap: () {
+                                          homeController.addVCaptain(player.key);
+                                        },
+                                        child:
+
+                                    Container(
+                                      padding: EdgeInsets.all(6),
+                                      decoration: BoxDecoration(
+                                        color:homeController.vCaptainId==player.key? Colors.white:Colors.black.withOpacity(0.3),
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            width: 1,
+                                            color: Theme.of(context).cardColor),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "VC",
+                                        style: robotoBold.copyWith(
+                                            color:homeController.vCaptainId==player.key? Theme.of(context).primaryColor: Theme.of(context).cardColor),
+                                      ),
+                                    ))),
                           ],
                         )),
                   ],

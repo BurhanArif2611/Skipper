@@ -13,7 +13,7 @@
   String creationDt;
   String updatedDt;
   String loginDt;
-  String secured;
+  bool secured;
   String phone;
   String skype;
   String facebook;
