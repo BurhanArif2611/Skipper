@@ -16,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../api/uploads3file.dart';
 import '../model/body/news_submit_body.dart';
 import '../model/body/report_incidence_body.dart';
+import '../model/body/team_create.dart';
 
 class HomeRepo {
   final ApiClient apiClient;
@@ -31,17 +32,7 @@ class HomeRepo {
     return await apiClient.postData(AppConstants.LOGIN_URI, {"username": phone, "password": password, "grant_type": 'password', "scope": "2"});
   }
 
-  Future<Response> addSOSContact({String name, String relation,String phone}) async {
-    return await apiClient.postData(AppConstants.ADD_SOS_CONTACT_URI, {"name": name, "relation": relation, "number": phone});
-  }
-  Future<Response> deleteSOSContact({String id}) async {
-    return await apiClient.deleteData('${AppConstants.ADD_SOS_CONTACT_URI}/'+id );
-  }
 
-
-  Future<Response> uploadfile({String id}) async {
-    return await apiClient.deleteData('${AppConstants.ADD_SOS_CONTACT_URI}/'+id );
-  }
 
   Future<Response> checkMobileNumber({String phone}) async {
     return await apiClient.postData(AppConstants.CHECK_PHONE_URI, {"phone": phone});
@@ -110,7 +101,16 @@ class HomeRepo {
     return await apiClient.getMatchData("/tournament/v1/squadlist?tournamentkey=$tournamentkey&teamkey=$teamkey}");
   }
 
+  Future<Response> getleagueList() async {
+    return await apiClient.getMatchData("/v4/leaguelist");
+  }
+
   Future<Response> getUserDetails(String userName) async {
     return await apiClient.getData("/users/$userName");
+  }
+
+
+  Future<Response> createTeam(TeamCreate signUpBody) async {
+    return await apiClient.postData(AppConstants.CreateTeam_URI, signUpBody.toJson());
   }
 }

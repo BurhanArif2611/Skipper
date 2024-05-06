@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sixam_mart/controller/home_controller.dart';
+import 'package:sixam_mart/data/model/response/player.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
@@ -12,12 +13,21 @@ import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/create_team/widget/captain_selection_card.dart';
 
 import '../../../controller/onboarding_controller.dart';
+import '../../../data/model/body/team_create.dart';
+import '../../../data/model/response/league_list.dart';
 import '../../../helper/route_helper.dart';
 import '../../base/custom_app_bar.dart';
+import '../../base/custom_snackbar.dart';
 
 class ChooseCaptainTeamScreen extends StatefulWidget {
   static Future<void> loadData(bool reload) async {}
 
+
+  Data league;
+  String matchID;
+
+  ChooseCaptainTeamScreen(
+      {@required this.league,@required this.matchID});
   @override
   State<ChooseCaptainTeamScreen> createState() =>
       ChooseCaptainTeamScreenState();
@@ -133,11 +143,15 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
                                   child: ListView.builder(
                                       shrinkWrap: true,
                                       /* controller: _scrollController,*/
-                                      itemCount: homeController.selectedPlayersList.length,
+                                      itemCount: homeController
+                                          .selectedPlayersList.length,
                                       /*physics: ScrollPhysics(),*/
                                       scrollDirection: Axis.vertical,
                                       itemBuilder: (context, index) {
-                                        return CaptainSelectionCard(homeController.selectedPlayersList[index],homeController);
+                                        return CaptainSelectionCard(
+                                            homeController
+                                                .selectedPlayersList[index],
+                                            homeController);
                                       }))
                               : SizedBox(),
                         ],
@@ -150,48 +164,67 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          InkWell(onTap: (){
-                            Get.toNamed(
-                                RouteHelper.getFinalTeamScreenRoute());
-                          },
-                          child:
-                          Container(
-                            width: 200,
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color(0xFFF8CA0A),
-                                  Color(0xFFFFE166),
-                                  Color(0xFFDCB822),
-                                  Color(0xFFFFE166),
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              ),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(Dimensions.RADIUS_SMALL)),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Preview",
-                              style: robotoBold.copyWith(
-                                  color: Theme.of(context).hintColor,
-                                  fontSize: Dimensions.fontSizeLarge),
-                            ),
-                          )),
+                          InkWell(
+                              onTap: () {
+                                Get.toNamed(
+                                    RouteHelper.getFinalTeamScreenRoute());
+                              },
+                              child: Container(
+                                width: 200,
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xFFF8CA0A),
+                                      Color(0xFFFFE166),
+                                      Color(0xFFDCB822),
+                                      Color(0xFFFFE166),
+                                    ],
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(Dimensions.RADIUS_SMALL)),
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Preview",
+                                  style: robotoBold.copyWith(
+                                      color: Theme.of(context).hintColor,
+                                      fontSize: Dimensions.fontSizeLarge),
+                                ),
+                              )),
                           SizedBox(
                             width: 10,
                           ),
                           InkWell(
-                              onTap: () {
-
-                              },
+                              onTap: homeController.captainId != null &&
+                                      homeController.captainId != "" &&
+                                      homeController.vCaptainId != null &&
+                                      homeController.vCaptainId != ""
+                                  ? () {
+                                      homeController
+                                          .finalPlayerList()
+                                          .then((value) async {
+                                        if (value != null &&
+                                            value.length >= 11) {
+                                          createTeam(homeController, value);
+                                        }else {
+                                          showCustomSnackBar("Please Select Proper team members",isError: false);
+                                        }
+                                      });
+                                    }
+                                  : null,
                               child: Container(
                                 width: 80,
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: Color(0xFF1D6F00),
+                                  color: homeController.captainId != null &&
+                                          homeController.captainId != "" &&
+                                          homeController.vCaptainId != null &&
+                                          homeController.vCaptainId != ""
+                                      ? Color(0xFF1D6F00)
+                                      : Color(0xFF9EC98E),
                                   borderRadius: BorderRadius.all(
                                       Radius.circular(Dimensions.RADIUS_SMALL)),
                                 ),
@@ -243,5 +276,81 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
       );
     }
     return _indicators;
+  }
+
+  void createTeam(HomeController homeController, List<Player> value) async {
+    UserDetails userDetails = UserDetails(
+        userName: homeController.userDetailModel.id.toString(),
+        emailId: homeController.userDetailModel.contactDTO != null
+            ? homeController.userDetailModel.contactDTO.email
+            : "");
+
+    Request request = Request(
+      teamName: "VKROCKS",
+      leagueId: widget.league.leagueId,
+      tournamentId: widget.matchID,
+      matchId: widget.league.matchId,
+      venueId: widget.league.venueid,
+      capton: value[0].name,
+      captonId: "sdsaad",
+      captonpoint: "10.2",
+      team1: value[1].name,
+      team1Id: "asdasd",
+      team1point: "20.3",
+      team2: value[2].name,
+      team2Id: "sadasdas",
+      team2point: "30.3",
+      team3: value[3].name,
+      team3Id: "asdasdasd",
+      team3point: "34.4",
+      team4: value[4].name,
+      team4Id: "asdasdasd",
+      team4point: "45.6",
+      team5: value[5].name,
+      team5Id: "asdasd",
+      team5point: "4.5",
+      team6: value[6].name,
+      team6Id: "asdasd",
+      team6point: "6.0",
+      team7: value[7].name,
+      team7Id: "sadasd",
+      team7point: "8.0",
+      team8: value[8].name,
+      team8Id: "asdasd",
+      team8point: "32.4",
+      team9: value[9].name,
+      team9Id: "asdasda",
+      team9point: "45.6",
+      team10: value[10].name,
+      team10Id: "asdasd",
+      team10point: "30.3",
+      playeridCapton: value[0].key,
+      playerid1: value[1].key,
+      playerid2: value[2].key,
+      playerid3: value[3].key,
+      playerid4: value[4].key,
+      playerid5: value[5].key,
+      playerid6: value[6].key,
+      playerid7: value[7].key,
+      playerid8: value[8].key,
+      playerid9: value[9].key,
+      playerid10: value[10].key,
+    );
+
+
+    TeamCreate teamCreate =
+        TeamCreate(userDetails: userDetails, request: request);
+    homeController.createTeam(teamCreate).then((status) async {
+      if (status.statusCode == 200) {
+        if (status.body['metadata']['code'] == 200 ||
+            status.body['metadata']['code'] == "200") {
+          /* Get.toNamed(RouteHelper.getSignInRoute(RouteHelper.signUp));*/
+        } else {
+          showCustomSnackBar(status.body['metadata']['message']);
+        }
+      } else {
+        showCustomSnackBar(status.body["message"]);
+      }
+    });
   }
 }

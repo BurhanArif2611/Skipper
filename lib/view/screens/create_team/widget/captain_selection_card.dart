@@ -120,7 +120,11 @@ class CaptainSelectionCard extends StatelessWidget {
                                     child:
                                     InkWell(
                                         onTap: () {
-                                          homeController.addCaptain(player.key);
+                                          if(homeController.vCaptainId==player.key) {
+                                            homeController.addVCaptain("");
+                                          }
+                                          homeController.addCaptain(
+                                              player.key);
                                         },
                                         child:
                                     Container(
@@ -149,6 +153,9 @@ class CaptainSelectionCard extends StatelessWidget {
                                     child:
                                     InkWell(
                                         onTap: () {
+                                          if(homeController.captainId==player.key) {
+                                            homeController.addCaptain("");
+                                          }
                                           homeController.addVCaptain(player.key);
                                         },
                                         child:

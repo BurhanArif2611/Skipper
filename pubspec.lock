@@ -57,14 +57,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.2+5"
-  aws_s3:
-    dependency: "direct main"
-    description:
-      name: aws_s3
-      sha256: "70c6baf4ee0be4614f9b54590029f118eaec617a8c891953265530352742126b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.1+hotfix.5"
   aws_s3_upload:
     dependency: "direct main"
     description:
@@ -1506,14 +1498,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0+1"
-  universal_ui:
-    dependency: "direct main"
-    description:
-      name: universal_ui
-      sha256: f4edbb07a44dfb7d1895b6d42506fd1537bbb92f025c8e42da6ba2b4d3d73871
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.8"
   url_launcher:
     dependency: "direct main"
     description:

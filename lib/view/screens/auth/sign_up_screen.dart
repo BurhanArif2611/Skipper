@@ -99,6 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     print("number>>>" + widget.number.toString());
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: ResponsiveHelper.isDesktop(context)
           ? WebMenuBar()
           : CustomAppBar(

@@ -220,7 +220,7 @@ class AuthController extends GetxController implements GetxService {
       if (response.body['accessToken'] != null) {
         try {
           print("try>>>>>${response.body['accessToken'].toString()}");
-          saveUserToken(response.body['accessToken'].toString(),response.body['refreshToken'].toString(),response.body['username'].toString());
+          saveUserToken(response.body['accessToken'].toString(),response.body['refreshToken'].toString(),response.body['username'].toString(),"");
           /*authRepo.saveUserToken(response.body['accessToken'].toString());
           await authRepo.updateToken();*/
         }catch(e){
@@ -235,11 +235,12 @@ class AuthController extends GetxController implements GetxService {
     return response;
   }
 
-  saveUserToken(String token,String refreshToken,String username,) async {
+  saveUserToken(String token,String refreshToken,String username,String emailID) async {
     final prefs = await SharedPreferences.getInstance();
      prefs.setString(AppConstants.TOKEN, token);
      prefs.setString(AppConstants.RefreshTOKEN, refreshToken);
      prefs.setString(AppConstants.UserName, username);
+     prefs.setString(AppConstants.EmailID, emailID);
   }
  Future<String> getUserToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -383,32 +384,7 @@ class AuthController extends GetxController implements GetxService {
     return responseModel;
   }
 
-  Future<Response> pollingSurveyResultStore(
-      String serveyId, String answer, int Index) async {
-    _isLoading = true;
-    update();
-    Response response =
-        await authRepo.pollingSurveyResultStore(serveyId, answer, getDeviceID);
 
-    if (response.statusCode == 200) {
-      if (_surveyListModel != null &&
-          _surveyListModel.data != null &&
-          _surveyListModel.data.length > 0) {
-        Data data = new Data(
-            id: _surveyListModel.data[Index].id,
-            question: _surveyListModel.data[Index].question,
-            options: _surveyListModel.data[Index].options,
-            status: _surveyListModel.data[Index].status,
-            createdAt: _surveyListModel.data[Index].createdAt,
-            updatedAt: _surveyListModel.data[Index].updatedAt,
-            attempt: true);
-        _surveyListModel.data[Index] = data;
-      }
-    }
-    _isLoading = false;
-    update();
-    return response;
-  }
 
   Future<Response> resetPassword(String resetToken, String number,
       String password, String confirmPassword) async {
@@ -645,19 +621,7 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
-  Future<Response> submitSurveyResult(String surveyID) async {
-    _isLoading = true;
-    Answers newsSubmitBody =
-        Answers(question: surveyID, options: selectedOptionIdList[0].options);
 
-    Response response = await authRepo.submitSurveyResultu(newsSubmitBody);
-    ResponseModel responseModel;
-    print("response>>>${response.statusCode}");
-    if (response.statusCode == 200) {}
-    _isLoading = false;
-    update();
-    return response;
-  }
 
   void changeQuestionTabSelectIndex(int index) {
     _selectedQuestionIndex = index;

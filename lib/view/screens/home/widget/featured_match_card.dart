@@ -23,7 +23,8 @@ class FeaturedMatchCardItem extends StatelessWidget {
 
     var parts = matches.shortName.split(" vs ");
     return  InkWell(onTap: (){
-      Get.toNamed(RouteHelper.getCreateTeamScreenRoute());
+    //  Get.toNamed(RouteHelper.getCreateTeamScreenRoute());
+      Get.toNamed(RouteHelper.getCreateLeagueRoute(matches.key));
     },
         child:
         Container(

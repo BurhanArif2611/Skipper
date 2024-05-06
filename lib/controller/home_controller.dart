@@ -21,6 +21,7 @@ import 'package:sixam_mart/util/app_constants.dart';
 import '../data/api/api_checker.dart';
 import '../data/model/body/news_submit_body.dart';
 import '../data/model/body/report_incidence_body.dart';
+import '../data/model/body/team_create.dart';
 import '../data/model/response/commentlist_model.dart';
 import '../data/model/response/contact_center_model.dart';
 import '../data/model/response/country_list_model.dart';
@@ -28,6 +29,7 @@ import '../data/model/response/featured_matches.dart';
 import '../data/model/response/incidence_category_model.dart';
 import '../data/model/response/incidence_detail_response.dart';
 import '../data/model/response/latetsnews_model.dart';
+import '../data/model/response/league_list.dart';
 import '../data/model/response/matchlist.dart';
 import '../data/model/response/news_category_model.dart';
 import '../data/model/response/news_list_model.dart';
@@ -91,10 +93,20 @@ class HomeController extends GetxController implements GetxService {
   String get userName => _userName;
 
   String _captainId;
+
   String get captainId => _captainId;
 
   String _vCaptainId;
+
   String get vCaptainId => _vCaptainId;
+
+  List<Player> _finalPlayersList = [];
+
+  List<Player> get finalPlayersList => _finalPlayersList;
+
+  LeagueList _leagueList;
+
+  LeagueList get leagueList => _leagueList;
 
   Future<void> getMatchesList() async {
     _isLoading = true;
@@ -110,7 +122,7 @@ class HomeController extends GetxController implements GetxService {
   }
 
   Future<Response> getSquadlList() async {
-    _playersList=[];
+    _playersList = [];
     _isLoading = true;
 
     Response response = await homeRepo.getSquadlList("sadasd", "sdfsdfdsf");
@@ -130,6 +142,23 @@ class HomeController extends GetxController implements GetxService {
           }
         }
       }
+      print("_playersList>>>${_playersList.length.toString()}");
+    }
+
+    _isLoading = false;
+    update();
+    return response;
+  }
+
+  Future<Response> getLeagueList() async {
+    _playersList = [];
+    _isLoading = true;
+
+    Response response = await homeRepo.getleagueList();
+
+    if (response.statusCode == 200) {
+      _leagueList=LeagueList.fromJson(response.body);
+
       print("_playersList>>>${_playersList.length.toString()}");
     }
 
@@ -178,34 +207,87 @@ class HomeController extends GetxController implements GetxService {
   }
 
   Future<void> addPlayersInMyTeam(Player player) async {
-    bool check=false;
-    if(_selectedPlayersList.length>0){
-      for(int i=0;i<_selectedPlayersList.length;i++){
-        if(_selectedPlayersList[i]==player){
+    bool check = false;
+    if (_selectedPlayersList.length > 0) {
+      for (int i = 0; i < _selectedPlayersList.length; i++) {
+        if (_selectedPlayersList[i] == player) {
           _selectedPlayersList.removeAt(i);
-          check=true;
+          check = true;
           break;
         }
       }
     }
-    if(!check){
-    _selectedPlayersList.add(player);
+    if (!check) {
+      _selectedPlayersList.add(player);
     }
     update();
   }
 
-  void clearData(){
-    _playersList=[];
-    _selectedPlayersList=[];
+  Future<List<Player>> finalPlayerList() async {
+    if (_selectedPlayersList != null && _selectedPlayersList.length > 0) {
+      int Index;
+      for (int i = 0; i < _selectedPlayersList.length; i++) {
+        if (captainId == _selectedPlayersList[i].key) {
+          Index = i;
+          finalPlayersList.add(_selectedPlayersList[i]);
+          break;
+        }
+      }
+      for (int j = 0; j < _selectedPlayersList.length; j++) {
+        if (j != Index) {
+          finalPlayersList.add(_selectedPlayersList[j]);
+        }
+      }
+    }
+    update();
+    return finalPlayersList != null && finalPlayersList.length >= 11
+        ? finalPlayersList
+        : null;
+  }
+
+  void clearData() {
+    try {
+      _playersList = [];
+      _selectedPlayersList = [];
+      _finalPlayersList = [];
+      _captainId = "";
+      _vCaptainId = "";
+      update();
+    } catch (e) {}
+  }
+
+  void addCaptain(String id) {
+    _captainId = id;
     update();
   }
 
-  void addCaptain(String id){
-   _captainId=id;
+  void addVCaptain(String id) {
+    _vCaptainId = id;
     update();
   }
-  void addVCaptain(String id){
-   _vCaptainId=id;
+
+  Future<Response> createTeam(TeamCreate teamCreate) async {
+    _isLoading = true;
     update();
+    Get.dialog(CustomLoader(), barrierDismissible: false);
+
+    Response response = await homeRepo.createTeam(teamCreate);
+
+    if (response.statusCode == 200) {
+      /* if (!Get.find<SplashController>().configModel.customerVerification) {
+        authRepo.saveUserToken(response.body["token"]);
+        await authRepo.updateToken();
+      }*/
+      // responseModel = ResponseModel(true, response.body);
+
+      Get.back();
+    } else {
+      Get.back();
+    }
+    _isLoading = false;
+
+    update();
+
+    return response;
   }
 }

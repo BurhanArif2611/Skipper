@@ -39,14 +39,12 @@ import 'package:sixam_mart/view/screens/update/update_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../data/model/response/incidence_detail_response.dart';
-import '../data/model/response/news_list_model.dart';
-import '../data/model/response/survey_list_model.dart';
 import '../view/screens/complaint/add_complaint_screen.dart';
 import '../view/screens/complaint/list_complaint_screen.dart';
 import '../view/screens/contact_center/contact_center_screen.dart';
 
 import '../view/screens/create_team/choose_captain_screen.dart';
+import '../view/screens/create_team/create_league_screen.dart';
 import '../view/screens/create_team/create_team_screen.dart';
 import '../view/screens/create_team/final_create_team_preview.dart';
 import '../view/screens/kyc/kyc_screen.dart';
@@ -58,6 +56,8 @@ import '../view/screens/wallet/add_card_screen.dart';
 import '../view/screens/wallet/add_payment_option_screen.dart';
 import '../view/screens/wallet/withdraw.dart';
 import '../view/screens/webview/webview_screen.dart';
+import '../../../../data/model/response/league_list.dart';
+
 
 class RouteHelper {
   static const String initial = '/';
@@ -143,6 +143,7 @@ class RouteHelper {
   static const String choose_captain_screen = '/choose_captain_team_screen';
   static const String final_team_screen = '/final_team_screen';
   static const String leaderboard = '/leaderboard';
+  static const String createleague = '/createleague';
 
   static String getInitialRoute() => '$initial';
   static String getPersonalProfileRoute() => '$personalprofilescreen';
@@ -174,8 +175,8 @@ class RouteHelper {
   static String getKYCSuccessScreenRoute() => '$kycsuccessscreen';
   static String getLeaderBoardScreenRoute() => '$leaderboard';
   static String getFinalTeamScreenRoute() => '$final_team_screen';
-  static String getChooseCaptainScreenRoute() => '$choose_captain_screen';
-  static String getCreateTeamScreenRoute() => '$createteamscreen';
+
+
   static String getVerificationRoute(String number, String token, String page, String pass) {
     return '$verification?page=$page&number=$number&token=$token&pass=$pass';
   }
@@ -209,6 +210,28 @@ class RouteHelper {
     String _data = base64Encode(_encoded);
     return '$map?address=$_data&page=$page';
   }
+  static String getCreateLeagueRoute(String matchID) {
+    return '$createleague?matchID=$matchID';
+  }
+
+  static String getCreateTeamScreenRoute(String matchID,Data data) {
+    String _data;
+
+    _data = base64Encode(utf8.encode(jsonEncode(data.toJson())));
+
+    return '$createteamscreen?data=${ _data}&matchID=$matchID';
+  }
+  static String getChooseCaptainScreenRoute(String matchID,Data data) {
+    String _data;
+
+    _data = base64Encode(utf8.encode(jsonEncode(data.toJson())));
+
+    return '$choose_captain_screen?data=${ _data}&matchID=$matchID';
+
+    }
+
+
+
   static String getAddressRoute() => '$address';
   static String getOrderSuccessRoute(String orderID) {
     return '$orderSuccess?id=$orderID';
@@ -224,10 +247,6 @@ class RouteHelper {
     String _data = base64Encode(utf8.encode(jsonEncode(basicCampaignModel.toJson())));
     return '$surveystartscreen?data=$_data';
   }*/
-  static String getNewsDetailScreen(NewsDetail detail) {
-    String _data = base64Encode(utf8.encode(jsonEncode(detail.toJson())));
-    return '$newsdetailscreen?detail=$_data';
-  }
 
 
 
@@ -251,10 +270,7 @@ class RouteHelper {
   }
   static String getStoreReviewRoute(int storeID) => '$storeReview?id=$storeID';
   static String getAllStoreRoute(String page) => '$allStores?page=$page';
-  static String getItemImagesRoute(IncidenceDetailResponse item) {
-    String _data = base64Url.encode(utf8.encode(jsonEncode(item.toJson())));
-    return '$itemImages?item=$_data';
-  }
+
   static String getParcelCategoryRoute() => '$parcelCategory';
   static String getParcelLocationRoute(ParcelCategoryModel category) {
     String _data = base64Url.encode(utf8.encode(jsonEncode(category.toJson())));
@@ -293,6 +309,16 @@ class RouteHelper {
     GetPage(name: signIn, page: () => SignInScreen(
       exitFromApp: Get.parameters['page'] == signUp || Get.parameters['page'] == splash || Get.parameters['page'] == onBoarding,
     )),
+
+    GetPage(name: createleague, page: () => CreateLeagueScreen(
+      matchID: Get.parameters['matchID'] ,
+    )),
+
+
+
+
+
+
     GetPage(name: signUp, page: () => SignUpScreen(number: Get.parameters['number'])),
 
     GetPage(name: main, page: () => getRoute(DashboardScreen(
@@ -331,9 +357,6 @@ class RouteHelper {
    GetPage(name: kycsuccessscreen, page: () => getRoute(KYCSUCCESSScreen())),
    GetPage(name: leaderboard, page: () => getRoute(LeaderBoardScreen())),
    GetPage(name: final_team_screen, page: () => getRoute(FinalCreateTeamPreviewScreen())),
-   GetPage(name: createteamscreen, page: () => getRoute(CreateTeamScreen())),
-   GetPage(name: choose_captain_screen, page: () => getRoute(ChooseCaptainTeamScreen())),
-
 
 
     GetPage(name: html, page: () => HtmlViewerScreen(
@@ -344,10 +367,19 @@ class RouteHelper {
 
     GetPage(name: rateReview, page: () => getRoute(Get.arguments != null ? Get.arguments : NotFound())),
 
-    GetPage(name: itemImages, page: () => getRoute(ImageViewerScreen(
-      item: IncidenceDetailResponse.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['item'])))),
+
+
+    GetPage(name: createteamscreen, page: () => getRoute(CreateTeamScreen(
+      league: Data.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['data'])))),matchID: Get.parameters['matchID'],
     ))),
-     GetPage(name: referAndEarn, page: () => getRoute(ReferAndEarnScreen())),
+
+    GetPage(name: choose_captain_screen, page: () => getRoute(ChooseCaptainTeamScreen(
+      league: Data.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['data'])))),matchID: Get.parameters['matchID'],
+    ))),
+
+
+
+    GetPage(name: referAndEarn, page: () => getRoute(ReferAndEarnScreen())),
   ];
 
   static getRoute(Widget navigateTo) {

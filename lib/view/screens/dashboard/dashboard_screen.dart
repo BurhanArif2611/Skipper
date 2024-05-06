@@ -175,7 +175,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         }
       },
       child: Scaffold(
-
+        backgroundColor: Theme.of(context).backgroundColor,
         bottomNavigationBar: GetBuilder<DashboardController>(builder: (cartController) {
                 if (cartController.currentIndex != null &&
                     cartController.currentIndex != 0 &&

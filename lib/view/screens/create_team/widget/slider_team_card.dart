@@ -17,7 +17,7 @@ class SliderTeamCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  InkWell(onTap: (){
-      Get.toNamed(RouteHelper.getCreateTeamScreenRoute());
+    //  Get.toNamed(RouteHelper.getCreateTeamScreenRoute());
     },
         child:
         Container(

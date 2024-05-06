@@ -606,5 +606,8 @@
   "Female": "أنثى",
   "Other": "آخر",
   "Select Gender": "حدد الجنس",
-  "account": "Account"
+  "account": "Account",
+
+  "arena": "Arena",
+  "my_matches": "My Matches"
 }

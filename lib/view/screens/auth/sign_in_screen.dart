@@ -91,7 +91,7 @@ class _SignInScreenState extends State<SignInScreen> {
         }
       },
       child: Scaffold(
-
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: ResponsiveHelper.isDesktop(context)
             ? WebMenuBar()
             : !widget.exitFromApp
@@ -110,12 +110,6 @@ class _SignInScreenState extends State<SignInScreen> {
                 Container(
                   width:  context.width,
                   height: context.height,
-                  padding: context.width > 700
-                      ? EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT)
-                      : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                  margin: context.width > 700
-                      ? EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT)
-                      : EdgeInsets.zero,
                   color: Theme.of(context).backgroundColor,
 
                   child: GetBuilder<SplashController>(builder: (splashController) {
@@ -328,8 +322,9 @@ class _SignInScreenState extends State<SignInScreen> {
                             SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                             /* GuestButton(),*/
                           ])),
+
                       Positioned(
-                        bottom: 10,
+                        bottom: 100,
                         right: 0,
                         left: 0,
                         child:

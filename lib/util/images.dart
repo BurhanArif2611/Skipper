@@ -172,4 +172,5 @@ class Images {
   static const String select_plus = 'assets/image/select_plus.svg';
   static const String filter = 'assets/image/filter.svg';
   static const String preview_bg = 'assets/image/preview_bg.png';
+  static const String defult_user_png = 'assets/image/defult_user.png';
 }

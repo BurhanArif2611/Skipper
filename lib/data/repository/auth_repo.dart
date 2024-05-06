@@ -33,19 +33,7 @@ class AuthRepo {
     return await apiClient.postData(AppConstants.LOGIN_URI, {"username": phone, "password": password, "grant_type": 'password'});
   }
 
-  Future<Response> addSOSContact({String name, String relation,String phone}) async {
-    return await apiClient.postData(AppConstants.ADD_SOS_CONTACT_URI, {"name": name, "relation": relation, "number": phone});
-  }
-  Future<Response> deleteSOSContact({String id}) async {
-    return await apiClient.deleteData('${AppConstants.ADD_SOS_CONTACT_URI}/'+id );
-  }
-  Future<Response> submitSurveyResultu(Answers signUpBody) async {
-    return await apiClient.postResultData(AppConstants.SubmitSurveys_URI, signUpBody);
-  }
 
-  Future<Response> uploadfile({String id}) async {
-    return await apiClient.deleteData('${AppConstants.ADD_SOS_CONTACT_URI}/'+id );
-  }
 
   Future<Response> checkMobileNumber({String phone}) async {
     return await apiClient.postData(AppConstants.CHECK_PHONE_URI, {"phone": phone});
@@ -111,9 +99,6 @@ class AuthRepo {
   Future<Response> regions() async {
     return await apiClient.getData(AppConstants.Regions_URI);
   }
-  Future<Response> pollingSurveyResultStore(String serveyId,String answer,String imei_number) async {
-    return await apiClient.postData(AppConstants.SubmitSurveys_URI,{"servey_id":serveyId,"answer":answer,"imei_number":imei_number});
-  }
 
   Future<Response> resetPassword(String resetToken, String number, String password, String confirmPassword) async {
     return await apiClient.postData(
@@ -164,16 +149,11 @@ class AuthRepo {
   Future<Response> getSurveyList() async {
     return await apiClient.getData(AppConstants.Surveys_URL);
   }
-  Future<Response> addReport(ReportIncidenceBody signUpBody) async {
-    return await apiClient.postModelData(AppConstants.Incidents_URI, signUpBody);
-  }
 
   Future<Response> getSurveyDetail(String id) async {
     return await apiClient.getData('${AppConstants.Surveys_URL}/$id');
   }
-  Future<Response> getSOSContactList() async {
-    return await apiClient.getData('${AppConstants.ADD_SOS_CONTACT_URI}');
-  }
+
 
   Future<Response> verifyPhone(String otp_id, String otp) async {
     return await apiClient.postData(AppConstants.VERIFY_PHONE_URI, {"otp_id": otp_id, "otp": otp});

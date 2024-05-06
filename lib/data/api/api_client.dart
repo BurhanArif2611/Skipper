@@ -70,7 +70,9 @@ class ApiClient extends GetxService {
     }
       Map<String, String> _header;
      _header = {
-        'Content-Type': 'application/json'/*,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'matchId': '123'/*,
         'Authorization': ' ${token!=null?'Bearer ' +token:'Basic REVNTzpERU1PMTIz'}',*/
       };
 

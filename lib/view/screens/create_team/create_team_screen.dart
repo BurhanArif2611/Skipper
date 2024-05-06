@@ -18,6 +18,8 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../../../controller/auth_controller.dart';
 import '../../../controller/home_controller.dart';
 import '../../../controller/onboarding_controller.dart';
+import '../../../data/model/body/team_create.dart';
+import '../../../data/model/response/league_list.dart';
 import '../../../helper/route_helper.dart';
 import '../../base/custom_app_bar.dart';
 import '../../base/custom_button.dart';
@@ -26,6 +28,12 @@ import '../home/widget/team_card.dart';
 
 class CreateTeamScreen extends StatefulWidget {
   static Future<void> loadData(bool reload) async {}
+  Data league;
+  String matchID;
+
+  CreateTeamScreen(
+      {@required this.league,@required this.matchID});
+
 
   @override
   State<CreateTeamScreen> createState() => _CreateTeamScreenState();
@@ -43,7 +51,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
   }
 
   void _loadData() async {
-   // await Get.find<HomeController>().clearData();
+    await Get.find<HomeController>().clearData();
     await Get.find<HomeController>().getSquadlList();
   }
 
@@ -497,7 +505,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                                if( Get.find<HomeController>().selectedPlayersList!=null &&  Get.find<HomeController>().selectedPlayersList.length>=11){
 
                                 Get.toNamed(
-                                    RouteHelper.getChooseCaptainScreenRoute());}
+                                    RouteHelper.getChooseCaptainScreenRoute(widget.matchID,widget.league));}
                                else {
                                  showCustomSnackBar("Please select at list 11 players",isError: true);
                                }
@@ -559,4 +567,9 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
     }
     return _indicators;
   }
+
+
+
+
+
 }

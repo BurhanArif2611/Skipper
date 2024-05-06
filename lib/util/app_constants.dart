@@ -52,14 +52,8 @@ class AppConstants {
   static const String VERIFY_EMAIL_URI = '/api/v1/auth/verify-email';
   static const String REGISTER_URI = '/users';
   static const String LOGIN_URI = '/login';
-  static const String Incidents_URI = '/incidents';
-  static const String SubmitSurveys_URI = '/api/survey/answer';
-  static const String IncidentComment_URI = '/incident/comment';
-  static const String SecurityComment_URI = '/incident/comment/security/';
-  static const String ADD_SOS_CONTACT_URI = '/user/sos';
-  static const String Resource_Centers_URI = '/resource-centers';
-  static const String Contact_Centers_URI = '/contact-centers';
-  static const String CHECK_PHONE_URI = '/api/v1/auth/check_phone';
+  static const String CreateTeam_URI = '/v4/team';
+ static const String CHECK_PHONE_URI = '/api/v1/auth/check_phone';
   static const String TOKEN_URI = '/api/v1/customer/cm-firebase-token';
   static const String PLACE_ORDER_URI = '/api/v1/customer/order/place';
   static const String ADDRESS_LIST_URI = '/api/v1/customer/address/list';
@@ -169,6 +163,7 @@ class AppConstants {
   static const String TOKEN = '6ammart_token';
   static const String RefreshTOKEN = 'RefreshTOKEN';
   static const String UserName = 'username';
+  static const String EmailID = 'emailId';
   static const String ROLE = 'Role';
   static const String COUNTRY_CODE = '6ammart_country_code';
   static const String LANGUAGE_CODE = '6ammart_language_code';

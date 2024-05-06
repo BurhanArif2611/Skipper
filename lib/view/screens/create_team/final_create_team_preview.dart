@@ -96,7 +96,6 @@ class FinalCreateTeamPreviewScreenState
                                 ],
                               )),
 
-
                               SizedBox(height: 20,),
                               Text("Batters",style: robotoBold.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeDefault),),
                               SizedBox(height: 20,),
@@ -235,11 +234,13 @@ class ProfileWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        CircleAvatar(
+        /*CircleAvatar(
           radius: 30, // Size of the avatar
           backgroundImage: NetworkImage(
               'https://via.placeholder.com/150'), // Network image URL or you can use AssetImage for a local file
-        ), // Space between image and text
+        ),*/ // Space between image and text
+        Image.asset(Images.defult_user_png,width: 50,height: 50,),
+
         Container(
           padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
             decoration: BoxDecoration(
