@@ -30,6 +30,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : null,
       body: GetBuilder<OnBoardingController>(
         builder: (onBoardingController) => onBoardingController
@@ -39,7 +40,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 child: Container(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                color: Theme.of(context).hintColor,
+                color: Theme.of(context).backgroundColor,
                 child: Center(
                     child: SizedBox(
                         width: Dimensions.WEB_MAX_WIDTH,

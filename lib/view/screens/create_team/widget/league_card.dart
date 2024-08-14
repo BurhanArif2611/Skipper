@@ -27,7 +27,7 @@ class LeagueCard extends StatelessWidget {
 
             InkWell(
                 onTap: () {
-                  Get.toNamed(RouteHelper.getCreateTeamScreenRoute(matchID,league));
+                 // Get.toNamed(RouteHelper.getCreateTeamScreenRoute(matchID,league));
                   // Get.toNamed(RouteHelper.getCreateTeamScreenRoute());
                 },
                 child: Container(

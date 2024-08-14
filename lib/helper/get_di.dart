@@ -44,9 +44,11 @@ import 'package:get/get.dart';
 import '../controller/complaint_controller.dart';
 import '../controller/dashboard_controller.dart';
 import '../controller/home_controller.dart';
+import '../controller/kyc_controller.dart';
 import '../data/api/uploads3file.dart';
 import '../data/repository/complaint_repo.dart';
 import '../data/repository/home_repo.dart';
+import '../data/repository/kyc_repo.dart';
 
 Future<Map<String, Map<String, String>>> init() async {
   // Core
@@ -54,6 +56,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => sharedPreferences);
   Get.lazyPut(() => AuthRepo(apiClient: Get.find(),apiClientother: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => HomeRepo(apiClient: Get.find(),apiClientother: Get.find(), sharedPreferences: Get.find()));
+  Get.lazyPut(() => KycRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => ApiClient(appBaseUrl: AppConstants.BASE_URL, sharedPreferences: Get.find()));
   Get.lazyPut(() => UploadS3File(appBaseUrl: AppConstants.BASE_URL, sharedPreferences: Get.find()));
 
@@ -84,6 +87,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => LocalizationController(sharedPreferences: Get.find(), apiClient: Get.find()));
   Get.lazyPut(() => OnBoardingController(onboardingRepo: Get.find()));
   Get.lazyPut(() => AuthController(authRepo: Get.find()));
+  Get.lazyPut(() => KycController(kycRepo: Get.find()));
   Get.lazyPut(() => LocationController(locationRepo: Get.find()));
   Get.lazyPut(() => UserController(userRepo: Get.find()));
   Get.lazyPut(() => BannerController(bannerRepo: Get.find()));

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/services.dart';
 
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
@@ -38,7 +39,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
 //  static PageController _pageController;
   int _pageIndex = 0;
-  String toolbar_name="home".tr;
+  String toolbar_name = "home".tr;
   List<Widget> _screens;
 
   // GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey();
@@ -50,23 +51,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> _getDeviceId() async {
-    try{
-    DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-    if (GetPlatform.isAndroid) {
-      AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
-     if(androidInfo.id!=null){
-      Get.find<AuthController>().changeDeviceID(androidInfo.id);}
-     else if(androidInfo.model!=null){
-      Get.find<AuthController>().changeDeviceID(androidInfo.model);}
-
-    
-    } else if (GetPlatform.isIOS) {
-      IosDeviceInfo iosInfo = await deviceInfoPlugin.iosInfo;
-      if(iosInfo.identifierForVendor!=null){
-        Get.find<AuthController>().changeDeviceID(iosInfo.identifierForVendor);}
-      else if(iosInfo.model!=null){
-        Get.find<AuthController>().changeDeviceID(iosInfo.model);}
-    }}catch(e){}
+    try {
+      DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+      if (GetPlatform.isAndroid) {
+        AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
+        if (androidInfo.id != null) {
+          Get.find<AuthController>().changeDeviceID(androidInfo.id);
+        } else if (androidInfo.model != null) {
+          Get.find<AuthController>().changeDeviceID(androidInfo.model);
+        }
+      } else if (GetPlatform.isIOS) {
+        IosDeviceInfo iosInfo = await deviceInfoPlugin.iosInfo;
+        if (iosInfo.identifierForVendor != null) {
+          Get.find<AuthController>()
+              .changeDeviceID(iosInfo.identifierForVendor);
+        } else if (iosInfo.model != null) {
+          Get.find<AuthController>().changeDeviceID(iosInfo.model);
+        }
+      }
+    } catch (e) {}
   }
 
   @override
@@ -88,7 +91,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       MyMatchesScreen(),
       WalletScreen(),
       AccountScreen(),
-
     ];
 
     Future.delayed(Duration(seconds: 1), () {
@@ -176,75 +178,77 @@ class _DashboardScreenState extends State<DashboardScreen> {
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
-        bottomNavigationBar: GetBuilder<DashboardController>(builder: (cartController) {
-                if (cartController.currentIndex != null &&
-                    cartController.currentIndex != 0 &&
-                    _pageIndex != null) {
-                  // _pageController.jumpToPage(cartController.currentIndex);
-                  //_setPage(cartController.currentIndex);
-                }
-                return BottomAppBar(
-                  elevation: 5,
-                  notchMargin: 5,
-                  clipBehavior: Clip.antiAlias,
-                  shape: CircularNotchedRectangle(),
-                  child: Container(
-                      height: 70.0,
-                      color: Theme.of(context).hintColor,
-                      child: Padding(
-                        padding: EdgeInsets.all(2.0),
-                        child: Row(children: [
-                          BottomNavItem(
-                              isSelected: cartController.currentIndex == 0,
-                              onTap: () => _setPage(0),
-                              countVisible: false,
-                              title: "arena".tr,
-                              ImagePath: Images.arena,
-                              ImagePathSelected: Images.arena_selected,
-                          ),
-                          BottomNavItem(
-                              isSelected: cartController.currentIndex == 1,
-                              onTap: () => {_setPage(1)},
-                              countVisible: true,
-                              title: "my_matches".tr,
-                              ImagePath: Images.my_matchs,
-                              ImagePathSelected: Images.my_matchs_selected,
-                          ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar:
+            GetBuilder<DashboardController>(builder: (cartController) {
+          if (cartController.currentIndex != null &&
+              cartController.currentIndex != 0 &&
+              _pageIndex != null) {
+            // _pageController.jumpToPage(cartController.currentIndex);
+            //_setPage(cartController.currentIndex);
+          }
+          return BottomAppBar(
+            elevation: 5,
+            notchMargin: 5,
+            clipBehavior: Clip.hardEdge,
+            shape: CircularNotchedRectangle(),
+            color:  Theme.of(context).hintColor,
 
-
-                          BottomNavItem(
-                            isSelected: cartController.currentIndex == 2,
-                              onTap: () => _setPage(2),
-                              countVisible: false,
-                              title: "wallet".tr,
-                              ImagePath: Images.wallet,
-                            ImagePathSelected: Images.wallet_selected,
-                          ),
-                          BottomNavItem(
-                              iconData: Icons.menu,
-                              isSelected: cartController.currentIndex == 3,
-                              onTap: () {
-                                _setPage(3);
-                                },
-                              countVisible: false,
-                              title: "account".tr,
-                              ImagePath: Images.account,
-                            ImagePathSelected: Images.account_selected,
-                          ),
-                        ]),
-                      )),
-                );
-              }),
-        body: GetBuilder<DashboardController>(builder: (cartController) {
-          return PageView.builder(
-            controller: cartController.pageController,
-            itemCount: _screens.length,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return _screens[index];
-            },
+            child: Container(
+                height: 70.0,
+                color: Theme.of(context).hintColor,
+                child: Padding(
+                  padding: EdgeInsets.all(2.0),
+                  child: Row(children: [
+                    BottomNavItem(
+                      isSelected: cartController.currentIndex == 0,
+                      onTap: () => _setPage(0),
+                      countVisible: false,
+                      title: "arena".tr,
+                      ImagePath: Images.arena,
+                      ImagePathSelected: Images.arena_selected,
+                    ),
+                    BottomNavItem(
+                      isSelected: cartController.currentIndex == 1,
+                      onTap: () => {_setPage(1)},
+                      countVisible: true,
+                      title: "my_matches".tr,
+                      ImagePath: Images.my_matchs,
+                      ImagePathSelected: Images.my_matchs_selected,
+                    ),
+                    BottomNavItem(
+                      isSelected: cartController.currentIndex == 2,
+                      onTap: () => _setPage(2),
+                      countVisible: false,
+                      title: "wallet".tr,
+                      ImagePath: Images.wallet,
+                      ImagePathSelected: Images.wallet_selected,
+                    ),
+                    BottomNavItem(
+                      iconData: Icons.menu,
+                      isSelected: cartController.currentIndex == 3,
+                      onTap: () {
+                        _setPage(3);
+                      },
+                      countVisible: false,
+                      title: "account".tr,
+                      ImagePath: Images.account,
+                      ImagePathSelected: Images.account_selected,
+                    ),
+                  ]),
+                )),
           );
         }),
+        body: GetBuilder<DashboardController>(builder: (cartController) {
+              return PageView.builder(
+                controller: cartController.pageController,
+                itemCount: _screens.length,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return _screens[index];
+                },
+              );
+            }),
       ),
     );
   }
@@ -255,16 +259,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
       setState(() {
         // _pageController.jumpToPage(pageIndex);
         _pageIndex = pageIndex;
-        if(pageIndex==0){
-          toolbar_name="home".tr;
-        }if(pageIndex==1){
-          toolbar_name="who_are_we".tr;
-        }if(pageIndex==2){
-          toolbar_name="polling_events".tr;
-        }if(pageIndex==3){
-          toolbar_name="our_ideas".tr;
-        }if(pageIndex==4){
-          toolbar_name="add_new_member".tr;
+        if (pageIndex == 0) {
+          toolbar_name = "home".tr;
+        }
+        if (pageIndex == 1) {
+          toolbar_name = "who_are_we".tr;
+        }
+        if (pageIndex == 2) {
+          toolbar_name = "polling_events".tr;
+        }
+        if (pageIndex == 3) {
+          toolbar_name = "our_ideas".tr;
+        }
+        if (pageIndex == 4) {
+          toolbar_name = "add_new_member".tr;
         }
       });
       print("if >>>${_pageIndex.toString()}");

@@ -214,13 +214,12 @@ class AuthController extends GetxController implements GetxService {
     update();
     Get.dialog(CustomLoader(), barrierDismissible: false);
     Response response = await authRepo.login(phone: phone, password: password);
-
     if (response.statusCode == 200) {
       Get.back();
       if (response.body['accessToken'] != null) {
         try {
           print("try>>>>>${response.body['accessToken'].toString()}");
-          saveUserToken(response.body['accessToken'].toString(),response.body['refreshToken'].toString(),response.body['username'].toString(),"");
+          saveUserToken(response.body['accessToken'].toString(),response.body['refreshToken'].toString(),response.body['id'].toString(),response.body['username'].toString());
           /*authRepo.saveUserToken(response.body['accessToken'].toString());
           await authRepo.updateToken();*/
         }catch(e){

@@ -136,7 +136,32 @@ class ApiClient extends GetxService {
       print('====> API Body:'+e.toString());
       return Response(statusCode: 1, statusText: noInternetMessage);
     }
-  }Future<Response> getJsonData(String uri, dynamic body,
+  }Future<Response> postMatchData(String uri, dynamic body,
+      {Map<String, String> headers}) async {
+    try {
+      if (Foundation.kDebugMode) {
+        print('====> API Call: $uri\nHeader: $_mainHeaders');
+      /*  print('====> API Body: $body');*/
+        print('====> API Body: $uri');
+      }
+
+     /* final body = {
+        'grant_type': 'password',
+        'age': '87',
+      };*/
+      print('====> API Body<::::>  $body');
+      Http.Response _response = await Http.post(
+        Uri.parse( uri),
+        body:jsonEncode(body)/*:Uri(queryParameters: body).query*/,
+        headers: headers ?? _mainHeaders,
+      ).timeout(Duration(seconds: timeoutInSeconds));
+      return handleResponse(_response, uri);
+    } catch (e) {
+      print('====> API Body:'+e.toString());
+      return Response(statusCode: 1, statusText: noInternetMessage);
+    }
+  }
+  Future<Response> getJsonData(String uri, dynamic body,
       {Map<String, String> headers}) async {
     try {
       if (Foundation.kDebugMode) {
@@ -219,6 +244,7 @@ class ApiClient extends GetxService {
     try {
       if (Foundation.kDebugMode) {
         print('====> API postMultipartData Call: $uri\nHeader: $_mainHeaders');
+        print('====> API multipartBody size: ${multipartBody.length.toString()}');
         //print('====> API postMultipartData Body: $body with ${multipartBody.length} picture');
       }
       _mainHeaders.addAllIf(_mainHeaders,

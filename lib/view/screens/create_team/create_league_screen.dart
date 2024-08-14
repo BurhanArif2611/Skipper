@@ -1,6 +1,6 @@
 import 'dart:async';
 
-
+import 'package:flutter_svg/svg.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
@@ -26,10 +26,10 @@ import '../../base/custom_text_field.dart';
 import '../home/widget/team_card.dart';
 
 class CreateLeagueScreen extends StatefulWidget {
- final String matchID;
+  final String matchID;
 
-  CreateLeagueScreen(
-      {@required this.matchID});
+  CreateLeagueScreen({@required this.matchID});
+
   @override
   State<CreateLeagueScreen> createState() => _CreateLeagueScreenState();
 }
@@ -43,11 +43,13 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
   void initState() {
     super.initState();
     _loadData();
+    debugPrint("league<><><><>${widget.matchID}");
   }
 
   void _loadData() async {
     await Get.find<HomeController>().clearData();
     await Get.find<HomeController>().getLeagueList();
+    await Get.find<AuthController>().changeTeamMemberSelectIndex(0);
   }
 
   @override
@@ -58,8 +60,8 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(
-            title: 'League', onBackPressed: () => {Get.back()}),
+        appBar:
+            CustomAppBar(title: 'League', onBackPressed: () => {Get.back()}),
         body: GetBuilder<OnBoardingController>(builder: (onBoardingController) {
           return Container(
               color: Theme.of(context).backgroundColor,
@@ -98,166 +100,40 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
                                   )),
                             ],
                           )),
-                      Expanded(
-                          flex: 10,
-                          child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              child: Scrollbar(
-                                  child: SingleChildScrollView(
-                                    physics: BouncingScrollPhysics(),
-                                    child: Container(
-                                        width: MediaQuery.of(context).size.width,
-                                        padding: EdgeInsets.all(
-                                            Dimensions.PADDING_SIZE_SMALL),
-                                        child: Column(
-                                          children: [
-                                            GetBuilder<AuthController>(
-                                                builder: (authController) {
-                                                  return Row(
-                                                    children: [
-                                                      Expanded(
-                                                          flex: 1,
-                                                          child: InkWell(
-                                                              onTap: () {
-                                                                authController
-                                                                    .changeTeamMemberSelectIndex(
-                                                                    0);
-                                                              },
-                                                              child: Container(
-                                                                alignment:
-                                                                Alignment.center,
-                                                                decoration: authController
-                                                                    .selectedTeamMemberIndex ==
-                                                                    0
-                                                                    ? BoxDecoration(
-                                                                  gradient:
-                                                                  LinearGradient(
-                                                                    colors: [
-                                                                      Color(
-                                                                          0xFFF8CA0A),
-                                                                      Color(
-                                                                          0xFFFFE166),
-                                                                      Color(
-                                                                          0xFFDCB822),
-                                                                      Color(
-                                                                          0xFFFFE166),
-                                                                    ],
-                                                                    begin: Alignment
-                                                                        .centerLeft,
-                                                                    end: Alignment
-                                                                        .centerRight,
-                                                                  ),
-                                                                  borderRadius: BorderRadius.all(
-                                                                      Radius.circular(
-                                                                          Dimensions
-                                                                              .RADIUS_SMALL)),
-                                                                )
-                                                                    : null,
-                                                                padding: EdgeInsets.all(
-                                                                    Dimensions
-                                                                        .PADDING_SIZE_EXTRA_SMALL),
-                                                                child: Text(
-                                                                  "Contests",
-                                                                  style: robotoBlack.copyWith(
-                                                                      color: authController
-                                                                          .selectedTeamMemberIndex ==
-                                                                          0
-                                                                          ? Theme.of(
-                                                                          context)
-                                                                          .hintColor
-                                                                          : Theme.of(
-                                                                          context)
-                                                                          .cardColor
-                                                                          .withOpacity(
-                                                                          0.5)),
-                                                                  textAlign:
-                                                                  TextAlign.center,
-                                                                ),
-                                                              ))),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      Expanded(
-                                                          flex: 1,
-                                                          child: InkWell(
-                                                              onTap: () {
-                                                                authController
-                                                                    .changeTeamMemberSelectIndex(
-                                                                    1);
-                                                              },
-                                                              child: Container(
-                                                                alignment:
-                                                                Alignment.center,
-                                                                decoration: authController
-                                                                    .selectedTeamMemberIndex ==
-                                                                    1
-                                                                    ? BoxDecoration(
-                                                                  gradient:
-                                                                  LinearGradient(
-                                                                    colors: [
-                                                                      Color(
-                                                                          0xFFF8CA0A),
-                                                                      Color(
-                                                                          0xFFFFE166),
-                                                                      Color(
-                                                                          0xFFDCB822),
-                                                                      Color(
-                                                                          0xFFFFE166),
-                                                                    ],
-                                                                    begin: Alignment
-                                                                        .centerLeft,
-                                                                    end: Alignment
-                                                                        .centerRight,
-                                                                  ),
-                                                                  borderRadius: BorderRadius.all(
-                                                                      Radius.circular(
-                                                                          Dimensions
-                                                                              .RADIUS_SMALL)),
-                                                                )
-                                                                    : null,
-                                                                padding: EdgeInsets.all(
-                                                                    Dimensions
-                                                                        .PADDING_SIZE_EXTRA_SMALL),
-                                                                child: Text(
-                                                                  "My Contests (1)",
-                                                                  style: robotoBold.copyWith(
-                                                                      color: authController
-                                                                          .selectedTeamMemberIndex ==
-                                                                          1
-                                                                          ? Theme.of(
-                                                                          context)
-                                                                          .hintColor
-                                                                          : Theme.of(
-                                                                          context)
-                                                                          .cardColor
-                                                                          .withOpacity(
-                                                                          0.5)),
-                                                                  textAlign:
-                                                                  TextAlign.center,
-                                                                ),
-                                                              ))),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      Expanded(
-                                                          flex: 1,
-                                                          child: InkWell(
-                                                              onTap: () {
-                                                                authController
-                                                                    .changeTeamMemberSelectIndex(
-                                                                    2);
-                                                              },
-                                                              child:
+                      GetBuilder<AuthController>(builder: (authController) {
+                        return Expanded(
+                            flex: 10,
+                            child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: Scrollbar(
+                                    child: SingleChildScrollView(
+                                  physics: BouncingScrollPhysics(),
+                                  child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: EdgeInsets.all(
+                                          Dimensions.PADDING_SIZE_SMALL),
+                                      child: Column(
+                                        children: [
 
-                                                              Container(
-                                                                alignment:
-                                                                Alignment.center,
-                                                                decoration: authController
-                                                                    .selectedTeamMemberIndex ==
-                                                                    2
-                                                                    ? BoxDecoration(
+                                              Row(
+                                              children: [
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: InkWell(
+                                                        onTap: () {
+                                                          authController
+                                                              .changeTeamMemberSelectIndex(
+                                                                  0);
+                                                        },
+                                                        child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          decoration: authController
+                                                                      .selectedTeamMemberIndex ==
+                                                                  0
+                                                              ? BoxDecoration(
                                                                   gradient:
-                                                                  LinearGradient(
+                                                                      LinearGradient(
                                                                     colors: [
                                                                       Color(
                                                                           0xFFF8CA0A),
@@ -273,69 +149,358 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
                                                                     end: Alignment
                                                                         .centerRight,
                                                                   ),
-                                                                  borderRadius: BorderRadius.all(
-                                                                      Radius.circular(
-                                                                          Dimensions
-                                                                              .RADIUS_SMALL)),
+                                                                  borderRadius:
+                                                                      BorderRadius.all(
+                                                                          Radius.circular(
+                                                                              Dimensions.RADIUS_SMALL)),
                                                                 )
-                                                                    : null,
-                                                                padding: EdgeInsets.all(
-                                                                    Dimensions
-                                                                        .PADDING_SIZE_EXTRA_SMALL),
-                                                                child: Text(
-                                                                  "My Team (2)",
-                                                                  style: robotoBold.copyWith(
-                                                                      color: authController
-                                                                          .selectedTeamMemberIndex ==
-                                                                          2
-                                                                          ? Theme.of(
-                                                                          context)
-                                                                          .hintColor
-                                                                          : Theme.of(
-                                                                          context)
-                                                                          .cardColor
-                                                                          .withOpacity(
-                                                                          0.5)),
-                                                                  textAlign:
-                                                                  TextAlign.center,
-                                                                ),
-                                                              ))),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
+                                                              : null,
+                                                          padding: EdgeInsets
+                                                              .all(Dimensions
+                                                                  .PADDING_SIZE_EXTRA_SMALL),
+                                                          child: Text(
+                                                            "Contests",
+                                                            style: robotoBlack.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                                                color: authController
+                                                                            .selectedTeamMemberIndex ==
+                                                                        0
+                                                                    ? Theme.of(
+                                                                            context)
+                                                                        .hintColor
+                                                                    : Theme.of(
+                                                                            context)
+                                                                        .cardColor
+                                                                        .withOpacity(
+                                                                            0.5)),
 
-                                                    ],
-                                                  );
-                                                }),
-                                            SizedBox(
-                                              height: 20,
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ))),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: InkWell(
+                                                        onTap: () {
+                                                          authController
+                                                              .changeTeamMemberSelectIndex(
+                                                                  1);
+                                                        },
+                                                        child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          decoration: authController
+                                                                      .selectedTeamMemberIndex ==
+                                                                  1
+                                                              ? BoxDecoration(
+                                                                  gradient:
+                                                                      LinearGradient(
+                                                                    colors: [
+                                                                      Color(
+                                                                          0xFFF8CA0A),
+                                                                      Color(
+                                                                          0xFFFFE166),
+                                                                      Color(
+                                                                          0xFFDCB822),
+                                                                      Color(
+                                                                          0xFFFFE166),
+                                                                    ],
+                                                                    begin: Alignment
+                                                                        .centerLeft,
+                                                                    end: Alignment
+                                                                        .centerRight,
+                                                                  ),
+                                                                  borderRadius:
+                                                                      BorderRadius.all(
+                                                                          Radius.circular(
+                                                                              Dimensions.RADIUS_SMALL)),
+                                                                )
+                                                              : null,
+                                                          padding: EdgeInsets
+                                                              .all(Dimensions
+                                                                  .PADDING_SIZE_EXTRA_SMALL),
+                                                          child: Text(
+                                                            "My Contests (1)",
+                                                            style: robotoBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                                                color: authController
+                                                                            .selectedTeamMemberIndex ==
+                                                                        1
+                                                                    ? Theme.of(
+                                                                            context)
+                                                                        .hintColor
+                                                                    : Theme.of(
+                                                                            context)
+                                                                        .cardColor
+                                                                        .withOpacity(
+                                                                            0.5)),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ))),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: InkWell(
+                                                        onTap: () {
+                                                          authController
+                                                              .changeTeamMemberSelectIndex(
+                                                                  2);
+                                                        },
+                                                        child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          decoration: authController
+                                                                      .selectedTeamMemberIndex ==
+                                                                  2
+                                                              ? BoxDecoration(
+                                                                  gradient:
+                                                                      LinearGradient(
+                                                                    colors: [
+                                                                      Color(
+                                                                          0xFFF8CA0A),
+                                                                      Color(
+                                                                          0xFFFFE166),
+                                                                      Color(
+                                                                          0xFFDCB822),
+                                                                      Color(
+                                                                          0xFFFFE166),
+                                                                    ],
+                                                                    begin: Alignment
+                                                                        .centerLeft,
+                                                                    end: Alignment
+                                                                        .centerRight,
+                                                                  ),
+                                                                  borderRadius:
+                                                                      BorderRadius.all(
+                                                                          Radius.circular(
+                                                                              Dimensions.RADIUS_SMALL)),
+                                                                )
+                                                              : null,
+                                                          padding: EdgeInsets
+                                                              .all(Dimensions
+                                                                  .PADDING_SIZE_EXTRA_SMALL),
+                                                          child: Text(
+                                                            "My Team (2)",
+                                                            style: robotoBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                                                color: authController
+                                                                            .selectedTeamMemberIndex ==
+                                                                        2
+                                                                    ? Theme.of(
+                                                                            context)
+                                                                        .hintColor
+                                                                    : Theme.of(
+                                                                            context)
+                                                                        .cardColor
+                                                                        .withOpacity(
+                                                                            0.5)),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ))),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                              ],
                                             ),
 
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            GetBuilder<HomeController>(
-                                                builder: (homeController) {
-                                                  return homeController.leagueList!=null && homeController.leagueList.data.length>0?
-                                                  ListView.builder(
-                                                      shrinkWrap: true,
-                                                      itemCount: homeController.leagueList.data.length,
-                                                      physics: ScrollPhysics(),
-                                                      scrollDirection: Axis.vertical,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        return LeagueCard(homeController.leagueList.data[index],widget.matchID);
-                                                      }):Center(child: CircularProgressIndicator(),);
-                                                }),
-                                          ],
-                                        )),
-                                  ))))
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          authController
+                                                      .selectedTeamMemberIndex ==
+                                                  0
+                                              ? contests()
+                                              : authController
+                                                          .selectedTeamMemberIndex ==
+                                                      1
+                                                  ? myContests()
+                                                  : myTeam()
+                                        ],
+                                      )),
+                                ))));
+                      })
                     ],
                   ),
-
                 ],
               ));
         }));
+  }
+
+  Widget contests() {
+    return GetBuilder<HomeController>(builder: (homeController) {
+      return
+
+
+        homeController.leagueList != null &&
+              homeController.leagueList.data.length > 0
+          ? ListView.builder(
+              shrinkWrap: true,
+              itemCount: homeController.leagueList.data.length,
+              physics: ScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, index) {
+                return LeagueCard(
+                    homeController.leagueList.data[index], widget.matchID);
+              })
+          : Center(
+              child: CircularProgressIndicator(),
+            );
+    });
+  }
+
+  Widget myContests() {
+    return GetBuilder<HomeController>(builder: (homeController) {
+      return Container();
+    });
+  }
+
+  Widget myTeam() {
+    return GetBuilder<HomeController>(builder: (homeController) {
+      return Container(height: 450,
+        child: Stack(children: [
+          Container(width: MediaQuery.of(context).size.width,
+          height: 100,
+          padding: EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+          decoration: BoxDecoration(
+              color: Theme.of(context).hintColor,
+        borderRadius:
+        BorderRadius.all(
+            Radius.circular(
+                Dimensions.RADIUS_SMALL)),
+      ),
+          alignment: Alignment.center,
+          child:
+          Row(crossAxisAlignment: CrossAxisAlignment.start,
+             mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(flex:1,child:
+            Column(crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              Text("5",style: robotoBold.copyWith(color:Theme.of(context).cardColor ),),
+              SizedBox(height: 10,),
+              Text("IND",style: robotoMedium.copyWith(color:Theme.of(context).cardColor ),),
+            ],)),
+
+            Expanded(flex:1,child:
+            Column(crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              Text("5",style: robotoBold.copyWith(color:Theme.of(context).cardColor ),),
+              SizedBox(height: 10,),
+              Text("PAK",style: robotoMedium.copyWith(color:Theme.of(context).cardColor ),),
+            ],)),
+
+            Expanded(flex:1,child:
+            Container(
+                margin:
+                EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                child: Stack(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.all(
+                            Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(Dimensions
+                                .PADDING_SIZE_EXTRA_LARGE), // Set your desired radius
+                            child: Image.asset(
+                             Images.defult_user_png,
+                              fit: BoxFit.fitWidth,
+                              height: 100,
+                            ))),
+                    Positioned(
+                        top: 0,
+                        left: 0,
+                        child:  Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color:Theme.of(context).primaryColor,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                width: 1,
+                                color: Theme.of(context).cardColor),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "C",
+                            style: robotoBold.copyWith(
+                                color:Theme.of(context).hintColor),
+                          ),
+                        ),
+                        )
+                  ],
+                ),
+              )),
+
+
+            Expanded(flex:1,child:
+            Container(
+                margin:
+                EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                child: Stack(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.all(
+                            Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(Dimensions
+                                .PADDING_SIZE_EXTRA_LARGE), // Set your desired radius
+                            child: Image.asset(
+                              Images.defult_user_png,
+                              fit: BoxFit.fitWidth,
+                              height: 100,
+                            ))),
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      child:  Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color:Theme.of(context).primaryColor,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                              width: 1,
+                              color: Theme.of(context).cardColor),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          "VC",
+                          style: robotoBold.copyWith(
+                              color:Theme.of(context).hintColor),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              )),
+
+
+          ],),
+
+
+          ),
+
+        Positioned(bottom: 10,left: 0,right: 0,
+            child: CustomButton(
+              height: 50,
+              buttonText: 'Create Team'.tr,
+              onPressed: () {
+                Get.toNamed(RouteHelper.getCreateTeamScreenRoute(widget.matchID,null));
+              },
+            ),)
+      ],),
+
+      );
+    });
   }
 
   void _moveToPage(int page) {
@@ -372,9 +537,4 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
     }
     return _indicators;
   }
-
-
-
-
-
 }

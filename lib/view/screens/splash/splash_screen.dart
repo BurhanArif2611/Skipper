@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
@@ -28,6 +31,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   GlobalKey<ScaffoldState> _globalKey = GlobalKey();
   StreamSubscription<ConnectivityResult> _onConnectivityChanged;
+  Position _currentPosition;
 
   Future<String> _saveDeviceToken() async {
     String _deviceToken = '@';
@@ -67,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ));
         if (!isNotConnected) {
-            _route();
+          //  _route();
         }
       }
       _firstTime = false;
@@ -75,14 +79,41 @@ class _SplashScreenState extends State<SplashScreen> {
 
     //  Get.find<CartController>().getCartData();
     // Get.find<ThemeController>().toggleTheme();
+    if (Platform.isAndroid) {
+      _checkPermissions();
+    } else {
       _route();
+    }
+    /*_*/
   }
 
   @override
   void dispose() {
     super.dispose();
-
     _onConnectivityChanged.cancel();
+  }
+
+  Future<void> _checkPermissions() async {
+
+     final status = await Permission.location.request();
+     if (status == PermissionStatus.granted) {
+      _route();
+     } else if (status == PermissionStatus.denied) {
+      // Handle denied status
+      Get.offNamed(RouteHelper.getAccessLocationRoute('sign-in'));
+      print("Location permission denied");
+    } else if (status == PermissionStatus.permanentlyDenied) {
+      // Handle permanently denied status
+      openAppSettings();
+    }
+  }
+
+  Future<void> _getCurrentLocation() async {
+    final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    setState(() {
+      _currentPosition = position;
+    });
   }
 
   void _route() {
@@ -95,6 +126,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Get.offNamed(RouteHelper.getOnBoardingRoute());
         } else {
           Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
+          //  Get.offNamed(RouteHelper.getAccessLocationRoute('sign-in'));
         }
       }
     });

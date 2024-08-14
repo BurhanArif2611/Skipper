@@ -24,6 +24,7 @@ class AppConstants {
    // static const String BASE_URL = 'https://portal-dev.shapshap.com';
   //live url
   // static const String BASE_URL = 'https://portal.shapshap.com';
+  static const String POST_KYC_Document = '/users/kycdocument';
   static const String CATEGORY_URI = '/api/v1/categories';
   static const String BANNER_URI = '/api/v1/banners';
   static const String BRANCG_URI = '/api/v1/stores';
@@ -52,7 +53,7 @@ class AppConstants {
   static const String VERIFY_EMAIL_URI = '/api/v1/auth/verify-email';
   static const String REGISTER_URI = '/users';
   static const String LOGIN_URI = '/login';
-  static const String CreateTeam_URI = '/v4/team';
+  static const String CreateTeam_URI = '${MATCH_LIST_BASE_URL}/v4/team';
  static const String CHECK_PHONE_URI = '/api/v1/auth/check_phone';
   static const String TOKEN_URI = '/api/v1/customer/cm-firebase-token';
   static const String PLACE_ORDER_URI = '/api/v1/customer/order/place';

@@ -5,6 +5,7 @@ class Assets {
   static const String assetsBumbleBeeCaptions = 'assets/bumble_bee_captions.vtt';
   static const String assetsImageArrowRight = 'assets/image/arrow_right.png';
   static const String assetsImageDefultUser = 'assets/image/defult_user.svg';
+  static const String assetsImageLocationMapIcon = 'assets/image/location_map_icon.svg';
   static const String assetsImageLogoutPopupBackground = 'assets/image/logout_popup_background.svg';
   static const String assetsImageMenuDrawer = 'assets/image/menu_drawer.svg';
   static const String assetsImageSupport = 'assets/image/support_.png';
@@ -24,6 +25,7 @@ class Assets {
   static const String fontMulishRegular = 'assets/font/Mulish-Regular.ttf';
   static const String fontMulishSemiBold = 'assets/font/Mulish-SemiBold.ttf';
   static const String fontMulishSemiBoldItalic = 'assets/font/Mulish-SemiBoldItalic.ttf';
+  static const String image1st = 'assets/image/1st.svg';
   static const String imageAboutUs = 'assets/image/about_us.png';
   static const String imageAccount = 'assets/image/account.png';
   static const String imageAccountSelected = 'assets/image/account_selected.png';
@@ -50,6 +52,7 @@ class Assets {
   static const String imageChecked = 'assets/image/checked.png';
   static const String imageCircleArrowBack = 'assets/image/circle_arrow_back.png';
   static const String imageCircleCancel = 'assets/image/circle_cancel.svg';
+  static const String imageCircleCorrectTick = 'assets/image/circle_correct_tick.svg';
   static const String imageCircleUser = 'assets/image/circle_user.svg';
   static const String imageClock = 'assets/image/clock.svg';
   static const String imageComplaint = 'assets/image/complaint.svg';
@@ -106,7 +109,9 @@ class Assets {
   static const String imageLineup = 'assets/image/lineup.png';
   static const String imageLinkedin = 'assets/image/linkedin.png';
   static const String imageLocation = 'assets/image/location.png';
+  static const String imageLocationMapIcon = 'assets/image/location_map_icon.png';
   static const String imageLocationMarker = 'assets/image/location_marker.png';
+  static const String imageLocationSmallIcon = 'assets/image/Location_small_Icon.png';
   static const String imageLock = 'assets/image/lock.png';
   static const String imageLogOut = 'assets/image/log_out.png';
   static const String imageLogo = 'assets/image/logo.png';
@@ -118,6 +123,7 @@ class Assets {
   static const String imageMail = 'assets/image/mail.png';
   static const String imageMaintenance = 'assets/image/maintenance.png';
   static const String imageMap = 'assets/image/map.png';
+  static const String imageMatch = 'assets/image/match.svg';
   static const String imageMenuDrawer = 'assets/image/menu_drawer.png';
   static const String imageMessage = 'assets/image/message.png';
   static const String imageModuleIcon = 'assets/image/module_icon.png';

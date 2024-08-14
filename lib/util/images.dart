@@ -136,6 +136,11 @@ class Images {
   static const String left_previous = 'assets/image/left_previous.svg';
   static const String right_previous = 'assets/image/right_previous.svg';
   static const String defult_user = 'assets/image/defult_user.svg';
+  static const String location_map_icon = 'assets/image/location_map_icon.svg';
+  static const String location_map_icon_png = 'assets/image/location_map_icon.png';
+  static const String first_st = 'assets/image/1st.svg';
+  static const String match = 'assets/image/match.svg';
+  static const String circle_correct_tick = 'assets/image/circle_correct_tick.svg';
   static const String phone_call = 'assets/image/phone_call.svg';
   static const String circle_cancel = 'assets/image/circle_cancel.svg';
   static const String batch = 'assets/image/batch.svg';
@@ -171,6 +176,7 @@ class Images {
   static const String defult_member_user = 'assets/image/defult_member_user.svg';
   static const String select_plus = 'assets/image/select_plus.svg';
   static const String filter = 'assets/image/filter.svg';
+  static const String Location_small_Icon = 'assets/image/Location_small_Icon.png';
   static const String preview_bg = 'assets/image/preview_bg.png';
   static const String defult_user_png = 'assets/image/defult_user.png';
 }

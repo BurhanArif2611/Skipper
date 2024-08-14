@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/create_team/widget/captain_selection_card.dart';
 
 import '../../../controller/onboarding_controller.dart';
-import '../../../data/model/body/team_create.dart';
+import '../../../data/model/request_body/create_team.dart';
 import '../../../data/model/response/league_list.dart';
 import '../../../helper/route_helper.dart';
 import '../../base/custom_app_bar.dart';
@@ -26,8 +26,8 @@ class ChooseCaptainTeamScreen extends StatefulWidget {
   Data league;
   String matchID;
 
-  ChooseCaptainTeamScreen(
-      {@required this.league,@required this.matchID});
+  ChooseCaptainTeamScreen({@required this.league, @required this.matchID});
+
   @override
   State<ChooseCaptainTeamScreen> createState() =>
       ChooseCaptainTeamScreenState();
@@ -41,7 +41,7 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
   @override
   void initState() {
     super.initState();
-
+    debugPrint("captain<><><><>${widget.matchID}");
     // _loadData();
   }
 
@@ -57,13 +57,21 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
             title: 'Create Team', onBackPressed: () => {Get.back()}),
         body: GetBuilder<HomeController>(builder: (homeController) {
           return Container(
-              color: Theme.of(context).backgroundColor,
-              height: MediaQuery.of(context).size.height,
+              color: Theme
+                  .of(context)
+                  .backgroundColor,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height,
               padding: EdgeInsets.all(10),
               child: Stack(
                 children: [
                   Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -72,7 +80,9 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
                           Text(
                             "Choose your Captain and Vice Captain",
                             style: robotoBold.copyWith(
-                                color: Theme.of(context).primaryColor,
+                                color: Theme
+                                    .of(context)
+                                    .primaryColor,
                                 fontSize: Dimensions.fontSizeLarge),
                           ),
                           SizedBox(
@@ -81,7 +91,9 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
                           Text(
                             "C Get 2X Points, VC Get 1.5X Points",
                             style: robotoMedium.copyWith(
-                                color: Theme.of(context).cardColor,
+                                color: Theme
+                                    .of(context)
+                                    .cardColor,
                                 fontSize: Dimensions.fontSizeSmall),
                           ),
                           SizedBox(
@@ -94,7 +106,8 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
                                   child: Text(
                                     "Type",
                                     style: robotoBold.copyWith(
-                                        color: Theme.of(context)
+                                        color: Theme
+                                            .of(context)
                                             .cardColor
                                             .withOpacity(0.5),
                                         fontSize: Dimensions.fontSizeSmall),
@@ -104,7 +117,8 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
                                   child: Text(
                                     "Points",
                                     style: robotoBold.copyWith(
-                                        color: Theme.of(context)
+                                        color: Theme
+                                            .of(context)
                                             .cardColor
                                             .withOpacity(0.5),
                                         fontSize: Dimensions.fontSizeSmall),
@@ -114,7 +128,8 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
                                 child: Text(
                                   "%C By",
                                   style: robotoBold.copyWith(
-                                      color: Theme.of(context)
+                                      color: Theme
+                                          .of(context)
                                           .cardColor
                                           .withOpacity(0.5),
                                       fontSize: Dimensions.fontSizeSmall),
@@ -125,7 +140,8 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
                                 child: Text(
                                   "%VC By",
                                   style: robotoBold.copyWith(
-                                      color: Theme.of(context)
+                                      color: Theme
+                                          .of(context)
                                           .cardColor
                                           .withOpacity(0.5),
                                       fontSize: Dimensions.fontSizeSmall),
@@ -137,22 +153,22 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
                             height: 10,
                           ),
                           homeController.selectedPlayersList != null &&
-                                  homeController.selectedPlayersList.length > 0
+                              homeController.selectedPlayersList.length > 0
                               ? Expanded(
-                                  flex: 1,
-                                  child: ListView.builder(
-                                      shrinkWrap: true,
-                                      /* controller: _scrollController,*/
-                                      itemCount: homeController
-                                          .selectedPlayersList.length,
-                                      /*physics: ScrollPhysics(),*/
-                                      scrollDirection: Axis.vertical,
-                                      itemBuilder: (context, index) {
-                                        return CaptainSelectionCard(
-                                            homeController
-                                                .selectedPlayersList[index],
-                                            homeController);
-                                      }))
+                              flex: 1,
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  /* controller: _scrollController,*/
+                                  itemCount: homeController
+                                      .selectedPlayersList.length,
+                                  /*physics: ScrollPhysics(),*/
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder: (context, index) {
+                                    return CaptainSelectionCard(
+                                        homeController
+                                            .selectedPlayersList[index],
+                                        homeController);
+                                  }))
                               : SizedBox(),
                         ],
                       )),
@@ -190,7 +206,9 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
                                 child: Text(
                                   "Preview",
                                   style: robotoBold.copyWith(
-                                      color: Theme.of(context).hintColor,
+                                      color: Theme
+                                          .of(context)
+                                          .hintColor,
                                       fontSize: Dimensions.fontSizeLarge),
                                 ),
                               )),
@@ -199,30 +217,32 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
                           ),
                           InkWell(
                               onTap: homeController.captainId != null &&
-                                      homeController.captainId != "" &&
-                                      homeController.vCaptainId != null &&
-                                      homeController.vCaptainId != ""
+                                  homeController.captainId != "" &&
+                                  homeController.vCaptainId != null &&
+                                  homeController.vCaptainId != ""
                                   ? () {
-                                      homeController
-                                          .finalPlayerList()
-                                          .then((value) async {
-                                        if (value != null &&
-                                            value.length >= 11) {
-                                          createTeam(homeController, value);
-                                        }else {
-                                          showCustomSnackBar("Please Select Proper team members",isError: false);
-                                        }
-                                      });
-                                    }
+                                homeController
+                                    .finalPlayerList()
+                                    .then((value) async {
+                                  if (value != null &&
+                                      value.length >= 11) {
+                                    createTeam(homeController, value);
+                                  } else {
+                                    showCustomSnackBar(
+                                        "Please Select Proper team members",
+                                        isError: false);
+                                  }
+                                });
+                              }
                                   : null,
                               child: Container(
                                 width: 80,
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   color: homeController.captainId != null &&
-                                          homeController.captainId != "" &&
-                                          homeController.vCaptainId != null &&
-                                          homeController.vCaptainId != ""
+                                      homeController.captainId != "" &&
+                                      homeController.vCaptainId != null &&
+                                      homeController.vCaptainId != ""
                                       ? Color(0xFF1D6F00)
                                       : Color(0xFF9EC98E),
                                   borderRadius: BorderRadius.all(
@@ -232,7 +252,9 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
                                 child: Text(
                                   "Save",
                                   style: robotoBold.copyWith(
-                                      color: Theme.of(context).cardColor,
+                                      color: Theme
+                                          .of(context)
+                                          .cardColor,
                                       fontSize: Dimensions.fontSizeLarge),
                                 ),
                               )),
@@ -254,8 +276,8 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
     print("activeStep>>>${activeStep}");
   }
 
-  List<Widget> _pageIndicators(
-      OnBoardingController onBoardingController, BuildContext context) {
+  List<Widget> _pageIndicators(OnBoardingController onBoardingController,
+      BuildContext context) {
     List<Container> _indicators = [];
 
     for (int i = 0; i < 10; i++) {
@@ -266,8 +288,12 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
           margin: EdgeInsets.only(right: 10),
           decoration: BoxDecoration(
             color: i == onBoardingController.selectedIndex
-                ? Theme.of(context).primaryColor
-                : Theme.of(context).disabledColor,
+                ? Theme
+                .of(context)
+                .primaryColor
+                : Theme
+                .of(context)
+                .disabledColor,
             borderRadius: i == onBoardingController.selectedIndex
                 ? BorderRadius.circular(50)
                 : BorderRadius.circular(25),
@@ -279,7 +305,8 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
   }
 
   void createTeam(HomeController homeController, List<Player> value) async {
-    UserDetails userDetails = UserDetails(
+
+    /* UserDetails userDetails = UserDetails(
         userName: homeController.userDetailModel.id.toString(),
         emailId: homeController.userDetailModel.contactDTO != null
             ? homeController.userDetailModel.contactDTO.email
@@ -335,12 +362,36 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
       playerid8: value[8].key,
       playerid9: value[9].key,
       playerid10: value[10].key,
+    );*/
+    UserDetails userDetails = UserDetails(
+        userId:homeController.userDetailModel!=null && homeController.userDetailModel.id!=null? homeController.userDetailModel.id.toString():"",
+        emailId: homeController.userDetailModel.contactDTO != null
+            ? homeController.userDetailModel.contactDTO.email
+            : "");
+    List<Teams> teams = [];
+
+    for (int i = 0; i < value.length; i++) {
+      Teams teams_ = Teams(playerId: "player${i + 1}",
+          name: value[i].name,
+          point: 10.5,
+          positionId: i == 0 ? "capton" : i == 1 ? "wise_capton" : "any");
+      teams.add(teams_);
+    }
+
+    Request request = Request(
+      teamName: "VKROCKS",
+      tournamentId: widget.matchID,
+      matchId: widget.matchID/*widget.league.matchId*/,
+      venueId:"asdasd" /*widget.league.venueid*/,
+        teams: teams
     );
 
+    CreateTeamRequest createTeamRequest = CreateTeamRequest(
+        userDetails: userDetails, request:request);
 
-    TeamCreate teamCreate =
-        TeamCreate(userDetails: userDetails, request: request);
-    homeController.createTeam(teamCreate).then((status) async {
+    print("request>>>>${createTeamRequest.toJson()}");
+
+    homeController.createTeam(createTeamRequest).then((status) async {
       if (status.statusCode == 200) {
         if (status.body['metadata']['code'] == 200 ||
             status.body['metadata']['code'] == "200") {

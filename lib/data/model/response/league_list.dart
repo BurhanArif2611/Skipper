@@ -37,7 +37,7 @@ class Metadata {
   Metadata({this.code, this.message, this.timestamp, this.version});
 
   Metadata.fromJson(Map<String, dynamic> json) {
-    code = json['code'];
+    code = json['code'] is String? json['code']:json['code'].toString();
     message = json['message'];
     timestamp = json['timestamp'];
     version = json['version'];
@@ -82,7 +82,7 @@ class Data {
         this.updatedAt});
 
   Data.fromJson(Map<String, dynamic> json) {
-    leagueId = json['leagueId'];
+    leagueId = json['leagueid'];
     venueid = json['venueid'];
     leaguematch = json['leaguematch'];
     matchId = json['matchId'];
@@ -98,7 +98,7 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['leagueId'] = this.leagueId;
+    data['leagueid'] = this.leagueId;
     data['venueid'] = this.venueid;
     data['leaguematch'] = this.leaguematch;
     data['matchId'] = this.matchId;

@@ -130,7 +130,7 @@ class CaptainSelectionCard extends StatelessWidget {
                                     Container(
                                       padding: EdgeInsets.all(5),
                                       decoration: BoxDecoration(
-                                        color:homeController.captainId==player.key? Colors.white: Colors.black.withOpacity(0.3),
+                                        color:homeController.captainId==player.key? Theme.of(context).primaryColor: Colors.black.withOpacity(0.3),
                                         shape: BoxShape.circle,
                                         border: Border.all(
                                             width: 1,
@@ -140,7 +140,7 @@ class CaptainSelectionCard extends StatelessWidget {
                                       child: Text(
                                         "C",
                                         style: robotoBold.copyWith(
-                                            color:homeController.captainId==player.key? Theme.of(context).primaryColor:Theme.of(context).cardColor),
+                                            color:homeController.captainId==player.key? Theme.of(context).cardColor:Theme.of(context).cardColor),
                                       ),
                                     ))
 
@@ -163,7 +163,7 @@ class CaptainSelectionCard extends StatelessWidget {
                                     Container(
                                       padding: EdgeInsets.all(6),
                                       decoration: BoxDecoration(
-                                        color:homeController.vCaptainId==player.key? Colors.white:Colors.black.withOpacity(0.3),
+                                        color:homeController.vCaptainId==player.key? Theme.of(context).primaryColor:Colors.black.withOpacity(0.3),
                                         shape: BoxShape.circle,
                                         border: Border.all(
                                             width: 1,
@@ -173,7 +173,7 @@ class CaptainSelectionCard extends StatelessWidget {
                                       child: Text(
                                         "VC",
                                         style: robotoBold.copyWith(
-                                            color:homeController.vCaptainId==player.key? Theme.of(context).primaryColor: Theme.of(context).cardColor),
+                                            color:homeController.vCaptainId==player.key? Theme.of(context).cardColor: Theme.of(context).cardColor),
                                       ),
                                     ))),
                           ],

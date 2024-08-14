@@ -29,7 +29,7 @@ class ForgetPassScreen extends StatefulWidget {
 
 class _ForgetPassScreenState extends State<ForgetPassScreen> {
   final TextEditingController _numberController = TextEditingController();
-  String _countryDialCode="";
+  String _countryDialCode="+1";
   @override
   void initState() {
     super.initState();
@@ -42,7 +42,11 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
       appBar: CustomAppBar(title: widget.fromSocialLogin ? 'phone'.tr : 'forgot_password'.tr),
       endDrawer: MenuDrawer(),
       body: SafeArea(child:Container(color: Theme.of(context).backgroundColor,
-          child:
+          child:Container(
+    height: MediaQuery.of(context).size.height,
+    width: MediaQuery.of(context).size.width,
+    color: Theme.of(context).backgroundColor,
+    child:
       Center(child: Scrollbar(child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: FooterView(child: Container(
@@ -110,7 +114,11 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
 
           ]),
         )),
-      ))))),
+      )))))
+
+
+
+      ),
     );
   }
 

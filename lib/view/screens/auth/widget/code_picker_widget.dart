@@ -274,7 +274,7 @@ class CodePickerWidgetState extends State<CodePickerWidget> {
         context: context,
         builder: (context) => Center(
           child: Container(
-            constraints: BoxConstraints(maxHeight: 500, maxWidth: 400),
+            constraints: BoxConstraints(maxHeight: 700, maxWidth: 400),
             child: Dialog(
               child: SelectionDialog(
                 elements,

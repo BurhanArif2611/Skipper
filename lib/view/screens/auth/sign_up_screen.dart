@@ -27,6 +27,7 @@ import 'package:phone_number/phone_number.dart';
 import '../../../controller/home_controller.dart';
 import '../../../helper/date_converter.dart';
 import '../../base/custom_app_bar.dart';
+import '../../base/custom_dialog.dart';
 
 class SignUpScreen extends StatefulWidget {
   final String number;
@@ -57,7 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       TextEditingController();
   final TextEditingController _anonymousController = TextEditingController();
   final TextEditingController _securityIDController = TextEditingController();
-  String _countryDialCode;
+  String _countryDialCode = "";
   DateTime selectedDate = DateTime.now();
   String selectDate = '';
   String selectedSex;
@@ -71,12 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void initState() {
     super.initState();
     _phoneController.text = widget.number.toString();
-    if (Get.find<SplashController>().configModel != null &&
-        Get.find<SplashController>().configModel.country != null) {
-      _countryDialCode = CountryCode.fromCountryCode(
-              Get.find<SplashController>().configModel.country)
-          .dialCode;
-    }
+    _countryDialCode = "+1";
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -103,7 +99,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       appBar: ResponsiveHelper.isDesktop(context)
           ? WebMenuBar()
           : CustomAppBar(
-              title: 'Sign Up'.tr, onBackPressed: () => {Get.back()},showCart:false),
+              title: 'Sign Up'.tr,
+              onBackPressed: () => {Get.back()},
+              showCart: false),
       /* endDrawer: MenuDrawer(),*/
       body: SafeArea(
           child: Container(
@@ -208,7 +206,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           Get.find<SplashController>()
                                               .configModel
                                               .country).code,*/
-                                      initialSelection: "+234",
+                                      initialSelection: _countryDialCode,
                                       /*favorite: [
                                     CountryCode.fromCountryCode(
                                             Get.find<SplashController>()
@@ -243,8 +241,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 )),
                               ]),
                           SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-
-
                           CustomTextField(
                             hintText: 'password'.tr,
                             controller: _passwordController,
@@ -336,34 +332,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   children: [
                                     Expanded(
                                       child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 20, right: 20),
-                                          child: Text(
-                                            'Select Gender',
-                                            style: robotoRegular.copyWith(
-                                                fontSize:
-                                                    Dimensions.fontSizeLarge,
-                                                color: Colors.white),
-                                          )),
+                                        padding: EdgeInsets.only(
+                                            left: 20, right: 20),
+                                        child: Text(
+                                          'Select Gender',
+                                          style: robotoRegular.copyWith(
+                                            fontSize: Dimensions.fontSizeLarge,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
-                                items: items
-                                    .map((String item) =>
-                                        DropdownMenuItem<String>(
-                                          value: item,
-                                          child: Text(
-                                            item,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color:
-                                                  Theme.of(context).hintColor,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ))
-                                    .toList(),
+                                items: items.map((String item) {
+                                  return DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors
+                                            .grey, // Color for dropdown options
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  );
+                                }).toList(),
                                 value: selectedSex,
                                 onChanged: (String value) {
                                   setState(() {
@@ -378,10 +374,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     borderRadius: BorderRadius.circular(
                                         Dimensions.RADIUS_SMALL),
                                     border: Border.all(
-                                        color: Theme.of(context)
-                                            .cardColor
-                                            .withOpacity(0.70),
-                                        width: 1),
+                                      color: Theme.of(context)
+                                          .disabledColor
+                                          .withOpacity(0.8),
+                                      width: 1,
+                                    ),
                                   ),
                                 ),
                                 iconStyleData: IconStyleData(
@@ -394,12 +391,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   iconDisabledColor: Colors.grey,
                                 ),
                                 dropdownStyleData: DropdownStyleData(
-                                  width: MediaQuery.of(context).size.width - 20,
+                                  width: MediaQuery.of(context).size.width - 40,
+                                 direction: DropdownDirection.textDirection,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(
                                         Dimensions.RADIUS_SMALL),
                                   ),
-                                  offset: Offset(-50, 0),
+                                  offset: Offset(0, 0),
                                   scrollbarTheme: ScrollbarThemeData(
                                     radius: Radius.circular(
                                         Dimensions.RADIUS_SMALL),
@@ -412,6 +410,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 menuItemStyleData: MenuItemStyleData(
                                   height: 40,
                                   padding: EdgeInsets.only(left: 14, right: 14),
+                                ),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      Colors.white, // Color for selected value
                                 ),
                               ),
                             ),
@@ -494,7 +498,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     String _confirmPassword = _confirmPasswordController.text.trim();
     String _anonymous = _anonymousController.text.trim();
 
-
     if (_firstName.isEmpty) {
       showCustomSnackBar('enter_your_first_name'.tr);
     } else if (_lastName.isEmpty) {
@@ -550,16 +553,63 @@ class _SignUpScreenState extends State<SignUpScreen> {
           zipCode: "");
       authController.registration(signUpBody).then((status) async {
         if (status.statusCode == 200) {
-          if (status.body['metadata']['code'] == 200 ||
-              status.body['metadata']['code'] == "200") {
-            Get.toNamed(RouteHelper.getSignInRoute(RouteHelper.signUp));
+          if (status.body['username'] != null) {
+            /*showCustomSnackBar("Successfully Registered", isError: false);
+            Get.toNamed(RouteHelper.getSignInRoute(RouteHelper.signUp));*/
+            showingAudioFile();
           } else {
-            showCustomSnackBar(status.body['metadata']['message']);
+            if (status.body['metadata']['code'] == 200 ||
+                status.body['metadata']['code'] == "200") {
+              showCustomSnackBar("Successfully Registered", isError: false);
+              Get.toNamed(RouteHelper.getSignInRoute(RouteHelper.signUp));
+            } else {
+              showCustomSnackBar(status.body['metadata']['message']);
+            }
           }
         } else {
           showCustomSnackBar(status.body["message"]);
         }
       });
     }
+  }
+
+  void showingAudioFile() {
+    showAnimatedDialog(
+        context,
+        Center(
+          child: Container(
+            width: 300,
+            padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_LARGE),
+            decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius:
+                BorderRadius.circular(Dimensions.RADIUS_EXTRA_LARGE)),
+            child: GetBuilder<HomeController>(builder: (controller) {
+              return Column(mainAxisSize: MainAxisSize.min, children: [
+                SvgPicture.asset(Images.circle_correct_tick, width: 100, height: 100,color: Colors.green,),
+                SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                Text(
+                  'Successfully Registered'
+                      .tr,
+                  style: robotoBold.copyWith(
+                    fontSize: Dimensions.fontSizeLarge,
+                    color: Theme.of(context).textTheme.bodyText1.color,
+                    decoration: TextDecoration.none,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                CustomButton(
+                  buttonText:  'ok'.tr
+                      ,
+                  onPressed: () {
+                    Get.toNamed(RouteHelper.getSignInRoute(RouteHelper.signUp));
+                  },
+                )
+              ]);
+            }),
+          ),
+        ),
+        dismissible: false);
   }
 }

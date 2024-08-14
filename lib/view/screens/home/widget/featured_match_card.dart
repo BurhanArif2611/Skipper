@@ -90,12 +90,12 @@ class FeaturedMatchCardItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
 
-                          Text( parts[1]!=null?parts[1]:"",style: robotoBold.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeSmall),),
+                          Text(parts!=null && parts.length>1 && parts[1]!=null?parts[1]:"  ",style: robotoBold.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeSmall),),
                           SizedBox(width: 10,),
                           Column(children: [
                             Image.asset(Images.team_logo),
                             SizedBox(height: 5,),
-                            Text( parts[1]!=null?parts[1]:"",style: robotoMedium.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeSmall),)
+                            Text(parts!=null && parts.length>1 && parts[1]!=null?parts[1]:"  ",style: robotoMedium.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeSmall),)
                           ],),
                         ],)
                   ),

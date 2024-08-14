@@ -65,7 +65,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     physics: BouncingScrollPhysics(),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
+                      height: MediaQuery.of(context).size.height*1.5,
                       padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                       margin: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                       child: Column(

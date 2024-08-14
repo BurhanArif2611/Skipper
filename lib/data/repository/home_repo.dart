@@ -17,6 +17,7 @@ import '../api/uploads3file.dart';
 import '../model/body/news_submit_body.dart';
 import '../model/body/report_incidence_body.dart';
 import '../model/body/team_create.dart';
+import '../model/request_body/create_team.dart';
 
 class HomeRepo {
   final ApiClient apiClient;
@@ -110,7 +111,7 @@ class HomeRepo {
   }
 
 
-  Future<Response> createTeam(TeamCreate signUpBody) async {
-    return await apiClient.postData(AppConstants.CreateTeam_URI, signUpBody.toJson());
+  Future<Response> createTeam(CreateTeamRequest signUpBody) async {
+    return await apiClient.postMatchData(AppConstants.CreateTeam_URI, signUpBody.toJson());
   }
 }

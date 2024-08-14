@@ -47,6 +47,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
   @override
   void initState() {
     super.initState();
+    debugPrint("create<><><><>${widget.matchID}");
     _loadData();
   }
 

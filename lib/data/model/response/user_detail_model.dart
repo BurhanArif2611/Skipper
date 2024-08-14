@@ -1,5 +1,5 @@
 class UserDetailModel {
-  int id;
+  String id;
   String username;
   String name;
   String surname;
@@ -37,7 +37,7 @@ class UserDetailModel {
   });
 
   UserDetailModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['id'] is String ? json['id'] : "";
     username = json['username'];
     name = json['name'];
     surname = json['surname'];
@@ -55,8 +55,8 @@ class UserDetailModel {
     addressDTO = json['addressDTO'] != null
         ? new AddressDTO.fromJson(json['addressDTO'])
         : null;
-    roles =json['roles']!=null? json['roles'].cast<String>():[];
- /*   if (json['permissions'] != null) {
+    roles = json['roles'] != null ? json['roles'].cast<String>() : [];
+    /*   if (json['permissions'] != null) {
       permissions = <Null>[];
       json['permissions'].forEach((v) {
         permissions.add(new Null.fromJson(v));
@@ -121,6 +121,7 @@ class AddressDTO {
     return data;
   }
 }
+
 class ContactDTO {
   String email;
   String phone;
@@ -132,12 +133,12 @@ class ContactDTO {
 
   ContactDTO(
       {this.email,
-        this.phone,
-        this.skype,
-        this.facebook,
-        this.linkedin,
-        this.website,
-        this.contactNote});
+      this.phone,
+      this.skype,
+      this.facebook,
+      this.linkedin,
+      this.website,
+      this.contactNote});
 
   ContactDTO.fromJson(Map<String, dynamic> json) {
     email = json['email'];

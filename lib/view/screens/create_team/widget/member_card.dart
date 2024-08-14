@@ -110,13 +110,18 @@ class MemberCard extends StatelessWidget {
                             Expanded(flex: 1, child: SizedBox()),
                             Expanded(
                                 flex: 1,
-                                child: Text(
+                                child: Column(children: [
+                                Text(
                                   "300",
                                   style: robotoMedium.copyWith(
                                       color: Theme.of(context)
                                           .cardColor
                                           .withOpacity(0.5)),
-                                )),
+                                ),
+                                  SizedBox(height: 5,)
+                                ],)
+                            ),
+
                             Expanded(
                                 flex: 2,
                                 child: Row(
