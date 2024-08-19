@@ -13,11 +13,14 @@ import '../data/model/request_body/create_team.dart';
 import '../data/model/response/commentlist_model.dart';
 import '../data/model/response/featured_matches.dart';
 import '../data/model/response/league_list.dart';
+import '../data/model/response/matchList/match_team_list_model.dart';
 import '../data/model/response/matchlist.dart';
+import '../data/model/response/my_contest_list/my_contest_list_model.dart';
 import '../data/model/response/player.dart';
 import '../data/model/response/user_detail_model.dart';
 import '../data/repository/home_repo.dart';
 import '../view/base/custom_loader.dart';
+import '../view/base/custom_snackbar.dart';
 
 /*import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:file_picker/file_picker.dart';*/
@@ -62,6 +65,14 @@ class HomeController extends GetxController implements GetxService {
 
   featuredMatches get featuredMatchesList => _featuredMatchesList;
 
+  MatchTeamList _matchTeamList;
+
+  MatchTeamList get matchTeamList => _matchTeamList;
+
+  MyContestList _myContestList;
+
+  MyContestList get myContestList => _myContestList;
+
   String _userName;
 
   String get userName => _userName;
@@ -81,6 +92,23 @@ class HomeController extends GetxController implements GetxService {
   LeagueList _leagueList;
 
   LeagueList get leagueList => _leagueList;
+
+  String _selectedTeamIDForJoinContest;
+
+  String get selectedTeamIDForJoinContest => _selectedTeamIDForJoinContest;
+
+  void selectTeam(String id){
+    try{
+      _selectedTeamIDForJoinContest=id;
+      print("id>>>${id.toString()}");
+      update();
+    }
+        catch(e){
+      print("selectTeam>>>${e.toString()}");
+        }
+  }
+
+
 
   Future<void> getMatchesList() async {
     _isLoading = true;
@@ -153,6 +181,43 @@ class HomeController extends GetxController implements GetxService {
     }
     _isLoading = false;
   }
+  Future<void> getTeamList(String matchId) async {
+    _isLoading = true;
+    Response response = await homeRepo.getTeamList(matchId,_userDetailModel!=null?_userDetailModel.id:"","");
+    if (response.statusCode == 200) {
+      _matchTeamList = MatchTeamList.fromJson(response.body);
+      update();
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    _isLoading = false;
+  }
+  Future<void> getMyContestList(String matchId) async {
+    _isLoading = true;
+    Response response = await homeRepo.getMyContestList(matchId,_userDetailModel!=null?_userDetailModel.id:"");
+    if (response.statusCode == 200) {
+      _myContestList = MyContestList.fromJson(response.body);
+      update();
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    _isLoading = false;
+  }
+
+
+  Future<void> joinTeam(String matchId,String leageID) async {
+    _isLoading = true;
+    Response response = await homeRepo.joinContestTeam(leageID,_userDetailModel!=null?_userDetailModel.id:"",_selectedTeamIDForJoinContest!=null && _selectedTeamIDForJoinContest!=""?_selectedTeamIDForJoinContest:"");
+    if (response.statusCode == 200) {
+      showCustomSnackBar(response.body['metadata']['message'] != null?response.body['metadata']['message']:"",isError: false);
+      Get.back();
+      getMyContestList(matchId);
+      update();
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    _isLoading = false;
+  }
 
   Future<void> getUserData() async {
     try {
@@ -198,24 +263,25 @@ class HomeController extends GetxController implements GetxService {
   }
 
   Future<List<Player>> finalPlayerList() async {
+    _finalPlayersList = [];
     if (_selectedPlayersList != null && _selectedPlayersList.length > 0) {
       int Index;
       for (int i = 0; i < _selectedPlayersList.length; i++) {
         if (captainId == _selectedPlayersList[i].key) {
           Index = i;
-          finalPlayersList.add(_selectedPlayersList[i]);
+          _finalPlayersList.add(_selectedPlayersList[i]);
           break;
         }
       }
       for (int j = 0; j < _selectedPlayersList.length; j++) {
         if (j != Index) {
-          finalPlayersList.add(_selectedPlayersList[j]);
+          _finalPlayersList.add(_selectedPlayersList[j]);
         }
       }
     }
     update();
-    return finalPlayersList != null && finalPlayersList.length >= 11
-        ? finalPlayersList
+    return _finalPlayersList != null && _finalPlayersList.length >= 11
+        ? _finalPlayersList
         : null;
   }
 
@@ -253,7 +319,7 @@ class HomeController extends GetxController implements GetxService {
         await authRepo.updateToken();
       }*/
       // responseModel = ResponseModel(true, response.body);
-
+      getTeamList(teamCreate.request.matchId);
       Get.back();
     } else {
       Get.back();

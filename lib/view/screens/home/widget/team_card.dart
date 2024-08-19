@@ -19,7 +19,7 @@ class TeamCardItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return  InkWell(onTap: (){
     //
-      Get.toNamed(RouteHelper.getCreateLeagueRoute(matches.key));
+     // Get.toNamed(RouteHelper.getCreateLeagueRoute(matches));
     },
     child:
       Container(

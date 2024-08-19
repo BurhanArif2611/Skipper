@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 
-import '../../../../controller/cart_controller.dart';
 import '../../../../data/model/response/featured_matches.dart';
-import '../../../../data/model/response/matchlist.dart';
 import '../../../../helper/route_helper.dart';
 import '../../../../util/dimensions.dart';
 import '../../../../util/images.dart';
 import '../../../../util/styles.dart';
 
 class FeaturedMatchCardItem extends StatelessWidget {
-  Tournaments matches;
+  Matches matches;
   int Index;
 
   FeaturedMatchCardItem(this.matches,this.Index);
@@ -24,7 +21,7 @@ class FeaturedMatchCardItem extends StatelessWidget {
     var parts = matches.shortName.split(" vs ");
     return  InkWell(onTap: (){
     //  Get.toNamed(RouteHelper.getCreateTeamScreenRoute());
-      Get.toNamed(RouteHelper.getCreateLeagueRoute(matches.key));
+      Get.toNamed(RouteHelper.getCreateLeagueRoute(matches));
     },
         child:
         Container(

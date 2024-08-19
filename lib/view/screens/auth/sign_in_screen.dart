@@ -101,266 +101,264 @@ class _SignInScreenState extends State<SignInScreen> {
         body: SafeArea(
           child: /*Center(
           child: */
-            SingleChildScrollView(
-              child: Container(
-                width: context.width,
-                height: context.height,
-                color: Theme.of(context).backgroundColor,
-                child:
-                    GetBuilder<SplashController>(builder: (splashController) {
-                  return GetBuilder<AuthController>(builder: (authController) {
-                    return Stack(children: [
-                      Container(
-                          margin: EdgeInsets.only(bottom: 50),
-                          padding:
-                              EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                          child: Column(children: [
-                            SizedBox(height: 20),
-                            Align(
-                                alignment: Alignment.topLeft,
+              SingleChildScrollView(
+            child: Container(
+              width: context.width,
+              height: context.height,
+              color: Theme.of(context).backgroundColor,
+              child: GetBuilder<SplashController>(builder: (splashController) {
+                return GetBuilder<AuthController>(builder: (authController) {
+                  return Stack(children: [
+                    Container(
+                        margin: EdgeInsets.only(bottom: 50),
+                        padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                        child: Column(children: [
+                          SizedBox(height: 20),
+                          Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Login",
+                                style: robotoBold.copyWith(
+                                    fontSize: Dimensions.fontSizeOverLarge,
+                                    color: Theme.of(context).primaryColor),
+                              )),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Please enter your phone number",
+                                style: robotoMedium.copyWith(
+                                    fontSize: Dimensions.fontSizeDefault,
+                                    color: Theme.of(context).cardColor),
+                              )),
+                          SizedBox(height: 20),
+                          Container(
+                            child: Column(children: [
+                              Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          Dimensions.PADDING_SIZE_LARGE),
+                                  child: Divider(height: 1)),
+                              CustomTextField(
+                                hintText: 'Enter your email'.tr,
+                                controller: _emailController,
+                                focusNode: _emailFocus,
+                                nextFocus: _passwordFocus,
+                                inputAction: TextInputAction.next,
+                                inputType: TextInputType.emailAddress,
+                                prefixIcon: 'email',
+                                isPassword: false,
+                              ),
+                              SizedBox(height: 30),
+                              if (_showPassword)
+                                CustomTextField(
+                                  hintText: 'password'.tr,
+                                  controller: _passwordController,
+                                  focusNode: _passwordFocus,
+                                  inputAction: TextInputAction.done,
+                                  inputType: TextInputType.visiblePassword,
+                                  prefixIcon: 'lock',
+                                  isPassword: true,
+                                ),
+                            ]),
+                          ),
+                          SizedBox(height: 10),
+                          if (_showPassword)
+                            Row(children: [
+                              Expanded(
+                                child: Text(''.tr),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Get.toNamed(RouteHelper.getForgotPassRoute(
+                                      false, null, _emailController.text));
+                                },
                                 child: Text(
-                                  "Login",
-                                  style: robotoBold.copyWith(
-                                      fontSize: Dimensions.fontSizeOverLarge,
-                                      color: Theme.of(context).primaryColor),
-                                )),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  "Please enter your phone number",
+                                  '${'forgot_password'.tr}?',
                                   style: robotoMedium.copyWith(
                                       fontSize: Dimensions.fontSizeDefault,
-                                      color: Theme.of(context).cardColor),
-                                )),
-                            SizedBox(height: 20),
-                            Container(
-                              child: Column(children: [
-                                Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal:
-                                            Dimensions.PADDING_SIZE_LARGE),
-                                    child: Divider(height: 1)),
-                                CustomTextField(
-                                  hintText: 'Enter your email'.tr,
-                                  controller: _emailController,
-                                  focusNode: _emailFocus,
-                                  nextFocus: _passwordFocus,
-                                  inputAction: TextInputAction.next,
-                                  inputType: TextInputType.emailAddress,
-                                  prefixIcon: 'email',
-                                  isPassword: false,
+                                      color: Theme.of(context).primaryColor),
                                 ),
-                                SizedBox(height: 30),
-                                if (_showPassword)
-                                  CustomTextField(
-                                    hintText: 'password'.tr,
-                                    controller: _passwordController,
-                                    focusNode: _passwordFocus,
-                                    inputAction: TextInputAction.done,
-                                    inputType: TextInputType.visiblePassword,
-                                    prefixIcon: 'lock',
-                                    isPassword: true,
-                                  ),
-                              ]),
-                            ),
-                            SizedBox(height: 10),
-                            if (_showPassword)
-                              Row(children: [
-                                Expanded(
-                                  child: Text(''.tr),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Get.toNamed(RouteHelper.getForgotPassRoute(
-                                        false, null, _emailController.text));
-                                  },
-                                  child: Text(
-                                    '${'forgot_password'.tr}?',
-                                    style: robotoMedium.copyWith(
-                                        fontSize: Dimensions.fontSizeDefault,
-                                        color: Theme.of(context).primaryColor),
-                                  ),
-                                ),
-                              ]),
-                            SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                              ),
+                            ]),
+                          SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
 
-                            if (_showPassword)
-                              /*!authController.isLoading ?*/ Row(children: [
-                                /* Expanded(
+                          if (_showPassword)
+                            /*!authController.isLoading ?*/ Row(children: [
+                              /* Expanded(
                               child: CustomButton(
                             buttonText: 'sign_up'.tr,
                             transparent: true,
                             onPressed: () =>
                                 Get.toNamed(RouteHelper.getSignUpRoute("")),
                           )),*/
-                                Expanded(
-                                    child: CustomButton(
-                                  buttonText: 'sign_in'.tr,
-                                  onPressed: () => _login(authController,
-                                      _countryDialCode, splashController),
-                                )),
-                              ]) /*: Center(child: CircularProgressIndicator())*/,
-                            SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                              Expanded(
+                                  child: CustomButton(
+                                buttonText: 'sign_in'.tr,
+                                onPressed: () => _login(authController,
+                                    _countryDialCode, splashController),
+                              )),
+                            ]) /*: Center(child: CircularProgressIndicator())*/,
+                          SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
 
-                            // SocialLoginWidget(),
-                            Row(children: [
+                          // SocialLoginWidget(),
+                          Row(children: [
+                            Expanded(
+                                child: Image.asset(Images.line,
+                                    height: 5, fit: BoxFit.contain)),
+                            SizedBox(
+                                width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                            Text(
+                              'Or sign in with'.tr,
+                              textAlign: TextAlign.center,
+                              style: robotoBold.copyWith(
+                                color: Theme.of(context).cardColor,
+                                fontSize: Dimensions.fontSizeDefault,
+                              ),
+                            ),
+                            SizedBox(
+                                width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                            Expanded(
+                                child: Image.asset(Images.line,
+                                    height: 5, fit: BoxFit.contain)),
+                          ]),
+                          SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.only(
+                                left: Dimensions.RADIUS_SMALL,
+                                right: Dimensions.RADIUS_SMALL),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15.0),
+                              border: Border.all(
+                                  width: 1,
+                                  color: Theme.of(context).primaryColor),
+                              color: Colors.transparent,
+                            ),
+                            child: Row(children: [
+                              SizedBox(width: 10),
+                              Image.asset(Images.google,
+                                  height: 20, fit: BoxFit.contain),
                               Expanded(
-                                  child: Image.asset(Images.line,
-                                      height: 5, fit: BoxFit.contain)),
-                              SizedBox(
-                                  width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                              Text(
-                                'Or sign in with'.tr,
-                                textAlign: TextAlign.center,
-                                style: robotoBold.copyWith(
-                                  color: Theme.of(context).cardColor,
-                                  fontSize: Dimensions.fontSizeDefault,
-                                ),
-                              ),
-                              SizedBox(
-                                  width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                              Expanded(
-                                  child: Image.asset(Images.line,
-                                      height: 5, fit: BoxFit.contain)),
-                            ]),
-                            SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(
-                                  left: Dimensions.RADIUS_SMALL,
-                                  right: Dimensions.RADIUS_SMALL),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15.0),
-                                border: Border.all(
-                                    width: 1,
-                                    color: Theme.of(context).primaryColor),
-                                color: Colors.transparent,
-                              ),
-                              child: Row(children: [
-                                SizedBox(width: 10),
-                                Image.asset(Images.google,
-                                    height: 20, fit: BoxFit.contain),
-                                Expanded(
-                                    child: TextButton(
-                                  onPressed: () => {
-                                    // authController.changeLogin(),
-                                  },
-                                  child: Text('Sign in with Google'.tr,
-                                      textAlign: TextAlign.center,
-                                      style: robotoBold.copyWith(
-                                        color: Theme.of(context).cardColor,
-                                        fontSize: Dimensions.fontSizeLarge,
-                                      )),
-                                )),
-                              ]),
-                            ),
-                            SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(
-                                  left: Dimensions.RADIUS_SMALL,
-                                  right: Dimensions.RADIUS_SMALL),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15.0),
-                                border: Border.all(
-                                    width: 1,
-                                    color: Theme.of(context).primaryColor),
-                                color: Colors.transparent,
-                              ),
-                              child: Row(children: [
-                                SizedBox(width: 10),
-                                Image.asset(Images.apple,
-                                    height: 20, fit: BoxFit.contain),
-                                Expanded(
-                                    child: TextButton(
-                                  onPressed: () => {
-                                    // authController.changeLogin(),
-                                  },
-                                  child: Text('Sign in with Apple'.tr,
-                                      textAlign: TextAlign.center,
-                                      style: robotoBold.copyWith(
-                                        color: Theme.of(context).cardColor,
-                                        fontSize: Dimensions.fontSizeLarge,
-                                      )),
-                                )),
-                              ]),
-                            ),
-                            SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(
-                                  left: Dimensions.RADIUS_SMALL,
-                                  right: Dimensions.RADIUS_SMALL),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15.0),
-                                border: Border.all(
-                                    width: 1,
-                                    color: Theme.of(context).primaryColor),
-                                color: Colors.transparent,
-                              ),
-                              child: Row(children: [
-                                SizedBox(width: 10),
-                                Image.asset(Images.facebook,
-                                    height: 20, fit: BoxFit.contain),
-                                Expanded(
-                                    child: TextButton(
-                                  onPressed: () => {
-                                    // authController.changeLogin(),
-                                  },
-                                  child: Text('Sign in with Facebook'.tr,
-                                      textAlign: TextAlign.center,
-                                      style: robotoBold.copyWith(
-                                        color: Theme.of(context).cardColor,
-                                        fontSize: Dimensions.fontSizeLarge,
-                                      )),
-                                )),
-                              ]),
-                            ),
-                            SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                            /* GuestButton(),*/
-                          ])),
-                      Positioned(
-                        bottom: 100,
-                        right: 0,
-                        left: 0,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Don’t have an account? '.tr,
-                                textAlign: TextAlign.center,
-                                style: robotoBold.copyWith(
-                                  color: Theme.of(context)
-                                      .cardColor
-                                      .withOpacity(0.50),
-                                  fontSize: Dimensions.fontSizeDefault,
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Get.toNamed(RouteHelper.getSignUpRoute(""));
+                                  child: TextButton(
+                                onPressed: () => {
+                                  // authController.changeLogin(),
                                 },
-                                child: Text(
-                                  ' Sign Up'.tr,
-                                  textAlign: TextAlign.center,
-                                  style: robotoBold.copyWith(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: Dimensions.fontSizeDefault,
-                                  ),
+                                child: Text('Sign in with Google'.tr,
+                                    textAlign: TextAlign.center,
+                                    style: robotoBold.copyWith(
+                                      color: Theme.of(context).cardColor,
+                                      fontSize: Dimensions.fontSizeLarge,
+                                    )),
+                              )),
+                            ]),
+                          ),
+                          SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.only(
+                                left: Dimensions.RADIUS_SMALL,
+                                right: Dimensions.RADIUS_SMALL),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15.0),
+                              border: Border.all(
+                                  width: 1,
+                                  color: Theme.of(context).primaryColor),
+                              color: Colors.transparent,
+                            ),
+                            child: Row(children: [
+                              SizedBox(width: 10),
+                              Image.asset(Images.apple,
+                                  height: 20, fit: BoxFit.contain,color: Colors.white,),
+                              Expanded(
+                                  child: TextButton(
+                                onPressed: () => {
+                                  // authController.changeLogin(),
+                                },
+                                child: Text('Sign in with Apple'.tr,
+                                    textAlign: TextAlign.center,
+                                    style: robotoBold.copyWith(
+                                      color: Theme.of(context).cardColor,
+                                      fontSize: Dimensions.fontSizeLarge,
+                                    )),
+                              )),
+                            ]),
+                          ),
+                          SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.only(
+                                left: Dimensions.RADIUS_SMALL,
+                                right: Dimensions.RADIUS_SMALL),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15.0),
+                              border: Border.all(
+                                  width: 1,
+                                  color: Theme.of(context).primaryColor),
+                              color: Colors.transparent,
+                            ),
+                            child: Row(children: [
+                              SizedBox(width: 10),
+                              Image.asset(Images.facebook,
+                                  height: 20, fit: BoxFit.contain),
+                              Expanded(
+                                  child: TextButton(
+                                onPressed: () => {
+                                  // authController.changeLogin(),
+                                },
+                                child: Text('Sign in with Facebook'.tr,
+                                    textAlign: TextAlign.center,
+                                    style: robotoBold.copyWith(
+                                      color: Theme.of(context).cardColor,
+                                      fontSize: Dimensions.fontSizeLarge,
+                                    )),
+                              )),
+                            ]),
+                          ),
+                          SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                          /* GuestButton(),*/
+                        ])),
+                    Positioned(
+                      bottom: 100,
+                      right: 0,
+                      left: 0,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Don’t have an account? '.tr,
+                              textAlign: TextAlign.center,
+                              style: robotoBold.copyWith(
+                                color: Theme.of(context)
+                                    .cardColor
+                                    .withOpacity(0.50),
+                                fontSize: Dimensions.fontSizeDefault,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Get.toNamed(RouteHelper.getSignUpRoute(""));
+                              },
+                              child: Text(
+                                ' Sign Up'.tr,
+                                textAlign: TextAlign.center,
+                                style: robotoBold.copyWith(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: Dimensions.fontSizeDefault,
                                 ),
                               ),
-                            ]),
-                      ),
+                            ),
+                          ]),
+                    ),
 
-                      /* ]),*/
-                    ]);
-                  });
-                }),
-              ),
+                    /* ]),*/
+                  ]);
+                });
+              }),
             ),
+          ),
           /*)*/
         ),
       ),
@@ -384,6 +382,9 @@ class _SignInScreenState extends State<SignInScreen> {
         if (status.statusCode == 200) {
           if (status.body['accessToken'] != null) {
             Get.offAllNamed(RouteHelper.getInitialRoute());
+          } else {
+            showCustomSnackBar(status.body['message'].toString(),
+                isError: true);
           }
         } else {
           // showCustomSnackBar(status.message);

@@ -9,7 +9,6 @@ import 'package:sixam_mart/util/styles.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sixam_mart/view/screens/home/widget/dummy_team_card.dart';
 import 'package:sixam_mart/view/screens/home/widget/featured_match_card.dart';
 import 'package:sixam_mart/view/screens/home/widget/team_card.dart';
 
@@ -111,9 +110,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         if (homeController.featuredMatchesList != null &&
                             homeController.featuredMatchesList.data != null &&
                             homeController
-                                    .featuredMatchesList.data.tournaments !=
+                                    .featuredMatchesList.data.matches !=
                                 null &&
-                            homeController.featuredMatchesList.data.tournaments
+                            homeController.featuredMatchesList.data.matches
                                     .length >
                                 0)
                           Text(
@@ -125,9 +124,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         if (homeController.featuredMatchesList != null &&
                             homeController.featuredMatchesList.data != null &&
                             homeController
-                                    .featuredMatchesList.data.tournaments !=
+                                    .featuredMatchesList.data !=
                                 null &&
-                            homeController.featuredMatchesList.data.tournaments
+                            homeController.featuredMatchesList.data.matches
                                     .length >
                                 0)
                           Container(
@@ -138,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   controller: _scrollController,
                                   itemCount: homeController
                                         .featuredMatchesList
-                                        .data.tournaments
+                                        .data.matches
                                         .length
                                      ,
                                   padding:EdgeInsets.only(top:Dimensions.PADDING_SIZE_SMALL,bottom:Dimensions.PADDING_SIZE_SMALL,left:Dimensions.PADDING_SIZE_EXTRA_SMALL,right:Dimensions.PADDING_SIZE_EXTRA_SMALL,),
@@ -149,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     FeaturedMatchCardItem(homeController
                                         .featuredMatchesList
                                         .data
-                                        .tournaments[index],index);
+                                        .matches[index],index);
                                   })
                           ),
                         SizedBox(

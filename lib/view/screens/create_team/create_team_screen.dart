@@ -19,20 +19,18 @@ import '../../../controller/auth_controller.dart';
 import '../../../controller/home_controller.dart';
 import '../../../controller/onboarding_controller.dart';
 import '../../../data/model/body/team_create.dart';
+import '../../../data/model/response/featured_matches.dart';
 import '../../../data/model/response/league_list.dart';
 import '../../../helper/route_helper.dart';
 import '../../base/custom_app_bar.dart';
-import '../../base/custom_button.dart';
-import '../../base/custom_text_field.dart';
-import '../home/widget/team_card.dart';
+
 
 class CreateTeamScreen extends StatefulWidget {
   static Future<void> loadData(bool reload) async {}
-  Data league;
-  String matchID;
+  Matches matchID;
 
   CreateTeamScreen(
-      {@required this.league,@required this.matchID});
+      {@required this.matchID});
 
 
   @override
@@ -503,12 +501,12 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                           ),
                           InkWell(
                               onTap: () {
-                               if( Get.find<HomeController>().selectedPlayersList!=null &&  Get.find<HomeController>().selectedPlayersList.length>=11){
+                               if( Get.find<HomeController>().selectedPlayersList!=null &&  Get.find<HomeController>().selectedPlayersList.length==11){
 
                                 Get.toNamed(
-                                    RouteHelper.getChooseCaptainScreenRoute(widget.matchID,widget.league));}
+                                    RouteHelper.getChooseCaptainScreenRoute(widget.matchID));}
                                else {
-                                 showCustomSnackBar("Please select at list 11 players",isError: true);
+                                 showCustomSnackBar("Please select 11 players only.",isError: true);
                                }
                               },
                               child: Container(

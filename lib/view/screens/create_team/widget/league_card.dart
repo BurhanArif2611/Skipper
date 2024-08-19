@@ -6,6 +6,7 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 import '../../../../controller/cart_controller.dart';
 import '../../../../controller/home_controller.dart';
+import '../../../../data/model/response/featured_matches.dart';
 import '../../../../data/model/response/league_list.dart';
 import '../../../../data/model/response/player.dart';
 import '../../../../helper/route_helper.dart';
@@ -15,7 +16,7 @@ import '../../../../util/styles.dart';
 
 class LeagueCard extends StatelessWidget {
   Data league;
-  String matchID;
+  Matches matchID;
 
   LeagueCard(this.league,this.matchID );
 
@@ -28,7 +29,7 @@ class LeagueCard extends StatelessWidget {
             InkWell(
                 onTap: () {
                  // Get.toNamed(RouteHelper.getCreateTeamScreenRoute(matchID,league));
-                  // Get.toNamed(RouteHelper.getCreateTeamScreenRoute());
+                   Get.toNamed(RouteHelper.getJoinTeamScreenRoute(matchID,league));
                 },
                 child: Container(
                     padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),

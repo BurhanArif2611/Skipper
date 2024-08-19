@@ -117,10 +117,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _route() {
-    Timer(Duration(seconds: 1), () async {
+    Timer(Duration(seconds: 4), () async {
       print("_route>>>>>");
       if (Get.find<AuthController>().isLoggedIn()) {
-        Get.offNamed(RouteHelper.getInitialRoute());
+       // Get.offNamed(RouteHelper.getInitialRoute());
+        Get.offNamed(RouteHelper.getAccessLocationRoute('sign-in'));
       } else {
         if (Get.find<SplashController>().showIntro()) {
           Get.offNamed(RouteHelper.getOnBoardingRoute());
@@ -144,13 +145,14 @@ class _SplashScreenState extends State<SplashScreen> {
             color: Theme.of(context).hintColor,
             child: Center(
               child: splashController.hasConnection
-                  ? Column(
+                  ? /*Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Image.asset(Images.logo, width: 300),
                         SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       ],
-                    )
+                    )*/
+              Image.asset(Images.splash ,fit: BoxFit.cover,)
                   : NoInternetScreen(
                       child: SplashScreen(orderID: widget.orderID)),
             ));

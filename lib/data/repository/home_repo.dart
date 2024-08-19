@@ -95,7 +95,8 @@ class HomeRepo {
     return await apiClient.getMatchData("/tournament/v1/fixture?tournamentkey=sadasd&page=1");
   }
   Future<Response> getFeaturedMatchList() async {
-    return await apiClient.getMatchData("/tournament/v1/featured");
+   // return await apiClient.getMatchData("/tournament/v1/featured");
+    return await apiClient.getMatchData("/v1/associate/featuredtournament?page=1");
   }
 
   Future<Response> getSquadlList(String tournamentkey,String teamkey) async {
@@ -113,5 +114,49 @@ class HomeRepo {
 
   Future<Response> createTeam(CreateTeamRequest signUpBody) async {
     return await apiClient.postMatchData(AppConstants.CreateTeam_URI, signUpBody.toJson());
+  }
+
+  Future<Response> getTeamList(String matchId,String userid,String teamid) async {
+    Map<String, String> _mainHeaders = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'matchId': matchId,
+      'userid': userid,
+      'teamid': teamid,
+      /*,
+        'Authorization': ' ${token!=null?'Bearer ' +token:'Basic REVNTzpERU1PMTIz'}',*/
+    };
+
+
+    return await apiClient.getTeamListData(AppConstants.teamList, _mainHeaders);
+  }
+  Future<Response> getMyContestList(String matchId,String userid) async {
+    Map<String, String> _mainHeaders = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'matchId': matchId,
+      'user_id': userid,
+
+      /*,
+        'Authorization': ' ${token!=null?'Bearer ' +token:'Basic REVNTzpERU1PMTIz'}',*/
+    };
+
+
+    return await apiClient.getTeamListData(AppConstants.teamjoinList, _mainHeaders);
+  }
+  Future<Response> joinContestTeam(String leagueid,String userid,String teamid) async {
+    Map<String, String> _mainHeaders = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'leagueid': leagueid,
+      'user_id': userid,
+      'teamid': teamid,
+      /*,
+        'Authorization': ' ${token!=null?'Bearer ' +token:'Basic REVNTzpERU1PMTIz'}',*/
+    };
+
+
+
+    return await apiClient.postJoinTeamData(AppConstants.teamjoin, _mainHeaders);
   }
 }

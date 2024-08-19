@@ -39,6 +39,7 @@ import 'package:sixam_mart/view/screens/update/update_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../data/model/response/featured_matches.dart';
 import '../view/screens/complaint/add_complaint_screen.dart';
 import '../view/screens/complaint/list_complaint_screen.dart';
 import '../view/screens/contact_center/contact_center_screen.dart';
@@ -47,6 +48,7 @@ import '../view/screens/create_team/choose_captain_screen.dart';
 import '../view/screens/create_team/create_league_screen.dart';
 import '../view/screens/create_team/create_team_screen.dart';
 import '../view/screens/create_team/final_create_team_preview.dart';
+import '../view/screens/create_team/join_team_page.dart';
 import '../view/screens/kyc/kyc_screen.dart';
 import '../view/screens/kyc/kyc_success_screen.dart';
 import '../view/screens/language/language_screen.dart';
@@ -142,6 +144,7 @@ class RouteHelper {
   static const String addbankscreen = '/addbank_screen';
   static const String addpaymentoption = '/addpaymentoption_screen';
   static const String createteamscreen = '/create_team_screen';
+  static const String joinTeamScreen = '/joinTeamScreen';
   static const String choose_captain_screen = '/choose_captain_team_screen';
   static const String final_team_screen = '/final_team_screen';
   static const String leaderboard = '/leaderboard';
@@ -273,24 +276,29 @@ class RouteHelper {
     return '$map?address=$_data&page=$page';
   }
 
-  static String getCreateLeagueRoute(String matchID) {
-    return '$createleague?matchID=$matchID';
+  static String getCreateLeagueRoute(Matches matchID) {
+    String _data =
+    base64Encode(utf8.encode(jsonEncode(matchID.toJson())));
+    return '$createleague?matchID=$_data';
   }
 
-  static String getCreateTeamScreenRoute(String matchID, Data data) {
-    String _data = "";
-    if (data != null) {
-      _data = base64Encode(utf8.encode(jsonEncode(data.toJson())));
-    }
-    return '$createteamscreen?data=${_data}&matchID=$matchID';
+  static String getCreateTeamScreenRoute(Matches matchID) {
+    String  _data = base64Encode(utf8.encode(jsonEncode(matchID.toJson())));
+    return '$createteamscreen?matchID=$_data';
   }
 
-  static String getChooseCaptainScreenRoute(String matchID, Data data) {
-    String _data = "";
-    if (data != null) {
-      _data = base64Encode(utf8.encode(jsonEncode(data.toJson())));
-    }
-    return '$choose_captain_screen?data=${_data}&matchID=$matchID';
+  static String getJoinTeamScreenRoute(Matches matchID,Data data) {
+    String  _data = base64Encode(utf8.encode(jsonEncode(matchID.toJson())));
+    String  leagueData = base64Encode(utf8.encode(jsonEncode(data.toJson())));
+
+    return '$joinTeamScreen?matchID=$_data&leagueData=$leagueData';
+  }
+
+  static String getChooseCaptainScreenRoute(Matches matchID) {
+
+    String _data = base64Encode(utf8.encode(jsonEncode(matchID.toJson())));
+
+    return '$choose_captain_screen?matchID=$_data';
   }
 
   static String getAddressRoute() => '$address';
@@ -424,8 +432,43 @@ class RouteHelper {
     GetPage(
         name: createleague,
         page: () => CreateLeagueScreen(
-              matchID: Get.parameters['matchID'],
+              matchID: Get.parameters['matchID']!=null? Matches.fromJson(jsonDecode(
+                  utf8.decode(base64Url.decode(Get.parameters['matchID'])))):null,
             )),
+
+    GetPage(
+        name: choose_captain_screen,
+        page: () => getRoute(ChooseCaptainTeamScreen(
+          matchID:Get.parameters['matchID']!=null && Get.parameters['matchID']!=""? Matches.fromJson(jsonDecode(
+              utf8.decode(base64Url.decode(Get.parameters['matchID'])))):null,
+
+        ))),
+
+    GetPage(
+        name: createteamscreen,
+        page: () => getRoute(CreateTeamScreen(
+          matchID: Get.parameters['matchID'] != null &&
+              Get.parameters['matchID'] != ""
+              ? Matches.fromJson(jsonDecode(
+              utf8.decode(base64Url.decode(Get.parameters['matchID']))))
+              : null,
+
+        ))),
+ GetPage(
+        name: joinTeamScreen,
+        page: () => getRoute(JoinTeamScreen(
+          matchID: Get.parameters['matchID'] != null &&
+              Get.parameters['matchID'] != ""
+              ? Matches.fromJson(jsonDecode(
+              utf8.decode(base64Url.decode(Get.parameters['matchID']))))
+              : null,
+          leagueData: Get.parameters['leagueData'] != null &&
+              Get.parameters['leagueData'] != ""
+              ? Data.fromJson(jsonDecode(
+              utf8.decode(base64Url.decode(Get.parameters['leagueData']))))
+              : null,
+
+        ))),
 
     GetPage(
         name: signUp,
@@ -516,24 +559,8 @@ class RouteHelper {
         page: () =>
             getRoute(Get.arguments != null ? Get.arguments : NotFound())),
 
-    GetPage(
-        name: createteamscreen,
-        page: () => getRoute(CreateTeamScreen(
-              league: Get.parameters['data'] != null &&
-                      Get.parameters['data'] != ""
-                  ? Data.fromJson(jsonDecode(
-                      utf8.decode(base64Url.decode(Get.parameters['data']))))
-                  : null,
-              matchID: Get.parameters['matchID'],
-            ))),
 
-    GetPage(
-        name: choose_captain_screen,
-        page: () => getRoute(ChooseCaptainTeamScreen(
-              league:Get.parameters['data']!=null && Get.parameters['data']!=""? Data.fromJson(jsonDecode(
-                  utf8.decode(base64Url.decode(Get.parameters['data'])))):null,
-              matchID: Get.parameters['matchID'],
-            ))),
+
 
     GetPage(name: referAndEarn, page: () => getRoute(ReferAndEarnScreen())),
   ];

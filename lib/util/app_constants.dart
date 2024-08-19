@@ -54,6 +54,9 @@ class AppConstants {
   static const String REGISTER_URI = '/users';
   static const String LOGIN_URI = '/login';
   static const String CreateTeam_URI = '${MATCH_LIST_BASE_URL}/v4/team';
+  static const String teamList = '${MATCH_LIST_BASE_URL}/v4/teamlist';
+  static const String teamjoin = '${MATCH_LIST_BASE_URL}/v4/teamjoin';
+  static const String teamjoinList = '${MATCH_LIST_BASE_URL}/v4/teamjoinList';
  static const String CHECK_PHONE_URI = '/api/v1/auth/check_phone';
   static const String TOKEN_URI = '/api/v1/customer/cm-firebase-token';
   static const String PLACE_ORDER_URI = '/api/v1/customer/order/place';
@@ -188,7 +191,9 @@ class AppConstants {
   static const String SECRET_KEY = 'ipb+w3uKdZeE27vtZW3rtyC6KTe9JCpU9vRdkS1R';
   static const String BUCKET = 'abujaeyemedia';
   static const String REGION = 'eu-west-1';
-
+  static const String CANCEL_BUTTON_TITLE="Cancel";
+  static const String DIALOG_ERROR_TITLE = 'Error';
+  static const String DIALOG_POSITIVE_BUTTON = 'OK';
   // Delivery Tips
   static List<int> tips = [0, 5, 10, 15, 20, 30, 50];
 
