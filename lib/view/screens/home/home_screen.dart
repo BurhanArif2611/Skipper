@@ -13,8 +13,7 @@ import 'package:sixam_mart/view/screens/home/widget/featured_match_card.dart';
 import 'package:sixam_mart/view/screens/home/widget/team_card.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
-
-import '../../../controller/auth_controller.dart';
+import '../../../helper/route_helper.dart';
 
 class HomeScreen extends StatefulWidget {
   static Future<void> loadData(bool reload) async {}
@@ -35,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await Get.find<HomeController>().getUserData();
 
     await Get.find<HomeController>().getMatchesList();
-    await Get.find<HomeController>().getFeaturedMatchesList();
+   // await Get.find<HomeController>().getFeaturedMatchesList();
 
     /*  if (Get.find<AuthController>().isLoggedIn()) {
       Get.find<NotificationController>().getNotificationList(1, true);
@@ -61,9 +60,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: GetBuilder<HomeController>(builder: (homeController) {
-        return homeController != null &&
-                homeController.matchlist != null &&
-                homeController.matchlist.data != null
+        return homeController != null && !homeController.isLoading
+               /* homeController.matchlist != null &&
+                homeController.matchlist.data != null*/
             ? Container(
                 color: Theme.of(context).backgroundColor,
                 child: /*Scrollbar(
@@ -96,12 +95,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                         SvgPicture.asset(Images.logo_white))),
                             Expanded(
                                 flex: 1,
-                                child: Align(
+                                child: InkWell(onTap: (){
+                                  Get.toNamed(RouteHelper.getNotificationRoute());
+
+                                },
+                                child:
+                                Align(
                                     alignment: Alignment.centerRight,
                                     child: SvgPicture.asset(
                                       Images.notification,
                                       color: Theme.of(context).primaryColor,
-                                    ))),
+                                    )))
+                            ),
                           ],
                         ),
                         SizedBox(
@@ -125,6 +130,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             homeController.featuredMatchesList.data != null &&
                             homeController
                                     .featuredMatchesList.data !=
+                                null && homeController
+                                    .featuredMatchesList.data.matches !=
                                 null &&
                             homeController.featuredMatchesList.data.matches
                                     .length >
@@ -168,12 +175,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               shrinkWrap: true,
                               controller: _scrollController,
                               itemCount:
-                                  homeController.matchlist.data.matches.length,
+                                  homeController.matchlist.data.length,
                               physics: ScrollPhysics(),
                               scrollDirection: Axis.vertical,
                               itemBuilder: (context, index) {
                                 return TeamCardItem(homeController
-                                    .matchlist.data.matches[index]);
+                                    .matchlist.data[index],true);
                               }),
                       ],
                     ),

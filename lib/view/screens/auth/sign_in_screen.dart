@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:country_code_picker/country_code.dart';
+import 'package:flutter/foundation.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
-import 'package:sixam_mart/controller/localization_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
@@ -14,8 +14,7 @@ import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/custom_button.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:sixam_mart/view/base/custom_text_field.dart';
-import 'package:sixam_mart/view/base/footer_view.dart';
-import 'package:sixam_mart/view/base/menu_drawer.dart';
+
 import 'package:sixam_mart/view/base/web_menu_bar.dart';
 
 import 'package:flutter/material.dart';
@@ -23,6 +22,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../base/custom_app_bar.dart';
+import '../webview/webview_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   final bool exitFromApp;
@@ -41,6 +41,14 @@ class _SignInScreenState extends State<SignInScreen> {
   String _countryDialCode;
   bool _canExit = GetPlatform.isWeb ? true : false;
   bool _showPassword = true;
+   bool isChecked = false;
+ /* final credential;*/
+   List<String> scopes = <String>[
+    'email',
+    'https://www.googleapis.com/auth/contacts.readonly',
+  ];
+
+
 
   @override
   void initState() {
@@ -55,6 +63,11 @@ class _SignInScreenState extends State<SignInScreen> {
     /*  _emailController.text = Get.find<AuthController>().getUserNumber() ?? '';
     _passwordController.text =
         Get.find<AuthController>().getUserPassword() ?? '';*/
+  }
+  void CheckboxOnChanged(bool check) {
+    setState(() {
+      isChecked = check;
+    });
   }
 
   @override
@@ -104,11 +117,10 @@ class _SignInScreenState extends State<SignInScreen> {
               SingleChildScrollView(
             child: Container(
               width: context.width,
-              height: context.height,
               color: Theme.of(context).backgroundColor,
               child: GetBuilder<SplashController>(builder: (splashController) {
                 return GetBuilder<AuthController>(builder: (authController) {
-                  return Stack(children: [
+                  return
                     Container(
                         margin: EdgeInsets.only(bottom: 50),
                         padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
@@ -162,10 +174,58 @@ class _SignInScreenState extends State<SignInScreen> {
                                   prefixIcon: 'lock',
                                   isPassword: true,
                                 ),
+                              Container(
+                                  margin: EdgeInsets.only(top: 15),
+                                  child: Row(
+                                    children: [
+                                      Checkbox(
+                                        value: isChecked,
+                                        activeColor: isChecked
+                                            ? Theme.of(context).secondaryHeaderColor
+                                            : Theme.of(context).cardColor,
+                                        onChanged: (value) {
+                                          CheckboxOnChanged(value);
+                                        },
+                                      ),
+
+                                      Expanded(
+                                          child: Row(children: [
+                                            Text(
+                                              "I accept the",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.white,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.start,
+                                            ),
+                                            SizedBox(width: 10,),
+                                            InkWell(onTap: (){
+                                              Get.toNamed(RouteHelper.getWebViewScreen("https://google.com/","Terms and Conditions"));
+
+
+                                            },
+                                                child:
+                                                Text(
+                                                  " Terms of Use & Privacy Policy",
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.blue,
+                                                    decoration: TextDecoration.underline,
+                                                  ),
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.start,
+                                                )),
+
+                                          ],)
+                                      ),
+                                    ],
+                                  )),
                             ]),
                           ),
-                          SizedBox(height: 10),
-                          if (_showPassword)
+                          SizedBox(height: 5),
                             Row(children: [
                               Expanded(
                                 child: Text(''.tr),
@@ -183,9 +243,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                 ),
                               ),
                             ]),
-                          SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
 
-                          if (_showPassword)
+
+
                             /*!authController.isLoading ?*/ Row(children: [
                               /* Expanded(
                               child: CustomButton(
@@ -196,9 +256,16 @@ class _SignInScreenState extends State<SignInScreen> {
                           )),*/
                               Expanded(
                                   child: CustomButton(
+                                    transparent:!isChecked,
                                 buttonText: 'sign_in'.tr,
-                                onPressed: () => _login(authController,
-                                    _countryDialCode, splashController),
+                                onPressed: () {
+                                      if(isChecked) {
+                                        _login(authController, _countryDialCode,
+                                            splashController);
+                                      }else{
+                                        showCustomSnackBar('Please select terms&Condition first'.tr);
+                                      }
+                                    },
                               )),
                             ]) /*: Center(child: CircularProgressIndicator())*/,
                           SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
@@ -256,6 +323,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             ]),
                           ),
                           SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                       if(Platform.isIOS)
                           Container(
                             width: double.infinity,
                             padding: EdgeInsets.only(
@@ -272,10 +340,21 @@ class _SignInScreenState extends State<SignInScreen> {
                               SizedBox(width: 10),
                               Image.asset(Images.apple,
                                   height: 20, fit: BoxFit.contain,color: Colors.white,),
+
                               Expanded(
                                   child: TextButton(
-                                onPressed: () => {
+                                onPressed: () async => {
                                   // authController.changeLogin(),
+                                     /*credential =*/
+                                await SignInWithApple.getAppleIDCredential(
+                                  scopes: [
+                                    AppleIDAuthorizationScopes.email,
+                                    AppleIDAuthorizationScopes.fullName,
+                                    ],
+                                  )
+
+                                  /*print(credential);*/
+
                                 },
                                 child: Text('Sign in with Apple'.tr,
                                     textAlign: TextAlign.center,
@@ -286,6 +365,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               )),
                             ]),
                           ),
+                          if(Platform.isIOS)
                           SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                           Container(
                             width: double.infinity,
@@ -318,43 +398,39 @@ class _SignInScreenState extends State<SignInScreen> {
                             ]),
                           ),
                           SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                          /* GuestButton(),*/
-                        ])),
-                    Positioned(
-                      bottom: 100,
-                      right: 0,
-                      left: 0,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Don’t have an account? '.tr,
-                              textAlign: TextAlign.center,
-                              style: robotoBold.copyWith(
-                                color: Theme.of(context)
-                                    .cardColor
-                                    .withOpacity(0.50),
-                                fontSize: Dimensions.fontSizeDefault,
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Get.toNamed(RouteHelper.getSignUpRoute(""));
-                              },
-                              child: Text(
-                                ' Sign Up'.tr,
-                                textAlign: TextAlign.center,
-                                style: robotoBold.copyWith(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: Dimensions.fontSizeDefault,
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Don’t have an account? '.tr,
+                                  textAlign: TextAlign.center,
+                                  style: robotoBold.copyWith(
+                                    color: Theme.of(context)
+                                        .cardColor
+                                        .withOpacity(0.50),
+                                    fontSize: Dimensions.fontSizeDefault,
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ]),
-                    ),
+                                TextButton(
+                                  onPressed: () {
+                                    Get.toNamed(RouteHelper.getSignUpRoute(""));
+                                  },
+                                  child: Text(
+                                    ' Sign Up'.tr,
+                                    textAlign: TextAlign.center,
+                                    style: robotoBold.copyWith(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: Dimensions.fontSizeDefault,
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                          /* GuestButton(),*/
+                        ]));
+
 
                     /* ]),*/
-                  ]);
+
                 });
               }),
             ),

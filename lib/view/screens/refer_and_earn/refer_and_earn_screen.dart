@@ -31,19 +31,70 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
   void initState() {
     super.initState();
 
-    _isLoggedIn = Get.find<AuthController>().isLoggedIn();
+    /*_isLoggedIn = Get.find<AuthController>().isLoggedIn();
 
-    if(_isLoggedIn /*&& Get.find<UserController>().userInfoModel == null*/) {
+    if (_isLoggedIn */ /*&& Get.find<UserController>().userInfoModel == null*/ /*) {
       Get.find<UserController>().getUserInfo();
-    }
+    }*/
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     /* endDrawer: MenuDrawer(),*/
       appBar: CustomAppBar(title: 'refer_and_earn'.tr),
-      body: Center(
+      body: SingleChildScrollView(
+        child: Container(
+            color: Theme.of(context).backgroundColor,
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                Image.asset(
+                  Images.refer_earn_full,
+                ),
+                SizedBox(
+                  height: 100,
+                ),
+
+              ],
+            )),
+      ),
+        floatingActionButton:InkWell(onTap: (){
+          Share.share("userController.userInfoModel.refCode");
+        },
+        child:
+        Padding(
+          padding:  EdgeInsets.only(bottom: 0, right: 0), // Adjust padding here
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 50,
+            color: Theme.of(context).hintColor,
+            child: Center(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.share,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Invite",
+                    style: robotoBold.copyWith(
+                        color: Colors.white,
+                        fontSize: Dimensions.fontSizeLarge),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat, // Adjusts FAB to center
+
+
+        /*Center(
         child: SizedBox(
           width: Dimensions.WEB_MAX_WIDTH,
           child: _isLoggedIn ? Padding(
@@ -131,7 +182,8 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
             ),
           ) : NotLoggedInScreen(),
         ),
-      ),
+      )*/
+
     );
   }
 }

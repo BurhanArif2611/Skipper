@@ -8,6 +8,7 @@ import 'package:sixam_mart/util/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/dashboard_controller.dart';
 import '../../../helper/route_helper.dart';
 import '../../base/custom_app_bar.dart';
 import '../../base/custom_button.dart';
@@ -37,7 +38,10 @@ class _WalletScreenState extends State<WalletScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar:
-            CustomAppBar(title: 'Wallet', onBackPressed: () => {Get.back()}),
+            CustomAppBar(title: 'Wallet', onBackPressed: () => {
+             /* Get.back()*/
+              Get.find<DashboardController>().changeIndex(0)
+            }),
         body: Container(
             color: Theme.of(context).backgroundColor,
             child: Scrollbar(

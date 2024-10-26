@@ -19,8 +19,9 @@ import '../../base/inner_custom_app_bar.dart';
 
 class WebviewScreen extends StatefulWidget {
   final String url;
+  final String title;
 //  const WebviewScreen({Key key}) : super(key: key);
-  WebviewScreen({@required this.url});
+  WebviewScreen({@required this.url,this.title});
 
   @override
   State<StatefulWidget> createState() => _WebviewScreenState();
@@ -62,7 +63,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
 
     return Scaffold(
       appBar: InnerCustomAppBar(
-          title: "",
+          title:widget.title?? "",
           leadingIcon: Images.back_arrow,
           ),
       backgroundColor: Color(0xffffffff),

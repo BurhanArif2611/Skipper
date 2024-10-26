@@ -41,19 +41,19 @@ class _SupportScreenState extends State<SupportScreen> {
 
             SupportButton(
               icon: Icons.location_on, title: 'address'.tr, color: Colors.blue,
-              info: Get.find<SplashController>().configModel.address,
+              info: /*Get.find<SplashController>().configModel.address*/"Dummy Address",
               onTap: () {},
             ),
             SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
 
             SupportButton(
               icon: Icons.call, title: 'call'.tr, color: Colors.red,
-              info: Get.find<SplashController>().configModel.phone,
+              info: /*Get.find<SplashController>().configModel.phone*/"+1 00 0000 0000",
               onTap: () async {
-                if(await canLaunchUrlString('tel:${Get.find<SplashController>().configModel.phone}')) {
-                  launchUrlString('tel:${Get.find<SplashController>().configModel.phone}');
+                if(await canLaunchUrlString('tel:+1 00 0000 0000')) {
+                  launchUrlString('tel:+1 00 0000 0000');
                 }else {
-                  showCustomSnackBar('${'can_not_launch'.tr} ${Get.find<SplashController>().configModel.phone}');
+                  showCustomSnackBar('${'can_not_launch'.tr} +1 00 0000 0000');
                 }
               },
             ),
@@ -61,11 +61,11 @@ class _SupportScreenState extends State<SupportScreen> {
 
             SupportButton(
               icon: Icons.mail_outline, title: 'email_us'.tr, color: Colors.green,
-              info: Get.find<SplashController>().configModel.email,
+              info: /*Get.find<SplashController>().configModel.email*/"support@skipper.com",
               onTap: () {
                 final Uri emailLaunchUri = Uri(
                   scheme: 'mailto',
-                  path: Get.find<SplashController>().configModel.email,
+                  path: /*Get.find<SplashController>().configModel.email*/"support@skipper.com",
                 );
                 launchUrlString(emailLaunchUri.toString());
               },

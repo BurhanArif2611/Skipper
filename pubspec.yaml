@@ -62,6 +62,8 @@ dependencies:
   device_info_plus: ^8.2.2
   dropdown_button2: ^2.1.4
   easy_stepper: ^0.6.0
+  sign_in_with_apple: ^5.0.0
+  google_sign_in: ^6.1.6
 
 
 

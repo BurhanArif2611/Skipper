@@ -12,8 +12,9 @@ class CustomButton extends StatelessWidget {
   final double fontSize;
   final double radius;
   final IconData icon;
+  final Color disable;
   CustomButton({this.onPressed, @required this.buttonText, this.transparent = false, this.margin, this.width, this.height,
-    this.fontSize, this.radius = Dimensions.RADIUS_SMALL, this.icon});
+    this.fontSize, this.radius = Dimensions.RADIUS_SMALL, this.icon, this.disable});
 
   @override
   Widget build(BuildContext context) {

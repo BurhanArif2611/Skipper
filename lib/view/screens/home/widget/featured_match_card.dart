@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../../../../data/model/response/featured_matches.dart';
+import '../../../../data/model/response/matchList/matches.dart';
 import '../../../../helper/route_helper.dart';
 import '../../../../util/dimensions.dart';
 import '../../../../util/images.dart';
@@ -40,7 +41,7 @@ class FeaturedMatchCardItem extends StatelessWidget {
                       flex: 1,
                       child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text("World Cup 2023 | T20",style: robotoRegular.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeExtraSmall),))),
+                          child: Text("${matches.tournament.name}",style: robotoRegular.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeExtraSmall),))),
                   Expanded(
                       flex: 1,
                       child: Align(

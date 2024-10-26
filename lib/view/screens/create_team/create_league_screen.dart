@@ -1,32 +1,24 @@
-import 'dart:async';
-
-import 'package:flutter_svg/svg.dart';
 import 'package:sixam_mart/util/dimensions.dart';
-import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:sixam_mart/view/screens/create_team/widget/crated_team_card.dart';
 import 'package:sixam_mart/view/screens/create_team/widget/league_card.dart';
-import 'package:sixam_mart/view/screens/create_team/widget/member_card.dart';
 import 'package:sixam_mart/view/screens/create_team/widget/my_contest_card.dart';
 import 'package:sixam_mart/view/screens/create_team/widget/slider_team_card.dart';
-import 'package:sixam_mart/view/screens/kyc/widget/steppage.dart';
 
-import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../controller/auth_controller.dart';
 import '../../../controller/home_controller.dart';
 import '../../../controller/onboarding_controller.dart';
-import '../../../data/model/body/team_create.dart';
-import '../../../data/model/response/featured_matches.dart';
+
+import '../../../data/model/response/matchList/matches.dart';
 import '../../../helper/route_helper.dart';
 import '../../base/custom_app_bar.dart';
 import '../../base/custom_button.dart';
-import '../../base/custom_text_field.dart';
 import '../home/widget/team_card.dart';
+
 
 class CreateLeagueScreen extends StatefulWidget {
   final Matches matchID;
@@ -79,7 +71,8 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
                     children: [
                       Expanded(
                           flex: 3,
-                          child: Stack(
+                          child:
+                          /*Stack(
                             children: [
                               PageView.builder(
                                 itemCount: 10,
@@ -91,7 +84,7 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
                                       child: SliderTeamCard());
                                 },
                                 onPageChanged: (index) {
-                                  /* onBoardingController.changeSelectIndex(index);*/
+                                  *//* onBoardingController.changeSelectIndex(index);*//*
                                 },
                               ),
                               Positioned(
@@ -104,7 +97,11 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
                                         onBoardingController, context),
                                   )),
                             ],
-                          )),
+                          )*/
+                          Container(margin:EdgeInsetsDirectional.symmetric (horizontal: Dimensions.PADDING_SIZE_SMALL),
+                              child:
+                              TeamCardItem(widget.matchID,false))
+                      ),
                       GetBuilder<AuthController>(builder: (authController) {
                         return Expanded(
                             flex: 10,
@@ -117,8 +114,9 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
                                           Dimensions.PADDING_SIZE_SMALL),
                                       child: Column(
                                         children: [
-                        GetBuilder<HomeController>(builder: (homeController) {
-                        return
+                                          SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
+                                    GetBuilder<HomeController>(builder: (homeController) {
+                                      return
 
 
                                           Row(
@@ -387,12 +385,12 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
 
   Widget myTeam() {
     return GetBuilder<HomeController>(builder: (homeController) {
-      return
+      return Expanded(child:
         Stack(
           children: [
             homeController.matchTeamList != null ? homeController.matchTeamList.data!=null &&
                     homeController.matchTeamList.data.length > 0
-                ? Container(height: 500,
+                ? Container(height: 400,
                 child:
             ListView.builder(
                     shrinkWrap: true,
@@ -423,7 +421,7 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
               ),
             )
           ],
-        );
+        ));
     });
   }
 

@@ -1,16 +1,13 @@
 import 'dart:async';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/services.dart';
 
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
-import 'package:sixam_mart/util/styles.dart';
-import 'package:sixam_mart/view/base/cart_widget.dart';
+
 import 'package:sixam_mart/view/screens/dashboard/widget/bottom_nav_item.dart';
 import 'package:sixam_mart/view/screens/home/home_screen.dart';
-import 'package:sixam_mart/view/screens/notification/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,11 +17,9 @@ import '../../../controller/dashboard_controller.dart';
 import '../../../controller/store_controller.dart';
 
 import '../../../util/images.dart';
-import '../../base/inner_custom_app_bar.dart';
 
 import '../account/account_screen.dart';
 import '../my_matches/my_matches_screen.dart';
-import '../our_ideas/our_ideas_screen.dart';
 import '../wallet/wallet_screen.dart';
 
 class DashboardScreen extends StatefulWidget {

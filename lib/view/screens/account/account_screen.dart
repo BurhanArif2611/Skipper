@@ -12,6 +12,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../controller/auth_controller.dart';
 import '../../../controller/cart_controller.dart';
+import '../../../controller/dashboard_controller.dart';
 import '../../../controller/home_controller.dart';
 import '../../../controller/user_controller.dart';
 import '../../../helper/route_helper.dart';
@@ -57,7 +58,10 @@ class _AccountScreenState extends State<AccountScreen> {
 
     return Scaffold(
         appBar:
-            CustomAppBar(title: 'Account', onBackPressed: () => {Get.back()}),
+            CustomAppBar(title: 'Account', onBackPressed: () => {
+             /* Get.back()*/
+              Get.find<DashboardController>().changeIndex(0)
+            }),
         body: Container(
             color: Theme.of(context).backgroundColor,
             child: Scrollbar(
@@ -213,7 +217,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           SizedBox(
                             height: 20,
                           ),
-                  InkWell(
+                          InkWell(
                     onTap: () {
                       Get.toNamed(RouteHelper.getKYCScreenRoute());
                     },
@@ -263,6 +267,11 @@ class _AccountScreenState extends State<AccountScreen> {
                           SizedBox(
                             height: 20,
                           ),
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(RouteHelper.getReferAndEarnRoute());
+                    },
+                    child:
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
@@ -296,7 +305,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     ],
                                   )),
                             ],
-                          ),
+                          )),
                           SizedBox(
                             height: 20,
                           ),
@@ -412,6 +421,11 @@ class _AccountScreenState extends State<AccountScreen> {
                           SizedBox(
                             height: 20,
                           ),
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(RouteHelper.getSupportRoute());
+                    },
+                    child:
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
@@ -447,7 +461,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     ],
                                   )),
                             ],
-                          ),
+                          )),
                           SizedBox(
                             height: 20,
                           ),
@@ -459,6 +473,12 @@ class _AccountScreenState extends State<AccountScreen> {
                           SizedBox(
                             height: 20,
                           ),
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(RouteHelper.getWebViewScreen("https://google.com/","Privacy Policy"));
+                    },
+                    child:
+                          
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
@@ -494,7 +514,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     ],
                                   )),
                             ],
-                          ),
+                          )),
                           SizedBox(
                             height: 20,
                           ),

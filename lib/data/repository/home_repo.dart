@@ -92,15 +92,28 @@ class HomeRepo {
 
 
   Future<Response> getMatchList() async {
-    return await apiClient.getMatchData("/tournament/v1/fixture?tournamentkey=sadasd&page=1");
+    //return await apiClient.getMatchData("/tournament/v1/fixture?tournamentkey=a-rz--cricket--icc--ctt-KLAd--2024-amCD");
+   // return await apiClient.getMatchData("/tournament/v1/featuredmatches?tournamentkey=a-rz--cricket--icc--ctt-KLAd--2024-amCD");
+    return await apiClient.getMatchData("/tournament/v1/featured");
   }
   Future<Response> getFeaturedMatchList() async {
    // return await apiClient.getMatchData("/tournament/v1/featured");
-    return await apiClient.getMatchData("/v1/associate/featuredtournament?page=1");
+   // return await apiClient.getMatchData("/v1/associate/featuredtournament?page=1");
+    return await apiClient.getMatchData("/tournament/v1/featured");
   }
 
-  Future<Response> getSquadlList(String tournamentkey,String teamkey) async {
-    return await apiClient.getMatchData("/tournament/v1/squadlist?tournamentkey=$tournamentkey&teamkey=$teamkey}");
+  Future<Response> getSquadlList(String tournamentkey,String teamkey,String matchKey) async {
+   // return await apiClient.getMatchData("/tournament/v1/squadlist?tournamentkey=$tournamentkey&teamkey=$teamkey}");
+    debugPrint("getSquadlList>>>${matchKey} }");
+    Map<String, String> _header;
+    _header = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'mathchid': matchKey,
+
+    };
+
+    return await apiClient.getMatchData("/tournament/v1/squadlist",headers:_header);
   }
 
   Future<Response> getleagueList() async {

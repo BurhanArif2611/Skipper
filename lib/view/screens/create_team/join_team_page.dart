@@ -16,6 +16,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../controller/home_controller.dart';
 import '../../../data/model/response/featured_matches.dart';
+import '../../../data/model/response/matchList/matches.dart';
 import '../../../helper/route_helper.dart';
 import '../../base/custom_app_bar.dart';
 import '../../base/custom_button.dart';

@@ -2,10 +2,10 @@ class Player{
   String key;
   String name;
   String jerseyName;
-  Null legalName;
+  String legalName;
   String gender;
   Nationality nationality;
-  Null dateOfBirth;
+  String dateOfBirth;
   String seasonalRole;
   List<String> roles;
   String battingStyle;
@@ -35,7 +35,7 @@ class Player{
     nationality = json['nationality'] != null
         ? new Nationality.fromJson(json['nationality'])
         : null;
-    dateOfBirth = json['date_of_birth'];
+    dateOfBirth = json['date_of_birth'].toString();
     seasonalRole = json['seasonal_role'];
     roles = json['roles'].cast<String>();
     battingStyle = json['batting_style'];
@@ -101,14 +101,15 @@ class Nationality {
 class BowlingStyle {
   String arm;
   String pace;
-  Null bowlingType;
+  String bowlingType;
+
 
   BowlingStyle({this.arm, this.pace, this.bowlingType});
 
   BowlingStyle.fromJson(Map<String, dynamic> json) {
     arm = json['arm'];
     pace = json['pace'];
-    bowlingType = json['bowling_type'];
+    bowlingType = json['bowling_type']!=null?json['bowling_type']:"";
   }
 
   Map<String, dynamic> toJson() {

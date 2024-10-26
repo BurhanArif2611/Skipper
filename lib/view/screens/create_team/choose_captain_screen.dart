@@ -14,7 +14,7 @@ import 'package:sixam_mart/view/screens/create_team/widget/captain_selection_car
 
 import '../../../controller/onboarding_controller.dart';
 import '../../../data/model/request_body/create_team.dart';
-import '../../../data/model/response/featured_matches.dart';
+import '../../../data/model/response/matchList/matches.dart';
 import '../../../helper/route_helper.dart';
 import '../../base/custom_app_bar.dart';
 import '../../base/custom_button.dart';
@@ -314,10 +314,10 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
         emailId: homeController.userDetailModel.contactDTO != null
             ? homeController.userDetailModel.contactDTO.email
             : "");
-    List<Teams> teams = [];
+    List<MainTeams> teams = [];
 
     for (int i = 0; i < value.length; i++) {
-      Teams teams_ = Teams(playerId: "player${i + 1}",
+      MainTeams teams_ = MainTeams(playerId: "player${i + 1}",
           name: value[i].name,
           point: 10.5,
           positionId: i == 0 ? "capton" : i == 1 ? "wise_capton" : "any");
@@ -383,7 +383,7 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
                   ,
                   onPressed: () {
                    /* Get.toNamed(RouteHelper.getDashboardRoute());*/
-                    Get.toNamed(RouteHelper.getCreateLeagueRoute(widget.matchID));
+                    Get.offAllNamed(RouteHelper.getCreateLeagueRoute(widget.matchID));
                   },
                 )
               ]);

@@ -48,7 +48,7 @@ class Request {
   String tournamentId;
   String matchId;
   String venueId;
-  List<Teams> teams;
+  List<MainTeams> teams;
 
   Request(
       {this.teamName,
@@ -63,9 +63,9 @@ class Request {
     matchId = json['matchId'];
     venueId = json['venueId'];
     if (json['teams'] != null) {
-      teams = <Teams>[];
+      teams = <MainTeams>[];
       json['teams'].forEach((v) {
-        teams.add(new Teams.fromJson(v));
+        teams.add(new MainTeams.fromJson(v));
       });
     }
   }
@@ -83,15 +83,15 @@ class Request {
   }
 }
 
-class Teams {
+class MainTeams {
   String playerId;
   String name;
   double point;
   String positionId;
 
-  Teams({this.playerId, this.name, this.point, this.positionId});
+  MainTeams({this.playerId, this.name, this.point, this.positionId});
 
-  Teams.fromJson(Map<String, dynamic> json) {
+  MainTeams.fromJson(Map<String, dynamic> json) {
     playerId = json['playerId'];
     name = json['name'];
     point = json['point'];

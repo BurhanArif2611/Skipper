@@ -180,4 +180,5 @@ class Images {
   static const String Location_small_Icon = 'assets/image/Location_small_Icon.png';
   static const String preview_bg = 'assets/image/preview_bg.png';
   static const String defult_user_png = 'assets/image/defult_user.png';
+  static const String refer_earn_full = 'assets/image/refer_earn_full.png';
 }

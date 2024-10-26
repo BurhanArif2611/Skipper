@@ -4,18 +4,17 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
-import '../../../../controller/cart_controller.dart';
 import '../../../../controller/home_controller.dart';
-import '../../../../data/model/response/featured_matches.dart';
-import '../../../../data/model/response/my_contest_list/my_contest_list_model.dart';
-import '../../../../data/model/response/player.dart';
+import '../../../../data/model/response/matchList/matches.dart';
+
+import '../../../../data/model/response/my_contest_list/my_contest_data.dart';
 import '../../../../helper/route_helper.dart';
 import '../../../../util/dimensions.dart';
 import '../../../../util/images.dart';
 import '../../../../util/styles.dart';
 
 class MyContestCard extends StatelessWidget {
-  Data myContest;
+  MyContestData myContest;
   Matches matchID;
 
   MyContestCard(this.myContest,this.matchID );
@@ -28,6 +27,7 @@ class MyContestCard extends StatelessWidget {
 
             InkWell(
                 onTap: () {
+                  Get.toNamed(RouteHelper.getContestDetailScreen());
                   // Get.toNamed(RouteHelper.getMa(matchID,league));
                  // Get.toNamed(RouteHelper.getJoinTeamScreenRoute(matchID,league));
                 },

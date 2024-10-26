@@ -26,6 +26,7 @@ class Assets {
   static const String fontMulishSemiBold = 'assets/font/Mulish-SemiBold.ttf';
   static const String fontMulishSemiBoldItalic = 'assets/font/Mulish-SemiBoldItalic.ttf';
   static const String image1st = 'assets/image/1st.svg';
+  static const String image1st (2) = 'assets/image/1st (2).svg';
   static const String imageAboutUs = 'assets/image/about_us.png';
   static const String imageAccount = 'assets/image/account.png';
   static const String imageAccountSelected = 'assets/image/account_selected.png';
@@ -156,6 +157,7 @@ class Assets {
   static const String imageReferAFriend = 'assets/image/refer_a_friend.png';
   static const String imageReferCode = 'assets/image/refer_code.png';
   static const String imageReferEarn = 'assets/image/refer_earn.png';
+  static const String imageReferEarnFull = 'assets/image/refer_earn_full.png';
   static const String imageResourceCenter = 'assets/image/resource_center.svg';
   static const String imageRestaurantJoin = 'assets/image/restaurant_join.png';
   static const String imageRestaurantMarker = 'assets/image/restaurant_marker.png';
@@ -167,6 +169,7 @@ class Assets {
   static const String imageSender = 'assets/image/sender.png';
   static const String imageShareApp = 'assets/image/share_app.svg';
   static const String imageSosIcon = 'assets/image/sos_icon.svg';
+  static const String imageSplash = 'assets/image/splash.gif';
   static const String imageSticker = 'assets/image/sticker.svg';
   static const String imageSupport = 'assets/image/support.png';
   static const String imageSupportImage = 'assets/image/support_image.png';

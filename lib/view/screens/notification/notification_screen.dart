@@ -40,29 +40,19 @@ class _NotificationScreenState extends State<NotificationScreen> {
   void initState() {
     super.initState();
 
-    _loadData();
+   /* _loadData();*/
   }
 
   @override
   Widget build(BuildContext context) {
     final ScrollController scrollController = ScrollController();
     return Scaffold(
-      appBar: Get.find<StoreController>().store == null
-          ? CustomAppBar(
+      appBar: CustomAppBar(
               title: 'notification'.tr,
-              backButton: ResponsiveHelper.isDesktop(context))
-          : Get.find<StoreController>().store != null &&
-                  Get.find<StoreController>().store.ecommerce == 0
-              ? CustomAppBar(
-                  title: 'notification'.tr,
-                  backButton: ResponsiveHelper.isDesktop(context))
-              : Get.find<StoreController>().store != null && Get.find<StoreController>().store.ecommerce == null
-                  ? CustomAppBar(
-                      title: 'notification'.tr,
-                      backButton: ResponsiveHelper.isDesktop(context))
-                  : CustomAppBar(title: 'notification'.tr, backButton: true),
+              )
+          ,
      /* endDrawer: MenuDrawer(),*/
-      body: Get.find<AuthController>().isLoggedIn()
+      body: /*Get.find<AuthController>().isLoggedIn()
           ?
       GetBuilder<NotificationController>(
               builder: (notificationController) {
@@ -243,7 +233,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           text: 'no_notification_found'.tr, showFooter: true)
                   : Center(child: CircularProgressIndicator());
             })
-          : NotLoggedInScreen(),
+          : NotLoggedInScreen()*/
+      NoDataScreen(
+          text: 'no_notification_found'.tr, showFooter: true),
     );
   }
 }

@@ -40,11 +40,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../data/model/response/featured_matches.dart';
+import '../data/model/response/matchList/matches.dart';
 import '../view/screens/complaint/add_complaint_screen.dart';
 import '../view/screens/complaint/list_complaint_screen.dart';
 import '../view/screens/contact_center/contact_center_screen.dart';
 
 import '../view/screens/create_team/choose_captain_screen.dart';
+import '../view/screens/create_team/contest_detail_page.dart';
 import '../view/screens/create_team/create_league_screen.dart';
 import '../view/screens/create_team/create_team_screen.dart';
 import '../view/screens/create_team/final_create_team_preview.dart';
@@ -145,6 +147,7 @@ class RouteHelper {
   static const String addpaymentoption = '/addpaymentoption_screen';
   static const String createteamscreen = '/create_team_screen';
   static const String joinTeamScreen = '/joinTeamScreen';
+  static const String contest_detail_page = '/contest_detail_page';
   static const String choose_captain_screen = '/choose_captain_team_screen';
   static const String final_team_screen = '/final_team_screen';
   static const String leaderboard = '/leaderboard';
@@ -170,8 +173,9 @@ class RouteHelper {
   static String getMyprofileScreen() => '$myprofilescreen';
 
   static String getSurveyScreen() => '$surveyscreen';
+  static String getContestDetailScreen() => '$contest_detail_page';
 
-  static String getWebViewScreen(String url) => '$webviewscreen?url=$url';
+  static String getWebViewScreen(String url,String title) => '$webviewscreen?url=$url&title=$title';
 
   static String getReportIncidenceScreen() => '$reportincidencescreen';
 
@@ -400,7 +404,7 @@ class RouteHelper {
 
     GetPage(
         name: dashboard, page: () => getRoute(DashboardScreen(pageIndex: 0))),
-    //  GetPage(name: favouritescreen, page: () => getRoute(FavouriteScreen())),
+     GetPage(name: contest_detail_page, page: () => getRoute(ContestDetailPage())),
 /*
     GetPage(name: myprofilescreen, page: () => getRoute(MyProfileScreen())),
 */
@@ -411,7 +415,7 @@ class RouteHelper {
     /* GetPage(name: surveyscreen, page: () => getRoute(SurveyScreen())),*/
     GetPage(
         name: webviewscreen,
-        page: () => getRoute(WebviewScreen(url: Get.parameters['url']))),
+        page: () => getRoute(WebviewScreen(url: Get.parameters['url'],title: Get.parameters['title']))),
 
     GetPage(
         name: splash,

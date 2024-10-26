@@ -164,7 +164,7 @@ class AppConstants {
 
   // Shared Key
   static const String THEME = '6ammart_theme';
-  static const String TOKEN = '6ammart_token';
+  static const String TOKEN = APP_NAME+'_TOKEN';
   static const String RefreshTOKEN = 'RefreshTOKEN';
   static const String UserName = 'username';
   static const String EmailID = 'emailId';

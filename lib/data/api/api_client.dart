@@ -14,8 +14,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:http/http.dart' as Http;
 
-import '../../controller/banner_controller.dart';
-import '../../controller/theme_controller.dart';
 import '../model/body/news_submit_body.dart';
 import '../model/body/report_incidence_body.dart';
 
@@ -99,7 +97,7 @@ class ApiClient extends GetxService {
       {Map<String, dynamic> query, Map<String, String> headers}) async {
     try {
       if (Foundation.kDebugMode) {
-        print('====> API Call: ${AppConstants.MATCH_LIST_BASE_URL+uri}\nHeader: $_mainHeaders');
+        print('====> API Call: ${AppConstants.MATCH_LIST_BASE_URL+uri}\nHeader: $headers');
       }
       Http.Response _response = await Http.get(
         Uri.parse(AppConstants.MATCH_LIST_BASE_URL + uri),
