@@ -37,6 +37,7 @@ class BannerController extends GetxController implements GetxService {
   List<dynamic> get featuredBannerDataList => _featuredBannerDataList;
   int get currentIndex => _currentIndex;
   SharedPreferences sharedPreferences;
+
   Future<void> getFeaturedBanner() async {
     Response response = await bannerRepo.getFeaturedBannerList();
     if (response.statusCode == 200) {

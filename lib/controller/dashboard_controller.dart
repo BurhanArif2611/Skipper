@@ -27,13 +27,4 @@ class DashboardController extends GetxController implements GetxService {
 
 
 
-
-
-
-
-
-
-
-
-
 }

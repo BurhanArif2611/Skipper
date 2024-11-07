@@ -101,6 +101,9 @@ class HomeRepo {
    // return await apiClient.getMatchData("/v1/associate/featuredtournament?page=1");
     return await apiClient.getMatchData("/tournament/v1/featured");
   }
+  Future<Response> getBannerList() async {
+    return await apiClient.getMatchData("/v5/bannerget");
+  }
 
   Future<Response> getSquadlList(String tournamentkey,String teamkey,String matchKey) async {
    // return await apiClient.getMatchData("/tournament/v1/squadlist?tournamentkey=$tournamentkey&teamkey=$teamkey}");

@@ -1,5 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 
+import 'package:carousel_slider/carousel_controller.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sixam_mart/controller/home_controller.dart';
 
@@ -34,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await Get.find<HomeController>().getUserData();
 
     await Get.find<HomeController>().getMatchesList();
+    await Get.find<HomeController>().getBannerList();
    // await Get.find<HomeController>().getFeaturedMatchesList();
 
     /*  if (Get.find<AuthController>().isLoggedIn()) {
@@ -111,6 +116,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         SizedBox(
                           height: 30,
+                        ),
+                        if (homeController.bannerList != null && homeController.bannerList.data.length>0)
+                        Container(height: 200,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(Dimensions.RADIUS_DEFAULT)),
+                          ),
+                          child: CarouselWithIndicatorDemo(),),
+                        SizedBox(
+                          height: 10,
                         ),
                         if (homeController.featuredMatchesList != null &&
                             homeController.featuredMatchesList.data != null &&
@@ -216,5 +232,112 @@ class SliverDelegate extends SliverPersistentHeaderDelegate {
     return oldDelegate.maxExtent != 50 ||
         oldDelegate.minExtent != 50 ||
         child != oldDelegate.child;
+  }
+}
+
+class CarouselWithIndicatorDemo extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _CarouselWithIndicatorState();
+  }
+}
+
+class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
+  int _current = 0;
+  final CarouselSliderController _controller = CarouselSliderController();
+
+
+  List<Widget> imageSliders = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeImageSliders();
+  }
+
+  void _initializeImageSliders() {
+    final bannerList = Get.find<HomeController>().bannerList.data;
+
+    setState(() {
+      imageSliders = bannerList.map((item) {
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius:
+            BorderRadius.all(Radius.circular(Dimensions.RADIUS_DEFAULT)),
+          ),
+          margin: EdgeInsets.all(5.0),
+
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(Dimensions.RADIUS_DEFAULT)),
+            child: Stack(
+              children: <Widget>[
+                getImageWidget(item.banner),
+              ],
+            ),
+          ),
+        );
+      }).toList();
+    });
+  }
+
+  Widget getImageWidget(String base64String) {
+    try {
+      String sanitizedString = base64String.trim();
+      Uint8List imageBytes = base64Decode(sanitizedString);
+
+      return imageBytes.isNotEmpty
+          ? Image.memory(
+        imageBytes,
+        fit: BoxFit.cover,
+        width: 1000.0,
+      )
+          : Image.asset(Images.no_data_found);
+    } catch (e) {
+      return Image.asset(Images.no_data_found);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GetBuilder<HomeController>(builder: (homeController) {
+      return homeController.bannerList!=null?
+      Column(children: [
+        Expanded(
+          child: CarouselSlider(
+            items: imageSliders,
+            carouselController: _controller,
+            options: CarouselOptions(
+                autoPlay: true,
+                enlargeCenterPage: true,
+                aspectRatio: 2.0,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _current = index;
+                  });
+                }),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: homeController.bannerList.data.asMap().entries.map((entry) {
+            return GestureDetector(
+              onTap: () => _controller.animateToPage(entry.key),
+              child: Container(
+                width: 12.0,
+                height: 12.0,
+                margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: (Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black)
+                        .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+              ),
+            );
+          }).toList(),
+        ),
+      ]):SizedBox.shrink();})
+    );
   }
 }

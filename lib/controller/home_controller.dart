@@ -10,6 +10,7 @@ import 'package:sixam_mart/util/app_constants.dart';
 
 import '../data/api/api_checker.dart';
 import '../data/model/request_body/create_team.dart';
+import '../data/model/response/banner_list.dart';
 import '../data/model/response/commentlist_model.dart';
 import '../data/model/response/featured_matches.dart';
 import '../data/model/response/league_list.dart';
@@ -74,6 +75,10 @@ class HomeController extends GetxController implements GetxService {
   Matchlist _matchlist;
 
   Matchlist get matchlist => _matchlist;
+
+  BannerList _bannerList;
+
+  BannerList get bannerList => _bannerList;
 
   featuredMatches _featuredMatchesList;
 
@@ -143,6 +148,18 @@ class HomeController extends GetxController implements GetxService {
     Response response = await homeRepo.getMatchList();
     if (response.statusCode == 200) {
       _matchlist = Matchlist.fromJson(response.body);
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    _isLoading = false;
+    update();
+  }
+
+  Future<void> getBannerList() async {
+    _isLoading = true;
+    Response response = await homeRepo.getBannerList();
+    if (response.statusCode == 200) {
+      _bannerList = BannerList.fromJson(response.body);
     } else {
       ApiChecker.checkApi(response);
     }
@@ -375,11 +392,11 @@ class HomeController extends GetxController implements GetxService {
           showCustomSnackBar("5 Bowler is already added in your team.",isError:true);
           check = true;
           break;
-        }else if(player.skills.length>=1 && player.skills.contains("bat") && countPlayersWithSkill("bat")>=6) {
+        }/*else if(player.skills.length>=1 && player.skills.contains("bat") && countPlayersWithSkill("bat")>=6) {
           showCustomSnackBar("5 Bats men is already added in your team.",isError:true);
           check = true;
           break;
-        }/*else if(player.skills.length>1 && !player.skills.contains("keep") && countPlayersWithSkill("bat")>=3) {
+        }*//*else if(player.skills.length>1 && !player.skills.contains("keep") && countPlayersWithSkill("bat")>=3) {
           showCustomSnackBar("3 All rounders is already added in your team.",isError:true);
           check = true;
           break;
