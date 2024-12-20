@@ -179,9 +179,7 @@ class StoreController extends GetxController implements GetxService {
           ),
           LatLng(double.parse(_store.latitude), double.parse(_store.longitude)),"[]"
         );*/
-        if(fromModule) {
-          HomeScreen.loadData(true);
-        }
+
       } else {
         ApiChecker.checkApi(response);
       }

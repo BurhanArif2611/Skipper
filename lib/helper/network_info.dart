@@ -6,7 +6,6 @@ import 'package:image_compression_flutter/image_compression_flutter.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:video_compress/video_compress.dart';
 
 class NetworkInfo {
   final Connectivity connectivity;
@@ -52,14 +51,5 @@ class NetworkInfo {
     return XFile.fromData(_output.rawBytes);
   }
 
-  static  Future<File> compressVideo(XFile file) async {
-    print("compressVideo>>> ${file.path}");
-    MediaInfo mediaInfo = await VideoCompress.compressVideo(
-      file.path,
-      quality: VideoQuality.DefaultQuality,
-      deleteOrigin: true, // It's false by default
-    );
-   print("mediaInfo>>> ${mediaInfo.path}");
-    return mediaInfo.file;
-  }
+
 }

@@ -1,6 +1,8 @@
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
 
 class DateConverter {
 
@@ -27,6 +29,15 @@ class DateConverter {
 
   static String dateTimeStringToDateOnly(String dateTime) {
     return DateFormat('dd MMM yyyy').format(DateFormat('yyyy-MM-dd HH:mm:ss').parseUtc(dateTime).toLocal());
+  }
+  static String convertToTimeAgo(String inputDate) {
+    // Parse the input date string
+    final DateTime parsedDate = DateFormat("EEE MMM dd HH:mm:ss 'UTC' yyyy").parse(inputDate, true);
+
+    // Convert the parsedDate to a "time ago" string
+    final String formattedTimeAgo = timeago.format(parsedDate);
+
+    return formattedTimeAgo;
   }
 
   static String getTime(String dateTime1) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:sixam_mart/data/model/response/my_contest_list/my_contest_data.dart';
 
 import '../../../../controller/cart_controller.dart';
 import '../../../../data/model/response/matchList/matches.dart';
@@ -10,17 +11,19 @@ import '../../../../helper/route_helper.dart';
 import '../../../../util/dimensions.dart';
 import '../../../../util/images.dart';
 import '../../../../util/styles.dart';
+import '../../../base/country_flag_image.dart';
 
 class DummyTeamCardItem extends StatelessWidget {
 
   Matches matches;
   bool shadow;
-  DummyTeamCardItem(this.matches,this.shadow);
+  MyContestData liveList;
+  DummyTeamCardItem(this.matches,this.shadow, this.liveList);
 
   @override
   Widget build(BuildContext context) {
     return  InkWell(onTap: (){
-      Get.toNamed(RouteHelper.getMyMatchesDetailRoute());
+      Get.toNamed(RouteHelper.getMyMatchesDetailRoute(liveList.leagueid,matches));
     },
     child:
     Container(
@@ -54,8 +57,8 @@ class DummyTeamCardItem extends StatelessWidget {
                     flex: 1,
                     child: Align(
                         alignment: Alignment.centerRight,
-                        child: Text(
-                          "Live",
+                        child:  Text(
+                          "${matches.play_status == "scheduled" ? "Scheduled" : matches.play_status == "started" || matches.play_status == "in_play" ? "Live" : matches.play_status}",
                           style: robotoMedium.copyWith(
                               color: Theme.of(context).errorColor,
                               fontSize: Dimensions.fontSizeSmall),
@@ -73,7 +76,7 @@ class DummyTeamCardItem extends StatelessWidget {
                     children: [
                       Column(
                         children: [
-                          Image.asset(Images.team_logo),
+                          CountryFlagImage(matches.teams.a.code),
                           SizedBox(
                             height: 5,
                           ),
@@ -156,7 +159,7 @@ class DummyTeamCardItem extends StatelessWidget {
                       SizedBox(width: 10),
                       Column(
                         children: [
-                          Image.asset(Images.team_logo),
+                          CountryFlagImage(matches.teams.b.code),
                           SizedBox(height: 5),
                           Text(
                             matches.teams.b.name,
@@ -186,7 +189,7 @@ class DummyTeamCardItem extends StatelessWidget {
               children: [
                 Expanded(
                     flex: 1,
-                    child: Row(
+                    child:/* Row(
                       children: [
                         Text(
                           "2 Team",
@@ -204,7 +207,7 @@ class DummyTeamCardItem extends StatelessWidget {
                               fontSize: Dimensions.fontSizeExtraSmall),
                         )
                       ],
-                    )),
+                    )*/SizedBox.shrink()),
                 Expanded(
                     flex: 1,
                     child: Row(
@@ -212,7 +215,7 @@ class DummyTeamCardItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          "Lineup Announced",
+                          "Rank: ${liveList.position}",
                           style: robotoMedium.copyWith(
                               color: Colors.green,
                               fontSize: Dimensions.fontSizeSmall),

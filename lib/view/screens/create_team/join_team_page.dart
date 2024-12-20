@@ -15,7 +15,9 @@ import 'package:sixam_mart/view/screens/leader_board/widget/member_list.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../controller/home_controller.dart';
+import '../../../controller/splash_controller.dart';
 import '../../../data/model/response/featured_matches.dart';
+import '../../../data/model/response/league_data.dart';
 import '../../../data/model/response/matchList/matches.dart';
 import '../../../helper/route_helper.dart';
 import '../../base/custom_app_bar.dart';
@@ -26,7 +28,7 @@ class JoinTeamScreen extends StatefulWidget {
   static Future<void> loadData(bool reload) async {}
 
   Matches matchID;
-  Data leagueData;
+  LeagueData leagueData;
 
   JoinTeamScreen({@required this.matchID, @required this.leagueData});
 
@@ -45,13 +47,18 @@ class _JoinTeamScreenState extends State<JoinTeamScreen> {
 
   void _loadData() async {
     await Get.find<HomeController>().selectTeam("");
-   
   }
+  double value=0.0;
+
   @override
   void initState() {
     super.initState();
 
-     _loadData();
+    _loadData();
+    try {
+      value = (double.parse(widget.leagueData.total_join_participent_count) /
+          double.parse(widget.leagueData.totalParticipent));
+    }catch(e){}
   }
 
   @override
@@ -108,7 +115,7 @@ class _JoinTeamScreenState extends State<JoinTeamScreen> {
                           height: 10,
                         ),
                         Text(
-                          "\$500",
+                          "\$${widget.leagueData.entryfees}",
                           style: robotoBold.copyWith(
                               color: Theme.of(context).cardColor,
                               fontSize: Dimensions.fontSizeLarge),
@@ -117,7 +124,7 @@ class _JoinTeamScreenState extends State<JoinTeamScreen> {
                           height: 10,
                         ),
                         LinearProgressIndicator(
-                          value: 0.5,
+                          value: value,
                           backgroundColor: Colors.white,
                         ),
                         SizedBox(
@@ -131,31 +138,66 @@ class _JoinTeamScreenState extends State<JoinTeamScreen> {
                           height: 10,
                         ),
                         GetBuilder<HomeController>(builder: (homeController) {
-                          return InkWell(
-                              onTap: () {
-                               if( homeController.selectedTeamIDForJoinContest!="")
-                                CommonDialog.confirm(context,
-                                    "Are you sure? you want to join this contest.",
-                                    onPress: () {
+                          return InkWell(onTap: () {
+                            if (homeController.selectedTeamIDForJoinContest !=
+                                "") Get.find<SplashController>().showLoader();
+                            Get.find<SplashController>()
+                                .determinePosition(context)
+                                .then((value) async {
+                              if (value != null)
+                                Get.find<SplashController>()
+                                    .getBlackGeoList(
+                                        value.latitude, value.longitude)
+                                    .then((value) async {
+                                  if (!value) {
+                                    CommonDialog.confirm(context,
+                                        "Are you sure? you want to join this contest.",
+                                        onPress: () {
                                       _JoinTeamData();
+                                    });
+                                  } else {
+                                    CommonDialog.info(context,
+                                        "Sorry Our Service is not enable in your location");
+                                  }
                                 });
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color:homeController.selectedTeamIDForJoinContest!=""? Color(0xFF1D6F00):Color(0xFF1D6F00).withOpacity(0.3),
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(Dimensions.RADIUS_SMALL)),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Join \$500",
-                                  style: robotoBold.copyWith(
-                                      color: Theme.of(context).cardColor,
-                                      fontSize: Dimensions.fontSizeLarge),
-                                ),
-                              ));
+                            });
+                          }, child: GetBuilder<SplashController>(
+                              builder: (splashController) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 50,
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: homeController
+                                            .selectedTeamIDForJoinContest !=
+                                        ""
+                                    ? Color(0xFF1D6F00)
+                                    : Color(0xFF1D6F00).withOpacity(0.3),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(Dimensions.RADIUS_SMALL)),
+                              ),
+                              alignment: Alignment.center,
+                              child: splashController.isLoading
+                                  ? Padding(
+                                      padding: EdgeInsets.all(Dimensions
+                                          .PADDING_SIZE_EXTRA_LARGE_SMALL),
+                                      child: Center(
+                                        child: SizedBox(
+                                          height: 20.0,
+                                          // Set the desired height
+                                          width: 20.0,
+                                          // Set the desired width
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      ))
+                                  : Text(
+                                      "Join \$${widget.leagueData.entryfees}",
+                                      style: robotoBold.copyWith(
+                                          color: Theme.of(context).cardColor,
+                                          fontSize: Dimensions.fontSizeLarge),
+                                    ),
+                            );
+                          }));
                         })
                       ],
                     ),
@@ -176,7 +218,7 @@ class _JoinTeamScreenState extends State<JoinTeamScreen> {
                                   width: 5,
                                 ),
                                 Text(
-                                  "\$5,000",
+                                  "NAN",
                                   style: robotoMedium.copyWith(
                                       color: Theme.of(context).cardColor,
                                       fontSize: Dimensions.fontSizeSmall),
@@ -192,7 +234,7 @@ class _JoinTeamScreenState extends State<JoinTeamScreen> {
                                   width: 5,
                                 ),
                                 Text(
-                                  "\$5,000",
+                                  "NAN",
                                   style: robotoMedium.copyWith(
                                       color: Theme.of(context).cardColor,
                                       fontSize: Dimensions.fontSizeSmall),
@@ -236,29 +278,34 @@ class _JoinTeamScreenState extends State<JoinTeamScreen> {
 
   Widget myTeam() {
     return GetBuilder<HomeController>(builder: (homeController) {
-      return homeController.matchTeamList != null ? homeController.matchTeamList.data!=null &&
-              homeController.matchTeamList.data.length > 0
-          ? Expanded(
-              child: Container(
-                  margin: EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: homeController.matchTeamList.data.length,
-                      physics: BouncingScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) {
-                        return  InkWell(
-                            onTap: () {
-                              homeController.selectTeam(homeController.matchTeamList.data[index].teamId);
-                        },
-                        child:
-
-                          CreatedCard(
-                            homeController.matchTeamList.data[index],
-                            widget.matchID.key,
-                            index));
-                      }))):
-     Center(child:  Text("No Data Found!",style: robotoMedium.copyWith(color: Theme.of(context).cardColor),))
+      return homeController.matchTeamList != null
+          ? homeController.matchTeamList.data != null &&
+                  homeController.matchTeamList.data.length > 0
+              ? Expanded(
+                  child: Container(
+                      margin: EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: homeController.matchTeamList.data.length,
+                          physics: BouncingScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                                onTap: () {
+                                  homeController.selectTeam(homeController
+                                      .matchTeamList.data[index].teamId);
+                                },
+                                child: CreatedCard(widget.matchID,
+                                    homeController.matchTeamList.data[index],
+                                    widget.matchID.key,
+                                    index));
+                          })))
+              : Center(
+                  child: Text(
+                  "No Data Found!",
+                  style:
+                      robotoMedium.copyWith(color: Theme.of(context).cardColor),
+                ))
           : Center(
               child: CircularProgressIndicator(),
             );

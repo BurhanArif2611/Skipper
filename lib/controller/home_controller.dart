@@ -1,5 +1,8 @@
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -9,16 +12,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sixam_mart/util/app_constants.dart';
 
 import '../data/api/api_checker.dart';
+import '../data/model/body/country_flag.dart';
 import '../data/model/request_body/create_team.dart';
+import '../data/model/request_body/player_validation.dart';
 import '../data/model/response/banner_list.dart';
 import '../data/model/response/commentlist_model.dart';
+import '../data/model/response/credits.dart';
 import '../data/model/response/featured_matches.dart';
+import '../data/model/response/league_data.dart';
 import '../data/model/response/league_list.dart';
 import '../data/model/response/matchList/match_team_list_model.dart';
 import '../data/model/response/matchList/matches.dart';
+import '../data/model/response/match_leader_board/leaderboard_data.dart';
 import '../data/model/response/matchlist.dart';
 import '../data/model/response/my_contest_list/my_contest_list_model.dart';
 import '../data/model/response/player.dart';
+import '../data/model/response/points_response.dart';
 import '../data/model/response/user_detail_model.dart';
 import '../data/repository/home_repo.dart';
 import '../view/base/custom_loader.dart';
@@ -64,6 +73,10 @@ class HomeController extends GetxController implements GetxService {
 
   List<Player> get selectedPlayersList => _selectedPlayersList;
 
+  List<PlayerValidation> _selectedPlayerValidation = [];
+
+  List<PlayerValidation> get selectedPlayerValidation => _selectedPlayerValidation;
+
   CommentListModel _commentList;
 
   CommentListModel get commentList => _commentList;
@@ -75,6 +88,16 @@ class HomeController extends GetxController implements GetxService {
   Matchlist _matchlist;
 
   Matchlist get matchlist => _matchlist;
+  List<Matches> _upcomingList =[];
+  List<Matches> get upcomingList => _upcomingList;
+
+  List<Matches> _liveMatchesList =[];
+  List<Matches> get liveMatchesList => _liveMatchesList;
+
+
+  LeaderBoardData _leaderBoardData;
+
+  LeaderBoardData get leaderBoardData => _leaderBoardData;
 
   BannerList _bannerList;
 
@@ -120,6 +143,10 @@ class HomeController extends GetxController implements GetxService {
 
   LeagueList get leagueList => _leagueList;
 
+  Player _player;
+
+  Player get player => _player;
+
   String _selectedTeamIDForJoinContest;
 
   String get selectedTeamIDForJoinContest => _selectedTeamIDForJoinContest;
@@ -146,8 +173,19 @@ class HomeController extends GetxController implements GetxService {
   Future<void> getMatchesList() async {
     _isLoading = true;
     Response response = await homeRepo.getMatchList();
+    _matchlist=null;
     if (response.statusCode == 200) {
       _matchlist = Matchlist.fromJson(response.body);
+     if(_matchlist!=null && _matchlist.data!=null && _matchlist.data.length>0) {
+       _upcomingList =
+           _matchlist.data.where((match) =>
+               match.play_status.contains("scheduled")).toList();
+
+       _liveMatchesList =
+           _matchlist.data.where((match) =>
+               match.play_status.contains("in_play") || match.play_status.contains("started") || match.play_status.contains("running")).toList();
+     }
+
     } else {
       ApiChecker.checkApi(response);
     }
@@ -176,7 +214,9 @@ class HomeController extends GetxController implements GetxService {
         await homeRepo.getSquadlList(tournamentkey, teamkey, matchKey);
 
     if (response.statusCode == 200) {
-      if (response.body != null && response.body['data']['matchId'] != null) {
+      _player = Player.fromJson(response.body['data']);
+
+     if (response.body != null && response.body['data']['matchId'] != null) {
         if (response.body['data']['squad'] != null) {
           /* for (int i = 0;
               i <
@@ -189,25 +229,25 @@ class HomeController extends GetxController implements GetxService {
             _playersList.add(player);
           }*/
 
-          for (int i = 0; i < matchID.squad.a.playingXi.length; i++) {
+          for (int i = 0; i < matchID.squad.a.playerKeys.length; i++) {
             if (response.body['data']['squad']
                         [response.body['data']['team'][0]['key']]['players']
-                    [matchID.squad.a.playingXi[i]] !=
+                    [matchID.squad.a.playerKeys[i]] !=
                 null) {
               Player player = Player.fromJson(response.body['data']['squad']
                       [response.body['data']['team'][0]['key']]['players']
-                  [matchID.squad.a.playingXi[i]]);
+                  [matchID.squad.a.playerKeys[i]]);
               _playersList.add(player);
             }
           }
-          for (int i = 0; i < matchID.squad.b.playingXi.length; i++) {
+          for (int i = 0; i < matchID.squad.b.playerKeys.length; i++) {
             if (response.body['data']['squad']
                         [response.body['data']['team'][1]['key']]['players']
-                    [matchID.squad.b.playingXi[i]] !=
+                    [matchID.squad.b.playerKeys[i]] !=
                 null) {
               Player player = Player.fromJson(response.body['data']['squad']
                       [response.body['data']['team'][1]['key']]['players']
-                  [matchID.squad.b.playingXi[i]]);
+                  [matchID.squad.b.playerKeys[i]]);
               _playersList.add(player);
             }
           }
@@ -241,12 +281,51 @@ class HomeController extends GetxController implements GetxService {
     return response;
   }
 
-  Future<Response> getLeagueList() async {
+  int getCreditPoint(String key) {
+    if(_player!=null && _player.credits!=null &&  _player.credits.credits.length>0) {
+      Credits credits = _player.credits.credits
+          .firstWhere(
+            (player) => player.playerKey.contains(key),
+        orElse: () => null, // Handle case when no match is found
+      );
+
+      if (credits != null) {
+        return credits.value;
+      } else {
+        // Handle the case where no matching player is found
+        throw Exception("No matching player found for key: $key");
+      }
+    }else {
+      return 0;
+    }
+    }
+
+    double getPoints(String key) {
+    if(_player!=null && _player.points!=null &&  _player.points.points.length>0) {
+      Points credits = _player.points.points
+          .firstWhere(
+            (player) => player.playerKey.contains(key),
+        orElse: () => null, // Handle case when no match is found
+      );
+
+      if (credits != null) {
+        return credits.points;
+      } else {
+        // Handle the case where no matching player is found
+        throw Exception("No matching player found for key: $key");
+      }
+    }else {
+      return 0;
+    }
+    }
+
+
+  Future<Response> getLeagueList(String matchKey) async {
     _playersList = [];
     _isLoading = true;
     _leagueList = null;
 
-    Response response = await homeRepo.getleagueList();
+    Response response = await homeRepo.getleagueList(matchKey);
 
     if (response.statusCode == 200) {
       _leagueList = LeagueList.fromJson(response.body);
@@ -302,6 +381,7 @@ class HomeController extends GetxController implements GetxService {
     }
     _isLoading = false;
   }
+
   Future<void> getMyMatchesList(String matchId) async {
 
     _isLoading = true;
@@ -315,6 +395,7 @@ class HomeController extends GetxController implements GetxService {
 
 
     } else {
+
       ApiChecker.checkApi(response);
     }
     _isLoading = false;
@@ -335,12 +416,17 @@ class HomeController extends GetxController implements GetxService {
           response.body['metadata']['message'] != null
               ? response.body['metadata']['message']
               : "",
-          isError: false);
+          isError: true);
       Get.back();
       getMyContestList(matchId);
+      getLeagueList(matchId);
       update();
     } else {
-      ApiChecker.checkApi(response);
+      showCustomSnackBar(
+          response.body['metadata']['message'] != null
+              ? response.body['metadata']['message']
+              : "",
+          isError: true);
     }
     _isLoading = false;
   }
@@ -370,43 +456,50 @@ class HomeController extends GetxController implements GetxService {
     }
     _isLoading = false;
   }
-  int countPlayersWithSkill(String skill) {
-    return _selectedPlayersList.where((player) => player.skills.contains(skill)).length;
-  }
 
-  Future<void> addPlayersInMyTeam(Player player) async {
+
+  Future<void> addPlayersInMyTeam(Player player,String skills) async {
     bool check = false;
-
 
     if (_selectedPlayersList.length > 0) {
       for (int i = 0; i < _selectedPlayersList.length; i++) {
         if (_selectedPlayersList[i] == player) {
           _selectedPlayersList.removeAt(i);
+          _selectedPlayerValidation.removeAt(i);
           check = true;
           break;
-        }else  if(player.skills.length==1 && !player.skills.contains("keep") && countPlayersWithSkill("keep")>=2) {
-          showCustomSnackBar("2 Keepers is already added in your team.",isError:true);
-          check = true;
-          break;
-        }else if(player.skills.length>=1 && player.skills.contains("bowl") && countPlayersWithSkill("bowl")>=5) {
-          showCustomSnackBar("5 Bowler is already added in your team.",isError:true);
-          check = true;
-          break;
-        }/*else if(player.skills.length>=1 && player.skills.contains("bat") && countPlayersWithSkill("bat")>=6) {
-          showCustomSnackBar("5 Bats men is already added in your team.",isError:true);
-          check = true;
-          break;
-        }*//*else if(player.skills.length>1 && !player.skills.contains("keep") && countPlayersWithSkill("bat")>=3) {
-          showCustomSnackBar("3 All rounders is already added in your team.",isError:true);
-          check = true;
-          break;
-        }*/
+        }
       }
-    }
-    if (!check) {
+
+      if (!check) {
+        // Validate skill-based constraints
+        if (skills.contains("keeper") && countPlayersWithSkill("keeper") >= 2) {
+          showCustomSnackBar("2 Keepers are already added to your team.", isError: true);
+        } else if (skills.contains("bowler") && countPlayersWithSkill("bowler") > 3 &&
+            countPlayersWithSkill("bowler") >= 5) {
+          showCustomSnackBar("5 Bowlers are already added to your team.", isError: true);
+        } else if (skills.contains("bats") && countPlayersWithSkill("bats") > 3 && countPlayersWithSkill("bats")>=5) {
+          showCustomSnackBar("5 Batsmen are already added to your team.", isError: true);
+        } else if (skills.contains("allRounder") && countPlayersWithSkill("allRounder") >= 3) {
+          showCustomSnackBar("3 All-rounders are already added to your team.", isError: true);
+        } else {
+          // Add the player to the list if validation passes
+          PlayerValidation playerValidation=PlayerValidation(playerID: player.key,skills: skills);
+          _selectedPlayerValidation.add(playerValidation);
+          _selectedPlayersList.add(player);
+        }
+      }
+    }else {
+      PlayerValidation playerValidation=PlayerValidation(playerID: player.key,skills: skills);
+      _selectedPlayerValidation.add(playerValidation);
       _selectedPlayersList.add(player);
     }
+
     update();
+  }
+
+  int countPlayersWithSkill(String skill) {
+    return _selectedPlayerValidation.where((player) => player.skills.contains(skill)).length;
   }
 
   Future<List<Player>> finalPlayerList() async {
@@ -436,6 +529,7 @@ class HomeController extends GetxController implements GetxService {
     try {
       _playersList = [];
       _selectedPlayersList = [];
+      _selectedPlayerValidation = [];
       _finalPlayersList = [];
       _captainId = "";
       _vCaptainId = "";
@@ -481,4 +575,32 @@ class HomeController extends GetxController implements GetxService {
 
     return response;
   }
+
+
+  Future<void> getLeaderBoardList(String leagueid) async {
+
+    _isLoading = true;
+    Response response = await homeRepo.getMatchLeaderboard(
+        leagueid, _userDetailModel != null ? _userDetailModel.id : "");
+    if (response.statusCode == 200) {
+      _leaderBoardData = LeaderBoardData.fromJson(response.body);
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    _isLoading = false;
+    update();
+  }
+
+  Future<LeagueData> returnLeagueList(String key) async {
+    if (_leagueList?.data != null) {
+      return _leagueList.data.firstWhere(
+            (league) => league.leagueId == key,
+        orElse: () => null, // Return null if no match is found
+      );
+    }
+    return null; // Return null if _leagueList or _leagueList.data is null
+  }
 }
+
+
+

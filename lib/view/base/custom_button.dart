@@ -43,7 +43,13 @@ class CustomButton extends StatelessWidget {
       ),
       child: Ink(
         decoration:transparent
-            ? null : BoxDecoration(
+            ? BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFFBFBFBF), Color(0xFFBFBFBF),Color(0xFFBFBFBF),Color(0xFFBFBFBF),],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+          borderRadius: BorderRadius.all(Radius.circular(radius)),) : BoxDecoration(
           gradient: LinearGradient(
             colors: [Color(0xFFF8CA0A), Color(0xFFFFE166),Color(0xFFDCB822),Color(0xFFFFE166),],
             begin: Alignment.centerLeft,
@@ -60,7 +66,7 @@ class CustomButton extends StatelessWidget {
             buttonText ??'',
             textAlign: TextAlign.center,
             style: robotoBlack.copyWith(
-          color: transparent ? Theme.of(context).primaryColor : Theme.of(context).hintColor,
+          color:  Theme.of(context).hintColor,
         fontSize: fontSize != null ? fontSize : Dimensions.fontSizeLarge,
       ),
           ),

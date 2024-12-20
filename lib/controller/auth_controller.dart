@@ -5,7 +5,6 @@ import 'dart:typed_data';
 
 import 'package:aws_s3_upload/aws_s3_upload.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_connect/http/src/_http/_html/_file_decoder_html.dart';
 import 'package:image_compression_flutter/image_compression_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,7 +18,6 @@ import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as Http;
 
 import '../data/model/body/news_submit_body.dart';
 import '../data/model/response/region_response_model.dart';

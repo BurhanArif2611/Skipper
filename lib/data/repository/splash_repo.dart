@@ -127,4 +127,11 @@ class SplashRepo {
     return await apiClient.postData(AppConstants.SUBSCRIPTION_URI, {'email': email});
   }
 
+  Future<Response> getVersionInfo() async {
+    return await apiClient.getMatchData(AppConstants.APP_INFO_URI);
+  }
+  Future<Response> getBlackGeoList() async {
+    return await apiClient.getMatchData(AppConstants.BLACK_Geo_List);
+  }
+
 }

@@ -44,9 +44,7 @@ class LocalizationController extends GetxController implements GetxService {
       locale.languageCode, Get.find<SplashController>().module != null ? Get.find<SplashController>().module.id : null,
     );
     saveLanguage(_locale);
-    if(Get.find<LocationController>().getUserAddress() != null) {
-      HomeScreen.loadData(true);
-    }
+
 
     update();
   }

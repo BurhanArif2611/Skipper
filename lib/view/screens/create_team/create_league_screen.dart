@@ -7,7 +7,7 @@ import 'package:sixam_mart/view/screens/create_team/widget/crated_team_card.dart
 import 'package:sixam_mart/view/screens/create_team/widget/league_card.dart';
 import 'package:sixam_mart/view/screens/create_team/widget/my_contest_card.dart';
 import 'package:sixam_mart/view/screens/create_team/widget/slider_team_card.dart';
-
+import 'package:sixam_mart/view/screens/create_team/widget/team_card_with_count.dart';
 
 import '../../../controller/auth_controller.dart';
 import '../../../controller/home_controller.dart';
@@ -18,7 +18,6 @@ import '../../../helper/route_helper.dart';
 import '../../base/custom_app_bar.dart';
 import '../../base/custom_button.dart';
 import '../home/widget/team_card.dart';
-
 
 class CreateLeagueScreen extends StatefulWidget {
   final Matches matchID;
@@ -43,7 +42,7 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
 
   void _loadData() async {
     await Get.find<HomeController>().clearData();
-    await Get.find<HomeController>().getLeagueList();
+    await Get.find<HomeController>().getLeagueList(widget.matchID.key);
     await Get.find<HomeController>().getTeamList(widget.matchID.key);
     await Get.find<HomeController>().getMyContestList(widget.matchID.key);
     await Get.find<AuthController>().changeTeamMemberSelectIndex(0);
@@ -59,67 +58,44 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
     return Scaffold(
         appBar:
             CustomAppBar(title: 'League', onBackPressed: () => {Get.back()}),
-        body: GetBuilder<OnBoardingController>(builder: (onBoardingController) {
-          return Container(
-              color: Theme.of(context).backgroundColor,
-              height: MediaQuery.of(context).size.height,
-              padding: EdgeInsets.all(5),
-              child: Stack(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                          flex: 3,
-                          child:
-                          /*Stack(
-                            children: [
-                              PageView.builder(
-                                itemCount: 10,
-                                controller: _pageController,
-                                physics: BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                      padding: EdgeInsets.all(10),
-                                      child: SliderTeamCard());
-                                },
-                                onPageChanged: (index) {
-                                  *//* onBoardingController.changeSelectIndex(index);*//*
-                                },
-                              ),
-                              Positioned(
-                                  bottom: 20,
-                                  left: 0,
-                                  right: 0,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: _pageIndicators(
-                                        onBoardingController, context),
-                                  )),
-                            ],
-                          )*/
-                          Container(margin:EdgeInsetsDirectional.symmetric (horizontal: Dimensions.PADDING_SIZE_SMALL),
-                              child:
-                              TeamCardItem(widget.matchID,false))
-                      ),
-                      GetBuilder<AuthController>(builder: (authController) {
-                        return Expanded(
-                            flex: 10,
-                            child: Container(
+        body: /*GetBuilder<OnBoardingController>(builder: (onBoardingController) {
+          return */
+            Container(
+                color: Theme.of(context).backgroundColor,
+                height: MediaQuery.of(context).size.height,
+                padding: EdgeInsets.all(5),
+                child: Stack(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /* Expanded(
+                          flex: 4,
+                          child:*/
+                        Container(
+                            margin: EdgeInsetsDirectional.symmetric(
+                                horizontal: Dimensions.PADDING_SIZE_SMALL),
+                            child:
+                                TeamCardWithCount(widget.matchID, false) /*)*/
+                            ),
+                        GetBuilder<AuthController>(builder: (authController) {
+                          return Expanded(
+                              flex: 10,
+                              child: Container(
                                 width: MediaQuery.of(context).size.width,
-                                child:
-                                  Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      padding: EdgeInsets.all(
-                                          Dimensions.PADDING_SIZE_SMALL),
-                                      child: Column(
-                                        children: [
-                                          SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
-                                    GetBuilder<HomeController>(builder: (homeController) {
-                                      return
-
-
-                                          Row(
+                                child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: EdgeInsets.all(
+                                        Dimensions.PADDING_SIZE_SMALL),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height:
+                                              Dimensions.PADDING_SIZE_DEFAULT,
+                                        ),
+                                        GetBuilder<HomeController>(
+                                            builder: (homeController) {
+                                          return Row(
                                             children: [
                                               Expanded(
                                                   flex: 1,
@@ -227,8 +203,7 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
                                                             Dimensions
                                                                 .PADDING_SIZE_EXTRA_SMALL),
                                                         child: Text(
-                                                          "My Contests ${ homeController.myContestList != null && homeController.myContestList.data!=null &&
-                                                              homeController.myContestList.data.length > 0?"("+homeController.myContestList.data.length.toString()+")":""}",
+                                                          "My Contests ${homeController.myContestList != null && homeController.myContestList.data != null && homeController.myContestList.data.length > 0 ? "(" + homeController.myContestList.data.length.toString() + ")" : ""}",
                                                           style: robotoBold.copyWith(
                                                               fontSize: Dimensions
                                                                   .fontSizeDefault,
@@ -292,8 +267,7 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
                                                             Dimensions
                                                                 .PADDING_SIZE_EXTRA_SMALL),
                                                         child: Text(
-                                                          "My Team ${ homeController.matchTeamList != null && homeController.matchTeamList.data!=null &&
-                                                              homeController.matchTeamList.data.length > 0?"("+homeController.matchTeamList.data.length.toString()+")":""}",
+                                                          "My Team ${homeController.matchTeamList != null && homeController.matchTeamList.data != null && homeController.matchTeamList.data.length > 0 ? "(" + homeController.matchTeamList.data.length.toString() + ")" : ""}",
                                                           style: robotoBold.copyWith(
                                                               fontSize: Dimensions
                                                                   .fontSizeDefault,
@@ -316,46 +290,53 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
                                                 width: 10,
                                               ),
                                             ],
-                                          );}),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          authController
-                                                      .selectedTeamMemberIndex ==
-                                                  0
-                                              ? contests()
-                                              : authController
-                                                          .selectedTeamMemberIndex ==
-                                                      1
-                                                  ? myContests()
-                                                  : myTeam()
-                                        ],
-                                      )),
-                                ));
-                      })
-                    ],
-                  ),
-                ],
-              ));
-        }));
+                                          );
+                                        }),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        authController
+                                                    .selectedTeamMemberIndex ==
+                                                0
+                                            ? contests()
+                                            : authController
+                                                        .selectedTeamMemberIndex ==
+                                                    1
+                                                ? myContests()
+                                                : myTeam()
+                                      ],
+                                    )),
+                              ));
+                        })
+                      ],
+                    ),
+                  ],
+                )) /* })*/);
   }
 
   Widget contests() {
     return GetBuilder<HomeController>(builder: (homeController) {
-      return homeController.leagueList != null &&
-              homeController.leagueList.data.length > 0
-          ? ListView.builder(
-              shrinkWrap: true,
-              itemCount: homeController.leagueList.data.length,
-              physics: ScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) {
-                return LeagueCard(
-                    homeController.leagueList.data[index], widget.matchID);
-              })
+      return homeController.leagueList != null
+          ? homeController.leagueList.data != null &&
+                  homeController.leagueList.data.length > 0
+              ? Expanded(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: homeController.leagueList.data.length,
+                      physics: ScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        return LeagueCard(homeController.leagueList.data[index],
+                            widget.matchID);
+                      }))
+              : Text(
+                  "No Data Found!",
+                  style:
+                      robotoMedium.copyWith(color: Theme.of(context).cardColor),
+                )
           : Center(
               child: CircularProgressIndicator(),
             );
@@ -364,64 +345,122 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
 
   Widget myContests() {
     return GetBuilder<HomeController>(builder: (homeController) {
-      return homeController.myContestList != null ? homeController.myContestList.data!=null &&
-          homeController.myContestList.data.length > 0
-          ? Expanded(
-              child:
-          ListView.builder(
-          shrinkWrap: true,
-          itemCount: homeController.myContestList.data.length,
-          physics: ScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          itemBuilder: (context, index) {
-            return MyContestCard(
-                homeController.myContestList.data[index], widget.matchID);
-          })):Text("No Data Found!",style: robotoMedium.copyWith(color: Theme.of(context).cardColor),)
-          : Center(
-        child: CircularProgressIndicator(),
-      );
+      if (homeController.myContestList != null) {
+        if (homeController.myContestList.data != null &&
+            homeController.myContestList.data.isNotEmpty && homeController.leagueList != null
+            && homeController.leagueList.data != null &&
+            homeController.leagueList.data.length > 0) {
+          return Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: homeController.myContestList.data.length,
+              physics: ScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, index) {
+                // Use FutureBuilder for each item
+                return FutureBuilder(
+                  future: homeController.returnLeagueList(
+                    homeController.myContestList.data[index].leagueid,
+                  ),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text(
+                        "Error loading league data",
+                        style: TextStyle(color: Colors.red),
+                      );
+                    } else if (snapshot.hasData) {
+                      var result = snapshot.data;
+                      return snapshot.data!=null?
+                        MyContestCard(
+                        homeController.myContestList.data[index],
+                        widget.matchID,snapshot.data
+                      ):Text(
+                        "League not found",
+                        style: TextStyle(color: Colors.grey),
+                      );
+                    } else {
+                      return Text(
+                        "League not found",
+                        style: TextStyle(color: Colors.grey),
+                      );
+                    }
+                  },
+                );
+              },
+            ),
+          );
+        } else {
+          return Text(
+            "No Data Found!",
+            style: robotoMedium.copyWith(color: Theme.of(context).cardColor),
+          );
+        }
+      } else {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }
     });
   }
 
+
   Widget myTeam() {
     return GetBuilder<HomeController>(builder: (homeController) {
-      return Expanded(child:
-        Stack(
-          children: [
-            homeController.matchTeamList != null ? homeController.matchTeamList.data!=null &&
-                    homeController.matchTeamList.data.length > 0
-                ? Container(height: 400,
-                child:
-            ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: homeController.matchTeamList.data.length,
-                    physics: BouncingScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-                      return CreatedCard(homeController.matchTeamList.data[index],
-                          widget.matchID.key,index);
-                    }))
-                : Center(
-                    child:Container(height: 500,
-      child: Text("No Data Found!",style: robotoMedium.copyWith(color: Theme.of(context).cardColor),)),
-                  ):Center(
-              child: CircularProgressIndicator(),
-            ),
-            Positioned(
-              bottom: 10,
-              left: 0,
-              right: 0,
-              child: CustomButton(
-                height: 50,
-                buttonText: 'Create Team'.tr,
-                onPressed: () {
+      return Expanded(
+          child: Stack(
+        children: [
+          homeController.matchTeamList != null
+              ? homeController.matchTeamList.data != null &&
+                      homeController.matchTeamList.data.length > 0
+                  ? Container(
+                      height: 400,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: homeController.matchTeamList.data.length,
+                          physics: BouncingScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            return CreatedCard(widget.matchID,
+                                homeController.matchTeamList.data[index],
+                                widget.matchID.key,
+                                index);
+                          }))
+                  : Center(
+                      child: Container(
+                          height: 500,
+                          child: Text(
+                            "No Data Found!",
+                            style: robotoMedium.copyWith(
+                                color: Theme.of(context).cardColor),
+                          )),
+                    )
+              : Center(
+                  child: CircularProgressIndicator(),
+                ),
+          Positioned(
+            bottom: 10,
+            left: 0,
+            right: 0,
+            child: CustomButton(
+              height: 50,
+              transparent: widget.matchID.play_status.contains("scheduled")
+                  ? false
+                  : true,
+              buttonText: 'Create Team'.tr,
+              onPressed: () {
+                if (widget.matchID.play_status.contains("scheduled")) {
                   Get.toNamed(
                       RouteHelper.getCreateTeamScreenRoute(widget.matchID));
-                },
-              ),
-            )
-          ],
-        ));
+                }
+              },
+            ),
+          )
+        ],
+      ));
     });
   }
 

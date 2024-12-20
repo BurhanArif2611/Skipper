@@ -9,9 +9,9 @@ class NotificationRepo {
   final SharedPreferences sharedPreferences;
   NotificationRepo({@required this.apiClient, @required this.sharedPreferences});
 
-  Future<Response> getNotificationList(int offset) async {
+  Future<Response> getNotificationList(int offset,String userID) async {
     //return await apiClient.getData(AppConstants.NOTIFICATION_URI);
-    return await apiClient.getData('${AppConstants.NOTIFICATION_URI}?offset=$offset&limit=10');
+    return await apiClient.getMatchData('${AppConstants.NOTIFICATION_LIST}?user_id=$userID&offset=$offset&limit=10');
 
   }
 

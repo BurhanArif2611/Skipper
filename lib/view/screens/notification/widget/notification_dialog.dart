@@ -38,7 +38,7 @@ class NotificationDialog extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
                   child: CustomImage(
-                    image: '${Get.find<SplashController>().configModel.baseUrls.notificationImageUrl}/${notificationModel.data.image}',
+                    image: '${Get.find<SplashController>().configModel.baseUrls.notificationImageUrl}/${notificationModel.data[0].image}',
                     height: 150, width: MediaQuery.of(context).size.width, fit: BoxFit.cover,
                   ),
                 ),
@@ -48,7 +48,7 @@ class NotificationDialog extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE),
                 child: Text(
-                  notificationModel.data.title,
+                  notificationModel.data[0].title,
                   textAlign: TextAlign.center,
                   style: robotoMedium.copyWith(
                     color: Theme.of(context).primaryColor,
@@ -60,7 +60,7 @@ class NotificationDialog extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
                 child: Text(
-                  notificationModel.data.description,
+                  notificationModel.data[0].notification_text,
                   textAlign: TextAlign.center,
                   style: robotoRegular.copyWith(
                     color: Theme.of(context).disabledColor,

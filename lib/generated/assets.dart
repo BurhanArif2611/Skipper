@@ -9,6 +9,7 @@ class Assets {
   static const String assetsImageLogoutPopupBackground = 'assets/image/logout_popup_background.svg';
   static const String assetsImageMenuDrawer = 'assets/image/menu_drawer.svg';
   static const String assetsImageSupport = 'assets/image/support_.png';
+  static const String assetsTeamFlag = 'assets/team_flag.json';
   static const String fontMulishBlack = 'assets/font/Mulish-Black.ttf';
   static const String fontMulishBlackItalic = 'assets/font/Mulish-BlackItalic.ttf';
   static const String fontMulishBold = 'assets/font/Mulish-Bold.ttf';

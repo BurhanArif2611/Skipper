@@ -1,6 +1,8 @@
+import 'league_data.dart';
+
 class LeagueList {
   Metadata metadata;
-  List<Data> data;
+  List<LeagueData> data;
 
   LeagueList({this.metadata, this.data});
 
@@ -9,9 +11,9 @@ class LeagueList {
         ? new Metadata.fromJson(json['metadata'])
         : null;
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <LeagueData>[];
       json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
+        data.add(new LeagueData.fromJson(v));
       });
     }
   }
@@ -53,63 +55,4 @@ class Metadata {
   }
 }
 
-class Data {
-  String leagueId;
-  String venueid;
-  String leaguematch;
-  String matchId;
-  String tourNamentId;
-  String teamCountMax;
-  String teamCountMin;
-  double leagueCost;
-  String leaguecreateuser;
-  String matchstatus;
-  Null createdAt;
-  Null updatedAt;
 
-  Data(
-      {this.leagueId,
-        this.venueid,
-        this.leaguematch,
-        this.matchId,
-        this.tourNamentId,
-        this.teamCountMax,
-        this.teamCountMin,
-        this.leagueCost,
-        this.leaguecreateuser,
-        this.matchstatus,
-        this.createdAt,
-        this.updatedAt});
-
-  Data.fromJson(Map<String, dynamic> json) {
-    leagueId = json['leagueid'];
-    venueid = json['venueid'];
-    leaguematch = json['leaguematch'];
-    matchId = json['matchId'];
-    tourNamentId = json['tourNamentId'];
-    teamCountMax = json['teamCountMax'];
-    teamCountMin = json['teamCountMin'];
-    leagueCost = json['leagueCost'];
-    leaguecreateuser = json['leaguecreateuser'];
-    matchstatus = json['matchstatus'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['leagueid'] = this.leagueId;
-    data['venueid'] = this.venueid;
-    data['leaguematch'] = this.leaguematch;
-    data['matchId'] = this.matchId;
-    data['tourNamentId'] = this.tourNamentId;
-    data['teamCountMax'] = this.teamCountMax;
-    data['teamCountMin'] = this.teamCountMin;
-    data['leagueCost'] = this.leagueCost;
-    data['leaguecreateuser'] = this.leaguecreateuser;
-    data['matchstatus'] = this.matchstatus;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    return data;
-  }
-}

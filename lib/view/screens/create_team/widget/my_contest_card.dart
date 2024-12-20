@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 import '../../../../controller/home_controller.dart';
+import '../../../../data/model/response/league_data.dart';
 import '../../../../data/model/response/matchList/matches.dart';
 
 import '../../../../data/model/response/my_contest_list/my_contest_data.dart';
@@ -16,18 +17,24 @@ import '../../../../util/styles.dart';
 class MyContestCard extends StatelessWidget {
   MyContestData myContest;
   Matches matchID;
+  LeagueData data;
 
-  MyContestCard(this.myContest,this.matchID );
+
+  MyContestCard(this.myContest,this.matchID, this.data);
 
   @override
   Widget build(BuildContext context) {
+    print("entryfees>>>>> " +
+        (data != null && data.entryfees != null
+            ? data.entryfees.toString()
+            : "sdad"));
     return  GetBuilder<HomeController>(
         builder: (homeController) {
           return
 
             InkWell(
                 onTap: () {
-                  Get.toNamed(RouteHelper.getContestDetailScreen());
+                //  Get.toNamed(RouteHelper.getContestDetailScreen());
                   // Get.toNamed(RouteHelper.getMa(matchID,league));
                  // Get.toNamed(RouteHelper.getJoinTeamScreenRoute(matchID,league));
                 },
@@ -65,7 +72,7 @@ class MyContestCard extends StatelessWidget {
                                           Text("Price", style: robotoMedium.copyWith(
                                               color: Theme.of(context).cardColor,
                                               fontSize: Dimensions.fontSizeDefault)),
-                                          Text("\$${myContest.leagueJoinAmount}", style: robotoBlack.copyWith(
+                                          Text("\$${data.entryfees}", style: robotoBlack.copyWith(
                                               color: Theme.of(context).cardColor,
                                               fontSize: Dimensions.fontSizeDefault)),
 
@@ -106,7 +113,7 @@ class MyContestCard extends StatelessWidget {
                                                   child:
 
                                                   Text(
-                                                    '\$ ${"50"}',
+                                                    '\$ ${data.entryfees}',
                                                     style: robotoBold.copyWith(
                                                         color:  Theme.of(
                                                             context)
@@ -140,10 +147,10 @@ class MyContestCard extends StatelessWidget {
                         ),
                         Divider(thickness: 0.5,color: Theme.of(context).cardColor.withOpacity(0.5),),
                         Row(children: [
-                          Expanded(flex:1,child: Text("10,000 Spots",style: robotoMedium.copyWith(
+                          Expanded(flex:1,child: Text("${data.total_join_participent_count} Spots",style: robotoMedium.copyWith(
                               color: Theme.of(context).cardColor,
                               fontSize: Dimensions.fontSizeDefault))),
-                          Expanded(flex:1,child: Text("5789 Spots Left",style: robotoMedium.copyWith(
+                          Expanded(flex:1,child: Text("${data.total_join_participent_count}/${data.totalParticipent} Spots Left",style: robotoMedium.copyWith(
                               color: Theme.of(context).cardColor,
                               fontSize: Dimensions.fontSizeDefault),
                             textAlign: TextAlign.end,
@@ -171,7 +178,7 @@ class MyContestCard extends StatelessWidget {
                                         width: 5,
                                       ),
                                       Text(
-                                        "\$5,000",
+                                        "\$NAN",
                                         style: robotoMedium.copyWith(
                                             color:
                                             Theme.of(context).cardColor,
@@ -189,7 +196,7 @@ class MyContestCard extends StatelessWidget {
                                         width: 5,
                                       ),
                                       Text(
-                                        "\$5,000",
+                                        "\$NAN",
                                         style: robotoMedium.copyWith(
                                             color:
                                             Theme.of(context).cardColor,
@@ -224,9 +231,9 @@ class MyContestCard extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 5,
                         ),
-                Container(
+               /* Container(
                     padding: EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
                     child:
                     Column(crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,7 +258,7 @@ class MyContestCard extends StatelessWidget {
                         SizedBox(
                           height: 5,
                         ),
-                      ])),
+                      ])),*/
                       ],
                     )));
         });

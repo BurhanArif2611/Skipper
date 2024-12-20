@@ -16,12 +16,16 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../../../controller/auth_controller.dart';
 import '../../../controller/home_controller.dart';
 import '../../../controller/onboarding_controller.dart';
+import '../../../data/model/response/matchList/matches.dart';
 import '../../../data/model/response/player.dart';
 import '../../../helper/route_helper.dart';
 import '../../base/custom_app_bar.dart';
+import '../home/widget/team_card.dart';
 
 class FinalCreateTeamPreviewScreen extends StatefulWidget {
-  static Future<void> loadData(bool reload) async {}
+  Matches matchID;
+
+  FinalCreateTeamPreviewScreen({ @required this.matchID});
 
   @override
   State<FinalCreateTeamPreviewScreen> createState() =>
@@ -61,7 +65,9 @@ class FinalCreateTeamPreviewScreenState
                   Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Expanded(flex: 1, child: SliderTeamCard()),
+                  Container(margin:EdgeInsetsDirectional.symmetric (horizontal: Dimensions.PADDING_SIZE_SMALL),
+                      child:
+                      TeamCardItem(widget.matchID,false)),
                   SizedBox(
                     height: 10,
                   ),

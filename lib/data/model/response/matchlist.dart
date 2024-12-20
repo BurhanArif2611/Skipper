@@ -1,5 +1,6 @@
 import 'featured_matches.dart';
 import 'matchList/matches.dart';
+import 'package:intl/intl.dart';
 
 class Matchlist {
   Metadata metadata;
@@ -17,6 +18,18 @@ class Matchlist {
         data.add(new Matches.fromJson(v));
       });
     }
+    sortMatchesByFuture();
+  }
+  void sortMatchesByFuture() {
+    DateTime now = DateTime.now();
+    // Sorting the matches based on the match date
+    DateFormat dateFormat = DateFormat("dd MMM yyyy \n hh:mm a");
+
+    // Filter out all matches with startAt in the past
+    data = data.where((match) {
+      DateTime matchDate = dateFormat.parse(match.startAt);
+      return matchDate.isAfter(now);  // Keep only future matches
+    }).toList();
   }
 
   Map<String, dynamic> toJson() {

@@ -56,7 +56,7 @@ dependencies:
 #  aws_s3: ^0.1.1+hotfix.5
   flutter_sound: ^9.2.13
   permission_handler: ^10.4.3
-  video_compress: ^3.1.2
+#  video_compress: ^3.1.2
   webview_flutter: ^3.0.4
   flutter_typeahead: ^4.8.0
   device_info_plus: ^8.2.2
@@ -64,6 +64,8 @@ dependencies:
   easy_stepper: ^0.6.0
   sign_in_with_apple: ^5.0.0
   google_sign_in: ^6.1.6
+  geocoding: ^3.0.0
+  loading_overlay: ^0.4.2
 
 
 
@@ -78,6 +80,7 @@ flutter:
   assets:
     - assets/image/
     - assets/language/
+    - assets/team_flag.json
     - assets/bumble_bee_captions.vtt
 
   fonts:

@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.patriotes.androidapp">
-   <!-- package="com.patriotes.androidapp">-->
+    package="com.skipper.android">
+   <!-- package="com.skipper.android">-->
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

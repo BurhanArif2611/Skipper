@@ -257,8 +257,9 @@ class _MyMatchesScreenState extends State<MyMatchesScreen> {
         physics: ScrollPhysics(),
         scrollDirection: Axis.vertical,
         itemBuilder: (context, index_option) {
-          return DummyTeamCardItem(homeController.liveList[index_option].match,true);
-        })):NoDataScreen(text:'No Data Found'):
+          return DummyTeamCardItem(homeController.liveList[index_option].match,true,homeController.liveList[index_option]);
+        })):Expanded(
+              child:NoDataScreen(text:'No Data Found')):
       SizedBox.shrink();
     });
   }
@@ -277,8 +278,9 @@ class _MyMatchesScreenState extends State<MyMatchesScreen> {
         physics: ScrollPhysics(),
         scrollDirection: Axis.vertical,
         itemBuilder: (context, index_option) {
-          return DummyTeamCardItem(homeController.pendingList[index_option].match,false);
-        })):NoDataScreen(text:'No Data Found'):SizedBox.shrink();
+          return DummyTeamCardItem(homeController.pendingList[index_option].match,false,homeController.pendingList[index_option]);
+        })):Expanded(
+              child:NoDataScreen(text:'No Data Found')):SizedBox.shrink();
     });
   }
 
@@ -296,8 +298,9 @@ class _MyMatchesScreenState extends State<MyMatchesScreen> {
         physics: ScrollPhysics(),
         scrollDirection: Axis.vertical,
         itemBuilder: (context, index_option) {
-          return DummyTeamCardItem(homeController.completedList[index_option].match,false);
-        })):NoDataScreen(text:'No Data Found'):SizedBox.shrink();
+          return DummyTeamCardItem(homeController.completedList[index_option].match,false,homeController.completedList[index_option]);
+        })):Expanded(
+              child:NoDataScreen(text:'No Data Found')):SizedBox.shrink();
     });
   }
 }

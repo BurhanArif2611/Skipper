@@ -66,8 +66,8 @@ class CaptainSelectionCard extends StatelessWidget {
                                             borderRadius: BorderRadius.only(
                                                 bottomLeft:
                                                     Radius.circular(10))),
-                                        child: Text(
-                                          player.nationality.shortCode,
+                                        child: Text(player.nationality!=null ?
+                                          player.nationality.shortCode:"",
                                           style: robotoMedium.copyWith(
                                               color:
                                                   Theme.of(context).cardColor,
@@ -94,7 +94,7 @@ class CaptainSelectionCard extends StatelessWidget {
                                           fontSize: Dimensions.fontSizeSmall),
                                     ),
                                     Text(
-                                      "300",
+                                      '${homeController.getPoints(player.key)}',
                                       style: robotoBold.copyWith(
                                           color: Theme.of(context)
                                               .cardColor

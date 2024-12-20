@@ -119,8 +119,15 @@ class HomeRepo {
     return await apiClient.getMatchData("/tournament/v1/squadlist",headers:_header);
   }
 
-  Future<Response> getleagueList() async {
-    return await apiClient.getMatchData("/v4/leaguelist");
+  Future<Response> getleagueList(String matchKey) async {
+    Map<String, String> _header;
+    _header = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+       'mathchid': matchKey,
+
+    };
+    return await apiClient.getMatchData("/v4/leaguelist",headers:_header);
   }
 
   Future<Response> getUserDetails(String userName) async {
@@ -150,7 +157,7 @@ class HomeRepo {
     Map<String, String> _mainHeaders = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'matchId': matchId,
+      'mathchid': matchId,
       'user_id': userid,
 
       /*,
@@ -159,6 +166,20 @@ class HomeRepo {
 
 
     return await apiClient.getTeamListData(AppConstants.teamjoinList, _mainHeaders);
+  }
+  Future<Response> getMatchLeaderboard(String leagueid,String userid) async {
+    Map<String, String> _mainHeaders = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'leagueid': leagueid,
+      'user_id': userid,
+
+      /*,
+        'Authorization': ' ${token!=null?'Bearer ' +token:'Basic REVNTzpERU1PMTIz'}',*/
+    };
+
+
+    return await apiClient.getTeamListData(AppConstants.MATCH_leaderboard, _mainHeaders);
   }
   Future<Response> joinContestTeam(String leagueid,String userid,String teamid) async {
     Map<String, String> _mainHeaders = {

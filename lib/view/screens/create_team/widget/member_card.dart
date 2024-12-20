@@ -14,8 +14,9 @@ import '../../../../util/styles.dart';
 
 class MemberCard extends StatelessWidget {
   Player player;
+  String skills;
 
-  MemberCard(this.player );
+  MemberCard(this.player,this.skills );
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +59,7 @@ class MemberCard extends StatelessWidget {
                                       decoration:BoxDecoration(
                                         color: Color(0xFF003F16)  ,
                                           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10)
-                                    )),child: Text(player.nationality.shortCode,style: robotoMedium.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeLargeExtraSmall),),))
+                                    )),child: Text(player.nationality!=null && player.nationality.shortCode!=null ?player.nationality.shortCode :"",style: robotoMedium.copyWith(color: Theme.of(context).cardColor,fontSize: Dimensions.fontSizeLargeExtraSmall),),))
                               ],)
                                  ,
                             ),
@@ -77,23 +78,23 @@ class MemberCard extends StatelessWidget {
                                           color: Theme.of(context).cardColor,
                                           fontSize: Dimensions.fontSizeDefault),
                                     ),
-                                    Text(
-                                      "Sel By 94.24",
-                                      style: robotoBold.copyWith(
-                                          color: Theme.of(context)
-                                              .cardColor
-                                              .withOpacity(0.5),
-                                          fontSize: Dimensions.fontSizeSmall),
-                                    ),
-
-                                    Text(
-                                      "Played last Match",
-                                      style: robotoBold.copyWith(
-                                          color: Theme.of(context)
-                                              .cardColor
-                                              .withOpacity(0.5),
-                                          fontSize: Dimensions.fontSizeSmall),
-                                    ),
+                                    // Text(
+                                    //   "Sel By 94.24",
+                                    //   style: robotoBold.copyWith(
+                                    //       color: Theme.of(context)
+                                    //           .cardColor
+                                    //           .withOpacity(0.5),
+                                    //       fontSize: Dimensions.fontSizeSmall),
+                                    // ),
+                                    //
+                                    // Text(
+                                    //   "Played last Match",
+                                    //   style: robotoBold.copyWith(
+                                    //       color: Theme.of(context)
+                                    //           .cardColor
+                                    //           .withOpacity(0.5),
+                                    //       fontSize: Dimensions.fontSizeSmall),
+                                    // ),
                                   ],
                                 )),
                           ],
@@ -112,7 +113,7 @@ class MemberCard extends StatelessWidget {
                                 flex: 1,
                                 child: Column(children: [
                                 Text(
-                                  "300",
+                                  '${homeController.getPoints(player.key)}',
                                   style: robotoMedium.copyWith(
                                       color: Theme.of(context)
                                           .cardColor
@@ -129,7 +130,7 @@ class MemberCard extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Text(
-                                      "7.5",
+                                      '${homeController.getCreditPoint(player.key)}',
                                       style: robotoBold.copyWith(
                                           color: Theme.of(context).cardColor),
                                     ),
@@ -137,7 +138,7 @@ class MemberCard extends StatelessWidget {
                                       width: 10,
                                     ),
                                     InkWell(onTap: (){
-                                      homeController.addPlayersInMyTeam(player);
+                                      homeController.addPlayersInMyTeam(player,skills);
                                     },
                                     child:
                                     homeController.selectedPlayersList.contains(player)?

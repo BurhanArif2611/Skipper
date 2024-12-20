@@ -1,3 +1,6 @@
+import 'package:sixam_mart/data/model/response/credits.dart';
+import 'package:sixam_mart/data/model/response/points_response.dart';
+
 class Player{
   String key;
   String name;
@@ -7,10 +10,12 @@ class Player{
   Nationality nationality;
   String dateOfBirth;
   String seasonalRole;
-  List<String> roles;
+ // List<String> roles;
   String battingStyle;
   BowlingStyle bowlingStyle;
   List<String> skills;
+  CreditsMain credits;
+  PointsMain points;
 
   Player(
       {this.key,
@@ -21,10 +26,14 @@ class Player{
         this.nationality,
         this.dateOfBirth,
         this.seasonalRole,
-        this.roles,
+        // this.roles,
         this.battingStyle,
         this.bowlingStyle,
-        this.skills});
+        this.skills,
+        this.credits,
+        this.points,
+
+      });
 
   Player.fromJson(Map<String, dynamic> json) {
     key = json['key'];
@@ -37,10 +46,12 @@ class Player{
         : null;
     dateOfBirth = json['date_of_birth'].toString();
     seasonalRole = json['seasonal_role'];
-    roles = json['roles'].cast<String>();
+   // roles = json['roles'].cast<String>();
     battingStyle = json['batting_style'];
     bowlingStyle = json['bowling_style'] !=null?new BowlingStyle.fromJson(json['bowling_style']):null;
-    skills = json['skills'].cast<String>();
+    credits = json['credits'] !=null?new CreditsMain.fromJson(json['credits']):null;
+    points = json['points'] !=null?new PointsMain.fromJson(json['points']):null;
+    skills =json['skills']!=null? json['skills'].cast<String>():[];
   }
 
   Map<String, dynamic> toJson() {
@@ -55,12 +66,17 @@ class Player{
     }
     data['date_of_birth'] = this.dateOfBirth;
     data['seasonal_role'] = this.seasonalRole;
-    data['roles'] = this.roles;
+   // data['roles'] = this.roles;
     data['batting_style'] = this.battingStyle;
 
 
     if (this.bowlingStyle != null) {
       data['bowling_style'] = this.bowlingStyle.toJson();
+    }
+    if (this.credits != null) {
+      data['credits'] = this.credits.toJson();
+    } if (this.points != null) {
+      data['points'] = this.points.toJson();
     }
     data['skills'] = this.skills;
     return data;
@@ -78,9 +94,9 @@ class Nationality {
       {this.shortCode, this.code, this.name, this.officialName, this.isRegion});
 
   Nationality.fromJson(Map<String, dynamic> json) {
-    shortCode = json['short_code'];
-    code = json['code'];
-    name = json['name'];
+    shortCode = json['short_code'] !=null ? json['short_code']: "";
+    code = json['code']!=null?json['code']:"";
+    name = json['name']!=null?json['name']:"";
     officialName = json['official_name'];
     isRegion = json['is_region'];
   }

@@ -1,3 +1,6 @@
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/banner_controller.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
@@ -17,9 +20,13 @@ import 'package:sixam_mart/view/base/confirmation_dialog.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:sixam_mart/view/screens/home/home_screen.dart';
 
+import '../data/model/response/app_info_model.dart';
+import '../data/model/response/block_geo_list.dart';
 import '../data/model/response/store_model.dart';
 import '../data/repository/auth_repo.dart';
+import '../helper/route_helper.dart';
 import '../util/app_constants.dart';
+import '../view/base/common_dailog.dart';
 
 class SplashController extends GetxController implements GetxService {
   final SplashRepo splashRepo;
@@ -49,6 +56,15 @@ class SplashController extends GetxController implements GetxService {
 
   bool _isSecurityOfficer = false;
   bool get isSecurityOfficer => _isSecurityOfficer;
+
+  AppInfoModel _appInfoModel ;
+  AppInfoModel get appInfoModel => _appInfoModel;
+
+  BlockGeoList _blockGeoList ;
+  BlockGeoList get blockGeoList => _blockGeoList;
+
+  bool _isWithinRadius = false;
+  bool get isWithinRadius => _isWithinRadius;
 
 
   Future<bool> getConfigData() async {
@@ -171,12 +187,12 @@ class SplashController extends GetxController implements GetxService {
             Get.back();
             Get.find<CartController>().clearCartList();
             await Get.find<SplashController>().setModule(_moduleList[index]);
-            HomeScreen.loadData(true);
+
           },
         ));
       }else {
         await Get.find<SplashController>().setModule(_moduleList[index]);
-        HomeScreen.loadData(true);
+
 
 
       }
@@ -186,6 +202,12 @@ class SplashController extends GetxController implements GetxService {
   void setModuleIndex(int index) {
     _moduleIndex = index;
     update();
+  }
+  void showLoader() {
+    try {
+      _isLoading = true;
+      update();
+    }catch(_){}
   }
 
 
@@ -231,4 +253,113 @@ class SplashController extends GetxController implements GetxService {
     return _isSuccess;
   }
 
+
+  Future<AppInfoModel> getVersionInfo() async {
+    _moduleIndex = 0;
+    Response response = await splashRepo.getVersionInfo();
+    if (response.statusCode == 200) {
+      _appInfoModel=AppInfoModel.fromJson(response.body);
+      } else {
+      ApiChecker.checkApi(response);
+    }
+    update();
+    return _appInfoModel;
+  }
+  Future<bool> getBlackGeoList(double latitude, double longitude) async {
+    Response response = await splashRepo.getBlackGeoList();
+    if (response.statusCode == 200) {
+      _isLoading=false;
+      _isWithinRadius = false;
+      _blockGeoList=BlockGeoList.fromJson(response.body);
+      if(_blockGeoList!=null){
+        await getStateFromLatLong(latitude,longitude)
+            .then((state) async {
+          for (var location in _blockGeoList.data) {
+           if(location.status) {
+           //  debugPrint("state>>${location.statename}<><>${state}");
+             if (location.statename.contains(findState(state))) {
+               _isWithinRadius = true;
+             }
+           }
+          }
+            });
+      }
+      else {
+        Get.offNamed(RouteHelper
+            .getInitialRoute());
+      }
+      }
+    else {
+      _isLoading=false;
+    }
+    update();
+    return _isWithinRadius;
+  }
+  Future<Position> determinePosition(BuildContext context) async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      throw Exception('Location services are disabled.');
+    }
+
+    // Check for location permissions
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+
+      if (permission == LocationPermission.denied) {
+        CommonDialog.confirm(context,
+            "You have permanently denied location permissions. Please enable it in the app settings.",
+            onPress: () async {
+              await openAppSettings();
+            });
+        throw Exception('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      CommonDialog.confirm(context,
+          "You have permanently denied location permissions. Please enable it in the app settings.",
+          onPress: () async {
+            await openAppSettings();
+          });
+      throw Exception('Location permissions are permanently denied.');
+    }
+
+    // Get the current position
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+  }
+
+  String findState(String input) {
+    input = input.toLowerCase();
+    for (var entry in (AppConstants.state)) {
+      if (entry["name"].toLowerCase() == input ||
+          entry["abbreviation"].toLowerCase() == input) {
+        return entry["name"];
+      }
+    }
+    return "State not found";
+  }
+
+  Future<String> getStateFromLatLong(double latitude, double longitude) async {
+    try {
+      // Perform reverse geocoding
+      List<Placemark> placemarks =
+      await placemarkFromCoordinates(latitude, longitude);
+
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+        debugPrint("place.administrativeArea>>${place.administrativeArea}");
+        return place.administrativeArea ?? "";
+      } else {
+        return "";
+      }
+    } catch (e) {
+      return "";
+    }
+  }
 }

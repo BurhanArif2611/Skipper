@@ -1,3 +1,5 @@
+import 'package:sixam_mart/data/model/response/matchList/matches.dart';
+
 class MatchTeamList {
   Metadata metadata;
   List<Data> data;
@@ -66,6 +68,7 @@ class Data {
   Null createUserid;
   Null createdat;
   Null updatedat;
+  Matches match;
 
   Data(
       {this.teamId,
@@ -79,7 +82,9 @@ class Data {
         this.createUser,
         this.createUserid,
         this.createdat,
-        this.updatedat});
+        this.updatedat,
+        this.match,
+      });
 
   Data.fromJson(Map<String, dynamic> json) {
     teamId = json['teamId'];
@@ -99,6 +104,9 @@ class Data {
     createUserid = json['create_userid'];
     createdat = json['createdat'];
     updatedat = json['updatedat'];
+    match = json['match'] != null
+        ? new Matches.fromJson(json['match'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -117,6 +125,9 @@ class Data {
     data['create_userid'] = this.createUserid;
     data['createdat'] = this.createdat;
     data['updatedat'] = this.updatedat;
+    if (this.match != null) {
+      data['match'] = this.match.toJson();
+    }
     return data;
   }
 }

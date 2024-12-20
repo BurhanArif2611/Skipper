@@ -364,7 +364,7 @@ class LocationController extends GetxController implements GetxService {
       // await Get.find<WishListController>().getWishList();
       Get.find<AuthController>().updateZone();
     }
-    HomeScreen.loadData(true);
+
 
     if(fromSignUp) {
       //  Get.offAllNamed(RouteHelper.getInterestRoute());

@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "920084313799",
-    "project_id": "patriotespartyapp",
-    "storage_bucket": "patriotespartyapp.appspot.com"
+    "project_number": "354823587505",
+    "project_id": "skipper-a559e",
+    "storage_bucket": "skipper-a559e.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:920084313799:android:11aa856cad5ce688b3b0e2",
+        "mobilesdk_app_id": "1:354823587505:android:ed940ad7f9acae5bfa4490",
         "android_client_info": {
-          "package_name": "com.patriotes.androidapp"
+          "package_name": "com.skipper.android"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAhculDR1d-l-RYyX2nDptZCQpMDSe4wr0"
+          "current_key": "AIzaSyA_oF53K70FagX8aVDbF0UjirtsusHyCQM"
         }
       ],
       "services": {

@@ -40,6 +40,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../data/model/response/featured_matches.dart';
+import '../data/model/response/league_data.dart';
 import '../data/model/response/matchList/matches.dart';
 import '../view/screens/complaint/add_complaint_screen.dart';
 import '../view/screens/complaint/list_complaint_screen.dart';
@@ -57,6 +58,7 @@ import '../view/screens/language/language_screen.dart';
 import '../view/screens/leader_board/leaderboard_screen.dart';
 import '../view/screens/location/location_screen.dart';
 import '../view/screens/my_matches/my_matches_detail_page.dart';
+import '../view/screens/update/update_screen.dart';
 import '../view/screens/wallet/add_bank_screen.dart';
 import '../view/screens/wallet/add_card_screen.dart';
 import '../view/screens/wallet/add_payment_option_screen.dart';
@@ -217,7 +219,14 @@ class RouteHelper {
 
   static String getLeaderBoardScreenRoute() => '$leaderboard';
 
-  static String getFinalTeamScreenRoute() => '$final_team_screen';
+
+
+  static String getFinalTeamScreenRoute(Matches matchID) {
+
+    String _data = base64Encode(utf8.encode(jsonEncode(matchID.toJson())));
+
+    return '$final_team_screen?matchID=$_data';
+  }
 
   static String getVerificationRoute(
       String number, String token, String page, String pass) {
@@ -272,7 +281,12 @@ class RouteHelper {
 
   static String getNotificationRoute() => '$notification';
 
-  static String getMyMatchesDetailRoute() => '$myMatchesDetail';
+ // static String getMyMatchesDetailRoute(String leagueid,Matches matchID) => '$myMatchesDetail?leagueid=$leagueid';
+
+  static String getMyMatchesDetailRoute(String leagueid,Matches matchID) {
+    String  _data = base64Encode(utf8.encode(jsonEncode(matchID.toJson())));
+    return '$myMatchesDetail?leagueid=$leagueid&matchID=$_data';
+  }
 
   static String getMapRoute(AddressModel addressModel, String page) {
     List<int> _encoded = utf8.encode(jsonEncode(addressModel.toJson()));
@@ -291,7 +305,7 @@ class RouteHelper {
     return '$createteamscreen?matchID=$_data';
   }
 
-  static String getJoinTeamScreenRoute(Matches matchID,Data data) {
+  static String getJoinTeamScreenRoute(Matches matchID,LeagueData data) {
     String  _data = base64Encode(utf8.encode(jsonEncode(matchID.toJson())));
     String  leagueData = base64Encode(utf8.encode(jsonEncode(data.toJson())));
 
@@ -468,7 +482,7 @@ class RouteHelper {
               : null,
           leagueData: Get.parameters['leagueData'] != null &&
               Get.parameters['leagueData'] != ""
-              ? Data.fromJson(jsonDecode(
+              ? LeagueData.fromJson(jsonDecode(
               utf8.decode(base64Url.decode(Get.parameters['leagueData']))))
               : null,
 
@@ -535,18 +549,37 @@ class RouteHelper {
     GetPage(
         name: addpaymentoption, page: () => getRoute(AddPaymentOptionScreen())),
     GetPage(name: updateProfile, page: () => getRoute(UpdateProfileScreen())),
+
+    GetPage(name: update, page: () => getRoute(UpdateScreen(isUpdate:true /*Get.parameters['update']*/))),
     /* GetPage(name: coupon, page: () => getRoute(CouponScreen())),
    */
     GetPage(name: notification, page: () => getRoute(NotificationScreen())),
+    // GetPage(
+    //     name: myMatchesDetail, page: () => getRoute(MyMatchesDetailScreen(leagueid: Get.parameters['leagueid']))),
+
     GetPage(
-        name: myMatchesDetail, page: () => getRoute(MyMatchesDetailScreen())),
+        name: myMatchesDetail,
+        page: () => getRoute(MyMatchesDetailScreen(
+          leagueid: Get.parameters['leagueid'],
+          matches: Get.parameters['matchID'] != null &&
+              Get.parameters['matchID'] != ""
+              ? Matches.fromJson(jsonDecode(
+              utf8.decode(base64Url.decode(Get.parameters['matchID']))))
+              : null,
+
+        ))),
+
     GetPage(name: kycscreen, page: () => getRoute(KYCScreen())),
     GetPage(name: kycsuccessscreen, page: () => getRoute(KYCSUCCESSScreen())),
     GetPage(name: leaderboard, page: () => getRoute(LeaderBoardScreen())),
+
     GetPage(
         name: final_team_screen,
-        page: () => getRoute(FinalCreateTeamPreviewScreen())),
+        page: () => getRoute(FinalCreateTeamPreviewScreen(
+          matchID:Get.parameters['matchID']!=null && Get.parameters['matchID']!=""? Matches.fromJson(jsonDecode(
+              utf8.decode(base64Url.decode(Get.parameters['matchID'])))):null,
 
+        ))),
     GetPage(
         name: html,
         page: () => HtmlViewerScreen(
@@ -570,16 +603,17 @@ class RouteHelper {
   ];
 
   static getRoute(Widget navigateTo) {
-    /*int _minimumVersion = 0;
+   /* String _minimumVersion ;
     if(GetPlatform.isAndroid) {
-      _minimumVersion = Get.find<SplashController>().configModel.appMinimumVersionAndroid;
+      _minimumVersion = Get.find<SplashController>().appInfoModel.data.versionAndriod;
     }else if(GetPlatform.isIOS) {
-      _minimumVersion = Get.find<SplashController>().configModel.appMinimumVersionIos;
+      _minimumVersion = Get.find<SplashController>().appInfoModel.data.versionIOS;
     }
-    return AppConstants.ANDROID_APP_VERSION < _minimumVersion ? UpdateScreen(isUpdate: true)
-        : Get.find<SplashController>().configModel.maintenanceMode ? UpdateScreen(isUpdate: false)
-        : Get.find<LocationController>().getUserAddress() == null
-        ? */ /*AccessLocationScreen(fromSignUp: false, fromHome: false, route: Get.currentRoute)*/ /*navigateTo : navigateTo;*/
+    return GetPlatform.isAndroid? AppConstants.ANDROID_APP_VERSION != _minimumVersion ? UpdateScreen(isUpdate: true)
+        :*//* Get.find<LocationController>().getUserAddress() == null
+        ?  AccessLocationScreen(fromSignUp: false, fromHome: false, route: Get.currentRoute) :*//*navigateTo :
+      AppConstants.IOS_APP_VERSION != _minimumVersion ? UpdateScreen(isUpdate: true)
+        :navigateTo ;*/
     return navigateTo;
   }
 }

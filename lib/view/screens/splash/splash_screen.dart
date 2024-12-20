@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -15,8 +16,6 @@ import 'package:get/get.dart';
 
 import '../../../controller/auth_controller.dart';
 import '../../../util/app_constants.dart';
-import '../../../util/dimensions.dart';
-import '../../../util/styles.dart';
 import '../../base/no_internet_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -32,6 +31,8 @@ class _SplashScreenState extends State<SplashScreen> {
   GlobalKey<ScaffoldState> _globalKey = GlobalKey();
   StreamSubscription<ConnectivityResult> _onConnectivityChanged;
   Position _currentPosition;
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   Future<String> _saveDeviceToken() async {
     String _deviceToken = '@';
@@ -48,43 +49,98 @@ class _SplashScreenState extends State<SplashScreen> {
     return _deviceToken;
   }
 
+  Future<void> _initializeNotificationPlugin() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  void _loadData() async {
+    Get.find<SplashController>().getVersionInfo().then((value) async {
+      if (value != null) {
+        String _minimumVersion;
+        if (GetPlatform.isAndroid) {
+          _minimumVersion = value.data.versionAndriod;
+        } else if (GetPlatform.isIOS) {
+          _minimumVersion = value.data.versionIOS;
+        }
+        if (GetPlatform.isAndroid &&
+            AppConstants.ANDROID_APP_VERSION != _minimumVersion) {
+          Get.offNamed(RouteHelper.getUpdateRoute(true));
+        } else if (GetPlatform.isIOS &&
+            AppConstants.IOS_APP_VERSION != _minimumVersion) {
+          Get.offNamed(RouteHelper.getUpdateRoute(true));
+        } else {
+          if (value != null) {
+            bool _firstTime = true;
+            _onConnectivityChanged = Connectivity()
+                .onConnectivityChanged
+                .listen((ConnectivityResult result) {
+              if (!_firstTime) {
+                bool isNotConnected = result != ConnectivityResult.wifi &&
+                    result != ConnectivityResult.mobile;
+                isNotConnected
+                    ? SizedBox()
+                    : ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  backgroundColor: isNotConnected ? Colors.red : Colors.green,
+                  duration: Duration(seconds: isNotConnected ? 6000 : 3),
+                  content: Text(
+                    isNotConnected ? 'no_connection'.tr : 'connected'.tr,
+                    textAlign: TextAlign.center,
+                  ),
+                ));
+                if (!isNotConnected) {
+                  //  _route();
+                }
+              }
+              _firstTime = false;
+            });
+
+            //  Get.find<CartController>().getCartData();
+            // Get.find<ThemeController>().toggleTheme();
+            if (Platform.isAndroid) {
+              _checkPermissions();
+            } else {
+              _route();
+            }
+          }
+        }
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    _saveDeviceToken();
-    bool _firstTime = true;
-    _onConnectivityChanged = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) {
-      if (!_firstTime) {
-        bool isNotConnected = result != ConnectivityResult.wifi &&
-            result != ConnectivityResult.mobile;
-        isNotConnected
-            ? SizedBox()
-            : ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: isNotConnected ? Colors.red : Colors.green,
-          duration: Duration(seconds: isNotConnected ? 6000 : 3),
-          content: Text(
-            isNotConnected ? 'no_connection'.tr : 'connected'.tr,
-            textAlign: TextAlign.center,
-          ),
-        ));
-        if (!isNotConnected) {
-          //  _route();
-        }
-      }
-      _firstTime = false;
-    });
-
-    //  Get.find<CartController>().getCartData();
-    // Get.find<ThemeController>().toggleTheme();
     if (Platform.isAndroid) {
-      _checkPermissions();
+      _initializeNotificationPlugin();
     } else {
-      _route();
+      requestNotificationPermission();
     }
+    _loadData();
+    _saveDeviceToken();
+
     /*_*/
+  }
+
+  Future<void> requestNotificationPermission() async {
+    final bool result = await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+
+    if (result == true) {
+      print("Notification permissions granted.");
+    } else {
+      print("Notification permissions denied.");
+    }
   }
 
   @override
@@ -94,11 +150,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _checkPermissions() async {
-
-     final status = await Permission.location.request();
-     if (status == PermissionStatus.granted) {
+    final status = await Permission.location.request();
+    if (status == PermissionStatus.granted) {
       _route();
-     } else if (status == PermissionStatus.denied) {
+    } else if (status == PermissionStatus.denied) {
       // Handle denied status
       Get.offNamed(RouteHelper.getAccessLocationRoute('sign-in'));
       print("Location permission denied");
@@ -120,8 +175,11 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 4), () async {
       print("_route>>>>>");
       if (Get.find<AuthController>().isLoggedIn()) {
-       // Get.offNamed(RouteHelper.getInitialRoute());
-        Get.offNamed(RouteHelper.getAccessLocationRoute('sign-in'));
+        // Get.offNamed(RouteHelper.getInitialRoute());
+       // Get.offNamed(RouteHelper.getAccessLocationRoute('sign-in'));
+        Get.offNamed(RouteHelper
+            .getInitialRoute());
+
       } else {
         if (Get.find<SplashController>().showIntro()) {
           Get.offNamed(RouteHelper.getOnBoardingRoute());
@@ -152,7 +210,10 @@ class _SplashScreenState extends State<SplashScreen> {
                         SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       ],
                     )*/
-              Image.asset(Images.splash ,fit: BoxFit.cover,)
+                  Image.asset(
+                      Images.splash,
+                      fit: BoxFit.cover,
+                    )
                   : NoInternetScreen(
                       child: SplashScreen(orderID: widget.orderID)),
             ));

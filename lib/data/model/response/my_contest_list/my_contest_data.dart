@@ -61,7 +61,7 @@ class MyContestData {
     updatedAt = json['updatedAt'];
     status = json['status'];
     teamname = json['teamname'];
-    position = json['position'];
+    position = json['position']!=null?json['position']:"0";
     leagueJoinAmount = json['league_Join_Amount'];
     leagueWinAmount = json['league_Win_Amount'];
     joininngStatus = json['joininngStatus'];
