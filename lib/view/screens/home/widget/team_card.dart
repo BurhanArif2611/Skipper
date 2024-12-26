@@ -16,12 +16,15 @@ import '../../../base/country_flag_image.dart';
 class TeamCardItem extends StatelessWidget {
   Matches matches;
   bool shadow;
+  bool redirection;
 
-  TeamCardItem(this.matches, this.shadow);
+
+  TeamCardItem(this.matches, this.shadow, this.redirection);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(onTap: () {
+      if(redirection)
       Get.toNamed(RouteHelper.getCreateLeagueRoute(matches));
     }, child:
         Container(
@@ -140,12 +143,13 @@ class TeamCardItem extends StatelessWidget {
                                     fontSize: Dimensions.fontSizeSmall),
                               ),
                             ),*/
+
                           Text(
-                            matches.startAt != null &&
-                                    matches.startAt != "" &&
-                                    isDateWithinNext72Hours(matches.startAt)
-                                ? '${changeDateFormate(matches.startAt)}'
-                                : '${matches.startAt}',
+                            matches.start_at_local != null &&
+                                    matches.start_at_local != "" &&
+                                    isDateWithinNext72Hours(matches.start_at_local)
+                                ? '${changeDateFormate(matches.start_at_local)}'
+                                : '${matches.start_at_local}',
                             style: robotoMedium.copyWith(
                                 color: Theme.of(context).disabledColor,
                                 fontSize: Dimensions.fontSizeSmall),

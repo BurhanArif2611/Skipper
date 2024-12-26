@@ -179,11 +179,11 @@ class HomeController extends GetxController implements GetxService {
      if(_matchlist!=null && _matchlist.data!=null && _matchlist.data.length>0) {
        _upcomingList =
            _matchlist.data.where((match) =>
-               match.play_status.contains("scheduled")).toList();
+           match.play_status.toLowerCase()!=("in_play") && match.play_status.toLowerCase()!=("started") && match.play_status.toLowerCase()!=("running")&& match.play_status.toLowerCase()!=("live") && match.play_status.toLowerCase()!=("Live")).toList();
 
        _liveMatchesList =
            _matchlist.data.where((match) =>
-               match.play_status.contains("in_play") || match.play_status.contains("started") || match.play_status.contains("running")).toList();
+               match.play_status.contains("in_play") || match.play_status.contains("started") || match.play_status.contains("running")|| match.play_status.toLowerCase().contains("live")).toList();
      }
 
     } else {
@@ -527,6 +527,9 @@ class HomeController extends GetxController implements GetxService {
 
   void clearData() {
     try {
+      _leagueList=null;
+      _myContestList=null;
+      _matchTeamList=null;
       _playersList = [];
       _selectedPlayersList = [];
       _selectedPlayerValidation = [];

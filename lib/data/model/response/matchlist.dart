@@ -18,7 +18,7 @@ class Matchlist {
         data.add(new Matches.fromJson(v));
       });
     }
-    sortMatchesByFuture();
+   // sortMatchesByFuture();
   }
   void sortMatchesByFuture() {
     DateTime now = DateTime.now();
@@ -27,7 +27,7 @@ class Matchlist {
 
     // Filter out all matches with startAt in the past
     data = data.where((match) {
-      DateTime matchDate = dateFormat.parse(match.startAt);
+      DateTime matchDate = dateFormat.parse(match.start_at_local);
       return matchDate.isAfter(now);  // Keep only future matches
     }).toList();
   }

@@ -56,8 +56,12 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-            CustomAppBar(title: 'League', onBackPressed: () => {Get.back()}),
+        appBar: CustomAppBar(
+            title: 'League',
+            onBackPressed: () {
+              Get.offAllNamed(RouteHelper.getInitialRoute());
+              //  Get.back()
+            }),
         body: /*GetBuilder<OnBoardingController>(builder: (onBoardingController) {
           return */
             Container(
@@ -347,8 +351,9 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
     return GetBuilder<HomeController>(builder: (homeController) {
       if (homeController.myContestList != null) {
         if (homeController.myContestList.data != null &&
-            homeController.myContestList.data.isNotEmpty && homeController.leagueList != null
-            && homeController.leagueList.data != null &&
+            homeController.myContestList.data.isNotEmpty &&
+            homeController.leagueList != null &&
+            homeController.leagueList.data != null &&
             homeController.leagueList.data.length > 0) {
           return Expanded(
             child: ListView.builder(
@@ -374,14 +379,15 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
                       );
                     } else if (snapshot.hasData) {
                       var result = snapshot.data;
-                      return snapshot.data!=null?
-                        MyContestCard(
-                        homeController.myContestList.data[index],
-                        widget.matchID,snapshot.data
-                      ):Text(
-                        "League not found",
-                        style: TextStyle(color: Colors.grey),
-                      );
+                      return snapshot.data != null
+                          ? MyContestCard(
+                              homeController.myContestList.data[index],
+                              widget.matchID,
+                              snapshot.data)
+                          : Text(
+                              "League not found",
+                              style: TextStyle(color: Colors.grey),
+                            );
                     } else {
                       return Text(
                         "League not found",
@@ -407,7 +413,6 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
     });
   }
 
-
   Widget myTeam() {
     return GetBuilder<HomeController>(builder: (homeController) {
       return Expanded(
@@ -424,7 +429,8 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
                           physics: BouncingScrollPhysics(),
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
-                            return CreatedCard(widget.matchID,
+                            return CreatedCard(
+                                widget.matchID,
                                 homeController.matchTeamList.data[index],
                                 widget.matchID.key,
                                 index);

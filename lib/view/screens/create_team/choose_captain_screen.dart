@@ -353,7 +353,7 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
     }
 
     Request request = Request(
-      teamName: "VKROCKS",
+      teamName:homeController.userDetailModel!=null? homeController.userDetailModel.name+" "+homeController.userDetailModel.surname:"",
       tournamentId: widget.matchID.tournament.key,
       matchId: widget.matchID.key,
       venueId:widget.matchID.venue.key,
@@ -411,8 +411,8 @@ class ChooseCaptainTeamScreenState extends State<ChooseCaptainTeamScreen> {
                   ,
                   onPressed: () {
                    /* Get.toNamed(RouteHelper.getDashboardRoute());*/
-                   // Get.offAllNamed(RouteHelper.getCreateLeagueRoute(widget.matchID));
-                    Get.offAllNamed(RouteHelper.getInitialRoute());
+                    Get.offAllNamed(RouteHelper.getCreateLeagueRoute(widget.matchID));
+                   // Get.offAllNamed(RouteHelper.getInitialRoute());
                   },
                 )
               ]);

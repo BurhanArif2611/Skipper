@@ -232,7 +232,7 @@ class _MyMatchesDetailScreenState extends State<MyMatchesDetailScreen> {
                                               width: 5,
                                             ),
                                             Text(
-                                              "NAN",
+                                              "NA",
                                               style: robotoMedium.copyWith(
                                                   color: Theme.of(context)
                                                       .cardColor,
@@ -249,8 +249,9 @@ class _MyMatchesDetailScreenState extends State<MyMatchesDetailScreen> {
                                             SizedBox(
                                               width: 5,
                                             ),
+
                                             Text(
-                                              "NAN",
+                                              "NA",
                                               style: robotoMedium.copyWith(
                                                   color: Theme.of(context)
                                                       .cardColor,

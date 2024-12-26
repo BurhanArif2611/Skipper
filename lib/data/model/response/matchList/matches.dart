@@ -6,6 +6,7 @@ class Matches {
   String subTitle;
   Teams teams;
   String startAt;
+  String start_at_local;
   Venue venue;
   Tournament tournament;
   Association association;
@@ -27,6 +28,7 @@ class Matches {
         this.subTitle,
         this.teams,
         this.startAt,
+        this.start_at_local,
         this.venue,
         this.tournament,
         this.association,
@@ -51,6 +53,7 @@ class Matches {
     position = json['position']!=null?json['position']:"0";
     teams = json['teams'] != null ? new Teams.fromJson(json['teams']) : null;
     startAt =json['start_at']!=null ? changeDateFormate(json['start_at'].toString()):"";
+    start_at_local =json['start_at_local']!=null ? changeDateFormate(json['start_at_local'].toString()):"";
     venue = json['venue'] != null ? new Venue.fromJson(json['venue']) : null;
     squad = json['squad'] != null ? new Squad.fromJson(json['squad']) : null;
     tournament = json['tournament'] != null
@@ -85,6 +88,7 @@ class Matches {
       data['teams'] = this.teams.toJson();
     }
     data['start_at'] = this.startAt;
+    data['start_at_local'] = this.start_at_local;
     if (this.venue != null) {
       data['venue'] = this.venue.toJson();
     } if (this.squad != null) {

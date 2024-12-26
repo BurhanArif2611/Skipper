@@ -55,7 +55,7 @@ class FeaturedMatchCardItem extends StatelessWidget {
                             child: Text(
                               "${matches.play_status == "scheduled" ? "Scheduled" : matches.play_status == "started" || matches.play_status == "in_play" ? "Live" : matches.play_status}",
                               style: robotoMedium.copyWith(
-                                  color: Theme.of(context).errorColor,
+                                  color:matches.play_status.toLowerCase().contains("live")?Colors.green: Theme.of(context).errorColor,
                                   fontSize: Dimensions.fontSizeSmall),
                             ))),
                   ],
@@ -132,11 +132,11 @@ class FeaturedMatchCardItem extends StatelessWidget {
                               ),
                             ),*/
                             Text(
-                              matches.startAt != null &&
-                                  matches.startAt != "" &&
-                                  isDateWithinNext72Hours(matches.startAt)
-                                  ? '${changeDateFormate(matches.startAt)}'
-                                  : '${matches.startAt}',
+                              matches.start_at_local != null &&
+                                  matches.start_at_local != "" &&
+                                  isDateWithinNext72Hours(matches.start_at_local)
+                                  ? '${changeDateFormate(matches.start_at_local)}'
+                                  : '${matches.start_at_local}',
                               style: robotoMedium.copyWith(
                                   color: Theme.of(context).disabledColor,
                                   fontSize: Dimensions.fontSizeSmall),
@@ -190,14 +190,11 @@ class FeaturedMatchCardItem extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                (matches.squad != null &&
-                    matches.squad.a != null &&
-                    matches.squad.a.playingXi != null &&
-                    matches.squad.a.playingXi.length > 0)?
+
                 Divider(
                   thickness: 0.5,
                   color: Theme.of(context).disabledColor.withOpacity(0.50),
-                ):SizedBox.shrink(),
+                ),
 
                 (matches.squad != null &&
                     matches.squad.a != null &&

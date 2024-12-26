@@ -17,13 +17,15 @@ class TeamCardWithCount extends StatelessWidget {
   Matches matches;
   bool shadow;
 
+
   TeamCardWithCount(this.matches, this.shadow);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.toNamed(RouteHelper.getCreateLeagueRoute(matches));
+        //Get.toNamed(RouteHelper.getCreateLeagueRoute(matches));
+
       },
       child: Container(
         padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),

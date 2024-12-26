@@ -67,7 +67,7 @@ class FinalCreateTeamPreviewScreenState
                 children: [
                   Container(margin:EdgeInsetsDirectional.symmetric (horizontal: Dimensions.PADDING_SIZE_SMALL),
                       child:
-                      TeamCardItem(widget.matchID,false)),
+                      TeamCardItem(widget.matchID,false,false)),
                   SizedBox(
                     height: 10,
                   ),

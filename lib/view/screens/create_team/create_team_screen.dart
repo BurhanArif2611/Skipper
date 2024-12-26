@@ -100,7 +100,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                                   margin: EdgeInsetsDirectional.symmetric(
                                       horizontal:
                                           Dimensions.PADDING_SIZE_SMALL),
-                                  child: TeamCardItem(widget.matchID, false))),
+                                  child: TeamCardItem(widget.matchID, false,false))),
                       Expanded(
                           flex: 10,
                           child: Container(

@@ -178,7 +178,7 @@ class MyContestCard extends StatelessWidget {
                                         width: 5,
                                       ),
                                       Text(
-                                        "\$NAN",
+                                        "\$NA",
                                         style: robotoMedium.copyWith(
                                             color:
                                             Theme.of(context).cardColor,
@@ -196,7 +196,7 @@ class MyContestCard extends StatelessWidget {
                                         width: 5,
                                       ),
                                       Text(
-                                        "\$NAN",
+                                        "\$NA",
                                         style: robotoMedium.copyWith(
                                             color:
                                             Theme.of(context).cardColor,

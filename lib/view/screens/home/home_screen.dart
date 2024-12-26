@@ -179,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
 
                                     Container(
-                                        height: 200,
+                                        height: 240,
                                         child: ListView.builder(
                                           shrinkWrap: true,
                                           controller: _scrollController,
@@ -226,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       itemBuilder: (context, index) {
                                         return TeamCardItem(
                                             homeController.upcomingList[index],
-                                            true);
+                                            true,true);
                                       },
                                     ),
                                   ],

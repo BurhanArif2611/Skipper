@@ -218,7 +218,7 @@ class _JoinTeamScreenState extends State<JoinTeamScreen> {
                                   width: 5,
                                 ),
                                 Text(
-                                  "NAN",
+                                  "NA",
                                   style: robotoMedium.copyWith(
                                       color: Theme.of(context).cardColor,
                                       fontSize: Dimensions.fontSizeSmall),
@@ -234,7 +234,7 @@ class _JoinTeamScreenState extends State<JoinTeamScreen> {
                                   width: 5,
                                 ),
                                 Text(
-                                  "NAN",
+                                  "NA",
                                   style: robotoMedium.copyWith(
                                       color: Theme.of(context).cardColor,
                                       fontSize: Dimensions.fontSizeSmall),
