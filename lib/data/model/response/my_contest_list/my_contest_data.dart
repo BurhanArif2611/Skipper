@@ -20,6 +20,9 @@ class MyContestData {
   String joininngStatus;
   Null leagueCreatedAt;
   Null resultAt;
+  int totalParticipent;
+  int total_join_participent_count;
+  String entryfees;
   Matches match;
 
   MyContestData(
@@ -43,6 +46,9 @@ class MyContestData {
         this.leagueCreatedAt,
         this.resultAt,
         this.match,
+        this.totalParticipent,
+        this.total_join_participent_count,
+        this.entryfees,
       });
 
   MyContestData.fromJson(Map<String, dynamic> json) {
@@ -51,10 +57,10 @@ class MyContestData {
     match = json['match'] != null
         ? new Matches.fromJson(json['match'])
         : null;
-    teamList = json['teamList'].cast<String>();
+    teamList =json['teamList']!=null? json['teamList'].cast<String>():[];
     userId = json['user_id'];
     createdAt = json['createdAt'];
-    leagueid = json['leagueid'];
+    leagueid = json['leagueid'] !=null ? json['leagueid'].toString():"";
     tournamentId = json['tournamentId'];
     venueId = json['venueId'];
     matchid = json['matchid'];
@@ -67,6 +73,9 @@ class MyContestData {
     joininngStatus = json['joininngStatus'];
     leagueCreatedAt = json['leagueCreatedAt'];
     resultAt = json['resultAt'];
+    entryfees = json['entryfees']!=null ?json['entryfees']:"";
+    total_join_participent_count = json['total_join_participent_count']!=null?json['total_join_participent_count']:0;
+    totalParticipent = json['totalParticipent']!=null ?json['totalParticipent']:0;
   }
 
   Map<String, dynamic> toJson() {
@@ -92,6 +101,9 @@ class MyContestData {
     data['joininngStatus'] = this.joininngStatus;
     data['leagueCreatedAt'] = this.leagueCreatedAt;
     data['resultAt'] = this.resultAt;
+    data['totalParticipent'] = this.totalParticipent;
+    data['total_join_participent_count'] = this.total_join_participent_count;
+    data['entryfees'] = this.entryfees;
     return data;
   }
 }

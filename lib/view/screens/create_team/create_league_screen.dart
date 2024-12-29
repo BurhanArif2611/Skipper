@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/create_team/widget/crated_team_card.dart';
 import 'package:sixam_mart/view/screens/create_team/widget/league_card.dart';
 import 'package:sixam_mart/view/screens/create_team/widget/my_contest_card.dart';
-import 'package:sixam_mart/view/screens/create_team/widget/slider_team_card.dart';
 import 'package:sixam_mart/view/screens/create_team/widget/team_card_with_count.dart';
 
 import '../../../controller/auth_controller.dart';
@@ -17,7 +16,6 @@ import '../../../data/model/response/matchList/matches.dart';
 import '../../../helper/route_helper.dart';
 import '../../base/custom_app_bar.dart';
 import '../../base/custom_button.dart';
-import '../home/widget/team_card.dart';
 
 class CreateLeagueScreen extends StatefulWidget {
   final Matches matchID;
@@ -44,7 +42,7 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
     await Get.find<HomeController>().clearData();
     await Get.find<HomeController>().getLeagueList(widget.matchID.key);
     await Get.find<HomeController>().getTeamList(widget.matchID.key);
-    await Get.find<HomeController>().getMyContestList(widget.matchID.key);
+    await Get.find<HomeController>().getMyContestListData(widget.matchID.key);
     await Get.find<AuthController>().changeTeamMemberSelectIndex(0);
   }
 
@@ -59,7 +57,12 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
         appBar: CustomAppBar(
             title: 'League',
             onBackPressed: () {
-              Get.offAllNamed(RouteHelper.getInitialRoute());
+              if(Navigator.canPop(Get.context)){
+                Get.back();
+              }
+              else {
+                Get.offAllNamed(RouteHelper.getInitialRoute());
+              }
               //  Get.back()
             }),
         body: /*GetBuilder<OnBoardingController>(builder: (onBoardingController) {
@@ -363,39 +366,44 @@ class _CreateLeagueScreenState extends State<CreateLeagueScreen> {
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
                 // Use FutureBuilder for each item
-                return FutureBuilder(
-                  future: homeController.returnLeagueList(
-                    homeController.myContestList.data[index].leagueid,
-                  ),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text(
-                        "Error loading league data",
-                        style: TextStyle(color: Colors.red),
-                      );
-                    } else if (snapshot.hasData) {
-                      var result = snapshot.data;
-                      return snapshot.data != null
-                          ? MyContestCard(
-                              homeController.myContestList.data[index],
-                              widget.matchID,
-                              snapshot.data)
-                          : Text(
-                              "League not found",
-                              style: TextStyle(color: Colors.grey),
-                            );
-                    } else {
-                      return Text(
-                        "League not found",
-                        style: TextStyle(color: Colors.grey),
-                      );
-                    }
-                  },
-                );
+                return MyContestCard(
+                    homeController.myContestList.data[index],
+                    widget.matchID/*,
+                    snapshot.data*/);
+
+                //   FutureBuilder(
+                //   future: homeController.returnLeagueList(
+                //     homeController.myContestList.data[index].leagueid,
+                //   ),
+                //   builder: (context, snapshot) {
+                //     if (snapshot.connectionState == ConnectionState.waiting) {
+                //       return Center(
+                //         child: CircularProgressIndicator(),
+                //       );
+                //     } else if (snapshot.hasError) {
+                //       return Text(
+                //         "Error loading league data",
+                //         style: TextStyle(color: Colors.red),
+                //       );
+                //     } else if (snapshot.hasData) {
+                //       var result = snapshot.data;
+                //       return snapshot.data != null
+                //           ? MyContestCard(
+                //               homeController.myContestList.data[index],
+                //               widget.matchID,
+                //               snapshot.data)
+                //           : Text(
+                //               "League not found",
+                //               style: TextStyle(color: Colors.grey),
+                //             );
+                //     } else {
+                //       return Text(
+                //         "League not found",
+                //         style: TextStyle(color: Colors.grey),
+                //       );
+                //     }
+                //   },
+                // );
               },
             ),
           );

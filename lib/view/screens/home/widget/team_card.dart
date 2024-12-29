@@ -143,13 +143,12 @@ class TeamCardItem extends StatelessWidget {
                                     fontSize: Dimensions.fontSizeSmall),
                               ),
                             ),*/
-
                           Text(
-                            matches.start_at_local != null &&
-                                    matches.start_at_local != "" &&
-                                    isDateWithinNext72Hours(matches.start_at_local)
-                                ? '${changeDateFormate(matches.start_at_local)}'
-                                : '${matches.start_at_local}',
+                            matches.startAt != null &&
+                                    matches.startAt != "" &&
+                                    isDateWithinNext72Hours(matches.startAt)
+                                ? '${changeDateFormate(matches.startAt)}'
+                                : '${matches.startAt}',
                             style: robotoMedium.copyWith(
                                 color: Theme.of(context).disabledColor,
                                 fontSize: Dimensions.fontSizeSmall),

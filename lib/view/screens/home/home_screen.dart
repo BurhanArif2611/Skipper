@@ -39,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await Get.find<HomeController>().getUserData();
 
     await Get.find<HomeController>().getMatchesList();
+    await Get.find<HomeController>().getMyMatchesLiveList("");
     // await Get.find<HomeController>().getBannerList();
     // await Get.find<HomeController>().getFeaturedMatchesList();
 
@@ -51,6 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _loadData();
+   // timeFormatLoop();
+  }
+  void timeFormatLoop() async {
+    Timer _timer = Timer.periodic(Duration(minutes: 1), (timer) async {
+      await Get.find<HomeController>().getMatchesList();
+    });
   }
 
   @override
@@ -157,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           return FeaturedMatchCardItem(
                                             homeController.featuredMatchesList
                                                 .data.matches[index],
-                                            index,
+                                            index
                                           );
                                         },
                                       ),

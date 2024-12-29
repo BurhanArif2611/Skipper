@@ -24,7 +24,6 @@ class MyMatchesScreen extends StatefulWidget {
 
 class _MyMatchesScreenState extends State<MyMatchesScreen> {
   final ScrollController _scrollController = ScrollController();
-  final PageController _pageController = PageController();
   final ScrollController scrollController = ScrollController();
   int seconds = 5; // Initial countdown time
   Timer _timer;

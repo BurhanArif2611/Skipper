@@ -17,17 +17,14 @@ import '../../../../util/styles.dart';
 class MyContestCard extends StatelessWidget {
   MyContestData myContest;
   Matches matchID;
-  LeagueData data;
+  // LeagueData data;
 
 
-  MyContestCard(this.myContest,this.matchID, this.data);
+  MyContestCard(this.myContest,this.matchID/*, this.data*/);
 
   @override
   Widget build(BuildContext context) {
-    print("entryfees>>>>> " +
-        (data != null && data.entryfees != null
-            ? data.entryfees.toString()
-            : "sdad"));
+
     return  GetBuilder<HomeController>(
         builder: (homeController) {
           return
@@ -72,7 +69,7 @@ class MyContestCard extends StatelessWidget {
                                           Text("Price", style: robotoMedium.copyWith(
                                               color: Theme.of(context).cardColor,
                                               fontSize: Dimensions.fontSizeDefault)),
-                                          Text("\$${data.entryfees}", style: robotoBlack.copyWith(
+                                          Text("\$${myContest.entryfees}", style: robotoBlack.copyWith(
                                               color: Theme.of(context).cardColor,
                                               fontSize: Dimensions.fontSizeDefault)),
 
@@ -113,7 +110,7 @@ class MyContestCard extends StatelessWidget {
                                                   child:
 
                                                   Text(
-                                                    '\$ ${data.entryfees}',
+                                                    '\$ ${myContest.entryfees}',
                                                     style: robotoBold.copyWith(
                                                         color:  Theme.of(
                                                             context)
@@ -147,10 +144,10 @@ class MyContestCard extends StatelessWidget {
                         ),
                         Divider(thickness: 0.5,color: Theme.of(context).cardColor.withOpacity(0.5),),
                         Row(children: [
-                          Expanded(flex:1,child: Text("${data.total_join_participent_count} Spots",style: robotoMedium.copyWith(
+                          Expanded(flex:1,child: Text("${myContest.total_join_participent_count} Spots",style: robotoMedium.copyWith(
                               color: Theme.of(context).cardColor,
                               fontSize: Dimensions.fontSizeDefault))),
-                          Expanded(flex:1,child: Text("${data.total_join_participent_count}/${data.totalParticipent} Spots Left",style: robotoMedium.copyWith(
+                          Expanded(flex:1,child: Text("${myContest.total_join_participent_count}/${myContest.totalParticipent} Spots Left",style: robotoMedium.copyWith(
                               color: Theme.of(context).cardColor,
                               fontSize: Dimensions.fontSizeDefault),
                             textAlign: TextAlign.end,

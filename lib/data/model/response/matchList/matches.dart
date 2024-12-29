@@ -52,8 +52,8 @@ class Matches {
     play_status = json['play_status']!=null?json['play_status']:"";
     position = json['position']!=null?json['position']:"0";
     teams = json['teams'] != null ? new Teams.fromJson(json['teams']) : null;
-    startAt =json['start_at']!=null ? changeDateFormate(json['start_at'].toString()):"";
-    start_at_local =json['start_at_local']!=null ? changeDateFormate(json['start_at_local'].toString()):"";
+    startAt =json['start_at']!=null ? changeDateFormat(json['start_at'].toString()):"";
+    start_at_local =json['start_at_local']!=null ? changeDateFormat(json['start_at_local'].toString()):"";
     venue = json['venue'] != null ? new Venue.fromJson(json['venue']) : null;
     squad = json['squad'] != null ? new Squad.fromJson(json['squad']) : null;
     tournament = json['tournament'] != null
@@ -112,18 +112,19 @@ class Matches {
     return data;
   }
 
-  String changeDateFormate(String date) {
-    // Parse the original date string to a DateTime object
+  String changeDateFormat(String date) {
     try {
-      DateTime dateTime = DateTime.parse(date).toLocal();
-      // Format it to AM/PM
-      String formattedDate = DateFormat('dd MMM yyyy \n hh:mm a').format(
-          dateTime);
-      return formattedDate;
-    }catch(e){
-    return "";
-    }
+      // Treat the input as GMT by appending 'Z'
+      DateTime dateTime = DateTime.parse("${date}Z").toUtc();
+      DateTime localTime = dateTime.toLocal();
 
+      // Format the local time
+      String formattedDate = DateFormat('dd MMM yyyy \n hh:mm a').format(localTime);
+      return formattedDate;
+    } catch (e) {
+      // Return an empty string in case of an error
+      return "";
+    }
   }
 }
 class Squad{

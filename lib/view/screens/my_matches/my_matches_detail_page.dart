@@ -42,7 +42,6 @@ class _MyMatchesDetailScreenState extends State<MyMatchesDetailScreen> {
     super.initState();
     _loadData();
   }
-
   void _loadData() async {
     await Get.find<HomeController>().getLeaderBoardList(widget.leagueid);
     await Get.find<AuthController>().changeTeamMemberSelectIndex(1);

@@ -57,6 +57,7 @@ class AppConstants {
   static const String teamList = '${MATCH_LIST_BASE_URL}/v4/teamlist';
   static const String teamjoin = '${MATCH_LIST_BASE_URL}/v4/teamjoin';
   static const String teamjoinList = '${MATCH_LIST_BASE_URL}/v4/teamjoinList';
+  static const String MyContestList = '${MATCH_LIST_BASE_URL}/v4/mycontest';
   static const String MATCH_leaderboard = '${MATCH_LIST_BASE_URL}/leader/leaderboard';
   static const String NOTIFICATION_LIST = '/notification/getnotificationdevice';
   static const String APP_INFO_URI = '/appinfo/getappInfo';

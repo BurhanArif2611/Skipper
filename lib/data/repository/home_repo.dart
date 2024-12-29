@@ -167,6 +167,15 @@ class HomeRepo {
 
     return await apiClient.getTeamListData(AppConstants.teamjoinList, _mainHeaders);
   }
+  Future<Response> getMyContestListData(String matchId,String userid) async {
+    Map<String, String> _mainHeaders = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'mathchid': matchId,
+      'user_id': userid,
+    };
+    return await apiClient.getTeamListData(AppConstants.MyContestList, _mainHeaders);
+  }
   Future<Response> getMatchLeaderboard(String leagueid,String userid) async {
     Map<String, String> _mainHeaders = {
       'Content-Type': 'application/json',

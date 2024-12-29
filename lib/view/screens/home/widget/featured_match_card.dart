@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../data/model/response/featured_matches.dart';
 import '../../../../data/model/response/matchList/matches.dart';
 import '../../../../helper/route_helper.dart';
 import '../../../../util/dimensions.dart';
@@ -19,6 +18,7 @@ class FeaturedMatchCardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return  InkWell(onTap: (){
     //  Get.toNamed(RouteHelper.getCreateTeamScreenRoute());
       Get.toNamed(RouteHelper.getCreateLeagueRoute(matches));
@@ -55,7 +55,7 @@ class FeaturedMatchCardItem extends StatelessWidget {
                             child: Text(
                               "${matches.play_status == "scheduled" ? "Scheduled" : matches.play_status == "started" || matches.play_status == "in_play" ? "Live" : matches.play_status}",
                               style: robotoMedium.copyWith(
-                                  color:matches.play_status.toLowerCase().contains("live")?Colors.green: Theme.of(context).errorColor,
+                                  color:matches.play_status.toLowerCase().contains("live")||matches.play_status.toLowerCase().contains("started")||matches.play_status.toLowerCase().contains("in_play")?Colors.green: Theme.of(context).errorColor,
                                   fontSize: Dimensions.fontSizeSmall),
                             ))),
                   ],
@@ -131,12 +131,12 @@ class FeaturedMatchCardItem extends StatelessWidget {
                                     fontSize: Dimensions.fontSizeSmall),
                               ),
                             ),*/
-                            Text(
-                              matches.start_at_local != null &&
-                                  matches.start_at_local != "" &&
-                                  isDateWithinNext72Hours(matches.start_at_local)
-                                  ? '${changeDateFormate(matches.start_at_local)}'
-                                  : '${matches.start_at_local}',
+                            Text((!matches.play_status.toLowerCase().contains("live") && !matches.play_status.toLowerCase().contains("started") && !matches.play_status.toLowerCase().contains("in_play"))?
+                              matches.startAt != null &&
+                                  matches.startAt != "" &&
+                                  isDateWithinNext72Hours(matches.startAt)
+                                  ? '${changeDateFormate(matches.startAt)}'
+                                  : '${matches.startAt}':"",
                               style: robotoMedium.copyWith(
                                   color: Theme.of(context).disabledColor,
                                   fontSize: Dimensions.fontSizeSmall),
@@ -285,6 +285,7 @@ class FeaturedMatchCardItem extends StatelessWidget {
       final DateTime timeAfter72Hours = now.add(Duration(hours: 72));
 
       // Check if the input date is within the range
+
       return inputDate.isAfter(now) && inputDate.isBefore(timeAfter72Hours);
     } else {
       return true;
@@ -311,7 +312,7 @@ class FeaturedMatchCardItem extends StatelessWidget {
         Duration difference = targetDateTime.difference(now);
         int hours = difference.inHours;
         int minutes = difference.inMinutes % 60;
-
+        debugPrint("time>>>"+"$hours h : $minutes m");
         return "$hours h : $minutes m";
       } else {
         return "The target date is in the past.";
@@ -321,4 +322,6 @@ class FeaturedMatchCardItem extends StatelessWidget {
       return "Invalid date format.";
     }
   }
+
+
 }

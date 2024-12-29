@@ -181,10 +181,7 @@ class HomeController extends GetxController implements GetxService {
            _matchlist.data.where((match) =>
            match.play_status.toLowerCase()!=("in_play") && match.play_status.toLowerCase()!=("started") && match.play_status.toLowerCase()!=("running")&& match.play_status.toLowerCase()!=("live") && match.play_status.toLowerCase()!=("Live")).toList();
 
-       _liveMatchesList =
-           _matchlist.data.where((match) =>
-               match.play_status.contains("in_play") || match.play_status.contains("started") || match.play_status.contains("running")|| match.play_status.toLowerCase().contains("live")).toList();
-     }
+        }
 
     } else {
       ApiChecker.checkApi(response);
@@ -381,6 +378,19 @@ class HomeController extends GetxController implements GetxService {
     }
     _isLoading = false;
   }
+  Future<void> getMyContestListData(String matchId) async {
+    _myContestList = null;
+    _isLoading = true;
+    Response response = await homeRepo.getMyContestListData(
+        matchId, _userDetailModel != null ? _userDetailModel.id : "");
+    if (response.statusCode == 200) {
+      _myContestList = MyContestList.fromJson(response.body);
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    _isLoading = false;
+    update();
+  }
 
   Future<void> getMyMatchesList(String matchId) async {
 
@@ -389,16 +399,49 @@ class HomeController extends GetxController implements GetxService {
         matchId, _userDetailModel != null ? _userDetailModel.id : "");
     if (response.statusCode == 200) {
       MyContestList _myContestList = MyContestList.fromJson(response.body);
-      _completedList = _myContestList.data.where((item) => item.status.contains('complete')).toList();
-      _pendingList = _myContestList.data.where((item) => item.status.contains('Pending')).toList();
-      _liveList = _myContestList.data.where((item) => item.status.contains('Live')).toList();
+      _completedList = _myContestList.data.where((item) => item.status.toLowerCase().contains('complete')|| item.status.toLowerCase().contains('completed')).toList();
+      _pendingList = _myContestList.data.where((item) => item.status.toLowerCase().contains('pending')).toList();
+      _liveList = _myContestList.data.where((item) => item.status.toLowerCase().contains('live')).toList();
 
+
+      _liveMatchesList =
+          _matchlist.data.where((match) =>
+          match.play_status.contains("in_play") || match.play_status.contains("started") || match.play_status.contains("running")|| match.play_status.toLowerCase().contains("live")).toList();
+
+      _liveMatchesList = _liveMatchesList.where((match) {
+        return _myContestList.data.any((contest) => match.key.contains(contest.match.key));
+      }).toList();
 
     } else {
 
       ApiChecker.checkApi(response);
     }
     _isLoading = false;
+    update();
+  }
+  Future<void> getMyMatchesLiveList(String matchId) async {
+    Response response = await homeRepo.getMyContestList(
+        matchId, _userDetailModel != null ? _userDetailModel.id : "");
+    if (response.statusCode == 200) {
+      MyContestList _myContestList = MyContestList.fromJson(response.body);
+      _completedList = _myContestList.data.where((item) => item.status.toLowerCase().contains('complete')|| item.status.toLowerCase().contains('completed')).toList();
+      _pendingList = _myContestList.data.where((item) => item.status.toLowerCase().contains('pending')).toList();
+      _liveList = _myContestList.data.where((item) => item.status.toLowerCase().contains('live')).toList();
+
+
+      _liveMatchesList =
+          _matchlist.data.where((match) =>
+          match.play_status.contains("in_play") || match.play_status.contains("started") || match.play_status.contains("running")|| match.play_status.toLowerCase().contains("live")).toList();
+
+      _liveMatchesList = _liveMatchesList.where((match) {
+        return _myContestList.data.any((contest) => match.key.contains(contest.match.key));
+      }).toList();
+
+    } else {
+
+      ApiChecker.checkApi(response);
+    }
+
     update();
   }
 
@@ -418,8 +461,9 @@ class HomeController extends GetxController implements GetxService {
               : "",
           isError: true);
       Get.back();
-      getMyContestList(matchId);
+      getMyContestListData(matchId);
       getLeagueList(matchId);
+
       update();
     } else {
       showCustomSnackBar(
